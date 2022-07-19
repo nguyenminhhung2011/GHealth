@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gold_health/IntroductionScreen.dart';
-import 'package:gold_health/res/MyColors.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,9 +13,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: MyColor.primary,
+        primaryColor: Colors.blue,
       ),
-      home: IntroductionScreen(),
+      home: Center(
+        child: Text('this app'),
+      ),
     );
   }
 }
