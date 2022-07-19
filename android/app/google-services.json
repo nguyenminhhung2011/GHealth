@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "919952547196",
+    "firebase_url": "https://gold-health-2246a-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "gold-health-2246a",
+    "storage_bucket": "gold-health-2246a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:919952547196:android:b329b98aa7c7d944b198f9",
+        "android_client_info": {
+          "package_name": "com.example.gold_health"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "919952547196-u012pcindhantq0pefv3vnjldmtpv9lo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQO8KF9WYzz9s6y2on1Nh0qTndD3qiIEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "919952547196-u012pcindhantq0pefv3vnjldmtpv9lo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
