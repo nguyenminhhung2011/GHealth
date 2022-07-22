@@ -52,7 +52,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                       style: Theme.of(context)
                           .textTheme
                           .headline4!
-                          .copyWith(fontSize: 12),
+                          .copyWith(fontSize: 15),
                       textAlign: TextAlign.center,
                     ),
                   ),
