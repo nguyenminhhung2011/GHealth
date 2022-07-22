@@ -37,7 +37,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: AppColors.mainColor),
+      theme: ThemeData(
+        primaryColor: AppColors.mainColor,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+        fontFamily: "Sen",
+        textTheme: TextTheme(
+          headline6: TextStyle(
+            color: Colors.black12,
+            fontSize: 18,
+          ),
+        ),
+      ),
       initialRoute: RouteName.splash,
       getPages: AppPages.pages,
       home: SplashScreen(),
