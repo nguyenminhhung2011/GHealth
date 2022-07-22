@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(primaryColor: AppColors.mainColor),
       initialRoute: RouteName.splash,
       getPages: AppPages.pages,
-      home: SplashCreen(),
+      home: SplashScreen(),
     );
   }
 }

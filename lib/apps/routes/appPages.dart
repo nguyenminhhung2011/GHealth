@@ -9,7 +9,7 @@ class AppPages {
   static final pages = [
     GetPage(
       name: RouteName.splash,
-      page: () => SplashCreen(),
+      page: () => SplashScreen(),
       binding: SplashB(),
     ),
     GetPage(

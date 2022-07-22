@@ -4,8 +4,8 @@ import 'package:flutter/src/widgets/framework.dart';
 
 import '../../template/misc/colors.dart';
 
-class SplashCreen extends StatelessWidget {
-  const SplashCreen({Key? key}) : super(key: key);
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
