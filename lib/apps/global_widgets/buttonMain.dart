@@ -17,11 +17,10 @@ class ButtonDesign extends StatelessWidget {
       onTap: press,
       child: Container(
         alignment: Alignment.center,
-        width: double.infinity,
         padding: const EdgeInsets.symmetric(vertical: 15),
         decoration: BoxDecoration(
-          color: AppColors.btn_color,
           borderRadius: BorderRadius.circular(10),
+          color: AppColors.primaryColor,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
@@ -35,9 +34,9 @@ class ButtonDesign extends StatelessWidget {
             )
           ],
         ),
-        child: Text(
-          title,
-          style: const TextStyle(
+        child: const Text(
+          'Next',
+          style: TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 12,

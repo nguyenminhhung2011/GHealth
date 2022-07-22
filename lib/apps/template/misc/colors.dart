@@ -13,4 +13,6 @@ class AppColors {
   static Color textColor =
       (Get.isDarkMode) ? darkModeTextColor : lightModeTextcolor;
   static Color btn_color = Color.fromARGB(255, 118, 131, 212);
+  static const Color mailColor = const Color.fromARGB(255, 194, 211, 247);
+  static const Color femailColor = const Color.fromARGB(255, 240, 211, 238);
 }

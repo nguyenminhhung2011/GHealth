@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../global_widgets/buttonMain.dart';
+import '../../template/misc/colors.dart';
+
 enum Gender {
   male,
   female,
@@ -32,6 +35,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: heightDevice / 20),
             Row(
               children: [
                 IconButton(
@@ -54,7 +58,9 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
             ),
             Text(
               'Provide your gender so that we can choose the most conform exercise for you. ',
-              style: Theme.of(context).textTheme.headline5,
+              style: Theme.of(context).textTheme.headline5!.copyWith(
+                    fontSize: 12,
+                  ),
               textAlign: TextAlign.center,
             ),
             Expanded(
@@ -64,7 +70,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                   height: widthDevice * 0.3,
                   width: widthDevice * 0.3,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 194, 211, 247),
+                    color: AppColors.mailColor,
                     border: _selecting == Gender.male
                         ? Border.all(width: 2.5, color: Colors.black)
                         : null,
@@ -80,7 +86,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'images/male.png',
+                          'assets/images/Male.png',
                           width: 50,
                           height: 50,
                         ),
@@ -109,7 +115,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                   height: widthDevice * 0.3,
                   width: widthDevice * 0.3,
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 240, 211, 238),
+                    color: AppColors.femailColor,
                     border: _selecting == Gender.female
                         ? Border.all(width: 2.5, color: Colors.black)
                         : null,
@@ -125,7 +131,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Image.asset(
-                          'images/female.png',
+                          'assets/images/Female.png',
                           width: 50,
                           height: 50,
                         ),
@@ -147,33 +153,10 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                 ),
               ),
             ),
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: SizedBox(
-                  height: heightDevice * 0.07,
-                  width: widthDevice * 0.9,
-                  child: InkWell(
-                    onTap: () {},
-                    child: Container(
-                      alignment: Alignment.center,
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.red,
-                      ),
-                      child: const Text(
-                        'Next',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+            Spacer(),
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: ButtonDesign(title: 'Next', press: () {}),
             ),
           ],
         ),

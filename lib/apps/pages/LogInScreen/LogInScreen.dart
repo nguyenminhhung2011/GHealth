@@ -10,6 +10,7 @@ import '../../global_widgets/buttonMain.dart';
 import '../../global_widgets/texField.dart';
 import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
+import '../basic_info_screen/select_gender_screen.dart';
 
 class LogInScreen extends StatelessWidget {
   final logInC = Get.find<LogInC>();
@@ -90,7 +91,12 @@ class LogInScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       btnIcon(
                         color: AppColors.primaryColor,
-                        press: () {},
+                        press: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SelectGenderScreen()));
+                        },
                         icon: SizedBox(width: 20),
                         title: Text(
                           'Continue',
