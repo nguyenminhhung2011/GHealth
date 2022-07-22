@@ -144,7 +144,9 @@ class LogInScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Get.back();
+                        },
                         child: Text(
                           'Create an account',
                           style: TextStyle(
