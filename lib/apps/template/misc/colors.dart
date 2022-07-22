@@ -12,4 +12,5 @@ class AppColors {
       (Get.isDarkMode) ? darkModeMainColor : lightModeMainColor;
   static Color textColor =
       (Get.isDarkMode) ? darkModeTextColor : lightModeTextcolor;
+  static Color btn_color = Color.fromARGB(255, 118, 131, 212);
 }
