@@ -3,16 +3,16 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/LoginControls.dart';
+import 'package:gold_health/apps/controls/signUpControls.dart';
 import 'package:gold_health/apps/global_widgets/buttonIcon.dart';
 import 'package:gold_health/apps/global_widgets/passwordField.dart';
 
 import '../../global_widgets/buttonMain.dart';
 import '../../global_widgets/texField.dart';
-import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 
-class LogInScreen extends StatelessWidget {
-  final logInC = Get.find<LogInC>();
+class SignUpScreen extends StatelessWidget {
+  final signUpC = Get.find<SignUpC>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,24 +28,27 @@ class LogInScreen extends StatelessWidget {
                 Hero(
                   child: Image.asset(
                     'assets/gift/Workout1.gif',
-                    height: 150,
-                    width: 150,
+                    height: 220,
+                    width: 220,
                   ),
                   tag: 'Image auth',
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Log in to your account',
-                      textAlign: TextAlign.start,
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                    Hero(
+                      child: Text(
+                        'Create your Account',
+                        textAlign: TextAlign.start,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      tag: 'create tag',
                     ),
                     Text(
-                      'This import will save your training and nutrition progress',
+                      'Let\'s create account to using this app',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 10,
@@ -78,16 +81,22 @@ class LogInScreen extends StatelessWidget {
                       TextFormFieldDesgin(
                         hintText: 'Enter your username',
                         labelText: 'Username',
-                        control: logInC.emailC,
+                        control: signUpC.emailC,
                         icon: Icons.person,
                       ),
                       const SizedBox(height: 10),
                       PasswordField(
                         hintText: 'Enter your password',
                         labelText: 'Password',
-                        control: logInC.passC,
+                        control: signUpC.passC,
                       ),
                       const SizedBox(height: 10),
+                      PasswordField(
+                        hintText: 'Enter password again',
+                        labelText: 'Re-password',
+                        control: signUpC.repassC,
+                      ),
+                      const SizedBox(height: 20),
                       btnIcon(
                         color: AppColors.primaryColor,
                         press: () {},
@@ -101,67 +110,6 @@ class LogInScreen extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Except',
-                        style: TextStyle(
-                          decoration: TextDecoration.underline,
-                          color: AppColors.primaryColor,
-                          fontSize: 10,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      btnIcon(
-                        color: Colors.white,
-                        press: () {},
-                        icon: Image.asset(
-                          'assets/images/google.png',
-                          height: 10,
-                          width: 10,
-                        ),
-                        title: Text(
-                          'LogIn with google',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      btnIcon(
-                        color: Colors.blue,
-                        press: () {},
-                        icon: Icon(
-                          Icons.facebook,
-                          size: 15,
-                          color: Colors.white,
-                        ),
-                        title: Text(
-                          'LogIn with facebook',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 10,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      InkWell(
-                          onTap: () {
-                            Get.toNamed(RouteName.signUp);
-                          },
-                          child: Hero(
-                            child: Text(
-                              'Create your account',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: Colors.grey,
-                                fontSize: 10,
-                              ),
-                            ),
-                            tag: 'Create tag',
-                          ))
                     ],
                   ),
                 ),

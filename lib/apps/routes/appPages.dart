@@ -4,7 +4,10 @@ import 'package:gold_health/apps/binding/splashBinding.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/intro1Screen.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splashScreen.dart';
 import 'package:gold_health/apps/pages/LogInScreen/LogInScreen.dart';
+import 'package:gold_health/apps/pages/LogInScreen/signUpScreen.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
+
+import '../binding/signUpBinding.dart';
 
 class AppPages {
   static final pages = [
@@ -22,5 +25,10 @@ class AppPages {
       page: () => LogInScreen(),
       binding: LogInB(),
     ),
+    GetPage(
+      name: RouteName.signUp,
+      page: () => SignUpScreen(),
+      binding: SignUpB(),
+    )
   ];
 }
