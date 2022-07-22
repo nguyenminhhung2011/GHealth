@@ -49,7 +49,10 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                     alignment: Alignment.center,
                     child: Text(
                       'Select Your Gender',
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(fontSize: 12),
                       textAlign: TextAlign.center,
                     ),
                   ),
