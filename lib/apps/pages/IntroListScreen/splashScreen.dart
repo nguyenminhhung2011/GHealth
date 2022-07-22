@@ -19,6 +19,11 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Spacer(),
+              Image.asset(
+                'assets/images/intro.png',
+                height: 200,
+                width: 200,
+              ),
               Text.rich(
                 TextSpan(
                   style: TextStyle(
