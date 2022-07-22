@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/select_genderControls.dart';
+import 'package:gold_health/apps/pages/basic_info_screen/get_height_screen.dart';
+import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
 
 import '../../global_widgets/buttonMain.dart';
+import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 
 enum Gender {
@@ -9,14 +14,13 @@ enum Gender {
 }
 
 class SelectGenderScreen extends StatefulWidget {
-  const SelectGenderScreen({Key? key}) : super(key: key);
-
   @override
   State<SelectGenderScreen> createState() => _SelectGenderScreenState();
 }
 
 class _SelectGenderScreenState extends State<SelectGenderScreen> {
   Gender? _selecting;
+  final _selectGenderC = Get.find<SelectGenderC>();
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +45,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
                 IconButton(
                   color: Colors.black,
                   icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () => Get.back(),
                 ),
                 Flexible(
                   child: Container(
@@ -159,7 +163,12 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
             Spacer(),
             Align(
               alignment: Alignment.bottomCenter,
-              child: ButtonDesign(title: 'Next', press: () {}),
+              child: ButtonDesign(
+                title: 'Next',
+                press: () {
+                  Get.toNamed(RouteName.selectDuration);
+                },
+              ),
             ),
           ],
         ),

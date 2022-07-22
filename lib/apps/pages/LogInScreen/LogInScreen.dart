@@ -92,10 +92,7 @@ class LogInScreen extends StatelessWidget {
                       btnIcon(
                         color: AppColors.primaryColor,
                         press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => SelectGenderScreen()));
+                          Get.toNamed(RouteName.selectGender);
                         },
                         icon: SizedBox(width: 20),
                         title: Text(

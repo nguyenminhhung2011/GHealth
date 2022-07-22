@@ -1,13 +1,17 @@
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:gold_health/apps/binding/loginBinding.dart';
+import 'package:gold_health/apps/binding/select_durationBinding.dart';
+import 'package:gold_health/apps/binding/select_genderBinding.dart';
 import 'package:gold_health/apps/binding/splashBinding.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/intro1Screen.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splashScreen.dart';
 import 'package:gold_health/apps/pages/LogInScreen/LogInScreen.dart';
 import 'package:gold_health/apps/pages/LogInScreen/signUpScreen.dart';
+import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 
 import '../binding/signUpBinding.dart';
+import '../pages/basic_info_screen/select_gender_screen.dart';
 
 class AppPages {
   static final pages = [
@@ -29,6 +33,16 @@ class AppPages {
       name: RouteName.signUp,
       page: () => SignUpScreen(),
       binding: SignUpB(),
+    ),
+    GetPage(
+      name: RouteName.selectGender,
+      page: () => SelectGenderScreen(),
+      binding: SelectGenderB(),
+    ),
+    GetPage(
+      name: RouteName.selectDuration,
+      page: () => SelectDurationScreen(),
+      binding: SelectDurationB(),
     )
   ];
 }

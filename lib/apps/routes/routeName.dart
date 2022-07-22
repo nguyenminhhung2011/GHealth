@@ -3,4 +3,6 @@ abstract class RouteName {
   static const intro = "/intro";
   static const logIn = "/logIn";
   static const signUp = "/signUp";
+  static const selectGender = "/selectGender";
+  static const selectDuration = "/selectDuration";
 }
