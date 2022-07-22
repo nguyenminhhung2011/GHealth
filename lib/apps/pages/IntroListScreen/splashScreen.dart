@@ -12,7 +12,19 @@ class SplashCreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: Center(
-        child: Icon(Icons.home),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.house, color: AppColors.primaryColor),
+            Text(
+              'Gold health App',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
