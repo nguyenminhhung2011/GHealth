@@ -41,7 +41,18 @@ class MyApp extends StatelessWidget {
         primaryColor: AppColors.mainColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         fontFamily: "Sen",
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
+          //Normal text (info,notice,...)
+          headline5: TextStyle(
+            color: Colors.black54,
+            fontSize: 13,
+          ),
+          //Title
+          headline4: TextStyle(
+            color: Colors.black,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
           headline6: TextStyle(
             color: Colors.black12,
             fontSize: 18,
@@ -50,7 +61,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: RouteName.splash,
       getPages: AppPages.pages,
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

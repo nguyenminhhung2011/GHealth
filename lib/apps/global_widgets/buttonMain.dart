@@ -25,7 +25,7 @@ class ButtonDesign extends StatelessWidget {
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
-              offset: Offset(2, 3),
+              offset: const Offset(2, 3),
               blurRadius: 2,
             ),
             BoxShadow(
@@ -37,7 +37,7 @@ class ButtonDesign extends StatelessWidget {
         ),
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
             fontSize: 12,

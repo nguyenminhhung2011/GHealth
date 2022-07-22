@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import '../../global_widgets/buttonMain.dart';
 import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
+import '../../pages/basic_info_screen/select_gender_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class SplashScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Spacer(),
+              const Spacer(),
               Image.asset(
                 'assets/images/intro.png',
                 height: 200,
@@ -28,12 +29,12 @@ class SplashScreen extends StatelessWidget {
               ),
               Text.rich(
                 TextSpan(
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 23,
                   ),
                   children: [
-                    TextSpan(
+                    const TextSpan(
                       text: 'GHealth ',
                       style: TextStyle(color: AppColors.primaryColor),
                     ),
@@ -45,14 +46,14 @@ class SplashScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15),
-              Text(
+              const Text(
                 'Everybody Can Train',
                 style: TextStyle(
                   color: Colors.grey,
                   fontSize: 11,
                 ),
               ),
-              Spacer(),
+              const Spacer(),
               ButtonDesign(
                 title: 'Get started',
                 press: () {
