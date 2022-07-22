@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:gold_health/apps/binding/loginBinding.dart';
 import 'package:gold_health/apps/binding/splashBinding.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/intro1Screen.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splashScreen.dart';
@@ -19,6 +20,7 @@ class AppPages {
     GetPage(
       name: RouteName.logIn,
       page: () => LogInScreen(),
+      binding: LogInB(),
     ),
   ];
 }

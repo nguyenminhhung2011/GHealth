@@ -27,6 +27,11 @@ class ButtonDesign extends StatelessWidget {
               color: Colors.black.withOpacity(0.2),
               offset: Offset(2, 3),
               blurRadius: 2,
+            ),
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              offset: Offset(-2, -3),
+              blurRadius: 2,
             )
           ],
         ),

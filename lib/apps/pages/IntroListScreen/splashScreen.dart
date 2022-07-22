@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 
 import '../../global_widgets/buttonMain.dart';
+import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -51,7 +53,12 @@ class SplashScreen extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              ButtonDesign(title: 'Get started', press: () {}),
+              ButtonDesign(
+                title: 'Get started',
+                press: () {
+                  Get.toNamed(RouteName.logIn);
+                },
+              ),
               const SizedBox(height: 20),
             ],
           ),
