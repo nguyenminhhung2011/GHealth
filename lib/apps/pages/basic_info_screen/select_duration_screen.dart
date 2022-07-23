@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/widgets/select_duration_button.dart';
 
 import '../../controls/select_durationControls.dart';
 import '../../global_widgets/buttonMain.dart';
+import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 
 enum Times {
@@ -110,7 +112,11 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
               ],
             ),
             Spacer(),
-            ButtonDesign(title: 'Next', press: () {}),
+            ButtonDesign(
+                title: 'Next',
+                press: () {
+                  Get.toNamed(RouteName.getOld);
+                }),
           ],
         ),
       ),

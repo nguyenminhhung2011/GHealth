@@ -151,20 +151,21 @@ class LogInScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       InkWell(
-                          onTap: () {
-                            Get.toNamed(RouteName.signUp);
-                          },
-                          child: Hero(
-                            child: Text(
-                              'Create your account',
-                              style: TextStyle(
-                                decoration: TextDecoration.underline,
-                                color: Colors.grey,
-                                fontSize: 10,
-                              ),
+                        onTap: () {
+                          Get.toNamed(RouteName.signUp);
+                        },
+                        child: Hero(
+                          child: Text(
+                            'Create your account',
+                            style: TextStyle(
+                              decoration: TextDecoration.underline,
+                              color: Colors.grey,
+                              fontSize: 10,
                             ),
-                            tag: 'Create tag',
-                          ))
+                          ),
+                          tag: 'Create tag',
+                        ),
+                      )
                     ],
                   ),
                 ),

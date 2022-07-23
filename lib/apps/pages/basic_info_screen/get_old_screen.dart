@@ -34,7 +34,9 @@ class _GetOldScreenState extends State<GetOldScreen> {
                 IconButton(
                   color: Colors.black,
                   icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    Get.back();
+                  },
                 ),
                 Flexible(
                   child: Container(
@@ -110,6 +112,7 @@ class _GetOldScreenState extends State<GetOldScreen> {
                 title: 'Next',
                 press: () {
                   //Variable 'age' use for get age
+                  Get.toNamed(RouteName.getWeight);
                 },
               ),
             ),

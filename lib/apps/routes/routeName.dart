@@ -5,4 +5,6 @@ abstract class RouteName {
   static const signUp = "/signUp";
   static const selectGender = "/selectGender";
   static const selectDuration = "/selectDuration";
+  static const getOld = "/getold";
+  static const getWeight = "/getweight";
 }

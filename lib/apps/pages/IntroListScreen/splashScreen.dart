@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/pages/IntroListScreen/introScreen.dart';
 
 import '../../global_widgets/buttonMain.dart';
 import '../../routes/routeName.dart';
@@ -22,11 +23,13 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              Image.asset(
-                'assets/images/intro.png',
-                height: 200,
-                width: 200,
-              ),
+              Hero(
+                  child: Image.asset(
+                    'assets/images/intro.png',
+                    height: 200,
+                    width: 200,
+                  ),
+                  tag: 'Splash image'),
               Text.rich(
                 TextSpan(
                   style: const TextStyle(
@@ -57,7 +60,12 @@ class SplashScreen extends StatelessWidget {
               ButtonDesign(
                 title: 'Get started',
                 press: () {
-                  Get.toNamed(RouteName.logIn);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => IntroScreen(),
+                    ),
+                  );
                 },
               ),
               const SizedBox(height: 20),

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/AuthControls.dart';
-import 'package:gold_health/apps/pages/IntroListScreen/intro1Screen.dart';
+import 'package:gold_health/apps/pages/IntroListScreen/introScreen.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 import 'package:gold_health/constains.dart';
 import 'package:gold_health/services/startServices.dart';
