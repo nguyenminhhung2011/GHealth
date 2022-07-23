@@ -60,12 +60,7 @@ class SplashScreen extends StatelessWidget {
               ButtonDesign(
                 title: 'Get started',
                 press: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => IntroScreen(),
-                    ),
-                  );
+                  Get.toNamed(RouteName.intro);
                 },
               ),
               const SizedBox(height: 20),

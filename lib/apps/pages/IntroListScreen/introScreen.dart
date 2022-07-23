@@ -146,6 +146,8 @@ class _IntroScreenState extends State<IntroScreen> {
                               onButtonTape(1);
                             } else if (_currentIndex == 1) {
                               onButtonTape(2);
+                            } else {
+                              Get.toNamed(RouteName.logIn);
                             }
                           });
                         },
