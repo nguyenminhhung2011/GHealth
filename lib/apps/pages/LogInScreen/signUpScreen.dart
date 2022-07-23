@@ -6,6 +6,7 @@ import 'package:gold_health/apps/controls/LoginControls.dart';
 import 'package:gold_health/apps/controls/signUpControls.dart';
 import 'package:gold_health/apps/global_widgets/buttonIcon.dart';
 import 'package:gold_health/apps/global_widgets/passwordField.dart';
+import 'package:gold_health/apps/pages/basic_info_screen/appBarHello.dart';
 
 import '../../global_widgets/buttonMain.dart';
 import '../../global_widgets/texField.dart';
@@ -15,6 +16,8 @@ class SignUpScreen extends StatelessWidget {
   final signUpC = Get.find<SignUpC>();
   @override
   Widget build(BuildContext context) {
+    var heightDevice = MediaQuery.of(context).size.height;
+    var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: SafeArea(
@@ -24,12 +27,14 @@ class SignUpScreen extends StatelessWidget {
             scrollDirection: Axis.vertical,
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                AppBarHello(widthDevice: widthDevice),
                 Hero(
                   child: Image.asset(
                     'assets/gift/Workout1.gif',
-                    height: 220,
-                    width: 220,
+                    height: heightDevice / 2,
+                    width: heightDevice / 2,
                   ),
                   tag: 'Image auth',
                 ),
@@ -43,6 +48,7 @@ class SignUpScreen extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
+                          fontSize: 15,
                         ),
                       ),
                       tag: 'create tag',
@@ -51,12 +57,12 @@ class SignUpScreen extends StatelessWidget {
                       'Let\'s create account to using this app',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 10,
+                        fontSize: 13,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

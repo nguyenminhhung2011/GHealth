@@ -10,12 +10,15 @@ import '../../global_widgets/buttonMain.dart';
 import '../../global_widgets/texField.dart';
 import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
+import '../basic_info_screen/appBarHello.dart';
 import '../basic_info_screen/select_gender_screen.dart';
 
 class LogInScreen extends StatelessWidget {
   final logInC = Get.find<LogInC>();
   @override
   Widget build(BuildContext context) {
+    var heightDevice = MediaQuery.of(context).size.height;
+    var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: SafeArea(
@@ -26,11 +29,12 @@ class LogInScreen extends StatelessWidget {
             child: Column(
               //mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                AppBarHello(widthDevice: widthDevice),
                 Hero(
                   child: Image.asset(
                     'assets/gift/Workout1.gif',
-                    height: 150,
-                    width: 150,
+                    height: heightDevice / 3,
+                    width: heightDevice / 3,
                   ),
                   tag: 'Image auth',
                 ),
@@ -43,18 +47,19 @@ class LogInScreen extends StatelessWidget {
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
+                        fontSize: 15,
                       ),
                     ),
                     Text(
                       'This import will save your training and nutrition progress',
                       style: TextStyle(
                         color: Colors.black,
-                        fontSize: 10,
+                        fontSize: 13,
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 10),

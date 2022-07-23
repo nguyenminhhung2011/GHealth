@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/buttonMain.dart';
+import 'package:gold_health/apps/pages/basic_info_screen/appBarHello.dart';
 
 import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
@@ -60,39 +61,7 @@ class _IntroScreenState extends State<IntroScreen> {
           children: [
             Expanded(
               flex: (heightDevice / 11).round(),
-              child: Row(
-                children: [
-                  Hero(
-                    child: Image.asset(
-                      'assets/images/intro.png',
-                      height: widthDevice / 10,
-                      width: widthDevice / 10,
-                    ),
-                    tag: 'Splash image',
-                  ),
-                  const SizedBox(width: 5),
-                  Text.rich(
-                    TextSpan(
-                      style: Theme.of(context)
-                          .textTheme
-                          .headline4!
-                          .copyWith(fontSize: 15),
-                      children: [
-                        TextSpan(
-                          text: 'Hello, I am ',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        TextSpan(
-                          text: 'GHealth',
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                          ),
-                        )
-                      ],
-                    ),
-                  )
-                ],
-              ),
+              child: AppBarHello(widthDevice: widthDevice),
             ),
             Expanded(
               flex: (heightDevice / 11 * 8).round(),
