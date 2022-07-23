@@ -8,6 +8,8 @@ import 'package:gold_health/apps/routes/appPages.dart';
 import 'apps/routes/routeName.dart';
 import 'apps/template/misc/colors.dart';
 
+import './apps/pages/basic_info_screen/get_old_screen.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
@@ -45,12 +47,12 @@ class MyApp extends StatelessWidget {
           //Normal text (info,notice,...)
           headline5: TextStyle(
             color: Colors.black54,
-            fontSize: 13,
+            fontSize: 15,
           ),
           //Title
           headline4: TextStyle(
             color: Colors.black,
-            fontSize: 18,
+            fontSize: 30,
             fontWeight: FontWeight.bold,
           ),
           headline6: TextStyle(

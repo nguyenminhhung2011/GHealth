@@ -29,8 +29,7 @@ class _SelectGenderScreenState extends State<SelectGenderScreen> {
 
     return Scaffold(
       body: Container(
-        padding:
-            const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 30),
+        margin: const EdgeInsets.only(top: 20, left: 15, right: 15, bottom: 30),
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
