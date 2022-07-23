@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import '../../routes/routeName.dart';
 import 'dart:math';
 
+import '../../template/misc/colors.dart';
+
 class GetWeightScreen extends StatefulWidget {
   const GetWeightScreen({Key? key}) : super(key: key);
 
@@ -22,7 +24,7 @@ class _GetWeightScreenState extends State<GetWeightScreen> {
       height: heightDevice * 0.06,
       decoration: BoxDecoration(
         border: Border.all(
-          color: Colors.red,
+          color: AppColors.primaryColor,
           width: 2,
         ),
         borderRadius: BorderRadius.circular(18),
@@ -55,12 +57,15 @@ class _GetWeightScreenState extends State<GetWeightScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: heightDevice / 20),
             Row(
               children: [
                 IconButton(
                   color: Colors.black,
                   icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () => Navigator.of(context).pop(),
+                  onPressed: () {
+                    Get.back();
+                  },
                 ),
                 Flexible(
                   child: Container(
@@ -68,7 +73,10 @@ class _GetWeightScreenState extends State<GetWeightScreen> {
                     alignment: Alignment.center,
                     child: Text(
                       'What is your weight?',
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(fontSize: 25),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -93,7 +101,7 @@ class _GetWeightScreenState extends State<GetWeightScreen> {
                           border: Border.symmetric(
                             horizontal: BorderSide(
                               width: 2,
-                              color: Colors.red,
+                              color: AppColors.primaryColor,
                             ),
                           ),
                         ),
@@ -134,6 +142,7 @@ class _GetWeightScreenState extends State<GetWeightScreen> {
                 title: 'Next',
                 press: () {
                   //Variable 'weight_kg' use for get age
+                  Get.toNamed(RouteName.getOld);
                 },
               ),
             ),

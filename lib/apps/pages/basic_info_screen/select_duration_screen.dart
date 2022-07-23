@@ -60,7 +60,7 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
                       style: Theme.of(context)
                           .textTheme
                           .headline4!
-                          .copyWith(fontSize: 15),
+                          .copyWith(fontSize: 25),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -69,12 +69,10 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
             ),
             Text(
               'Provide your height so that we can choose the most conform exercise for you. ',
-              style: Theme.of(context).textTheme.headline5!.copyWith(
-                    fontSize: 12,
-                  ),
+              style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 40),
             Column(
               children: [
                 SelectDurationButton(

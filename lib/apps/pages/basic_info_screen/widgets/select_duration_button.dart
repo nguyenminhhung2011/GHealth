@@ -39,7 +39,7 @@ class SelectDurationButton extends StatelessWidget {
                   Text(
                     times,
                     style: Theme.of(context).textTheme.headline4!.copyWith(
-                          fontSize: 12,
+                          fontSize: 20,
                         ),
                   ),
                   Text(
@@ -47,7 +47,7 @@ class SelectDurationButton extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline5!
-                        .copyWith(fontSize: 10),
+                        .copyWith(fontSize: 18),
                   ),
                 ],
               ),
@@ -67,7 +67,7 @@ class SelectDurationButton extends StatelessWidget {
                   Text(
                     times,
                     style: Theme.of(context).textTheme.headline4!.copyWith(
-                          fontSize: 12,
+                          fontSize: 20,
                         ),
                   ),
                   Text(
@@ -75,7 +75,7 @@ class SelectDurationButton extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline5!
-                        .copyWith(fontSize: 10),
+                        .copyWith(fontSize: 18),
                   ),
                 ],
               ),

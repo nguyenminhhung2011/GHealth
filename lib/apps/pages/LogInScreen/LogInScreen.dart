@@ -105,7 +105,7 @@ class LogInScreen extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 10,
+                            fontSize: 15,
                           ),
                         ),
                       ),
@@ -124,15 +124,15 @@ class LogInScreen extends StatelessWidget {
                         press: () {},
                         icon: Image.asset(
                           'assets/images/google.png',
-                          height: 10,
-                          width: 10,
+                          height: 13,
+                          width: 13,
                         ),
                         title: Text(
                           'LogIn with google',
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 10,
+                            fontSize: 15,
                           ),
                         ),
                       ),
@@ -142,7 +142,7 @@ class LogInScreen extends StatelessWidget {
                         press: () {},
                         icon: Icon(
                           Icons.facebook,
-                          size: 15,
+                          size: 18,
                           color: Colors.white,
                         ),
                         title: Text(
@@ -150,7 +150,7 @@ class LogInScreen extends StatelessWidget {
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontSize: 10,
+                            fontSize: 15,
                           ),
                         ),
                       ),

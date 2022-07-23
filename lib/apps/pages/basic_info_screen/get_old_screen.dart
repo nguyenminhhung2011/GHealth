@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../global_widgets/buttonMain.dart';
 import 'package:get/get.dart';
 import '../../routes/routeName.dart';
+import '../../template/misc/colors.dart';
 
 class GetOldScreen extends StatefulWidget {
   const GetOldScreen({Key? key}) : super(key: key);
@@ -29,6 +30,7 @@ class _GetOldScreenState extends State<GetOldScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(height: heightDevice / 20),
             Row(
               children: [
                 IconButton(
@@ -44,7 +46,10 @@ class _GetOldScreenState extends State<GetOldScreen> {
                     alignment: Alignment.center,
                     child: Text(
                       'How old are you?',
-                      style: Theme.of(context).textTheme.headline4,
+                      style: Theme.of(context)
+                          .textTheme
+                          .headline4!
+                          .copyWith(fontSize: 25),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -62,12 +67,19 @@ class _GetOldScreenState extends State<GetOldScreen> {
                 children: [
                   Container(
                     margin: const EdgeInsets.only(bottom: 10),
-                    child: Text(
-                      'Your age: $age',
-                      style: const TextStyle(
-                          fontSize: 30,
-                          fontFamily: 'Sen',
-                          fontWeight: FontWeight.w400),
+                    child: Text.rich(
+                      TextSpan(
+                          style: Theme.of(context).textTheme.headline4,
+                          children: [
+                            TextSpan(
+                              text: 'Your age: ',
+                              style: TextStyle(fontWeight: FontWeight.w400),
+                            ),
+                            TextSpan(
+                              text: age.toString(),
+                              style: TextStyle(color: AppColors.primaryColor),
+                            ),
+                          ]),
                     ),
                   ),
                   SizedBox(
@@ -79,7 +91,7 @@ class _GetOldScreenState extends State<GetOldScreen> {
                           border: Border.symmetric(
                             horizontal: BorderSide(
                               width: 2,
-                              color: Colors.red,
+                              color: AppColors.primaryColor,
                             ),
                           ),
                         ),

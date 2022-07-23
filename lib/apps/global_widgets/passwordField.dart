@@ -26,16 +26,16 @@ class _PasswordFieldState extends State<PasswordField> {
       keyboardType: TextInputType.emailAddress,
       obscureText: checkShow,
       style: TextStyle(
-          color: Colors.black, fontSize: 10, fontWeight: FontWeight.bold),
+          color: Colors.black, fontSize: 15, fontWeight: FontWeight.bold),
       decoration: InputDecoration(
         labelStyle: TextStyle(
             color: AppColors.primaryColor, fontWeight: FontWeight.bold),
         labelText: widget.labelText,
         hintText: widget.hintText,
-        hintStyle: TextStyle(color: Colors.grey, fontSize: 10),
+        hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 20,
-          vertical: 10,
+          vertical: 15,
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
