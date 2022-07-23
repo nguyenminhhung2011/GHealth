@@ -12,6 +12,7 @@ import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.
 import 'package:gold_health/apps/routes/routeName.dart';
 
 import '../binding/signUpBinding.dart';
+import '../pages/basic_info_screen/get_height_screen.dart';
 import '../pages/basic_info_screen/get_old_screen.dart';
 import '../pages/basic_info_screen/select_gender_screen.dart';
 
@@ -54,5 +55,9 @@ class AppPages {
       name: RouteName.getWeight,
       page: () => GetWeightScreen(),
     ),
+    GetPage(
+      name: RouteName.getHeight,
+      page: () => GetHeightScreen(),
+    )
   ];
 }

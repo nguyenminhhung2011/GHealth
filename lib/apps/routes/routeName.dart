@@ -7,4 +7,5 @@ abstract class RouteName {
   static const selectDuration = "/selectDuration";
   static const getOld = "/getold";
   static const getWeight = "/getweight";
+  static const getHeight = "/getheight";
 }

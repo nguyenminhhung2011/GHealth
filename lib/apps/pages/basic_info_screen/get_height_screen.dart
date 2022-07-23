@@ -42,7 +42,7 @@ class GetHeightScreen extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .headline4!
-                          .copyWith(fontSize: 15),
+                          .copyWith(fontSize: 25),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -51,11 +51,10 @@ class GetHeightScreen extends StatelessWidget {
             ),
             Text(
               'Provide your height so that we can choose the most conform exercise for you. ',
-              style: Theme.of(context).textTheme.headline5!.copyWith(
-                    fontSize: 12,
-                  ),
+              style: Theme.of(context).textTheme.headline5,
               textAlign: TextAlign.center,
             ),
+            Spacer(),
             Spacer(),
             Align(
               alignment: Alignment.bottomCenter,

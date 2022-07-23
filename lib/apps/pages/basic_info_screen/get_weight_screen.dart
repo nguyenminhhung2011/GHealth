@@ -142,7 +142,7 @@ class _GetWeightScreenState extends State<GetWeightScreen> {
                 title: 'Next',
                 press: () {
                   //Variable 'weight_kg' use for get age
-                  Get.toNamed(RouteName.getOld);
+                  Get.toNamed(RouteName.getHeight);
                 },
               ),
             ),
