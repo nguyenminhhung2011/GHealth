@@ -110,7 +110,6 @@ class _GetOldScreenState extends State<GetOldScreen> {
                 title: 'Next',
                 press: () {
                   //Variable 'age' use for get age
-                  Get.toNamed(RouteName.selectHeight);
                 },
               ),
             ),
