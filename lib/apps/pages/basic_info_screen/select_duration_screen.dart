@@ -11,9 +11,11 @@ import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 
 enum Times {
-  sometimes,
-  usually,
-  always,
+  notmuch,
+  little,
+  medium,
+  many,
+  somany,
 }
 
 class SelectDurationScreen extends StatefulWidget {
@@ -76,36 +78,58 @@ class _SelectDurationScreenState extends State<SelectDurationScreen> {
             Column(
               children: [
                 SelectDurationButton(
-                  isSelected: _selecting == Times.sometimes,
+                  isSelected: _selecting == Times.notmuch,
                   press: () {
                     setState(() {
-                      _selecting = Times.sometimes;
+                      _selecting = Times.notmuch;
                     });
                   },
-                  times: '2-3 Times in week',
-                  cap: 'Sometimes',
+                  times: 'Not much ',
+                  cap: 'Not Much or none',
                 ),
                 const SizedBox(height: 10),
                 SelectDurationButton(
-                  isSelected: _selecting == Times.usually,
+                  isSelected: _selecting == Times.little,
                   press: () {
                     setState(() {
-                      _selecting = Times.usually;
+                      _selecting = Times.little;
                     });
                   },
-                  times: '5 Days in week',
-                  cap: 'Usually',
+                  times: 'A Little',
+                  cap: '2 - 3 days in week',
                 ),
                 const SizedBox(height: 10),
                 SelectDurationButton(
-                  isSelected: _selecting == Times.always,
+                  isSelected: _selecting == Times.medium,
                   press: () {
                     setState(() {
-                      _selecting = Times.always;
+                      _selecting = Times.medium;
                     });
                   },
-                  times: '7 Days in week',
-                  cap: 'Always',
+                  times: 'Medium',
+                  cap: '3 - 5 days in week',
+                ),
+                const SizedBox(height: 10),
+                SelectDurationButton(
+                  isSelected: _selecting == Times.many,
+                  press: () {
+                    setState(() {
+                      _selecting = Times.many;
+                    });
+                  },
+                  times: 'Many',
+                  cap: '6  - 7 days in week',
+                ),
+                const SizedBox(height: 10),
+                SelectDurationButton(
+                  isSelected: _selecting == Times.somany,
+                  press: () {
+                    setState(() {
+                      _selecting = Times.somany;
+                    });
+                  },
+                  times: 'So Many',
+                  cap: 'Works every day of the week',
                 ),
               ],
             ),
