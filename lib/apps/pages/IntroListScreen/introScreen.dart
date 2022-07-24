@@ -4,10 +4,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/buttonMain.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/appBarHello.dart';
 
 import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
+import '../basic_info_screen/appBarHello.dart';
 
 PageController pageController = PageController(initialPage: 0, keepPage: true);
 void onButtonTape(int index) {

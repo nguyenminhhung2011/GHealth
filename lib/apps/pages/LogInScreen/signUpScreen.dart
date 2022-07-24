@@ -6,11 +6,11 @@ import 'package:gold_health/apps/controls/LoginControls.dart';
 import 'package:gold_health/apps/controls/signUpControls.dart';
 import 'package:gold_health/apps/global_widgets/buttonIcon.dart';
 import 'package:gold_health/apps/global_widgets/passwordField.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/appBarHello.dart';
 
 import '../../global_widgets/buttonMain.dart';
 import '../../global_widgets/texField.dart';
 import '../../template/misc/colors.dart';
+import '../basic_info_screen/appBarHello.dart';
 
 class SignUpScreen extends StatelessWidget {
   final signUpC = Get.find<SignUpC>();
