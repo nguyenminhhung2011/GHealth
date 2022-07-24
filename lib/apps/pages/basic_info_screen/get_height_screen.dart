@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 
 import '../../global_widgets/boxData.dart';
 import '../../global_widgets/buttonMain.dart';
+import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 
 class GetHeightScreen extends StatefulWidget {
@@ -134,7 +136,12 @@ class _GetHeightScreenState extends State<GetHeightScreen> {
             ),
             Align(
               alignment: Alignment.bottomCenter,
-              child: ButtonDesign(title: 'Next', press: () {}),
+              child: ButtonDesign(
+                title: 'Next',
+                press: () {
+                  Get.toNamed(RouteName.fillProfile);
+                },
+              ),
             ),
           ],
         ),

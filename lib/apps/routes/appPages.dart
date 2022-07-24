@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:gold_health/apps/binding/fillProfileBinding.dart';
 import 'package:gold_health/apps/binding/loginBinding.dart';
 import 'package:gold_health/apps/binding/select_durationBinding.dart';
 import 'package:gold_health/apps/binding/select_genderBinding.dart';
@@ -12,6 +13,7 @@ import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.
 import 'package:gold_health/apps/routes/routeName.dart';
 
 import '../binding/signUpBinding.dart';
+import '../pages/basic_info_screen/fillProfile.dart';
 import '../pages/basic_info_screen/get_height_screen.dart';
 import '../pages/basic_info_screen/get_old_screen.dart';
 import '../pages/basic_info_screen/select_gender_screen.dart';
@@ -58,6 +60,11 @@ class AppPages {
     GetPage(
       name: RouteName.getHeight,
       page: () => GetHeightScreen(),
+    ),
+    GetPage(
+      name: RouteName.fillProfile,
+      page: () => FillProfileScreen(),
+      binding: FillProfileB(),
     )
   ];
 }

@@ -8,4 +8,5 @@ abstract class RouteName {
   static const getOld = "/getold";
   static const getWeight = "/getweight";
   static const getHeight = "/getheight";
+  static const fillProfile = "/fillprofile";
 }
