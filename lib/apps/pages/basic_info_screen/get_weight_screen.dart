@@ -1,7 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
+import '../../global_widgets/boxData.dart';
 import '../../global_widgets/buttonMain.dart';
 import 'package:get/get.dart';
 import '../../routes/routeName.dart';
@@ -17,31 +17,53 @@ class GetWeightScreen extends StatefulWidget {
 }
 
 class _GetWeightScreenState extends State<GetWeightScreen> {
-  Container boxWeight(String text, var widthDevice, var heightDevice) {
+  var list = [for (var i = 1; i <= 200; i++) i];
+  int weight_kg = 1;
+
+  Widget _buildItemList(BuildContext context, int index) {
     return Container(
-      alignment: Alignment.center,
-      width: widthDevice * 0.42,
-      height: heightDevice * 0.06,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: AppColors.primaryColor,
-          width: 2,
-        ),
-        borderRadius: BorderRadius.circular(18),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          fontFamily: 'Sen',
-          fontSize: 25,
-          fontWeight: FontWeight.w800,
-        ),
+      width: 150,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: 150,
+            height: 200,
+            decoration: BoxDecoration(
+              color:
+                  (index + 1 == weight_kg) ? AppColors.mailColor : Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(width: 3, color: AppColors.primaryColor),
+            ),
+            child: Center(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '${list[index]}',
+                    style: TextStyle(
+                      fontSize: 50.0,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'Kg',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
 
-  var list = [for (var i = 1; i <= 200; i++) i];
-  int weight_kg = 1;
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -92,50 +114,37 @@ class _GetWeightScreenState extends State<GetWeightScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  SizedBox(
-                    height: heightDevice * 0.25,
-                    width: widthDevice * 0.4,
-                    child: CupertinoPicker(
-                      selectionOverlay: Container(
-                        decoration: const BoxDecoration(
-                          border: Border.symmetric(
-                            horizontal: BorderSide(
-                              width: 2,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                      itemExtent: 77,
-                      diameterRatio: 1.2,
-                      onSelectedItemChanged: (int value) => setState(() {
-                        weight_kg = value + 1;
-                      }),
-                      children: list
-                          .map(
-                            (e) => Text(
-                              e.toString(),
-                              style: const TextStyle(
-                                fontFamily: 'Sen',
-                                fontSize: 60,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )
-                          .toList(),
+                  Expanded(
+                    child: ScrollSnapList(
+                      itemBuilder: _buildItemList,
+                      itemSize: 150,
+                      dynamicItemSize: true,
+                      itemCount: list.length,
+                      onItemFocus: (int) {
+                        setState(() {
+                          weight_kg = int + 1;
+                        });
+                      },
                     ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      boxWeight('${weight_kg}kg', widthDevice, heightDevice),
-                      boxWeight('${(weight_kg * 2.20462262).round()}lbs',
-                          widthDevice, heightDevice),
+                      BoxData(
+                          text: '${weight_kg}kg',
+                          widthDevice: widthDevice,
+                          heightDevice: heightDevice),
+                      BoxData(
+                        text: '${(weight_kg * 2.20462262).round()}lbs',
+                        widthDevice: widthDevice,
+                        heightDevice: heightDevice,
+                      ),
                     ],
                   )
                 ],
               ),
             ),
+            SizedBox(height: heightDevice / 15),
             Align(
               alignment: Alignment.bottomCenter,
               child: ButtonDesign(

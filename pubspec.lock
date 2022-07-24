@@ -366,6 +366,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "6.0.3"
+  scroll_snap_list:
+    dependency: "direct main"
+    description:
+      name: scroll_snap_list
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.9.1"
   sky_engine:
     dependency: transitive
     description: flutter
