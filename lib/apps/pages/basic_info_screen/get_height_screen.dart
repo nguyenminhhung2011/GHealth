@@ -8,6 +8,7 @@ import '../../global_widgets/boxData.dart';
 import '../../global_widgets/buttonMain.dart';
 import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
+import '../dashboard_screen/activity_trackerScreen.dart';
 
 class GetHeightScreen extends StatefulWidget {
   const GetHeightScreen({Key? key}) : super(key: key);
@@ -138,7 +139,14 @@ class _GetHeightScreenState extends State<GetHeightScreen> {
               alignment: Alignment.bottomCenter,
               child: ButtonDesign(
                 title: 'Next',
-                press: () {},
+                press: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ActivityTrackerScreen(),
+                    ),
+                  );
+                },
               ),
             ),
           ],

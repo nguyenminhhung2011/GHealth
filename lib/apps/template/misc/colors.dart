@@ -8,6 +8,8 @@ class AppColors {
   static const Color lightModeTextcolor = Color.fromARGB(255, 41, 40, 40);
   static const Color darkModeTextColor = Colors.white;
   static const Color primaryColor = Color(0xFF5d69b3);
+  static const Color primaryColor1 = Color.fromARGB(157, 118, 201, 239);
+  static const Color primaryColor2 = Color.fromARGB(157, 164, 118, 239);
   static const Color textColor1 = Colors.grey;
   static Color mainColor =
       (Get.isDarkMode) ? darkModeMainColor : lightModeMainColor;
@@ -23,6 +25,31 @@ class AppColors {
     colors: [
       AppColors.primaryColor.withOpacity(0.6),
       Colors.white,
+    ],
+  );
+  static Gradient colorContainerTodayTarget = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      primaryColor1.withOpacity(0.2),
+      primaryColor2.withOpacity(0.2),
+    ],
+  );
+  static Gradient colorGradient = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      primaryColor1.withOpacity(0.8),
+      primaryColor2.withOpacity(0.8),
+    ],
+  );
+  static Gradient colorOfBarChar = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      primaryColor1.withOpacity(0.3),
+      primaryColor1.withOpacity(0.3),
+      primaryColor2.withOpacity(0.3),
     ],
   );
 }

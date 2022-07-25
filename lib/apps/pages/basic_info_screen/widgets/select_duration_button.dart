@@ -60,7 +60,7 @@ class SelectDurationButton extends StatelessWidget {
               ),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
-                  gradient: AppColors.colorOfButtonDuration),
+                  gradient: AppColors.colorContainerTodayTarget),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
