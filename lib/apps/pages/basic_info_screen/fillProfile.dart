@@ -4,6 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/fillProfilControls.dart';
+import 'package:gold_health/apps/routes/routeName.dart';
 
 import '../../global_widgets/boxData.dart';
 import '../../global_widgets/buttonMain.dart';
@@ -199,7 +200,12 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                 children: [
                   Expanded(child: ButtonDesign1(title: 'Skip', press: () {})),
                   const SizedBox(width: 20),
-                  Expanded(child: ButtonDesign(title: 'Next', press: () {})),
+                  Expanded(
+                      child: ButtonDesign(
+                          title: 'Next',
+                          press: () {
+                            Get.toNamed(RouteName.selectGender);
+                          })),
                 ],
               ),
             ),

@@ -138,9 +138,7 @@ class _GetHeightScreenState extends State<GetHeightScreen> {
               alignment: Alignment.bottomCenter,
               child: ButtonDesign(
                 title: 'Next',
-                press: () {
-                  Get.toNamed(RouteName.fillProfile);
-                },
+                press: () {},
               ),
             ),
           ],

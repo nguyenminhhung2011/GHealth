@@ -24,12 +24,13 @@ class SplashScreen extends StatelessWidget {
             children: [
               const Spacer(),
               Hero(
-                  child: Image.asset(
-                    'assets/images/intro.png',
-                    height: 200,
-                    width: 200,
-                  ),
-                  tag: 'Splash image'),
+                tag: 'Splash image',
+                child: Image.asset(
+                  'assets/images/intro.png',
+                  height: 200,
+                  width: 200,
+                ),
+              ),
               Text.rich(
                 TextSpan(
                   style: const TextStyle(
