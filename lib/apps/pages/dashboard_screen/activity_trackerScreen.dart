@@ -19,14 +19,13 @@ class ActivityTrackerScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: SafeArea(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 30),
-          child: Column(
-            children: [
-              Expanded(
-                flex: (heightDevice / 20 * 2).round(),
-                child: Container(
+        child: Column(
+          children: [
+            Expanded(
+              flex: (heightDevice / 20 * 2).round(),
+              child: Container(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Row(
                     children: [
                       InkWell(
@@ -70,8 +69,11 @@ class ActivityTrackerScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Expanded(
-                flex: (heightDevice / 20 * 5).round(),
+            ),
+            Expanded(
+              flex: (heightDevice / 20 * 5).round(),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Container(
                   width: widthDevice,
                   padding:
@@ -140,12 +142,15 @@ class ActivityTrackerScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
-              Expanded(
-                flex: (heightDevice / 20 * 15).round(),
-                child: Container(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              flex: (heightDevice / 20 * 15).round(),
+              child: Container(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
                         Container(
@@ -295,8 +300,8 @@ class ActivityTrackerScreen extends StatelessWidget {
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
