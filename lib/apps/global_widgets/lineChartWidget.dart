@@ -6,11 +6,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import '../template/misc/colors.dart';
 
 class LineChartWidget extends StatelessWidget {
-  final List<Color> gradientColors = [
-    const Color(0xff23b6e6),
-    const Color(0xff02d39a),
-  ];
-
   @override
   Widget build(BuildContext context) {
     return LineChart(
@@ -93,7 +88,7 @@ class LineChartWidget extends StatelessWidget {
             barWidth: 2,
             belowBarData: BarAreaData(
               show: true,
-              gradient: AppColors.colorGradient,
+              gradient: AppColors.colorOfBarChar,
             ),
           )
         ],

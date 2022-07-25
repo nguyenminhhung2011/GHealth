@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/global_widgets/lineChartWidget.dart';
+import 'package:gold_health/apps/pages/dashboard_screen/profileScreen.dart';
+import 'package:gold_health/apps/pages/dashboard_screen/widgets/ChartBoard.dart';
 
 import '../../global_widgets/BarChartItem.dart';
 import '../../global_widgets/TargetCard.dart';
@@ -54,7 +56,14 @@ class ActivityTrackerScreen extends StatelessWidget {
                       ),
                       Spacer(),
                       InkWell(
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ProfileScreen(),
+                            ),
+                          );
+                        },
                         child: Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
@@ -375,15 +384,6 @@ class ActivityTrackerScreen extends StatelessWidget {
                                     Expanded(
                                       child: LineChartWidget(),
                                     ),
-                                    // LineChart(
-                                    //   LineChartData(
-                                    //       // read about it in the LineChartData section
-                                    //       ),
-                                    //   swapAnimationDuration: Duration(
-                                    //       milliseconds: 150), // Optional
-                                    //   swapAnimationCurve:
-                                    //       Curves.linear, // Optional
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -450,103 +450,6 @@ class ActivityTrackerScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class ChartBoard extends StatelessWidget {
-  const ChartBoard({
-    Key? key,
-    required this.widthDevice,
-    required this.heightDevice,
-    required this.week,
-    required this.color,
-    required this.title,
-    required this.data,
-  }) : super(key: key);
-
-  final double widthDevice;
-  final double heightDevice;
-  final String week;
-  final Color color;
-  final String title;
-  final String data;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: widthDevice,
-      height: heightDevice / 3,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(25),
-        color: color,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            offset: const Offset(2, 3),
-            blurRadius: 20,
-          ),
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            offset: Offset(-2, -3),
-            blurRadius: 20,
-          )
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            week,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 16,
-            ),
-          ),
-          Row(
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                ),
-              ),
-              Text(
-                data,
-                style: TextStyle(
-                  color: AppColors.primaryColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                ),
-              )
-            ],
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: Container(
-              child: ChartCalories(
-                heightOfBar: heightDevice / 3 - 80,
-              ),
-            ),
-          ),
-          Container(
-              child: Row(
-            children: FakeData.calories
-                .map(
-                  (e) => Expanded(
-                    child: Text(
-                      e['day'],
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                  ),
-                )
-                .toList(),
-          ))
-        ],
       ),
     );
   }
