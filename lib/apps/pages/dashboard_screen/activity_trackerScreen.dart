@@ -1,8 +1,10 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
+import 'package:gold_health/apps/global_widgets/lineChartWidget.dart';
 
 import '../../global_widgets/BarChartItem.dart';
 import '../../global_widgets/TargetCard.dart';
@@ -176,13 +178,155 @@ class ActivityTrackerScreen extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 20),
+                              ChartBoard(
+                                  widthDevice: widthDevice,
+                                  heightDevice: heightDevice,
+                                  week: 'Week 25/7/2022 - 1/8/2022',
+                                  title: 'Calories burned: ',
+                                  data: '3000Kcal',
+                                  color: Colors.white)
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Calories Absorbed',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4!
+                                        .copyWith(
+                                          fontSize: 17,
+                                        ),
+                                  ),
+                                  Spacer(),
+                                  ButtonIconGradientColor(
+                                    title: 'Select Week',
+                                    icon: Icons.calendar_month,
+                                    press: () {},
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              ChartBoard(
+                                widthDevice: widthDevice,
+                                heightDevice: heightDevice,
+                                week: 'Week 25/7/2022 - 1/8/2022',
+                                title: 'Calories Absorbed: ',
+                                data: '4000Kcal',
+                                color: AppColors.primaryColor2.withOpacity(0.1),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Water consumed',
+                                    overflow: TextOverflow.clip,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4!
+                                        .copyWith(
+                                          fontSize: 17,
+                                        ),
+                                  ),
+                                  Spacer(),
+                                  ButtonIconGradientColor(
+                                    title: 'Select Week',
+                                    icon: Icons.calendar_month,
+                                    press: () {},
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              ChartBoard(
+                                widthDevice: widthDevice,
+                                heightDevice: heightDevice,
+                                week: 'Week 25/7/2022 - 1/8/2022',
+                                title: 'Amount of water consumed: ',
+                                data: '300ml',
+                                color: AppColors.primaryColor1.withOpacity(0.1),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'FootSteps',
+                                    overflow: TextOverflow.clip,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4!
+                                        .copyWith(
+                                          fontSize: 17,
+                                        ),
+                                  ),
+                                  Spacer(),
+                                  ButtonIconGradientColor(
+                                    title: 'Select Week',
+                                    icon: Icons.calendar_month,
+                                    press: () {},
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              ChartBoard(
+                                widthDevice: widthDevice,
+                                heightDevice: heightDevice,
+                                week: 'Week 25/7/2022 - 1/8/2022',
+                                title: 'Number of FootSteps: ',
+                                data: '300',
+                                color: AppColors.mainColor,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    'Weight Trackers',
+                                    overflow: TextOverflow.clip,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4!
+                                        .copyWith(
+                                          fontSize: 17,
+                                        ),
+                                  ),
+                                  Spacer(),
+                                  ButtonIconGradientColor(
+                                    title: 'Select Days',
+                                    icon: Icons.calendar_month,
+                                    press: () {},
+                                  )
+                                ],
+                              ),
+                              const SizedBox(height: 20),
                               Container(
                                 width: widthDevice,
                                 height: heightDevice / 3,
                                 padding: const EdgeInsets.all(20),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(25),
-                                  color: Colors.white,
+                                  color: AppColors.primaryColor1,
                                   boxShadow: [
                                     BoxShadow(
                                       color: Colors.black.withOpacity(0.05),
@@ -207,40 +351,42 @@ class ActivityTrackerScreen extends StatelessWidget {
                                         fontSize: 16,
                                       ),
                                     ),
-                                    Text(
-                                      'Calories burned',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 16,
-                                      ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Weight(kg):',
+                                          style: TextStyle(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                        Text(
+                                          '40',
+                                          style: TextStyle(
+                                            color: AppColors.primaryColor,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16,
+                                          ),
+                                        )
+                                      ],
                                     ),
                                     const SizedBox(height: 10),
                                     Expanded(
-                                      child: Container(
-                                        child: ChartCalories(
-                                          heightOfBar: heightDevice / 3 - 80,
-                                        ),
-                                      ),
+                                      child: LineChartWidget(),
                                     ),
-                                    Container(
-                                        child: Row(
-                                      children: FakeData.calories
-                                          .map(
-                                            (e) => Expanded(
-                                              child: Text(
-                                                e['day'],
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ),
-                                          )
-                                          .toList(),
-                                    ))
+                                    // LineChart(
+                                    //   LineChartData(
+                                    //       // read about it in the LineChartData section
+                                    //       ),
+                                    //   swapAnimationDuration: Duration(
+                                    //       milliseconds: 150), // Optional
+                                    //   swapAnimationCurve:
+                                    //       Curves.linear, // Optional
+                                    // ),
                                   ],
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -295,6 +441,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                             ],
                           ),
                         ),
+                        const SizedBox(height: 20),
                       ],
                     ),
                   ),
@@ -303,6 +450,103 @@ class ActivityTrackerScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class ChartBoard extends StatelessWidget {
+  const ChartBoard({
+    Key? key,
+    required this.widthDevice,
+    required this.heightDevice,
+    required this.week,
+    required this.color,
+    required this.title,
+    required this.data,
+  }) : super(key: key);
+
+  final double widthDevice;
+  final double heightDevice;
+  final String week;
+  final Color color;
+  final String title;
+  final String data;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: widthDevice,
+      height: heightDevice / 3,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        color: color,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            offset: const Offset(2, 3),
+            blurRadius: 20,
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            offset: Offset(-2, -3),
+            blurRadius: 20,
+          )
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            week,
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 16,
+            ),
+          ),
+          Row(
+            children: [
+              Text(
+                title,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                ),
+              ),
+              Text(
+                data,
+                style: TextStyle(
+                  color: AppColors.primaryColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+          Expanded(
+            child: Container(
+              child: ChartCalories(
+                heightOfBar: heightDevice / 3 - 80,
+              ),
+            ),
+          ),
+          Container(
+              child: Row(
+            children: FakeData.calories
+                .map(
+                  (e) => Expanded(
+                    child: Text(
+                      e['day'],
+                      style: TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                )
+                .toList(),
+          ))
+        ],
       ),
     );
   }
