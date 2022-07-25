@@ -9,4 +9,7 @@ abstract class RouteName {
   static const getWeight = "/getweight";
   static const getHeight = "/getheight";
   static const fillProfile = "/fillprofile";
+  static const homeScreen = '/home_screen';
+  static const dashboardScreen = '/dashboard_screen';
+  static const activityTrackerScreen = '/activity_trackerScreen';
 }

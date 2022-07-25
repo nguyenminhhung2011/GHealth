@@ -4,19 +4,26 @@ import 'package:gold_health/apps/binding/loginBinding.dart';
 import 'package:gold_health/apps/binding/select_durationBinding.dart';
 import 'package:gold_health/apps/binding/select_genderBinding.dart';
 import 'package:gold_health/apps/binding/splashBinding.dart';
+import 'package:gold_health/apps/binding/home_screen_binding.dart';
+import 'package:gold_health/apps/binding/dashboard_binding.dart';
+
 import 'package:gold_health/apps/pages/IntroListScreen/introScreen.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splashScreen.dart';
 import 'package:gold_health/apps/pages/LogInScreen/LogInScreen.dart';
 import 'package:gold_health/apps/pages/LogInScreen/signUpScreen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
+import 'package:gold_health/apps/pages/dashboard/dashboard_screen.dart';
+import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
+import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
 
 import '../binding/signUpBinding.dart';
 import '../pages/basic_info_screen/fillProfile.dart';
 import '../pages/basic_info_screen/get_height_screen.dart';
 import '../pages/basic_info_screen/get_old_screen.dart';
 import '../pages/basic_info_screen/select_gender_screen.dart';
+import '../pages/dashboard/home_screen.dart';
 
 class AppPages {
   static final pages = [
@@ -65,6 +72,20 @@ class AppPages {
       name: RouteName.fillProfile,
       page: () => FillProfileScreen(),
       binding: FillProfileB(),
+    ),
+    GetPage(
+      name: RouteName.homeScreen,
+      page: () => const HomeScreen(),
+      binding: HomeScreenBinding(),
+    ),
+    GetPage(
+      name: RouteName.dashboardScreen,
+      page: () => DashBoardScreen(),
+      binding: DashBoardBinding(),
+    ),
+    GetPage(
+      name: RouteName.activityTrackerScreen,
+      page: () => const ActivityTrackerScreen(),
     )
   ];
 }
