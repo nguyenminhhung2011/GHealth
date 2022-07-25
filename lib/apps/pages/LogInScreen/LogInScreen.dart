@@ -31,12 +31,12 @@ class LogInScreen extends StatelessWidget {
               children: [
                 AppBarHello(widthDevice: widthDevice),
                 Hero(
+                  tag: 'Image auth',
                   child: Image.asset(
                     'assets/gift/Workout1.gif',
                     height: heightDevice / 3,
                     width: heightDevice / 3,
                   ),
-                  tag: 'Image auth',
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,7 +97,7 @@ class LogInScreen extends StatelessWidget {
                       btnIcon(
                         color: AppColors.primaryColor,
                         press: () {
-                          Get.toNamed(RouteName.selectGender);
+                          Get.toNamed(RouteName.fillProfile);
                         },
                         icon: SizedBox(width: 20),
                         title: Text(
