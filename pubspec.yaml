@@ -45,6 +45,7 @@ dependencies:
   provider: ^6.0.2
   uuid: ^3.0.6
   scroll_snap_list: ^0.9.1
+  animated_bottom_navigation_bar: ^1.0.1
 
 
 
