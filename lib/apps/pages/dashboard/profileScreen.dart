@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:gold_health/apps/pages/dashboard_screen/activity_trackerScreen.dart';
+import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
 
 import '../../template/misc/colors.dart';
 
