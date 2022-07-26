@@ -1,13 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
+import 'package:gold_health/apps/global_widgets/gradientIcon..dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
 
+import '../../global_widgets/CustomSwitch .dart';
 import '../../template/misc/colors.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool val = true;
+  onChange(bool newValue) {
+    setState(() {
+      val = newValue;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +71,7 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           Expanded(
-            flex: (heightDevice / 20 * 5).round(),
+            flex: (heightDevice / 20 * 4).round(),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
@@ -113,9 +129,9 @@ class ProfileScreen extends StatelessWidget {
                         Spacer(),
                         InforCard(title: 'Weight', data: '65Kg'),
                         Spacer(),
-                        InforCard(title: '22yo', data: 'Age'),
+                        InforCard(title: 'Age', data: '22yo'),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -123,9 +139,254 @@ class ProfileScreen extends StatelessWidget {
           ),
           Expanded(
             flex: (heightDevice / 20 * 13).round(),
-            child: Container(),
+            child: Container(
+                child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 20),
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            offset: const Offset(2, 3),
+                            blurRadius: 20,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            offset: Offset(-2, -3),
+                            blurRadius: 20,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Account',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          ButtonSvgIcon(
+                            title: 'Personal Data',
+                            iconPath: 'assets/icons/Profile.svg',
+                            press: () {},
+                          ),
+                          const SizedBox(height: 10),
+                          ButtonSvgIcon(
+                            title: 'Achievement',
+                            iconPath: 'assets/icons/Document.svg',
+                            press: () {},
+                          ),
+                          const SizedBox(height: 10),
+                          ButtonSvgIcon(
+                            title: 'Activity History',
+                            iconPath: 'assets/icons/Graph.svg',
+                            press: () {},
+                          ),
+                          const SizedBox(height: 10),
+                          ButtonSvgIcon(
+                            title: 'Workout Progress',
+                            iconPath: 'assets/icons/Chart.svg',
+                            press: () {},
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 20),
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            offset: const Offset(2, 3),
+                            blurRadius: 20,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            offset: Offset(-2, -3),
+                            blurRadius: 20,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Notification',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Row(
+                            children: [
+                              GradientIcon(
+                                SvgPicture.asset(
+                                  'assets/icons/Notification.svg',
+                                  color: Colors.white,
+                                ),
+                                20,
+                                AppColors.colorGradient,
+                              ),
+                              const SizedBox(width: 10),
+                              Text(
+                                'Pop-up Notification',
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Spacer(),
+                              CustomSwitch(
+                                activeColor: AppColors.primaryColor1,
+                                value: val,
+                                onChanged: (value) {
+                                  print("VALUE : $value");
+                                  setState(() {
+                                    val = value;
+                                  });
+                                },
+                                activeText: '',
+                                activeTextColor: Colors.black,
+                                inactiveColor: AppColors.primaryColor1,
+                                inactiveText: '',
+                                inactiveTextColor: AppColors.primaryColor2,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 20),
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            offset: const Offset(2, 3),
+                            blurRadius: 20,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            offset: Offset(-2, -3),
+                            blurRadius: 20,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Other',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          ButtonSvgIcon(
+                            title: 'Contact Us',
+                            iconPath: 'assets/icons/Message.svg',
+                            press: () {},
+                          ),
+                          const SizedBox(height: 10),
+                          ButtonSvgIcon(
+                            title: 'Privacy Policy',
+                            iconPath: 'assets/icons/Shield Done.svg',
+                            press: () {},
+                          ),
+                          const SizedBox(height: 10),
+                          ButtonSvgIcon(
+                            title: 'Settings',
+                            iconPath: 'assets/icons/Setting.svg',
+                            press: () {},
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )),
           )
         ],
+      ),
+    );
+  }
+}
+
+class ButtonSvgIcon extends StatelessWidget {
+  final String title;
+  final String iconPath;
+  final Function() press;
+  const ButtonSvgIcon({
+    Key? key,
+    required this.title,
+    required this.iconPath,
+    required this.press,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(15),
+      onTap: press,
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        child: Row(
+          children: [
+            GradientIcon(
+              SvgPicture.asset(
+                iconPath,
+                color: Colors.white,
+              ),
+              20,
+              AppColors.colorGradient,
+            ),
+            const SizedBox(width: 10),
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.grey,
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+              ),
+            ),
+            Spacer(),
+            Icon(
+              Icons.arrow_forward_ios_sharp,
+              size: 18,
+              color: Colors.grey,
+            )
+          ],
+        ),
       ),
     );
   }
