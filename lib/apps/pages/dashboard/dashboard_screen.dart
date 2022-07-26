@@ -15,6 +15,11 @@ class DashBoardScreen extends StatelessWidget {
   final List<Widget> listRouteName = [
     const HomeScreen(),
     const ActivityTrackerScreen(),
+    Container(
+      height: 100,
+      width: 100,
+      color: Colors.red,
+    ),
     const ProfileScreen(),
   ];
 
@@ -56,7 +61,8 @@ class _BottomBarState extends State<BottomBar> {
   final List<IconData> _iconList = [
     Icons.home_outlined,
     Icons.local_activity_outlined,
-    // Icons.person,
+    Icons.camera_alt_outlined,
+    Icons.person_outline,
   ];
 
   @override
@@ -69,10 +75,12 @@ class _BottomBarState extends State<BottomBar> {
           widget.dashBoardScreenC.tabIndex.value = index;
         });
       },
-      notchSmoothness: NotchSmoothness.smoothEdge,
+      notchSmoothness: NotchSmoothness.verySmoothEdge,
       blurEffect: true,
       activeColor: Colors.purple.withOpacity(0.5),
       gapLocation: GapLocation.center,
+      leftCornerRadius: 32,
+      rightCornerRadius: 32,
     );
   }
 }
