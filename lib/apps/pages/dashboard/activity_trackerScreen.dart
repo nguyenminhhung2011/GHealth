@@ -5,6 +5,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/global_widgets/lineChartWidget.dart';
+import 'package:gold_health/apps/pages/dashboard/latestActi_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/profileScreen.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/ChartBoard.dart';
 
@@ -396,18 +397,29 @@ class ActivityTrackerScreen extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Text(
-                                    'Latest Activity',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4!
-                                        .copyWith(
-                                          fontSize: 17,
-                                        ),
+                                  Hero(
+                                    tag: 'latest tag',
+                                    child: Text(
+                                      'Latest Activity',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4!
+                                          .copyWith(
+                                            fontSize: 17,
+                                          ),
+                                    ),
                                   ),
                                   Spacer(),
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              LatestActiScreen(),
+                                        ),
+                                      );
+                                    },
                                     child: Text(
                                       'See more',
                                       style: TextStyle(
