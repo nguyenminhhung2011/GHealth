@@ -5,6 +5,7 @@ import '../../routes/routeName.dart';
 import '../../controls/dashboard_control.dart';
 import '../dashboard/home_screen.dart';
 import 'activity_trackerScreen.dart';
+import './profileScreen.dart';
 import '../../template/misc/colors.dart';
 
 class DashBoardScreen extends StatelessWidget {
@@ -14,18 +15,28 @@ class DashBoardScreen extends StatelessWidget {
   final List<Widget> listRouteName = [
     const HomeScreen(),
     const ActivityTrackerScreen(),
+    const ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Obx(() => listRouteName[_dashBoardScreenC.tabIndex.value]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: const Color.fromARGB(255, 162, 170, 220),
-        child: const Icon(
-          Icons.search,
-          color: Colors.white,
+      floatingActionButton: Container(
+        height: 65,
+        width: 65,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue[100]!, Colors.blue[200]!],
+          ),
+          shape: BoxShape.circle,
+        ),
+        child: IconButton(
+          onPressed: () {},
+          icon: const Icon(
+            Icons.search,
+            color: Colors.white,
+          ),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -45,6 +56,7 @@ class _BottomBarState extends State<BottomBar> {
   final List<IconData> _iconList = [
     Icons.home_outlined,
     Icons.local_activity_outlined,
+    // Icons.person,
   ];
 
   @override
