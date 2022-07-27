@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import '../../template/misc/colors.dart';
+import 'package:intl/intl.dart';
 
 class NotifiCationScreen extends StatelessWidget {
   NotifiCationScreen({Key? key}) : super(key: key);
@@ -69,6 +69,21 @@ class NotifiCationScreen extends StatelessWidget {
         if (title.length > 27) {
           title = '${title.substring(0, 26)}...';
         }
+
+        Duration time = DateTime.now().difference(key);
+        String? subTimeTitle;
+        if (time.inSeconds < 60) {
+          subTimeTitle = 'About ${time.inSeconds.toString()} seconds ago';
+        } else if (time.inMinutes < 60) {
+          subTimeTitle = 'About ${time.inMinutes.toString()} minutes ago';
+        } else if (time.inHours < 24) {
+          subTimeTitle = 'About ${time.inHours.toString()} hours ago';
+        } else if (time.inDays == 1) {
+          subTimeTitle = 'Yesterday';
+        } else {
+          subTimeTitle = DateFormat.MMMEd().format(key);
+        }
+
         listTitle.add(
           Dismissible(
             key: ValueKey(key),
@@ -91,7 +106,13 @@ class NotifiCationScreen extends StatelessWidget {
               isThreeLine: true,
               leading: notifications[key]!['icon'] as Widget,
               title: Text(title),
-              subtitle: Text(key.toIso8601String()),
+              subtitle: Text(
+                subTimeTitle,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5!
+                    .copyWith(fontSize: 13),
+              ),
               trailing: const Icon(Icons.more_vert),
             ),
           ),
@@ -148,7 +169,7 @@ class NotifiCationScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: AppColors.primaryColor.withOpacity(0.2),
+                      color: AppColors.approxWhite,
                     ),
                     child: const Icon(
                       Icons.more_horiz,

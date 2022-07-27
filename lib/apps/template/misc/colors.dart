@@ -20,7 +20,7 @@ class AppColors {
   static const Color mailColor = Color.fromARGB(255, 194, 211, 247);
   static const Color femailColor = Color.fromARGB(255, 240, 211, 238);
   static const Color approxWhite = Color.fromARGB(
-      255, 225, 225, 232); //Use for background of button and container
+      255, 245, 245, 251); //Use for background of button and container
 
   static Gradient colorOfButtonDuration = LinearGradient(
     begin: Alignment.centerLeft,
