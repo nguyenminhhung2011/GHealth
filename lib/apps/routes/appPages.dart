@@ -17,6 +17,7 @@ import 'package:gold_health/apps/pages/dashboard/dashboard_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
+import '../pages/dashboard/notification_screen.dart';
 
 import '../binding/signUpBinding.dart';
 import '../pages/basic_info_screen/fillProfile.dart';
@@ -86,6 +87,10 @@ class AppPages {
     GetPage(
       name: RouteName.activityTrackerScreen,
       page: () => const ActivityTrackerScreen(),
-    )
+    ),
+    GetPage(
+      name: RouteName.notificationScreen,
+      page: () => NotifiCationScreen(),
+    ),
   ];
 }

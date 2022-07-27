@@ -41,16 +41,15 @@ dependencies:
   firebase_core: ^1.14.0
   firebase_storage: ^10.2.10  
   flutter_svg: ^1.1.1+1
-  image_picker: ^0.8.5
+  image_picker: ^0.8.5  
   provider: ^6.0.2
   uuid: ^3.0.6
   scroll_snap_list: ^0.9.1
   animated_bottom_navigation_bar: ^1.0.1
   fl_chart: ^0.55.0
   dotted_line: ^3.1.0
+
   
-
-
 
 
 dev_dependencies:
@@ -106,6 +105,9 @@ flutter:
         - asset: assets/fonts/sen/Sen-Regular.ttf
         - asset: assets/fonts/sen/Sen-Bold.ttf
           weight: 700
+    - family:  MyFlutterApp
+      fonts:
+        - asset: assets/fonts/MyFlutterApp.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf

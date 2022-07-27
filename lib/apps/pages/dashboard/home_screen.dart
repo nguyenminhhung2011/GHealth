@@ -11,6 +11,8 @@ import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import '../../template/misc/colors.dart';
 import 'widgets/button_gradient.dart';
+import './notification_screen.dart';
+import '../../routes/routeName.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -61,14 +63,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 trailing: InkWell(
                   borderRadius: BorderRadius.circular(15),
-                  onTap: () {},
+                  onTap: () => Get.toNamed(RouteName.notificationScreen),
                   child: Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: AppColors.primaryColor.withOpacity(0.2),
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.notifications,
                       color: Colors.white,
                     ),
