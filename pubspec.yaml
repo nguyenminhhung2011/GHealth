@@ -48,6 +48,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.0.1
   fl_chart: ^0.55.0
   dotted_line: ^3.1.0
+  intl: ^0.17.0
   
 
 
@@ -104,9 +105,6 @@ flutter:
         - asset: assets/fonts/sen/Sen-Regular.ttf
         - asset: assets/fonts/sen/Sen-Bold.ttf
           weight: 700
-    - family:  MyFlutterApp
-      fonts:
-        - asset: assets/fonts/MyFlutterApp.ttf
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
