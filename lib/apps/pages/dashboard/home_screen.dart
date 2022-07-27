@@ -9,10 +9,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
+import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
+import 'package:gold_health/apps/pages/dashboard/notification_screen.dart';
 import '../../template/misc/colors.dart';
 import 'widgets/button_gradient.dart';
-import './notification_screen.dart';
-import '../../routes/routeName.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,6 +23,9 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int touchedIndex = -1;
+  double height_bmi_container = 0;
+  double height_slideValue = 20;
+  double weight_slideValue = 100;
 
   @override
   Widget build(BuildContext context) {
@@ -63,14 +66,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 trailing: InkWell(
                   borderRadius: BorderRadius.circular(15),
-                  onTap: () => Get.toNamed(RouteName.notificationScreen),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => NotifiCationScreen(),
+                      ),
+                    );
+                  },
                   child: Container(
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15),
                       color: AppColors.primaryColor.withOpacity(0.2),
                     ),
-                    child: const Icon(
+                    child: Icon(
                       Icons.notifications,
                       color: Colors.white,
                     ),
@@ -85,115 +95,259 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+              // curve: Curves.fastOutSlowIn,
+              // duration: const Duration(seconds: 20),
+              padding: const EdgeInsets.only(
+                  top: 30, bottom: 10, left: 10, right: 10),
+
+              //padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: AppColors.colorGradient1,
               ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child: Column(
                 children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      const Text(
-                        'BMI (Body Mass Index)',
-                        style: TextStyle(
-                          fontFamily: 'Sen',
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'BMI (Body Mass Index)',
+                            style: TextStyle(
+                              fontFamily: 'Sen',
+                              fontSize: 17,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const Text(
+                            'You have a normal weight',
+                            style: TextStyle(
+                              fontFamily: 'Sen',
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          ButtonGradient(
+                            width: 120,
+                            height: 44,
+                            linearGradient: LinearGradient(
+                              colors: [
+                                Colors.purple[100]!,
+                                Colors.purple[200]!
+                              ],
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                height_bmi_container =
+                                    (height_bmi_container - 200).abs();
+                              });
+                            },
+                            title: const Text(
+                              'View More',
+                              style: TextStyle(
+                                fontFamily: 'Sen',
+                                fontSize: 12.5,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      const Text(
-                        'You have a normal weight',
-                        style: TextStyle(
-                          fontFamily: 'Sen',
-                          fontSize: 15,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      ButtonGradient(
-                        width: 120,
-                        height: 44,
-                        linearGradient: LinearGradient(
-                          colors: [Colors.purple[100]!, Colors.purple[200]!],
-                        ),
-                        onPressed: () {},
-                        title: const Text(
-                          'View More',
-                          style: TextStyle(
-                            fontFamily: 'Sen',
-                            fontSize: 12.5,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
+                      Expanded(
+                        child: Container(
+                          width: 80,
+                          height: 80,
+                          child: PieChart(
+                            PieChartData(
+                              pieTouchData: PieTouchData(
+                                touchCallback:
+                                    (FlTouchEvent event, pieTouchResponse) {
+                                  setState(() {
+                                    if (!event.isInterestedForInteractions ||
+                                        pieTouchResponse == null ||
+                                        pieTouchResponse.touchedSection ==
+                                            null) {
+                                      touchedIndex = -1;
+                                      return;
+                                    }
+                                    touchedIndex = pieTouchResponse
+                                        .touchedSection!.touchedSectionIndex;
+                                  });
+                                },
+                              ),
+                              startDegreeOffset: 180,
+                              borderData: FlBorderData(
+                                show: false,
+                              ),
+                              sectionsSpace: 1,
+                              centerSpaceRadius: 0,
+                              sections: FakeData.data
+                                  .asMap()
+                                  .map<int, PieChartSectionData>((index, data) {
+                                    final isTouched = index == touchedIndex;
+                                    final double fontSize = isTouched ? 25 : 16;
+                                    final double radius = isTouched ? 100 : 80;
+
+                                    return MapEntry(
+                                      index,
+                                      PieChartSectionData(
+                                        color: data.color,
+                                        value: data.percents,
+                                        title: (data.name == 'now')
+                                            ? '${data.percents}'
+                                            : '',
+                                        radius: isTouched ? 80 : 60,
+                                        titleStyle: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                        titlePositionPercentageOffset: 0.55,
+                                        badgeWidget: _Badge(
+                                          data.imagePath,
+                                          size: isTouched ? 40.0 : 30.0,
+                                          borderColor: data.color,
+                                        ),
+                                        badgePositionPercentageOffset: .98,
+                                      ),
+                                    );
+                                  })
+                                  .values
+                                  .toList(),
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
-                  Expanded(
-                    child: Container(
-                      width: 80,
-                      height: 80,
-                      child: PieChart(
-                        PieChartData(
-                          pieTouchData: PieTouchData(
-                            touchCallback:
-                                (FlTouchEvent event, pieTouchResponse) {
-                              setState(() {
-                                if (!event.isInterestedForInteractions ||
-                                    pieTouchResponse == null ||
-                                    pieTouchResponse.touchedSection == null) {
-                                  touchedIndex = -1;
-                                  return;
-                                }
-                                touchedIndex = pieTouchResponse
-                                    .touchedSection!.touchedSectionIndex;
-                              });
-                            },
-                          ),
-                          startDegreeOffset: 180,
-                          borderData: FlBorderData(
-                            show: false,
-                          ),
-                          sectionsSpace: 1,
-                          centerSpaceRadius: 0,
-                          sections: FakeData.data
-                              .asMap()
-                              .map<int, PieChartSectionData>((index, data) {
-                                final isTouched = index == touchedIndex;
-                                final double fontSize = isTouched ? 25 : 16;
-                                final double radius = isTouched ? 100 : 80;
-
-                                return MapEntry(
-                                  index,
-                                  PieChartSectionData(
-                                    color: data.color,
-                                    value: data.percents,
-                                    title: (data.name == 'now')
-                                        ? '${data.percents}'
-                                        : '',
-                                    radius: isTouched ? 80 : 60,
-                                    titleStyle: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                    titlePositionPercentageOffset: 0.55,
-                                    badgeWidget: _Badge(
-                                      data.imagePath,
-                                      size: isTouched ? 40.0 : 30.0,
-                                      borderColor: data.color,
-                                    ),
-                                    badgePositionPercentageOffset: .98,
+                  SizedBox(height: 30),
+                  AnimatedContainer(
+                    curve: Curves.fastOutSlowIn,
+                    height: height_bmi_container,
+                    width: double.infinity,
+                    duration: const Duration(seconds: 1),
+                    decoration: BoxDecoration(
+                      color: AppColors.mainColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+                        child: Column(
+                          children: [
+                            SizedBox(height: 1.2),
+                            Row(
+                              children: [
+                                SizedBox(width: 1.2),
+                                _Badge(
+                                  'assets/images/fitness.png',
+                                  size: 30,
+                                  borderColor: AppColors.primaryColor2,
+                                ),
+                                Spacer(),
+                                _Badge(
+                                  'assets/images/medal.png',
+                                  size: 30,
+                                  borderColor: AppColors.primaryColor1,
+                                ),
+                                SizedBox(width: 1.2),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Height',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor2,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                );
-                              })
-                              .values
-                              .toList(),
+                                ),
+                                Slider(
+                                  thumbColor: AppColors.primaryColor,
+                                  value: height_slideValue,
+                                  min: 10,
+                                  max: 300,
+                                  label: height_slideValue.round().toString(),
+                                  divisions: 95,
+                                  autofocus: true,
+                                  activeColor: AppColors.primaryColor2,
+                                  inactiveColor: AppColors.primaryColor1,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      height_slideValue = value;
+                                    });
+                                  },
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '${height_slideValue.round()}:70',
+                                    style: TextStyle(
+                                      color: AppColors.primaryColor1,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Text(
+                                  'Weight',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor2,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                Slider(
+                                  thumbColor: AppColors.primaryColor,
+                                  value: weight_slideValue,
+                                  min: 100,
+                                  max: 300,
+                                  label: weight_slideValue.round().toString(),
+                                  divisions: 95,
+                                  autofocus: true,
+                                  activeColor: AppColors.primaryColor2,
+                                  inactiveColor: AppColors.primaryColor1,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      weight_slideValue = value;
+                                    });
+                                  },
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    '${weight_slideValue.round()}:70',
+                                    style: TextStyle(
+                                      color: AppColors.primaryColor1,
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                ButtonIconGradientColor(
+                                  title: 'Update BMI',
+                                  icon: Icons.edit,
+                                  press: () {},
+                                )
+                              ],
+                            )
+                          ],
                         ),
                       ),
                     ),

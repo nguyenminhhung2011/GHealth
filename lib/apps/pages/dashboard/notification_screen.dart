@@ -82,7 +82,7 @@ class NotifiCationScreen extends StatelessWidget {
       backgroundColor: AppColors.mailColor,
       body: Container(
         padding:
-            const EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 30),
+            const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 30),
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
@@ -95,10 +95,19 @@ class NotifiCationScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconButton(
-                  color: Colors.black,
-                  icon: const Icon(Icons.arrow_back_ios),
-                  onPressed: () => Navigator.of(context).pop(),
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.primaryColor.withOpacity(0.2),
+                    ),
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.black,
+                    ),
+                  ),
                 ),
                 Container(
                   alignment: Alignment.center,
@@ -107,14 +116,22 @@ class NotifiCationScreen extends StatelessWidget {
                     style: Theme.of(context)
                         .textTheme
                         .headline4!
-                        .copyWith(fontSize: 25),
+                        .copyWith(fontSize: 20),
                     textAlign: TextAlign.center,
                   ),
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.more_horiz,
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.primaryColor.withOpacity(0.2),
+                    ),
+                    child: Icon(
+                      Icons.more_horiz,
+                      color: Colors.black,
+                    ),
                   ),
                 ),
               ],
