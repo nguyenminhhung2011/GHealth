@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 class AppColors {
   AppColors._();
+
   static const Color lightModeMainColor = Colors.white;
   static const Color darkModeMainColor = Colors.black;
   static const Color lightModeTextcolor = Color.fromARGB(255, 41, 40, 40);
@@ -15,9 +16,11 @@ class AppColors {
       (Get.isDarkMode) ? darkModeMainColor : lightModeMainColor;
   static Color textColor =
       (Get.isDarkMode) ? darkModeTextColor : lightModeTextcolor;
-  static Color btn_color = Color.fromARGB(255, 118, 131, 212);
-  static const Color mailColor = const Color.fromARGB(255, 194, 211, 247);
-  static const Color femailColor = const Color.fromARGB(255, 240, 211, 238);
+  static const Color btn_color = Color.fromARGB(255, 118, 131, 212);
+  static const Color mailColor = Color.fromARGB(255, 194, 211, 247);
+  static const Color femailColor = Color.fromARGB(255, 240, 211, 238);
+  static const Color approxWhite = Color.fromARGB(
+      255, 225, 225, 232); //Use for background of button and container
 
   static Gradient colorOfButtonDuration = LinearGradient(
     begin: Alignment.centerLeft,
