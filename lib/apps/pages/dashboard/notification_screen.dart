@@ -92,11 +92,11 @@ class NotifiCationScreen extends StatelessWidget {
               alignment: Alignment.centerRight,
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(5)),
-                color: Colors.black26,
+                color: AppColors.primaryColor1,
               ),
               child: const Icon(
                 Icons.delete,
-                size: 45,
+                size: 35,
                 color: Colors.white,
               ),
             ),
