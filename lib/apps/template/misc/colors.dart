@@ -43,6 +43,14 @@ class AppColors {
       primaryColor2.withOpacity(0.8),
     ],
   );
+  static Gradient colorGradient1 = LinearGradient(
+    begin: Alignment.centerLeft,
+    end: Alignment.centerRight,
+    colors: [
+      primaryColor1.withOpacity(1),
+      primaryColor2.withOpacity(0.5),
+    ],
+  );
   static Gradient colorOfBarChar = LinearGradient(
     begin: Alignment.centerLeft,
     end: Alignment.centerRight,

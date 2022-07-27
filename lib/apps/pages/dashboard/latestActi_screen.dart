@@ -180,11 +180,9 @@ class LatesActiContainer extends StatelessWidget {
             ],
           ),
           Spacer(),
-          Expanded(
-            child: InkWell(
-              onTap: press,
-              child: Icon(Icons.more_vert, color: Colors.grey),
-            ),
+          InkWell(
+            onTap: press,
+            child: Icon(Icons.more_vert, color: Colors.grey),
           )
         ],
       ),

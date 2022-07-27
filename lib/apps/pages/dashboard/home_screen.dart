@@ -4,16 +4,29 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:gold_health/apps/data/fakeData.dart';
+import 'package:gold_health/apps/global_widgets/GradientText.dart';
+import '../../template/misc/colors.dart';
 import 'widgets/button_gradient.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int touchedIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     var _heightDevice = MediaQuery.of(context).size.height;
     var _widthDevice = MediaQuery.of(context).size.width;
+
     final List<String> timeProgress = [
       '6am - 8am',
       '8am - 10am',
@@ -30,49 +43,64 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.only(
           top: 20,
           bottom: 10,
-          left: 10,
-          right: 10,
+          left: 20,
+          right: 20,
         ),
         // height: _heightDevice,
         // width: _widthDevice,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            const SizedBox(height: 20),
             Container(
               child: ListTile(
                 isThreeLine: true,
                 title: Text(
-                  'Welcome :))',
+                  'Welcome back',
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                trailing: IconButton(
-                  icon: const Icon(Icons.notifications),
-                  onPressed: () {},
+                trailing: InkWell(
+                  borderRadius: BorderRadius.circular(15),
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: AppColors.primaryColor.withOpacity(0.2),
+                    ),
+                    child: Icon(
+                      Icons.notifications,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 subtitle: Text(
                   'Hoang Truong',
-                  style: Theme.of(context).textTheme.headline4,
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        fontSize: 24,
+                      ),
                 ),
               ),
             ),
             Container(
-              height: _heightDevice * 0.2,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color.fromARGB(255, 125, 192, 248),
+                gradient: AppColors.colorGradient1,
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         'BMI (Body Mass Index)',
                         style: TextStyle(
                           fontFamily: 'Sen',
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w600,
                           color: Colors.white,
                         ),
                       ),
@@ -80,13 +108,13 @@ class HomeScreen extends StatelessWidget {
                         'You have a normal weight',
                         style: TextStyle(
                           fontFamily: 'Sen',
-                          fontSize: 17,
+                          fontSize: 15,
                           color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 10),
                       ButtonGradient(
-                        width: 100,
+                        width: 120,
                         height: 44,
                         linearGradient: LinearGradient(
                           colors: [Colors.purple[100]!, Colors.purple[200]!],
@@ -98,19 +126,76 @@ class HomeScreen extends StatelessWidget {
                             fontFamily: 'Sen',
                             fontSize: 12.5,
                             color: Colors.white,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ),
                     ],
                   ),
-                  Container(
-                    width: 120,
-                    height: 120,
-                    decoration: const BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
+                  Expanded(
+                    child: Container(
+                      width: 80,
+                      height: 80,
+                      child: PieChart(
+                        PieChartData(
+                          pieTouchData: PieTouchData(
+                            touchCallback:
+                                (FlTouchEvent event, pieTouchResponse) {
+                              setState(() {
+                                if (!event.isInterestedForInteractions ||
+                                    pieTouchResponse == null ||
+                                    pieTouchResponse.touchedSection == null) {
+                                  touchedIndex = -1;
+                                  return;
+                                }
+                                touchedIndex = pieTouchResponse
+                                    .touchedSection!.touchedSectionIndex;
+                              });
+                            },
+                          ),
+                          startDegreeOffset: 180,
+                          borderData: FlBorderData(
+                            show: false,
+                          ),
+                          sectionsSpace: 1,
+                          centerSpaceRadius: 0,
+                          sections: FakeData.data
+                              .asMap()
+                              .map<int, PieChartSectionData>((index, data) {
+                                final isTouched = index == touchedIndex;
+                                final double fontSize = isTouched ? 25 : 16;
+                                final double radius = isTouched ? 100 : 80;
+
+                                return MapEntry(
+                                  index,
+                                  PieChartSectionData(
+                                    color: data.color,
+                                    value: data.percents,
+                                    title: (data.name == 'now')
+                                        ? '${data.percents}'
+                                        : '',
+                                    radius: isTouched ? 80 : 60,
+                                    titleStyle: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
+                                    titlePositionPercentageOffset: 0.55,
+                                    badgeWidget: _Badge(
+                                      data.imagePath,
+                                      size: isTouched ? 40.0 : 30.0,
+                                      borderColor: data.color,
+                                    ),
+                                    badgePositionPercentageOffset: .98,
+                                  ),
+                                );
+                              })
+                              .values
+                              .toList(),
+                        ),
+                      ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -118,19 +203,19 @@ class HomeScreen extends StatelessWidget {
               margin: const EdgeInsets.only(top: 25, bottom: 25),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color.fromARGB(255, 232, 243, 252),
+                gradient: AppColors.colorContainerTodayTarget,
               ),
-              padding: const EdgeInsets.only(
-                left: 25,
-                right: 25,
-              ),
-              height: _heightDevice * 0.1,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     'Today Target',
-                    style: Theme.of(context).textTheme.headline3,
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
                   ),
                   ButtonGradient(
                     height: 40.0,
@@ -162,13 +247,13 @@ class HomeScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Activity Status',
-                          style: TextStyle(
-                            fontFamily: 'Sen',
-                            fontSize: 27,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          overflow: TextOverflow.clip,
+                          style:
+                              Theme.of(context).textTheme.headline4!.copyWith(
+                                    fontSize: 20,
+                                  ),
                         ),
                         const SizedBox(height: 25),
                         Container(
@@ -182,21 +267,26 @@ class HomeScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Padding(
-                                padding: EdgeInsets.all(10.0),
+                                padding: EdgeInsets.all(20.0),
                                 child: Text(
-                                  'Heart Rate in last 30 minutes',
+                                  'Heart Rate',
                                   style: TextStyle(
                                     fontFamily: 'Sen',
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w600,
+                                    color: Colors.black,
                                   ),
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(left: 10.0),
-                                child: Text(
+                                padding: const EdgeInsets.only(left: 20.0),
+                                child: GradientText(
                                   '78 BPM',
-                                  style: Theme.of(context).textTheme.headline2,
+                                  gradient: AppColors.colorGradient1,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 19,
+                                  ),
                                 ),
                               ),
                               Container(
@@ -210,7 +300,7 @@ class HomeScreen extends StatelessWidget {
                                       enabled: true,
                                       touchTooltipData: LineTouchTooltipData(
                                         tooltipRoundedRadius: 20,
-                                        tooltipBgColor: Colors.blue,
+                                        tooltipBgColor: AppColors.primaryColor1,
                                         getTooltipItems: (List<LineBarSpot>
                                             touchedBarSpots) {
                                           return touchedBarSpots.map((barSpot) {
@@ -264,32 +354,42 @@ class HomeScreen extends StatelessWidget {
                                           FlSpot(29, 100),
                                           FlSpot(30, 120),
                                         ],
-                                        barWidth: 3,
+                                        barWidth: 2,
                                         dotData: FlDotData(show: false),
-                                        belowBarData: BarAreaData(show: false),
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.blue[200]!,
-                                            Colors.blue[400]!,
-                                          ],
+                                        gradient: AppColors.colorGradient,
+                                        belowBarData: BarAreaData(
+                                          show: true,
+                                          gradient: AppColors
+                                              .colorContainerTodayTarget,
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
                               ),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    gradient:
+                                        AppColors.colorContainerTodayTarget,
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
                         const SizedBox(height: 25),
                         Expanded(
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               Container(
                                 height: _heightDevice * 0.4,
                                 width: _widthDevice * 0.45,
-                                padding: const EdgeInsets.only(left: 5, top: 5),
+                                padding: const EdgeInsets.all(15),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(15),
@@ -307,8 +407,13 @@ class HomeScreen extends StatelessWidget {
                                   children: [
                                     Text(
                                       'Water Intake',
-                                      style:
-                                          Theme.of(context).textTheme.headline3,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4!
+                                          .copyWith(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                          ),
                                     ),
                                     const SizedBox(height: 7),
                                     Text(
@@ -399,33 +504,14 @@ class HomeScreen extends StatelessWidget {
                                                           ),
                                                         ),
                                                         const SizedBox(
-                                                            width: 25),
-                                                        Text(
-                                                          litersProgress[e]
-                                                              as String,
+                                                            width: 30),
+                                                        GradientText(
+                                                          '${litersProgress[e]}',
+                                                          gradient: AppColors
+                                                              .colorGradient,
                                                           style: TextStyle(
-                                                            fontFamily: 'Sen',
-                                                            fontSize: 23,
                                                             fontWeight:
-                                                                FontWeight.w600,
-                                                            foreground: Paint()
-                                                              ..shader =
-                                                                  LinearGradient(
-                                                                      colors: [
-                                                                    Colors.purple[
-                                                                        100]!,
-                                                                    Colors.purple[
-                                                                        200]!,
-                                                                    Colors.purple[
-                                                                        300]!,
-                                                                  ]).createShader(
-                                                                const Rect
-                                                                        .fromLTWH(
-                                                                    0.0,
-                                                                    0.0,
-                                                                    200.0,
-                                                                    70.0),
-                                                              ),
+                                                                FontWeight.w700,
                                                           ),
                                                         )
                                                       ],
@@ -440,37 +526,47 @@ class HomeScreen extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                              Container(
-                                height: _heightDevice * 0.4,
-                                width: _widthDevice * 0.45,
-                                padding: const EdgeInsets.only(left: 5, top: 5),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 2.0,
-                                      spreadRadius: 0.0,
-                                      offset: Offset(0.5, 0.5),
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Sleep',
-                                      style:
-                                          Theme.of(context).textTheme.headline3,
-                                    ),
-                                    const SizedBox(height: 7),
-                                    Text(
-                                      '5h 10m',
-                                      style:
-                                          Theme.of(context).textTheme.headline2,
-                                    ),
-                                  ],
+                              const SizedBox(width: 20),
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 2.0,
+                                        spreadRadius: 0.0,
+                                        offset: Offset(0.5, 0.5),
+                                      )
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Sleep',
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headline4!
+                                            .copyWith(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                            ),
+                                      ),
+                                      const SizedBox(height: 7),
+                                      GradientText(
+                                        '5h 10m',
+                                        gradient: AppColors.colorGradient1,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 23,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -483,6 +579,50 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Badge extends StatelessWidget {
+  final String svgAsset;
+  final double size;
+  final Color borderColor;
+
+  const _Badge(
+    this.svgAsset, {
+    Key? key,
+    required this.size,
+    required this.borderColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      duration: PieChart.defaultDuration,
+      width: size,
+      height: size,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        shape: BoxShape.circle,
+        border: Border.all(
+          color: borderColor,
+          width: 2,
+        ),
+        boxShadow: <BoxShadow>[
+          BoxShadow(
+            color: Colors.black.withOpacity(.5),
+            offset: const Offset(3, 3),
+            blurRadius: 3,
+          ),
+        ],
+      ),
+      padding: EdgeInsets.all(size * .15),
+      child: Center(
+        child: Image.asset(
+          svgAsset,
+          fit: BoxFit.cover,
         ),
       ),
     );
