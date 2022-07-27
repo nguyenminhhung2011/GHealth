@@ -226,7 +226,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Notification',
                           style: TextStyle(
                             color: Colors.black,
@@ -246,7 +246,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               AppColors.colorGradient,
                             ),
                             const SizedBox(width: 10),
-                            Text(
+                            const Text(
                               'Pop-up Notification',
                               style: TextStyle(
                                 color: Colors.grey,
@@ -254,22 +254,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontSize: 16,
                               ),
                             ),
-                            Spacer(),
-                            CustomSwitch(
-                              activeColor: AppColors.primaryColor1,
-                              value: val,
-                              onChanged: (value) {
-                                print("VALUE : $value");
-                                setState(() {
-                                  val = value;
-                                });
-                              },
-                              activeText: '',
-                              activeTextColor: Colors.black,
-                              inactiveColor: AppColors.primaryColor1,
-                              inactiveText: '',
-                              inactiveTextColor: AppColors.primaryColor2,
-                            ),
+                            const Spacer(),
+                            // CustomSwitch(
+                            //   activeColor: AppColors.primaryColor1,
+                            //   value: val,
+                            //   onChanged: (value) {
+                            //     setState(() {
+                            //       val = value;
+                            //     });
+                            //   },
+                            //   activeText: '',
+                            //   activeTextColor: Colors.black,
+                            //   inactiveColor: AppColors.primaryColor1,
+                            //   inactiveText: '',
+                            //   inactiveTextColor: AppColors.primaryColor2,
+                            // ),
+                            ToggleButtonIos(val: val),
                           ],
                         ),
                       ],
@@ -299,7 +299,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        const Text(
                           'Other',
                           style: TextStyle(
                             color: Colors.black,
@@ -335,6 +335,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
           )),
         )
       ],
+    );
+  }
+}
+
+class ToggleButtonIos extends StatefulWidget {
+  ToggleButtonIos({Key? key, required this.val}) : super(key: key);
+  bool val;
+  @override
+  State<ToggleButtonIos> createState() => _ToggleButtonIosState();
+}
+
+class _ToggleButtonIosState extends State<ToggleButtonIos> {
+  @override
+  Widget build(BuildContext context) {
+    return CupertinoSwitch(
+      activeColor: AppColors.primaryColor1,
+      value: widget.val,
+      onChanged: (bool value) {
+        setState(() {
+          widget.val = value;
+        });
+      },
     );
   }
 }

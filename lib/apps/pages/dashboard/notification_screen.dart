@@ -1,38 +1,60 @@
-import 'dart:math';
-
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
-import 'package:gold_health/apps/pages/dashboard/widgets/my_flutter_app_icons.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../template/misc/colors.dart';
+import 'package:intl/intl.dart';
 
 class NotifiCationScreen extends StatelessWidget {
   NotifiCationScreen({Key? key}) : super(key: key);
 
   Map<DateTime, Map<String, dynamic>> notifications = {
     DateTime.now().subtract(const Duration(minutes: 5)): {
-      'icon': const Icon(Icons.cake),
+      'icon': CircleAvatar(
+        child: SvgPicture.asset(
+          'assets/icons/cake_2.svg',
+        ),
+      ),
       'title': 'Hey, it\'s time for lunch',
     },
     DateTime.now().subtract(const Duration(hours: 2)): {
-      'icon': const Icon(Icons.cake),
+      'icon': CircleAvatar(
+        backgroundColor: const Color.fromARGB(255, 230, 211, 233),
+        child: SvgPicture.asset(
+          'assets/icons/woman_workout.svg',
+        ),
+      ),
       'title': 'Don\'t miss your abs workout',
     },
     DateTime.now().subtract(const Duration(hours: 6)): {
-      'icon': const Icon(Icons.cake),
+      'icon': CircleAvatar(
+        child: SvgPicture.asset(
+          'assets/icons/cake.svg',
+        ),
+      ),
       'title': 'Hey, let\'t add some meal for your body',
     },
     DateTime.now().subtract(const Duration(days: 10)): {
-      'icon': const Icon(Icons.cake),
+      'icon': CircleAvatar(
+        child: SvgPicture.asset(
+          'assets/icons/man_workout.svg',
+        ),
+      ),
       'title': 'Congratulation, you have finished your workout',
     },
     DateTime.now().subtract(const Duration(days: 50)): {
-      'icon': const Icon(Icons.cake),
+      'icon': CircleAvatar(
+        child: SvgPicture.asset(
+          'assets/icons/cake.svg',
+        ),
+      ),
       'title': 'Hey, it\'s time for lunch',
     },
     DateTime.now().subtract(const Duration(days: 100)): {
-      'icon': const Icon(Icons.cake),
+      'icon': CircleAvatar(
+        backgroundColor: const Color.fromARGB(255, 230, 211, 233),
+        child: SvgPicture.asset(
+          'assets/icons/cake.svg',
+        ),
+      ),
       'title': 'Ups, You have missed your lowerbody workout',
     },
   };
@@ -47,6 +69,21 @@ class NotifiCationScreen extends StatelessWidget {
         if (title.length > 27) {
           title = '${title.substring(0, 26)}...';
         }
+
+        Duration time = DateTime.now().difference(key);
+        String? subTimeTitle;
+        if (time.inSeconds < 60) {
+          subTimeTitle = 'About ${time.inSeconds.toString()} seconds ago';
+        } else if (time.inMinutes < 60) {
+          subTimeTitle = 'About ${time.inMinutes.toString()} minutes ago';
+        } else if (time.inHours < 24) {
+          subTimeTitle = 'About ${time.inHours.toString()} hours ago';
+        } else if (time.inDays == 1) {
+          subTimeTitle = 'Yesterday';
+        } else {
+          subTimeTitle = DateFormat.MMMEd().format(key);
+        }
+
         listTitle.add(
           Dismissible(
             key: ValueKey(key),
@@ -67,9 +104,15 @@ class NotifiCationScreen extends StatelessWidget {
             onDismissed: (dismiss) => notifications.remove(key),
             child: ListTile(
               isThreeLine: true,
-              leading: notifications[key]!['icon'] as Icon,
+              leading: notifications[key]!['icon'] as Widget,
               title: Text(title),
-              subtitle: Text(key.toIso8601String()),
+              subtitle: Text(
+                subTimeTitle,
+                style: Theme.of(context)
+                    .textTheme
+                    .headline5!
+                    .copyWith(fontSize: 13),
+              ),
               trailing: const Icon(Icons.more_vert),
             ),
           ),
@@ -101,10 +144,10 @@ class NotifiCationScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: AppColors.primaryColor.withOpacity(0.2),
+                      color: AppColors.approxWhite,
                     ),
-                    child: Icon(
-                      Icons.arrow_back_ios,
+                    child: const Icon(
+                      Icons.arrow_back_ios_outlined,
                       color: Colors.black,
                     ),
                   ),
@@ -126,9 +169,9 @@ class NotifiCationScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(5),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: AppColors.primaryColor.withOpacity(0.2),
+                      color: AppColors.approxWhite,
                     ),
-                    child: Icon(
+                    child: const Icon(
                       Icons.more_horiz,
                       color: Colors.black,
                     ),
