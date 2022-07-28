@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../controls/home_screen_control.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
@@ -28,7 +30,9 @@ class _HomeScreenState extends State<HomeScreen> {
   double height_bmi_container = 0;
   double height_slideValue = 20;
   double weight_slideValue = 100;
-
+  double height_process_container = 0;
+  double value = 0;
+  final List<int> _list = [for (int i = 1; i <= 140; i++) i];
   @override
   Widget build(BuildContext context) {
     var _heightDevice = MediaQuery.of(context).size.height;
@@ -252,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     curve: Curves.fastOutSlowIn,
                     height: height_bmi_container,
                     width: double.infinity,
-                    duration: const Duration(seconds: 1),
+                    duration: const Duration(milliseconds: 400),
                     decoration: BoxDecoration(
                       color: AppColors.mainColor,
                       borderRadius: BorderRadius.circular(20),
@@ -266,108 +270,99 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: Column(
                           children: [
-                            const SizedBox(height: 1.2),
                             Row(
-                              children: const [
-                                SizedBox(width: 1.2),
-                                _Badge(
-                                  'assets/images/fitness.png',
-                                  size: 30,
-                                  borderColor: AppColors.primaryColor2,
-                                ),
-                                Spacer(),
+                              children: [
                                 _Badge(
                                   'assets/images/medal.png',
                                   size: 30,
                                   borderColor: AppColors.primaryColor1,
                                 ),
-                                SizedBox(width: 1.2),
-                              ],
-                            ),
-                            Row(
-                              children: [
+                                const SizedBox(width: 10),
                                 Text(
-                                  'Height',
+                                  'BMI: 38.0',
                                   style: TextStyle(
-                                    color: AppColors.primaryColor2,
+                                    color: Colors.black,
                                     fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                                Slider(
-                                  thumbColor: AppColors.primaryColor,
-                                  value: height_slideValue,
-                                  min: 10,
-                                  max: 300,
-                                  label: height_slideValue.round().toString(),
-                                  divisions: 95,
-                                  autofocus: true,
-                                  activeColor: AppColors.primaryColor2,
-                                  inactiveColor: AppColors.primaryColor1,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      height_slideValue = value;
-                                    });
-                                  },
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '${height_slideValue.round()}:70',
-                                    style: TextStyle(
-                                      color: AppColors.primaryColor1,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                    ),
                                   ),
                                 )
                               ],
                             ),
+                            const SizedBox(height: 20),
                             Row(
                               children: [
                                 Text(
-                                  'Weight',
+                                  'Height:  ',
                                   style: TextStyle(
-                                    color: AppColors.primaryColor2,
+                                    color: AppColors.primaryColor1,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
-                                Slider(
-                                  thumbColor: AppColors.primaryColor,
-                                  value: weight_slideValue,
-                                  min: 100,
-                                  max: 300,
-                                  label: weight_slideValue.round().toString(),
-                                  divisions: 95,
-                                  autofocus: true,
-                                  activeColor: AppColors.primaryColor2,
-                                  inactiveColor: AppColors.primaryColor1,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      weight_slideValue = value;
-                                    });
-                                  },
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    '${weight_slideValue.round()}:70',
-                                    style: TextStyle(
-                                      color: AppColors.primaryColor1,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ButtonIconGradientColor(
-                                  title: 'Update BMI',
-                                  icon: Icons.edit,
+                                LoadHeight_weight(
+                                  widthDevice: _widthDevice,
+                                  imgePath: 'assets/images/height.png',
+                                  fData: 120,
+                                  sData: 177,
+                                  color: AppColors.primaryColor1,
                                   press: () {},
-                                )
+                                ),
                               ],
-                            )
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(width: 60),
+                                Text(
+                                  '160cm',
+                                  style: TextStyle(
+                                      color: AppColors.primaryColor1,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Spacer(),
+                                Text(
+                                  '180cm',
+                                  style: TextStyle(
+                                      color: AppColors.primaryColor1,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 10),
+                            Row(
+                              children: [
+                                Text(
+                                  'Weight: ',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor2,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                LoadHeight_weight(
+                                  widthDevice: _widthDevice,
+                                  imgePath: 'assets/images/weight.png',
+                                  fData: 30,
+                                  sData: 70,
+                                  color: AppColors.primaryColor2,
+                                  press: () {},
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                SizedBox(width: 60),
+                                Text(
+                                  '60kg',
+                                  style: TextStyle(
+                                      color: AppColors.primaryColor2,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Spacer(),
+                                Text(
+                                  '80kg',
+                                  style: TextStyle(
+                                      color: AppColors.primaryColor2,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                              ],
+                            ),
                           ],
                         ),
                       ),
@@ -382,37 +377,147 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(20),
                 gradient: AppColors.colorContainerTodayTarget,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.only(
+                  top: 20, bottom: 10, left: 10, right: 10),
+              child: Column(
                 children: [
-                  Text(
-                    'Today Target',
-                    style: Theme.of(context).textTheme.headline4!.copyWith(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                  Row(
+                    //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Process',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 18,
+                            ),
+                      ),
+                      Spacer(),
+                      ButtonGradient(
+                        height: 40.0,
+                        width: 90.0,
+                        linearGradient: LinearGradient(
+                          colors: [
+                            Colors.blue[200]!,
+                            Colors.blue[300]!,
+                          ],
                         ),
+                        onPressed: () {
+                          setState(() {
+                            height_process_container =
+                                (height_process_container - 300).abs();
+                          });
+                        },
+                        title: const Text(
+                          'Check',
+                          style: TextStyle(
+                            fontFamily: 'Sen',
+                            fontSize: 12,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  ButtonGradient(
-                    height: 40.0,
-                    width: 90.0,
-                    linearGradient: LinearGradient(
-                      colors: [
-                        Colors.blue[200]!,
-                        Colors.blue[300]!,
-                      ],
+                  SizedBox(height: 10),
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.fastOutSlowIn,
+                    height: height_process_container,
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.mainColor,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    onPressed: () {},
-                    title: const Text(
-                      'Check',
-                      style: TextStyle(
-                        fontFamily: 'Sen',
-                        fontSize: 12,
-                        color: Colors.white,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Day 1',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17,
+                                ),
+                              ),
+                              Spacer(),
+                              InkWell(
+                                onTap: () {},
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 10),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: AppColors.primaryColor1),
+                                  child: Text(
+                                    'Start Over',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Container(
+                            width: _widthDevice,
+                            height: 190,
+                            child: MasonryGridView.count(
+                              crossAxisCount: 6,
+                              mainAxisSpacing: 4,
+                              crossAxisSpacing: 4,
+                              itemCount: _list.length,
+                              itemBuilder: (context, index) {
+                                return Container(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/calendar.png',
+                                        height: 30,
+                                        width: 30,
+                                      ),
+                                      Text(
+                                        '${_list[index]}',
+                                        style: TextStyle(
+                                          color: AppColors.primaryColor1,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              LoadHeight_weight(
+                                widthDevice: _widthDevice * 100 / 55 * 0.7,
+                                imgePath: 'assets/images/medal.png',
+                                fData: 60,
+                                sData: 100,
+                                color: AppColors.primaryColor1,
+                                press: () {},
+                              ),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -758,6 +863,71 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class LoadHeight_weight extends StatelessWidget {
+  const LoadHeight_weight({
+    Key? key,
+    required double widthDevice,
+    required this.imgePath,
+    required this.fData,
+    required this.sData,
+    required this.color,
+    required this.press,
+  })  : _widthDevice = widthDevice,
+        super(key: key);
+
+  final double _widthDevice;
+  final String imgePath;
+  final double fData;
+  final double sData;
+  final Color color;
+  final Function() press;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Row(
+          children: [
+            Container(
+              width: _widthDevice * 0.55,
+              height: 10,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: AppColors.primaryColor1.withOpacity(0.2),
+              ),
+            ),
+            SizedBox(height: 25),
+          ],
+        ),
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: _widthDevice * 0.55 * (fData / sData) - 20,
+              height: 10,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  bottomLeft: Radius.circular(20),
+                ),
+                color: color,
+              ),
+            ),
+            InkWell(
+              onTap: press,
+              child: _Badge(
+                imgePath,
+                size: 25,
+                borderColor: color,
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
