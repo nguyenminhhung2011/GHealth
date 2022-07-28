@@ -7,6 +7,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
 
 import '../../global_widgets/GradientText.dart';
 import '../../global_widgets/RowText_Seemore.dart';
@@ -165,7 +166,15 @@ class WorkoutTrackerScreen extends StatelessWidget {
                                   children: [
                                     CategoriesWorkoutCard(
                                       cate_name: 'Fullbody Workout',
-                                      press: () {},
+                                      press: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                WorkoutDetailScreen(),
+                                          ),
+                                        );
+                                      },
                                       imagePath: 'assets/images/fitness.png',
                                       exer: 11,
                                       time: 32,
