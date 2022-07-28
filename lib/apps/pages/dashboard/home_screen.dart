@@ -4,6 +4,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import '../../controls/home_screen_control.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -11,9 +13,10 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
-import 'package:gold_health/apps/pages/dashboard/notification_screen.dart';
+import 'package:gold_health/apps/routes/routeName.dart';
 import '../../template/misc/colors.dart';
 import 'widgets/button_gradient.dart';
+import '../../controls/notification_controller.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -34,6 +37,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var _heightDevice = MediaQuery.of(context).size.height;
     var _widthDevice = MediaQuery.of(context).size.width;
+
+    final homeScreenController = Get.find<HomeScreenControl>();
 
     final List<String> timeProgress = [
       '6am - 8am',
@@ -67,27 +72,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Welcome back',
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                trailing: InkWell(
-                  borderRadius: BorderRadius.circular(15),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NotifiCationScreen(),
+                // trailing: InkWell(
+                //   borderRadius: BorderRadius.circular(15),
+                //   onTap: () {
+                //     Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) => NotifiCationScreen(),
+                //       ),
+                //     );
+                //   },
+                // child: Container(
+                //   padding: const EdgeInsets.all(5),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadius.circular(15),
+                //     color: AppColors.primaryColor.withOpacity(0.2),
+                //     ),
+                //     child: Icon(
+                //       Icons.notifications,
+                //       color: Colors.white,
+                //     ),
+                //   ),
+                // ),
+                trailing: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    IconButton(
+                      onPressed: () {
+                        Get.toNamed(RouteName.notificationScreen);
+                      },
+                      icon: Obx(
+                        () => SvgPicture.asset(
+                          homeScreenController.isNotify
+                              ? 'assets/icons/Notification-Icon_RedDot.svg'
+                              : 'assets/icons/Notification-Icon.svg',
+                        ),
                       ),
-                    );
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppColors.primaryColor.withOpacity(0.2),
                     ),
-                    child: Icon(
-                      Icons.notifications,
-                      color: Colors.white,
-                    ),
-                  ),
+                  ],
                 ),
                 subtitle: Text(
                   'Hoang Truong',
