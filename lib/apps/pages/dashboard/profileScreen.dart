@@ -8,6 +8,7 @@ import 'package:gold_health/apps/global_widgets/gradientIcon..dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
 
 import '../../global_widgets/CustomSwitch .dart';
+import '../../global_widgets/ToggleButtonIos.dart';
 import '../../template/misc/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -335,28 +336,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           )),
         )
       ],
-    );
-  }
-}
-
-class ToggleButtonIos extends StatefulWidget {
-  ToggleButtonIos({Key? key, required this.val}) : super(key: key);
-  bool val;
-  @override
-  State<ToggleButtonIos> createState() => _ToggleButtonIosState();
-}
-
-class _ToggleButtonIosState extends State<ToggleButtonIos> {
-  @override
-  Widget build(BuildContext context) {
-    return CupertinoSwitch(
-      activeColor: AppColors.primaryColor1,
-      value: widget.val,
-      onChanged: (bool value) {
-        setState(() {
-          widget.val = value;
-        });
-      },
     );
   }
 }
