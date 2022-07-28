@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/select_genderControls.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/get_height_screen.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
 
 import '../../global_widgets/buttonMain.dart';
 import '../../routes/routeName.dart';

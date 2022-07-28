@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:flutter/material.dart';
 
-class HomeScreenControl extends GetxController {
-  late TextEditingController userName;
-  var notifications = {
+class NotificationController extends GetxController {
+  Map<DateTime, Map<String, dynamic>> notifications = {
     DateTime.now().subtract(const Duration(minutes: 5)): {
       'icon': CircleAvatar(
         child: SvgPicture.asset(
@@ -57,21 +56,8 @@ class HomeScreenControl extends GetxController {
     },
   }.obs;
 
-  bool get isNotify {
-    if (notifications.isEmpty) return false;
-    return true;
-  }
-
-  void deleteNotification(DateTime key) {
-    notifications.remove(key);
-    if (notifications.values.isEmpty) {
-      notifications.refresh();
-    }
-  }
-
-  @override
-  void onClose() {
-    userName.dispose();
-    super.onClose();
+  bool get isEmptyNotify {
+    if (notifications.isEmpty) return true;
+    return false;
   }
 }
