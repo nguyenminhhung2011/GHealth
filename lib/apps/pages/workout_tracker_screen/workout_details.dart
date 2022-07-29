@@ -7,7 +7,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/listWorkoutScreen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/ExerciseCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
 
 import '../../global_widgets/GradientText.dart';
@@ -39,11 +41,13 @@ class WorkoutDetailScreen extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding: const EdgeInsets.only(
-                  top: 20,
+                  top: 80,
                   left: 20,
                   right: 20,
                 ),
                 child: Image.asset(
+                  height: _widthDevice / 1.7,
+                  width: _widthDevice / 1.7,
                   'assets/images/yoga.png',
                 ),
               ),
@@ -340,14 +344,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.primaryColor1,
-                            Colors.grey.withOpacity(0.1),
-                          ],
-                        ),
+                        color: Colors.white,
                       ),
                       child: Icon(
                         Icons.arrow_back_ios,
@@ -362,14 +359,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.primaryColor1,
-                            Colors.grey.withOpacity(0.1),
-                          ],
-                        ),
+                        color: Colors.white,
                       ),
                       child: Icon(
                         Icons.more_horiz,
@@ -382,7 +372,14 @@ class WorkoutDetailScreen extends StatelessWidget {
               ),
               Spacer(),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ListWorkoutScreen(),
+                    ),
+                  );
+                },
                 child: Container(
                   alignment: Alignment.center,
                   width: _widthDevice * 0.6,
@@ -417,81 +414,6 @@ class WorkoutDetailScreen extends StatelessWidget {
             ],
           )
         ],
-      ),
-    );
-  }
-}
-
-class ExerciseCard extends StatelessWidget {
-  const ExerciseCard({
-    Key? key,
-    required double widthDevice,
-    required this.e,
-  })  : _widthDevice = widthDevice,
-        super(key: key);
-
-  final double _widthDevice;
-  final Map<String, dynamic> e;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        child: Row(
-          children: [
-            Container(
-              height: _widthDevice / 6,
-              width: _widthDevice / 6,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    e["image"],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 5),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  e["name"],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  '00:${e["time"]}s',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            Spacer(),
-            InkWell(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 1, color: Colors.grey),
-                ),
-                child:
-                    Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 17),
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }

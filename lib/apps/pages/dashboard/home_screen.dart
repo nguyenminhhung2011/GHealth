@@ -302,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     curve: Curves.fastOutSlowIn,
                                     height: height_bmi_container,
                                     width: double.infinity,
-                                    duration: const Duration(milliseconds: 400),
+                                    duration: const Duration(milliseconds: 500),
                                     decoration: BoxDecoration(
                                       color: AppColors.mainColor,
                                       borderRadius: BorderRadius.circular(20),
