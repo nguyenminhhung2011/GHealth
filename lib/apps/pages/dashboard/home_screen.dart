@@ -1,22 +1,21 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gold_health/apps/data/sleep_tracker_data.dart';
+import 'package:time_chart/time_chart.dart';
 import '../../controls/home_screen_control.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
+import 'dart:math';
 
 import 'package:get/get.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
-import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 import '../../template/misc/colors.dart';
 import 'widgets/button_gradient.dart';
-import '../../controls/notification_controller.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -31,26 +30,46 @@ class _HomeScreenState extends State<HomeScreen> {
   double height_slideValue = 20;
   double weight_slideValue = 100;
   double height_process_container = 0;
+
   double value = 0;
   final List<int> _list = [for (int i = 1; i <= 140; i++) i];
+  final homeScreenController = Get.find<HomeScreenControl>();
+
+  final List<String> timeProgress = [
+    '6am - 8am',
+    '8am - 10am',
+    '1pm - 3pm',
+    '4pm - 5pm',
+    '6pm - 8pm',
+  ];
+  final Map<String, double> litersProgress = {
+    '6am - 8am': 600,
+    '8am - 10am': 250,
+    '1pm - 3pm': 500,
+    '4pm - 5pm': 600,
+    '11pm - 3pm': 500,
+  };
+
+  final double calories = 760;
+  final double liters = 8;
+  final double caloriesLeft = 230;
+  final int footSteps = 1000;
+  final int exerciseTime = 19;
+  final int standTime = 3;
+
+  double get sumLiters {
+    double sum = 0;
+    litersProgress.forEach((key, value) {
+      sum += litersProgress[key] as double;
+    });
+    return sum;
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _heightDevice = MediaQuery.of(context).size.height;
-    var _widthDevice = MediaQuery.of(context).size.width;
-
-    final homeScreenController = Get.find<HomeScreenControl>();
-
-    final List<String> timeProgress = [
-      '6am - 8am',
-      '8am - 10am',
-      '1pm - 3pm',
-      '3pm - 5pm'
-    ];
-    final Map<String, String> litersProgress = {
-      '6am - 8am': '600ml',
-      '8am - 10am': '250ml',
-      '1pm - 3pm': '500ml'
-    };
+    var heightDevice = MediaQuery.of(context).size.height;
+    var widthDevice = MediaQuery.of(context).size.width;
+    final double heightOfWaterChart = 100 * (timeProgress.length - 1);
     return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.only(
@@ -298,7 +317,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 LoadHeight_weight(
-                                  widthDevice: _widthDevice,
+                                  widthDevice: widthDevice,
                                   imgePath: 'assets/images/height.png',
                                   fData: 120,
                                   sData: 177,
@@ -336,7 +355,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   ),
                                 ),
                                 LoadHeight_weight(
-                                  widthDevice: _widthDevice,
+                                  widthDevice: widthDevice,
                                   imgePath: 'assets/images/weight.png',
                                   fData: 30,
                                   sData: 70,
@@ -437,7 +456,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Row(
                             children: [
-                              Text(
+                              const Text(
                                 'Day 1',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -454,7 +473,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
                                       color: AppColors.primaryColor1),
-                                  child: Text(
+                                  child: const Text(
                                     'Start Over',
                                     style: TextStyle(
                                       color: Colors.white,
@@ -467,7 +486,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ],
                           ),
                           Container(
-                            width: _widthDevice,
+                            width: widthDevice,
                             height: 190,
                             child: MasonryGridView.count(
                               crossAxisCount: 6,
@@ -489,7 +508,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                       Text(
                                         '${_list[index]}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: AppColors.primaryColor1,
                                           fontWeight: FontWeight.w600,
                                         ),
@@ -505,7 +524,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               LoadHeight_weight(
-                                widthDevice: _widthDevice * 100 / 55 * 0.7,
+                                widthDevice: widthDevice * 100 / 55 * 0.7,
                                 imgePath: 'assets/images/medal.png',
                                 fData: 60,
                                 sData: 100,
@@ -521,297 +540,383 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            Container(
-              height: _heightDevice * 0.6,
+            SizedBox(
+              height: heightOfWaterChart + 600,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(
+                  Text(
+                    'Activity Status',
+                    overflow: TextOverflow.clip,
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                          fontSize: 20,
+                        ),
+                  ),
+                  const SizedBox(height: 25),
+                  Container(
+                    height: heightDevice * 0.3,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.backGroundTableColor,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Activity Status',
-                          overflow: TextOverflow.clip,
-                          style:
-                              Theme.of(context).textTheme.headline4!.copyWith(
-                                    fontSize: 20,
-                                  ),
-                        ),
-                        const SizedBox(height: 25),
-                        Container(
-                          height: _heightDevice * 0.25,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Color.fromARGB(255, 232, 243, 252),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20.0, top: 10.0),
+                          child: Text(
+                            'Sleep',
+                            style: TextStyle(
+                              fontFamily: 'Sen',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.all(20.0),
-                                child: Text(
-                                  'Heart Rate',
-                                  style: TextStyle(
-                                    fontFamily: 'Sen',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                child: GradientText(
-                                  '78 BPM',
-                                  gradient: AppColors.colorGradient1,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 19,
-                                  ),
-                                ),
-                              ),
-                              Container(
-                                height: _heightDevice * 0.1,
-                                child: LineChart(
-                                  LineChartData(
-                                    borderData: FlBorderData(show: false),
-                                    gridData: FlGridData(show: false),
-                                    titlesData: FlTitlesData(show: false),
-                                    lineTouchData: LineTouchData(
-                                      enabled: true,
-                                      touchTooltipData: LineTouchTooltipData(
-                                        tooltipRoundedRadius: 20,
-                                        tooltipBgColor: AppColors.primaryColor1,
-                                        getTooltipItems: (List<LineBarSpot>
-                                            touchedBarSpots) {
-                                          return touchedBarSpots.map((barSpot) {
-                                            final flSpot = barSpot;
-                                            return LineTooltipItem(
-                                              '${flSpot.x.toInt()}mins ago',
-                                              const TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            );
-                                          }).toList();
-                                        },
-                                      ),
-                                    ),
-                                    minX: 1,
-                                    maxX: 30,
-                                    minY: 80,
-                                    maxY: 170,
-                                    lineBarsData: [
-                                      LineChartBarData(
-                                        spots: const [
-                                          FlSpot(1, 100),
-                                          FlSpot(2, 130),
-                                          FlSpot(3, 90),
-                                          FlSpot(4, 150),
-                                          FlSpot(5, 110),
-                                          FlSpot(6, 120),
-                                          FlSpot(7, 100),
-                                          FlSpot(8, 120),
-                                          FlSpot(9, 125),
-                                          FlSpot(10, 100),
-                                          FlSpot(11, 90),
-                                          FlSpot(12, 150),
-                                          FlSpot(13, 85),
-                                          FlSpot(14, 100),
-                                          FlSpot(15, 80),
-                                          FlSpot(16, 100),
-                                          FlSpot(17, 130),
-                                          FlSpot(18, 90),
-                                          FlSpot(19, 150),
-                                          FlSpot(20, 110),
-                                          FlSpot(21, 120),
-                                          FlSpot(22, 100),
-                                          FlSpot(23, 120),
-                                          FlSpot(24, 125),
-                                          FlSpot(25, 100),
-                                          FlSpot(26, 90),
-                                          FlSpot(27, 150),
-                                          FlSpot(28, 85),
-                                          FlSpot(29, 100),
-                                          FlSpot(30, 120),
-                                        ],
-                                        barWidth: 2,
-                                        dotData: FlDotData(show: false),
-                                        gradient: AppColors.colorGradient,
-                                        belowBarData: BarAreaData(
-                                          show: true,
-                                          gradient: AppColors
-                                              .colorContainerTodayTarget,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: GradientText(
+                            '8hr 20min',
+                            gradient: AppColors.colorGradient1,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 19,
+                            ),
+                          ),
+                        ),
+                        TimeChart(
+                          timeChartSizeAnimationDuration:
+                              const Duration(milliseconds: 2000),
+                          height: heightDevice * 0.2,
+                          activeTooltip: true,
+                          data: SleepTrackerData.data,
+                          viewMode: ViewMode.weekly,
+                          barColor: Colors.deepPurple,
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  Container(
+                    height: heightDevice * 0.25,
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.backGroundTableColor,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(left: 20.0, top: 20.0),
+                          child: Text(
+                            'Heart Rate',
+                            style: TextStyle(
+                              fontFamily: 'Sen',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 20.0),
+                          child: GradientText(
+                            '78 BPM',
+                            gradient: AppColors.colorGradient1,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 19,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: heightDevice * 0.1,
+                          child: LineChart(
+                            LineChartData(
+                              borderData: FlBorderData(show: false),
+                              gridData: FlGridData(show: false),
+                              titlesData: FlTitlesData(show: false),
+                              lineTouchData: LineTouchData(
+                                enabled: true,
+                                touchTooltipData: LineTouchTooltipData(
+                                  tooltipRoundedRadius: 20,
+                                  tooltipBgColor: AppColors.primaryColor1,
+                                  getTooltipItems:
+                                      (List<LineBarSpot> touchedBarSpots) {
+                                    return touchedBarSpots.map((barSpot) {
+                                      final flSpot = barSpot;
+                                      return LineTooltipItem(
+                                        '${flSpot.x.toInt()}mins ago',
+                                        const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
-                                    ],
-                                  ),
+                                      );
+                                    }).toList();
+                                  },
                                 ),
                               ),
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
+                              minX: 1,
+                              maxX: 30,
+                              minY: 80,
+                              maxY: 170,
+                              lineBarsData: [
+                                LineChartBarData(
+                                  spots: const [
+                                    FlSpot(1, 100),
+                                    FlSpot(2, 130),
+                                    FlSpot(3, 90),
+                                    FlSpot(4, 150),
+                                    FlSpot(5, 110),
+                                    FlSpot(6, 120),
+                                    FlSpot(7, 100),
+                                    FlSpot(8, 120),
+                                    FlSpot(9, 125),
+                                    FlSpot(10, 100),
+                                    FlSpot(11, 90),
+                                    FlSpot(12, 150),
+                                    FlSpot(13, 85),
+                                    FlSpot(14, 100),
+                                    FlSpot(15, 80),
+                                    FlSpot(16, 100),
+                                    FlSpot(17, 130),
+                                    FlSpot(18, 90),
+                                    FlSpot(19, 150),
+                                    FlSpot(20, 110),
+                                    FlSpot(21, 120),
+                                    FlSpot(22, 100),
+                                    FlSpot(23, 120),
+                                    FlSpot(24, 125),
+                                    FlSpot(25, 100),
+                                    FlSpot(26, 90),
+                                    FlSpot(27, 150),
+                                    FlSpot(28, 85),
+                                    FlSpot(29, 100),
+                                    FlSpot(30, 120),
+                                  ],
+                                  barWidth: 2,
+                                  dotData: FlDotData(show: false),
+                                  gradient: AppColors.colorGradient,
+                                  belowBarData: BarAreaData(
+                                    show: true,
                                     gradient:
                                         AppColors.colorContainerTodayTarget,
-                                    borderRadius: BorderRadius.only(
-                                      bottomLeft: Radius.circular(20),
-                                      bottomRight: Radius.circular(20),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: AppColors.colorContainerTodayTarget,
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(20),
+                                bottomRight: Radius.circular(20),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 25),
+                  SizedBox(
+                    height: heightOfWaterChart + 10,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(15),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 2.0,
+                                  spreadRadius: 0.0,
+                                  offset: Offset(0.5, 0.5),
+                                )
+                              ],
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                //height = 100 with every element
+                                Container(
+                                  margin:
+                                      const EdgeInsets.only(left: 5, right: 5),
+                                  child: RotatedBox(
+                                    quarterTurns: 3,
+                                    child: LinearPercentIndicator(
+                                      addAutomaticKeepAlive: true,
+                                      animationDuration: 2000,
+                                      animation: true,
+                                      width: heightOfWaterChart,
+                                      lineHeight: 22.0,
+                                      percent: (sumLiters / 1000) / liters,
+                                      backgroundColor: const Color.fromARGB(
+                                          227, 224, 221, 221),
+                                      progressColor: Colors.blue[300],
+                                      barRadius: const Radius.circular(20),
                                     ),
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              Container(
-                                height: _heightDevice * 0.4,
-                                width: _widthDevice * 0.45,
-                                padding: const EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(15),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 2.0,
-                                      spreadRadius: 0.0,
-                                      offset: Offset(0.5, 0.5),
-                                    )
-                                  ],
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Water Intake',
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headline4!
-                                          .copyWith(
-                                            color: Colors.black,
-                                            fontSize: 18,
-                                          ),
-                                    ),
-                                    const SizedBox(height: 7),
-                                    Text(
-                                      '10 Liters',
-                                      style:
-                                          Theme.of(context).textTheme.headline2,
-                                    ),
-                                    const SizedBox(height: 7),
-                                    const Text(
-                                      'Real time updates',
-                                      style: TextStyle(
-                                        fontFamily: 'Sen',
-                                        fontSize: 15,
-                                        color: Colors.black45,
-                                      ),
-                                    ),
-                                    const Padding(
-                                      padding: EdgeInsets.only(right: 10),
-                                      child: Divider(),
-                                    ),
-                                    Expanded(
-                                      child: SingleChildScrollView(
-                                        child: Container(
-                                          child: Column(
-                                            children: timeProgress.map((e) {
-                                              return Column(
-                                                children: [
-                                                  Row(
-                                                    children: [
-                                                      Container(
-                                                        margin: const EdgeInsets
-                                                            .only(right: 20),
-                                                        height: 15,
-                                                        width: 15,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          gradient:
-                                                              LinearGradient(
-                                                            colors: [
-                                                              Colors
-                                                                  .purple[100]!,
-                                                              const Color
-                                                                      .fromARGB(
-                                                                  255,
-                                                                  209,
-                                                                  159,
-                                                                  218),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        e,
-                                                        style: Theme.of(context)
-                                                            .textTheme
-                                                            .headline1,
-                                                      ),
-                                                    ],
+                                Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.only(left: 12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Water Intake',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .copyWith(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
                                                   ),
-                                                  if (litersProgress[e] != null)
-                                                    Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .only(
-                                                                  left: 6,
-                                                                  top: 1),
-                                                          child: DottedLine(
-                                                            lineThickness: 1.5,
-                                                            lineLength: 50,
-                                                            direction:
-                                                                Axis.vertical,
-                                                            dashLength: 4.5,
-                                                            dashGradient: [
-                                                              Colors
-                                                                  .purple[100]!,
-                                                              const Color
-                                                                  .fromARGB(
-                                                                255,
-                                                                209,
-                                                                159,
-                                                                218,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        const SizedBox(
-                                                            width: 30),
-                                                        GradientText(
-                                                          '${litersProgress[e]}',
-                                                          gradient: AppColors
-                                                              .colorGradient,
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w700,
-                                                          ),
-                                                        )
-                                                      ],
-                                                    )
-                                                ],
-                                              );
-                                            }).toList(),
+                                            ),
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons
+                                                      .arrow_forward_ios_outlined,
+                                                  size: 15,
+                                                  color: Colors.grey[400],
+                                                ))
+                                          ],
+                                        ),
+                                        Text(
+                                          '${sumLiters / 1000} Liters',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline2,
+                                        ),
+                                        const SizedBox(height: 7),
+                                        const Text(
+                                          'Real time updates',
+                                          style: TextStyle(
+                                            fontFamily: 'Sen',
+                                            fontSize: 15,
+                                            color: Colors.black45,
                                           ),
                                         ),
-                                      ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: timeProgress.map((e) {
+                                            return Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    Container(
+                                                      height: 12,
+                                                      width: 12,
+                                                      decoration: BoxDecoration(
+                                                        shape: BoxShape.circle,
+                                                        gradient:
+                                                            LinearGradient(
+                                                          colors: [
+                                                            Colors.purple[100]!,
+                                                            const Color
+                                                                    .fromARGB(
+                                                                255,
+                                                                215,
+                                                                185,
+                                                                221),
+                                                            const Color
+                                                                .fromARGB(
+                                                              255,
+                                                              213,
+                                                              170,
+                                                              220,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    Text(
+                                                      e,
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .headline1,
+                                                    ),
+                                                  ],
+                                                ),
+                                                if (litersProgress[e] != null)
+                                                  Row(
+                                                    children: [
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(
+                                                          left: 5,
+                                                        ),
+                                                        child: DottedLine(
+                                                          lineThickness: 1.5,
+                                                          lineLength: 50,
+                                                          direction:
+                                                              Axis.vertical,
+                                                          dashLength: 4.5,
+                                                          dashGradient: [
+                                                            Colors.purple[100]!,
+                                                            const Color
+                                                                .fromARGB(
+                                                              255,
+                                                              209,
+                                                              159,
+                                                              218,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
+                                                      const SizedBox(width: 30),
+                                                      GradientText(
+                                                        '${litersProgress[e]}ml',
+                                                        gradient: AppColors
+                                                            .colorGradient,
+                                                        style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  )
+                                              ],
+                                            );
+                                          }).toList(),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 20),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Column(
+                            children: [
                               Expanded(
                                 child: Container(
-                                  padding: const EdgeInsets.all(15),
+                                  padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(15),
@@ -828,35 +933,274 @@ class _HomeScreenState extends State<HomeScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text(
-                                        'Sleep',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4!
-                                            .copyWith(
-                                              color: Colors.black,
-                                              fontSize: 18,
+                                      SizedBox(
+                                        height: 22,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Activity',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .copyWith(
+                                                    color: Colors.black,
+                                                    fontSize: 17,
+                                                  ),
                                             ),
-                                      ),
-                                      const SizedBox(height: 7),
-                                      GradientText(
-                                        '5h 10m',
-                                        gradient: AppColors.colorGradient1,
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 23,
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons
+                                                      .arrow_forward_ios_outlined,
+                                                  size: 15,
+                                                  color: Colors.grey[400],
+                                                ))
+                                          ],
                                         ),
+                                      ),
+                                      Row(
+                                        children: [
+                                          RichText(
+                                            text: TextSpan(
+                                              text: 'Step',
+                                              style: TextStyle(
+                                                color: Colors.red[300],
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text: '\n$footSteps',
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w900,
+                                                    fontFamily: 'Sen',
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                const TextSpan(
+                                                  text: ' stp',
+                                                  style: TextStyle(
+                                                    color: Colors.grey,
+                                                    fontFamily: 'Sen',
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            alignment: Alignment.center,
+                                            width: 60,
+                                            margin: const EdgeInsets.only(
+                                                left: 5, right: 5),
+                                            decoration: const BoxDecoration(
+                                              border: Border.symmetric(
+                                                vertical: BorderSide(
+                                                    width: 1,
+                                                    color: Color.fromARGB(
+                                                        255, 192, 191, 191)),
+                                              ),
+                                            ),
+                                            child: RichText(
+                                              text: TextSpan(
+                                                text: 'Exercise',
+                                                style: TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 12,
+                                                    color: Colors.green[300]),
+                                                children: [
+                                                  TextSpan(
+                                                    text: '\n$exerciseTime',
+                                                    style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w900,
+                                                      color: Colors.black,
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+                                                  const TextSpan(
+                                                    text: ' min',
+                                                    style: TextStyle(
+                                                        fontSize: 10,
+                                                        color: Colors.grey),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          RichText(
+                                            text: TextSpan(
+                                              text: 'Stand',
+                                              style: TextStyle(
+                                                color: Colors.blue[300],
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12,
+                                              ),
+                                              children: [
+                                                TextSpan(
+                                                  text: '\n $standTime',
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w800,
+                                                    fontSize: 12,
+                                                  ),
+                                                ),
+                                                const TextSpan(
+                                                  text: ' hr',
+                                                  style: TextStyle(
+                                                      fontSize: 10,
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: Center(
+                                          child: CircularPercentIndicator(
+                                            radius:
+                                                heightOfWaterChart / 2 - 130,
+                                            animation: true,
+                                            animationDuration: 1800,
+                                            lineWidth: 15.0,
+                                            percent: 0.7,
+                                            center: CircularPercentIndicator(
+                                              radius:
+                                                  heightOfWaterChart / 2 - 150,
+                                              animation: true,
+                                              animationDuration: 1900,
+                                              lineWidth: 15.0,
+                                              percent: 0.5,
+                                              center: CircularPercentIndicator(
+                                                radius: heightOfWaterChart / 2 -
+                                                    170,
+                                                animation: true,
+                                                animationDuration: 2000,
+                                                lineWidth: 15.0,
+                                                percent: 0.3,
+                                                backgroundColor:
+                                                    const Color.fromARGB(
+                                                        227, 224, 221, 221),
+                                                progressColor: Colors.blue[300],
+                                              ),
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      227, 224, 221, 221),
+                                              progressColor: Colors.green[300],
+                                            ),
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    227, 224, 221, 221),
+                                            progressColor: Colors.red[300],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 5),
+                              Expanded(
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(15),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 2.0,
+                                        spreadRadius: 0.0,
+                                        offset: Offset(0.5, 0.5),
                                       )
+                                    ],
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 30,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Calories',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .copyWith(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                  ),
+                                            ),
+                                            IconButton(
+                                                onPressed: () {},
+                                                icon: Icon(
+                                                  Icons
+                                                      .arrow_forward_ios_outlined,
+                                                  size: 15,
+                                                  color: Colors.grey[400],
+                                                ))
+                                          ],
+                                        ),
+                                      ),
+                                      GradientText(
+                                        '$calories kCal',
+                                        gradient: AppColors.colorGradient1,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: Center(
+                                          child: CircularPercentIndicator(
+                                            radius:
+                                                heightOfWaterChart / 2 - 130,
+                                            animation: true,
+                                            animationDuration: 2000,
+                                            lineWidth: 15.0,
+                                            percent: (calories - caloriesLeft) /
+                                                calories,
+                                            center: Container(
+                                              alignment: Alignment.center,
+                                              height:
+                                                  heightOfWaterChart / 2 - 100,
+                                              decoration: const BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: AppColors.btn_color),
+                                              child: Text(
+                                                '$caloriesLeft kCal left',
+                                                style: const TextStyle(
+                                                    fontFamily: 'Sen',
+                                                    fontSize: 15,
+                                                    color: Colors.white),
+                                              ),
+                                            ),
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    227, 224, 221, 221),
+                                            progressColor: Colors.blue[300],
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -900,7 +1244,7 @@ class LoadHeight_weight extends StatelessWidget {
                 color: AppColors.primaryColor1.withOpacity(0.2),
               ),
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
           ],
         ),
         Row(
@@ -910,7 +1254,7 @@ class LoadHeight_weight extends StatelessWidget {
               width: _widthDevice * 0.55 * (fData / sData) - 20,
               height: 10,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   bottomLeft: Radius.circular(20),
                 ),
