@@ -29,9 +29,33 @@ class WorkoutTrackerScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
+            width: _widthDevice,
+            height: _heightDevice,
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor1,
+            ),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                height: _heightDevice * 0.38,
+                width: _widthDevice,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 30,
+                    top: 80,
+                    left: 10,
+                  ),
+                  child: Container(
+                    child: _LineChart(isShowingMainData: true),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Container(
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.primaryColor1,
+                color: Colors.transparent,
               ),
               child: ListView(
                 physics: BouncingScrollPhysics(
@@ -43,17 +67,6 @@ class WorkoutTrackerScreen extends StatelessWidget {
                     children: [
                       SizedBox(
                         height: _heightDevice * 0.35,
-                        width: _widthDevice,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            right: 30,
-                            top: 60,
-                            left: 10,
-                          ),
-                          child: Container(
-                            child: _LineChart(isShowingMainData: true),
-                          ),
-                        ),
                       ),
                       ConstrainedBox(
                         constraints:

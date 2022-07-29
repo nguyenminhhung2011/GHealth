@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
@@ -29,9 +30,29 @@ class WorkoutDetailScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
+            width: _widthDevice,
+            height: _heightDevice,
+            decoration: BoxDecoration(
+              color: AppColors.primaryColor1,
+            ),
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                ),
+                child: Image.asset(
+                  'assets/images/yoga.png',
+                ),
+              ),
+            ),
+          ),
+          Container(
             child: Container(
               decoration: BoxDecoration(
-                color: AppColors.primaryColor1,
+                color: Colors.transparent,
               ),
               child: ListView(
                 physics: BouncingScrollPhysics(
@@ -275,6 +296,25 @@ class WorkoutDetailScreen extends StatelessWidget {
                                     ),
                                   ],
                                 ),
+                                const SizedBox(height: 20),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    'Set 1',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Column(
+                                  children: FakeData.list_set.map((e) {
+                                    return ExerciseCard(
+                                      widthDevice: _widthDevice,
+                                      e: e,
+                                    );
+                                  }).toList(),
+                                )
                               ],
                             ),
                           ),
@@ -377,6 +417,81 @@ class WorkoutDetailScreen extends StatelessWidget {
             ],
           )
         ],
+      ),
+    );
+  }
+}
+
+class ExerciseCard extends StatelessWidget {
+  const ExerciseCard({
+    Key? key,
+    required double widthDevice,
+    required this.e,
+  })  : _widthDevice = widthDevice,
+        super(key: key);
+
+  final double _widthDevice;
+  final Map<String, dynamic> e;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: Row(
+          children: [
+            Container(
+              height: _widthDevice / 6,
+              width: _widthDevice / 6,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                image: DecorationImage(
+                  fit: BoxFit.cover,
+                  image: NetworkImage(
+                    e["image"],
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 5),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  e["name"],
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+                Text(
+                  '00:${e["time"]}s',
+                  style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 16,
+                  ),
+                ),
+              ],
+            ),
+            Spacer(),
+            InkWell(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(width: 1, color: Colors.grey),
+                ),
+                child:
+                    Icon(Icons.arrow_forward_ios, color: Colors.grey, size: 17),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
