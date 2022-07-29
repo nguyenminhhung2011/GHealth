@@ -4,6 +4,7 @@ import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/data/sleep_tracker_data.dart';
 import 'package:time_chart/time_chart.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_tracker_screen.dart';
 import '../../controls/home_screen_control.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
@@ -91,28 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Welcome back',
                   style: Theme.of(context).textTheme.headline5,
                 ),
-                // trailing: InkWell(
-                //   borderRadius: BorderRadius.circular(15),
-                //   onTap: () {
-                //     Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) => NotifiCationScreen(),
-                //       ),
-                //     );
-                //   },
-                // child: Container(
-                //   padding: const EdgeInsets.all(5),
-                //   decoration: BoxDecoration(
-                //     borderRadius: BorderRadius.circular(15),
-                //     color: AppColors.primaryColor.withOpacity(0.2),
-                //     ),
-                //     child: Icon(
-                //       Icons.notifications,
-                //       color: Colors.white,
-                //     ),
-                //   ),
-                // ),
                 trailing: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -322,7 +301,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fData: 120,
                                   sData: 177,
                                   color: AppColors.primaryColor1,
-                                  press: () {},
+                                  press: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                WorkoutTrackerScreen()));
+                                  },
                                 ),
                               ],
                             ),
