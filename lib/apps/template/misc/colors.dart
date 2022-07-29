@@ -18,6 +18,8 @@ class AppColors {
       (Get.isDarkMode) ? darkModeTextColor : lightModeTextcolor;
   static const Color btn_color = Color.fromARGB(255, 118, 131, 212);
   static const Color mailColor = Color.fromARGB(255, 194, 211, 247);
+  static const Color backGroundTableColor =
+      const Color.fromARGB(255, 232, 243, 252);
   static const Color femailColor = Color.fromARGB(255, 240, 211, 238);
   static const Color approxWhite = Color.fromARGB(
       255, 245, 245, 251); //Use for background of button and container
