@@ -571,14 +571,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                        TimeChart(
-                          timeChartSizeAnimationDuration:
-                              const Duration(milliseconds: 2000),
-                          height: heightDevice * 0.2,
-                          activeTooltip: true,
-                          data: SleepTrackerData.data,
-                          viewMode: ViewMode.weekly,
-                          barColor: Colors.deepPurple,
+                        Padding(
+                          padding: const EdgeInsets.only(left: 5, right: 5),
+                          child: TimeChart(
+                            timeChartSizeAnimationDuration:
+                                const Duration(milliseconds: 2000),
+                            height: heightDevice * 0.2,
+                            activeTooltip: true,
+                            data: SleepTrackerData.data,
+                            viewMode: ViewMode.weekly,
+                            barColor: Colors.deepPurple,
+                          ),
                         ),
                       ],
                     ),
