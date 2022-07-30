@@ -3,15 +3,13 @@ import 'dart:io';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../routes/routeName.dart';
 import '../../controls/dashboard_control.dart';
 import '../dashboard/home_screen.dart';
 import 'activity_trackerScreen.dart';
 import './profileScreen.dart';
-import '../../template/misc/colors.dart';
 
 class DashBoardScreen extends StatefulWidget {
-  DashBoardScreen({Key? key}) : super(key: key);
+  const DashBoardScreen({Key? key}) : super(key: key);
 
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
@@ -20,6 +18,8 @@ class DashBoardScreen extends StatefulWidget {
 class _DashBoardScreenState extends State<DashBoardScreen>
     with SingleTickerProviderStateMixin {
   final _dashBoardScreenC = Get.find<DashBoardControl>();
+  final Duration animDuration = const Duration(seconds: 2);
+  bool isLoading = false;
 
   final List<Widget> listPage = [
     const HomeScreen(),
@@ -44,7 +44,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: listPage[_dashBoardScreenC.tabIndex.value],
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          : listPage[_dashBoardScreenC.tabIndex.value],
       floatingActionButton: Container(
         height: 65,
         width: 65,
@@ -66,10 +68,18 @@ class _DashBoardScreenState extends State<DashBoardScreen>
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: _iconList,
         activeIndex: _dashBoardScreenC.tabIndex.value,
-        onTap: (index) {
-          setState(() {
-            _dashBoardScreenC.tabIndex.value = index;
-          });
+        onTap: (index) async {
+          _dashBoardScreenC.tabIndex.value = index;
+          isLoading = true;
+          setState(() {});
+          await Future<dynamic>.delayed(
+            animDuration,
+            () => setState(
+              () {
+                isLoading = false;
+              },
+            ),
+          );
         },
         notchSmoothness: NotchSmoothness.verySmoothEdge,
         blurEffect: true,
