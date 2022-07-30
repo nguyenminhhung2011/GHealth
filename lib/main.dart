@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.w600,
             foreground: Paint()
               ..shader = LinearGradient(colors: [
-                Color.fromARGB(255, 199, 231, 247),
+                const Color.fromARGB(255, 199, 231, 247),
                 Colors.blue[200]!,
                 Colors.blue[300]!,
                 Colors.blue[400]!,

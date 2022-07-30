@@ -41,12 +41,34 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     Icons.person_outline,
   ];
 
+  bool isPressButton = false;
+
+  Future<Widget> refreshPage() async {
+    return Future<Widget>.delayed(const Duration(milliseconds: 600),
+        () => listPage[_dashBoardScreenC.tabIndex.value]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : listPage[_dashBoardScreenC.tabIndex.value],
+      body: FutureBuilder(
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              return AnimatedSlide(
+                duration: const Duration(milliseconds: 600),
+                offset: Offset.zero,
+                child: snapshot.data as Widget,
+              );
+            }
+          }
+          return const AnimatedSlide(
+              duration: Duration(milliseconds: 600),
+              offset: Offset.zero,
+              child: Center(child: CircularProgressIndicator()));
+        },
+        future: refreshPage(),
+      ),
       floatingActionButton: Container(
         height: 65,
         width: 65,
@@ -68,18 +90,10 @@ class _DashBoardScreenState extends State<DashBoardScreen>
       bottomNavigationBar: AnimatedBottomNavigationBar(
         icons: _iconList,
         activeIndex: _dashBoardScreenC.tabIndex.value,
-        onTap: (index) async {
-          _dashBoardScreenC.tabIndex.value = index;
-          isLoading = true;
-          setState(() {});
-          await Future<dynamic>.delayed(
-            animDuration,
-            () => setState(
-              () {
-                isLoading = false;
-              },
-            ),
-          );
+        onTap: (index) {
+          setState(() {
+            _dashBoardScreenC.tabIndex.value = index;
+          });
         },
         notchSmoothness: NotchSmoothness.verySmoothEdge,
         blurEffect: true,
