@@ -2,14 +2,10 @@ import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
 
-import '../../global_widgets/GradientText.dart';
 import '../../global_widgets/RowText_Seemore.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/widgets/button_gradient.dart';
@@ -19,8 +15,8 @@ class WorkoutTrackerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _heightDevice = MediaQuery.of(context).size.height;
-    var _widthDevice = MediaQuery.of(context).size.width;
+    var heightDevice = MediaQuery.of(context).size.height;
+    var widthDevice = MediaQuery.of(context).size.width;
     bool val = true;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
@@ -29,16 +25,16 @@ class WorkoutTrackerScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            width: _widthDevice,
-            height: _heightDevice,
+            width: widthDevice,
+            height: heightDevice,
             decoration: BoxDecoration(
               color: AppColors.primaryColor1,
             ),
             child: Align(
               alignment: Alignment.topCenter,
               child: SizedBox(
-                height: _heightDevice * 0.38,
-                width: _widthDevice,
+                height: heightDevice * 0.38,
+                width: widthDevice,
                 child: Padding(
                   padding: const EdgeInsets.only(
                     right: 30,
@@ -66,11 +62,11 @@ class WorkoutTrackerScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       SizedBox(
-                        height: _heightDevice * 0.35,
+                        height: heightDevice * 0.35,
                       ),
                       ConstrainedBox(
                         constraints:
-                            BoxConstraints(minHeight: _heightDevice * 0.86),
+                            BoxConstraints(minHeight: heightDevice * 0.86),
                         child: Container(
                           width: double.maxFinite,
                           padding: EdgeInsets.symmetric(

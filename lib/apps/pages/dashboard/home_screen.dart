@@ -66,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return sum;
   }
 
+  final stopwatch = Stopwatch()..start();
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -90,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
             // height: _heightDevice,
             // width: _widthDevice,
             child: ListView(
-              physics: BouncingScrollPhysics(
+              physics: const BouncingScrollPhysics(
                 parent: AlwaysScrollableScrollPhysics(),
               ),
               children: [
@@ -211,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         ],
                                       ),
                                       Expanded(
-                                        child: Container(
+                                        child: SizedBox(
                                           width: 80,
                                           height: 80,
                                           child: PieChart(
@@ -251,10 +252,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       (index, data) {
                                                     final isTouched =
                                                         index == touchedIndex;
-                                                    final double fontSize =
-                                                        isTouched ? 25 : 16;
-                                                    final double radius =
-                                                        isTouched ? 100 : 80;
 
                                                     return MapEntry(
                                                       index,
@@ -297,7 +294,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 30),
+                                  const SizedBox(height: 30),
                                   AnimatedContainer(
                                     curve: Curves.fastOutSlowIn,
                                     height: height_bmi_container,
@@ -317,14 +314,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                         child: Column(
                                           children: [
                                             Row(
-                                              children: [
+                                              children: const [
                                                 _Badge(
                                                   'assets/images/medal.png',
                                                   size: 30,
                                                   borderColor:
                                                       AppColors.primaryColor1,
                                                 ),
-                                                const SizedBox(width: 10),
+                                                SizedBox(width: 10),
                                                 Text(
                                                   'BMI: 38.0',
                                                   style: TextStyle(
@@ -337,7 +334,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const SizedBox(height: 20),
                                             Row(
                                               children: [
-                                                Text(
+                                                const Text(
                                                   'Height:  ',
                                                   style: TextStyle(
                                                     color:
@@ -358,13 +355,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         context,
                                                         MaterialPageRoute(
                                                             builder: (context) =>
-                                                                WorkoutTrackerScreen()));
+                                                                const WorkoutTrackerScreen()));
                                                   },
                                                 ),
                                               ],
                                             ),
                                             Row(
-                                              children: [
+                                              children: const [
                                                 SizedBox(width: 60),
                                                 Text(
                                                   '160cm',
@@ -388,7 +385,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             const SizedBox(height: 10),
                                             Row(
                                               children: [
-                                                Text(
+                                                const Text(
                                                   'Weight: ',
                                                   style: TextStyle(
                                                     color:
@@ -409,7 +406,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ],
                                             ),
                                             Row(
-                                              children: [
+                                              children: const [
                                                 SizedBox(width: 60),
                                                 Text(
                                                   '60kg',
@@ -491,7 +488,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ),
                                     ],
                                   ),
-                                  SizedBox(height: 10),
+                                  const SizedBox(height: 10),
                                   AnimatedContainer(
                                     duration: const Duration(milliseconds: 400),
                                     curve: Curves.fastOutSlowIn,
@@ -518,7 +515,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   fontSize: 17,
                                                 ),
                                               ),
-                                              Spacer(),
+                                              const Spacer(),
                                               InkWell(
                                                 onTap: () {},
                                                 child: Container(
