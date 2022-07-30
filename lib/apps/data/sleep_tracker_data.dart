@@ -36,7 +36,7 @@ class SleepTrackerData {
     // ),
 
     DateTimeRange(
-      start: DateTime(2022, 7, 31, 1, 15),
+      start: DateTime(2022, 7, 31, 0, 15),
       end: DateTime(2022, 7, 31, 7, 30),
     ),
     DateTimeRange(
@@ -49,8 +49,8 @@ class SleepTrackerData {
       end: DateTime(2022, 7, 29, 6, 00),
     ),
     DateTimeRange(
-      start: DateTime(2022, 7, 27, 5, 00),
-      end: DateTime(2022, 7, 28, 10, 00),
+      start: DateTime(2022, 7, 27, 12, 00),
+      end: DateTime(2022, 7, 27, 19, 00),
     ),
     DateTimeRange(
       start: DateTime(2022, 7, 26, 22, 00),
