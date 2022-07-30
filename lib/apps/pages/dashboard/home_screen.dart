@@ -545,7 +545,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                             ],
                                           ),
-                                          Container(
+                                          SizedBox(
                                             width: widthDevice,
                                             height: 190,
                                             child: MasonryGridView.count(
@@ -667,7 +667,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           child: TimeChart(
                                             timeChartSizeAnimationDuration:
                                                 const Duration(
-                                                    milliseconds: 2000),
+                                                    milliseconds: 3000),
                                             height: heightDevice * 0.2,
                                             activeTooltip: true,
                                             data: SleepTrackerData.data,
