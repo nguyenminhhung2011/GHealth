@@ -16,12 +16,12 @@ class WorkoutScreen extends StatefulWidget {
 class _WorkoutScreenState extends State<WorkoutScreen>
     with SingleTickerProviderStateMixin {
   static const maxSeconds = 60;
-  int seconds = maxSeconds;
+//  int seconds = maxSeconds;
 
   bool _checkContinue = false;
   late AnimationController _animationController = AnimationController(
     vsync: this,
-    duration: Duration(milliseconds: 3000),
+    duration: Duration(seconds: 9),
   );
   late Animation<double> _animation;
   @override
@@ -29,12 +29,30 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 3000),
+      duration: Duration(seconds: 9),
     );
-    _animation = Tween<double>(begin: 0, end: 100).animate(_animationController)
-      ..addListener(() {
-        setState(() {});
-      });
+    _animation = Tween<double>(begin: 0, end: 9).animate(_animationController)
+      ..addListener(
+        () {
+          setState(() {});
+        },
+      );
+  }
+
+  void initAnimation(int value) {
+    setState(() {
+      _animationController = AnimationController(
+        vsync: this,
+        duration: Duration(seconds: value),
+      );
+      _animation = Tween<double>(begin: 0, end: value.toDouble())
+          .animate(_animationController)
+        ..addListener(
+          () {
+            setState(() {});
+          },
+        );
+    });
   }
 
   Widget build(BuildContext context) {
@@ -381,12 +399,11 @@ class CircleCountdown extends StatelessWidget {
     return CustomPaint(
       foregroundPainter: CircleProgress(
         _animation.value,
-        100,
+        9,
         radius,
         strokeCircle,
       ),
       child: Container(
-//                                    color: Colors.red,
           width: 100,
           height: 100,
           decoration: BoxDecoration(
