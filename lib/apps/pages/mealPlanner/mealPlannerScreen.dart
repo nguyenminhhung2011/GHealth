@@ -12,6 +12,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 import '../../global_widgets/ButtonText.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
+import 'category_meal_screen.dart';
 
 class MealPlannerScreen extends StatelessWidget {
   const MealPlannerScreen({Key? key}) : super(key: key);
@@ -60,7 +61,7 @@ class MealPlannerScreen extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             child: Column(
                               children: [
-                                AppBar(),
+                                AppBarDesign(title: 'Meal Planner'),
                                 const SizedBox(height: 20),
                                 Row(
                                   children: [
@@ -211,7 +212,15 @@ class MealPlannerScreen extends StatelessWidget {
                                         color_btn: AppColors.primaryColor1,
                                         collect: 'Breakfast',
                                         noFoods: 120,
-                                        press: () {},
+                                        press: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CategoryMealScreen(),
+                                            ),
+                                          );
+                                        },
                                       ),
                                       const SizedBox(width: 10),
                                       MealSelect(
@@ -253,11 +262,12 @@ class MealPlannerScreen extends StatelessWidget {
   }
 }
 
-class AppBar extends StatelessWidget {
-  const AppBar({
+class AppBarDesign extends StatelessWidget {
+  const AppBarDesign({
     Key? key,
+    required this.title,
   }) : super(key: key);
-
+  final String title;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -280,7 +290,7 @@ class AppBar extends StatelessWidget {
         ),
         Spacer(),
         Text(
-          'Meal Planner',
+          title,
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
