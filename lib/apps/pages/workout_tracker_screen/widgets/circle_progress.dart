@@ -5,29 +5,33 @@ import 'package:flutter/material.dart';
 import '../../../template/misc/colors.dart';
 
 class CircleProgress extends CustomPainter {
-  double strokeCircle;
-  double currentProgress;
-  double parentProgress;
-  double radius;
+  final double strokeCircle;
+  final double currentProgress;
+  final double parentProgress;
+  final double radius;
+  final Color fillColor;
+  final Color backGroundColor;
   CircleProgress(
     this.currentProgress,
     this.parentProgress,
     this.radius,
     this.strokeCircle,
+    this.fillColor,
+    this.backGroundColor,
   );
   @override
   void paint(Canvas canvas, Size size) {
     // Draw Circle
     Paint circle = Paint()
       ..strokeWidth = strokeCircle
-      ..color = Colors.grey.withOpacity(0.2)
+      ..color = backGroundColor
       ..style = PaintingStyle.stroke;
     Offset center = Offset(size.width / 2, size.width / 2);
     canvas.drawCircle(center, radius, circle);
     //Draw animation
     Paint animationArc = Paint()
       ..strokeWidth = strokeCircle
-      ..color = AppColors.primaryColor1
+      ..color = fillColor
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
     double angle = 2 * pi * (currentProgress / parentProgress);

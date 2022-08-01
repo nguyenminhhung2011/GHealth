@@ -15,6 +15,7 @@ import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 import '../../template/misc/colors.dart';
+import '../mealPlanner/mealPlannerScreen.dart';
 import 'widgets/button_gradient.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -352,10 +353,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                       AppColors.primaryColor1,
                                                   press: () {
                                                     Navigator.push(
-                                                        context,
-                                                        MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                const WorkoutTrackerScreen()));
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const WorkoutTrackerScreen(),
+                                                      ),
+                                                    );
                                                   },
                                                 ),
                                               ],
@@ -401,7 +404,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   sData: 70,
                                                   color:
                                                       AppColors.primaryColor2,
-                                                  press: () {},
+                                                  press: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            const MealPlannerScreen(),
+                                                      ),
+                                                    );
+                                                  },
                                                 ),
                                               ],
                                             ),

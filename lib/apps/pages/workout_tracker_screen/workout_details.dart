@@ -11,6 +11,7 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/listWorkoutScreen.
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/ExerciseCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_workout_screen.dart';
 
 import '../../global_widgets/GradientText.dart';
 import '../../global_widgets/RowText_Seemore.dart';
@@ -333,43 +334,7 @@ class WorkoutDetailScreen extends StatelessWidget {
           Column(
             children: [
               const SizedBox(height: 40),
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: Icon(
-                        Icons.more_horiz,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
+              AppBarWorkout(title: '', press: () {}),
               Spacer(),
               InkWell(
                 onTap: () {

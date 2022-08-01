@@ -2,6 +2,7 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/circle_progress.dart';
 
 import '../../template/misc/colors.dart';
@@ -21,7 +22,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   bool _checkContinue = false;
   late AnimationController _animationController = AnimationController(
     vsync: this,
-    duration: Duration(seconds: 9),
+    duration: Duration(seconds: 200),
   );
   late Animation<double> _animation;
   @override
@@ -29,9 +30,9 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: Duration(seconds: 9),
+      duration: Duration(seconds: 200),
     );
-    _animation = Tween<double>(begin: 0, end: 9).animate(_animationController)
+    _animation = Tween<double>(begin: 0, end: 200).animate(_animationController)
       ..addListener(
         () {
           setState(() {});
@@ -136,58 +137,6 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                   color: Colors.grey,
                                 ),
                                 const SizedBox(height: (100 - 60) / 2 + 10),
-                                CircleCountdown(
-                                  animation: _animation,
-                                  checkContinue: _checkContinue,
-                                  press: () {},
-                                  radius: 60,
-                                  strokeCircle: 12,
-                                  child: Center(
-                                    child: Column(
-                                      children: [
-                                        Text(
-                                          '${_animation.value.toInt()}',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 27,
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        InkWell(
-                                          onTap: () {
-                                            setState(() {
-                                              _checkContinue = !_checkContinue;
-                                            });
-                                            if (_checkContinue) {
-                                              _animationController.forward();
-                                            } else {
-                                              _animationController.stop();
-                                            }
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(5),
-                                            decoration: BoxDecoration(
-                                              color: AppColors.primaryColor1,
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: (!_checkContinue)
-                                                ? Icon(
-                                                    Icons.play_arrow,
-                                                    color: Colors.white,
-                                                    size: 30,
-                                                  )
-                                                : Icon(
-                                                    Icons.pause,
-                                                    color: Colors.white,
-                                                    size: 30,
-                                                  ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
                                 const SizedBox(height: 20),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -237,29 +186,6 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                                   ),
                                                 )
                                               ],
-                                            ),
-                                          ),
-                                        ),
-                                        CircleCountdown(
-                                          animation: _animation,
-                                          checkContinue: _checkContinue,
-                                          strokeCircle: 5,
-                                          press: () {},
-                                          radius: 30,
-                                          child: Center(
-                                            child: Container(
-                                              padding: const EdgeInsets.all(12),
-                                              decoration: BoxDecoration(
-                                                color: AppColors.primaryColor1,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: Text(
-                                                '${(_animation.value.toInt() / 60).toInt()}:${_animation.value.toInt() - ((_animation.value.toInt() / 60).toInt() * 60)}',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
                                             ),
                                           ),
                                         ),
@@ -318,99 +244,9 @@ class _WorkoutScreenState extends State<WorkoutScreen>
               ),
             ),
           ),
-          Column(
-            children: [
-              const SizedBox(height: 50),
-              Row(
-                children: [
-                  const SizedBox(width: 10),
-                  InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    'Warm Up',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
-                    ),
-                  ),
-                  Spacer(),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: Icon(
-                        Icons.more_horiz,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-            ],
-          )
+          AppBarWorkout(title: 'Warm Up', press: () {}),
         ],
       ),
-    );
-  }
-}
-
-class CircleCountdown extends StatelessWidget {
-  const CircleCountdown({
-    Key? key,
-    required Animation<double> animation,
-    required bool checkContinue,
-    required this.press,
-    required this.radius,
-    required this.child,
-    required this.strokeCircle,
-  })  : _animation = animation,
-        _checkContinue = checkContinue,
-        super(key: key);
-
-  final Animation<double> _animation;
-  final bool _checkContinue;
-  final Function() press;
-  final double radius;
-  final double strokeCircle;
-  final Widget child;
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(
-      foregroundPainter: CircleProgress(
-        _animation.value,
-        9,
-        radius,
-        strokeCircle,
-      ),
-      child: Container(
-          width: 100,
-          height: 100,
-          decoration: BoxDecoration(
-            //    color: Colors.blue,
-            shape: BoxShape.circle,
-          ),
-          child: child),
     );
   }
 }
