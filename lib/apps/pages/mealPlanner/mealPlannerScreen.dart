@@ -4,6 +4,7 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/global_widgets/list_chart/lineChart1Line.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
@@ -82,6 +83,26 @@ class MealPlannerScreen extends StatelessWidget {
                                   height: 200,
                                   child: Container(
                                     child: LineChartOneLine(),
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SingleChildScrollView(
+                                  scrollDirection: Axis.horizontal,
+                                  child: Row(
+                                    children: [
+                                      ControlMealCard(
+                                          header: 'Calories', percent: 0.82),
+                                      const SizedBox(width: 20),
+                                      ControlMealCard(
+                                          header: 'Sugar', percent: 0.39),
+                                      const SizedBox(width: 20),
+                                      ControlMealCard(
+                                          header: 'Fibre', percent: 0.88),
+                                      const SizedBox(width: 20),
+                                      ControlMealCard(
+                                          header: 'fats', percent: 0.42),
+                                      const SizedBox(width: 20),
+                                    ],
                                   ),
                                 ),
                                 const SizedBox(height: 20),
@@ -222,6 +243,64 @@ class MealPlannerScreen extends StatelessWidget {
               ),
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class ControlMealCard extends StatelessWidget {
+  const ControlMealCard({
+    Key? key,
+    required this.header,
+    required this.percent,
+  }) : super(key: key);
+  final String header;
+  final double percent;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        color: AppColors.primaryColor1.withOpacity(0.2),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                '${header} ',
+                style: TextStyle(
+                  color: Colors.grey,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              Text(
+                '${percent * 100}%',
+                style: TextStyle(
+                  color: (percent > 0.5) ? Colors.green : Colors.red,
+                ),
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+          Container(
+            width: 120,
+            height: 10,
+            child: LinearPercentIndicator(
+              lineHeight: 30,
+              percent: percent,
+              progressColor: (percent > 0.5)
+                  ? Colors.green.withOpacity(0.5)
+                  : Colors.red.withOpacity(0.5),
+              backgroundColor: Colors.grey.withOpacity(0.2),
+              animation: true,
+              animationDuration: 1000,
+              barRadius: const Radius.circular(20),
+            ),
+          )
         ],
       ),
     );
