@@ -6,6 +6,7 @@ import 'package:gold_health/apps/global_widgets/ButtonText.dart';
 
 import '../../template/misc/colors.dart';
 import 'mealPlannerScreen.dart';
+import 'meal_detail_screen.dart';
 
 class CategoryMealScreen extends StatelessWidget {
   const CategoryMealScreen({Key? key}) : super(key: key);
@@ -122,7 +123,15 @@ class CategoryMealScreen extends StatelessWidget {
                                         level: "Easy",
                                         time: 30,
                                         kCal: 180,
-                                        press: () {},
+                                        press: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MealDetailScreen(),
+                                            ),
+                                          );
+                                        },
                                         checkCOlor: 0,
                                       ),
                                       FoodViewCard(

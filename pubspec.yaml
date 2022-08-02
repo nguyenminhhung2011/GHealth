@@ -54,6 +54,7 @@ dependencies:
   time_chart: ^0.5.2
   circular_countdown_timer: ^0.2.0
   flutter_ringtone_player: ^3.2.0
+  readmore: ^2.2.0
 
 
   

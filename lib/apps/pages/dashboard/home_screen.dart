@@ -343,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
-                                                LoadHeight_weight(
+                                                LoadHeightWeight(
                                                   widthDevice: widthDevice,
                                                   imgePath:
                                                       'assets/images/height.png',
@@ -396,7 +396,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                     fontWeight: FontWeight.w600,
                                                   ),
                                                 ),
-                                                LoadHeight_weight(
+                                                LoadHeightWeight(
                                                   widthDevice: widthDevice,
                                                   imgePath:
                                                       'assets/images/weight.png',
@@ -471,7 +471,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               fontSize: 18,
                                             ),
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       ButtonGradient(
                                         height: 40.0,
                                         width: 90.0,
@@ -596,7 +596,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              LoadHeight_weight(
+                                              LoadHeightWeight(
                                                 widthDevice: widthDevice *
                                                     100 /
                                                     55 *
@@ -1492,8 +1492,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class LoadHeight_weight extends StatelessWidget {
-  const LoadHeight_weight({
+class LoadHeightWeight extends StatelessWidget {
+  const LoadHeightWeight({
     Key? key,
     required double widthDevice,
     required this.imgePath,
