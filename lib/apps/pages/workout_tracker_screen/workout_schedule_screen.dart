@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+import 'package:readmore/readmore.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../global_widgets/GradientText.dart';
@@ -60,7 +61,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
     _controller = YoutubePlayerController(
       initialVideoId: 'OsP2oNXOL1E',
       flags: const YoutubePlayerFlags(
-        autoPlay: true,
+        autoPlay: false,
         mute: false,
       ),
     );
@@ -224,14 +225,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        AppColors.primaryColor1,
-                        Colors.grey.withOpacity(0.1),
-                      ],
-                    ),
+                    color: AppColors.primaryColor1,
                   ),
                   child: const Icon(
                     Icons.arrow_back_ios,
@@ -244,7 +238,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                 style: Theme.of(context)
                     .textTheme
                     .headline4!
-                    .copyWith(fontSize: 25),
+                    .copyWith(fontSize: 20),
               ),
               InkWell(
                 onTap: () {
@@ -257,14 +251,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    gradient: LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        AppColors.primaryColor1,
-                        Colors.grey.withOpacity(0.1),
-                      ],
-                    ),
+                    color: AppColors.primaryColor1,
                   ),
                   child: const Icon(
                     Icons.more_horiz,
@@ -303,9 +290,23 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                 Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
           ),
           const SizedBox(height: 10),
-          Text(
+          ReadMoreText(
             description,
-            style: Theme.of(context).textTheme.headline5,
+            trimLines: 3,
+            colorClickableText: Colors.pink,
+            trimMode: TrimMode.Line,
+            trimCollapsedText: 'Read more',
+            trimExpandedText: 'Show less',
+            moreStyle: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor1,
+            ),
+            lessStyle: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryColor1,
+            ),
           ),
           const SizedBox(height: 20),
           Text(

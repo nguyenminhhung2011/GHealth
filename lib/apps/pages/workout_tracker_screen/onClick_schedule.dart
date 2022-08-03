@@ -123,9 +123,9 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
           RotatedBox(
             quarterTurns: 1,
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(35),
+              borderRadius: BorderRadius.circular(25),
               child: LinearProgressIndicator(
-                color: Colors.blue[300],
+                color: AppColors.primaryColor1.withOpacity(0.6),
                 backgroundColor: Colors.grey.withOpacity(0.5),
                 value: (meeting.to.isBefore(now.value)
                     ? 1.0
@@ -191,14 +191,7 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.primaryColor1,
-                            Colors.grey.withOpacity(0.1),
-                          ],
-                        ),
+                        color: AppColors.primaryColor1,
                       ),
                       child: const Icon(
                         Icons.arrow_back_ios,
@@ -211,7 +204,7 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
                     style: Theme.of(context)
                         .textTheme
                         .headline4!
-                        .copyWith(fontSize: 25),
+                        .copyWith(fontSize: 20),
                   ),
                   InkWell(
                     onTap: () {
@@ -221,14 +214,7 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.primaryColor1,
-                            Colors.grey.withOpacity(0.1),
-                          ],
-                        ),
+                        color: AppColors.primaryColor1,
                       ),
                       child: const Icon(
                         Icons.more_horiz,

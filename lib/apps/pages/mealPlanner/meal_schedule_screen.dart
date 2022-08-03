@@ -1,7 +1,13 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/FoodScheduleCard.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/MealNutritionCard.dart';
+import 'package:intl/intl.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../global_widgets/screenTemplate.dart';
 import '../../template/misc/colors.dart';
@@ -16,66 +22,73 @@ class MealScheduleScreen extends StatefulWidget {
 
 class _MealScheduleScreenState extends State<MealScheduleScreen> {
   DateTime dateTime = DateTime.now();
-  final List<String> listMonth = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
+  var now = DateTime.now().obs;
+  Timer? timer;
+  final List<DateTime> listDateTime = [
+    for (int i = 1; i <= 30; i++)
+      DateTime(2022, 8, 1).subtract(Duration(days: i)),
+    for (int i = 0; i <= 30; i++) DateTime(2022, 8, 1).add(Duration(days: i))
   ];
+  GlobalKey<ScrollSnapListState> sslKey = GlobalKey();
+  late int onFocus;
+  final CalendarController _calendarController = CalendarController();
 
-  final List<String> listDay = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-  ];
-  @override
-  static int getDaysInMonth(int year, int month) {
-    if (month == DateTime.february) {
-      final bool isLeapYear =
-          (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
-      return isLeapYear ? 29 : 28;
-    }
-    const List<int> daysInMonth = <int>[
-      31,
-      -1,
-      31,
-      30,
-      31,
-      30,
-      31,
-      31,
-      30,
-      31,
-      30,
-      31
-    ];
-    return daysInMonth[month - 1];
+  Widget _itemBuilder(BuildContext context, int index) {
+    return Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(10),
+      width: 80,
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        gradient: onFocus == index
+            ? LinearGradient(colors: [
+                Colors.blue[200]!,
+                Colors.blue[300]!,
+                Colors.blue[400]!
+              ])
+            : const LinearGradient(
+                colors: [
+                  Colors.white10,
+                  Colors.white10,
+                ],
+              ),
+      ),
+      child: SizedBox(
+        height: 80,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              DateFormat().add_E().format(listDateTime[index]),
+              style: TextStyle(
+                color: onFocus == index ? Colors.white : Colors.black,
+              ),
+            ),
+            Text(
+              DateFormat().add_d().format(listDateTime[index]),
+              style: TextStyle(
+                color: onFocus == index ? Colors.white : Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  int noDate = 0;
-  int selectDate = 1;
   @override
   void initState() {
     super.initState();
-    getDate();
-  }
-
-  void getDate() {
-    setState(() {
-      noDate = getDaysInMonth(dateTime.year, dateTime.month);
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      now.value = DateTime.now();
     });
+    for (int i = 0; i < listDateTime.length; i++) {
+      if (DateFormat().add_yMd().format(listDateTime[i]) ==
+          DateFormat().add_yMd().format(DateTime.now())) {
+        onFocus = i;
+      }
+    }
   }
 
   @override
@@ -95,88 +108,61 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.grey,
-                  size: 16,
+                onPressed: () {
+                  setState(() {
+                    onFocus--;
+                    sslKey.currentState!.focusToItem(onFocus);
+                    _calendarController.displayDate = listDateTime[onFocus];
+                  });
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios_new_outlined,
+                  size: 18,
+                  color: Colors.grey[400],
                 ),
               ),
-              const SizedBox(width: 5),
-              GestureDetector(
-                onTap: () {},
-                child: Text(
-                  '${listMonth[dateTime.month]} ${dateTime.year}',
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
+              const SizedBox(width: 8),
+              Text(
+                '${DateFormat().add_MMM().format(listDateTime[onFocus])} ${listDateTime[onFocus].year}',
+                style: Theme.of(context).textTheme.headline5,
               ),
-              const SizedBox(width: 5),
+              const SizedBox(width: 8),
               IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.arrow_forward_ios,
-                  color: Colors.grey,
-                  size: 16,
+                onPressed: () {
+                  setState(() {
+                    onFocus++;
+                    sslKey.currentState!.focusToItem(onFocus);
+                    _calendarController.displayDate = listDateTime[onFocus];
+                  });
+                },
+                icon: Icon(
+                  Icons.arrow_forward_ios_outlined,
+                  size: 18,
+                  color: Colors.grey[400],
                 ),
-              )
+              ),
             ],
           ),
+          const SizedBox(height: 15),
           SizedBox(
-            height: 100,
-            width: widthDevice,
-            child: ListView(scrollDirection: Axis.horizontal, children: [
-              for (int i = 1; i <= noDate; i++)
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      selectDate = i;
-                    });
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 15),
-                    margin: const EdgeInsets.only(right: 10),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      gradient: (selectDate == i)
-                          ? AppColors.colorGradient
-                          : LinearGradient(
-                              colors: [
-                                Colors.grey.withOpacity(0.1),
-                                Colors.grey.withOpacity(0.1),
-                              ],
-                            ),
-                    ),
-                    child: Column(
-                      children: [
-                        Text(
-                          '${i}/${dateTime.month}',
-                          style: TextStyle(
-                            color:
-                                (selectDate == i) ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Text(
-                          dateTime.year.toString(),
-                          style: TextStyle(
-                            color:
-                                (selectDate == i) ? Colors.white : Colors.black,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-            ]),
+            height: MediaQuery.of(context).size.height * 0.17,
+            child: ScrollSnapList(
+              key: sslKey,
+              itemBuilder: _itemBuilder,
+              background: Colors.blue[200],
+              itemCount: listDateTime.length,
+              itemSize: 100,
+              dispatchScrollNotifications: true,
+              initialIndex: onFocus.toDouble(),
+              scrollPhysics: const ScrollPhysics(),
+              duration: 1000,
+              onItemFocus: (int index) {
+                setState(() {
+                  onFocus = index;
+                  _calendarController.displayDate = listDateTime[onFocus];
+                });
+              },
+            ),
           ),
           const SizedBox(height: 20),
           // ignore: avoid_unnecessary_containers, sized_box_for_whitespace
