@@ -1,12 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/FoodScheduleCard.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/MealNutritionCard.dart';
-import 'package:gold_health/apps/pages/mealPlanner/widgets/monthScroll.dart';
-import 'package:intl/intl.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
 
 import '../../global_widgets/screenTemplate.dart';
 import '../../template/misc/colors.dart';
