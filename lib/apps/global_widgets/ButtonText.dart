@@ -29,10 +29,10 @@ class ButtonText extends StatelessWidget {
             shadowColor: Colors.transparent),
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 15,
+            fontSize: 14,
           ),
         ),
       ),
