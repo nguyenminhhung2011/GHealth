@@ -109,32 +109,6 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
     //   isDone: false,
     // ));
 
-    // Container(
-    //   alignment: Alignment.center,
-    //   decoration: BoxDecoration(
-    //     borderRadius: BorderRadius.circular(30),
-    //     gradient: const LinearGradient(
-    //       colors: [
-    //         Color.fromARGB(249, 232, 186, 219),
-    //         Color.fromARGB(255, 198, 157, 219),
-    //         Colors.grey,
-    //         Colors.grey,
-    //       ],
-    //       stops: [0.0, fillPercent, fillPercent, 1.0],
-    //       end: Alignment.bottomCenter,
-    //       begin: Alignment.topCenter,
-    //     ),
-    //   ),
-    //   child: Text(
-    //     meeting.eventName,
-    //     style: const TextStyle(
-    //         fontFamily: 'Sen',
-    //         fontSize: 20,
-    //         fontWeight: FontWeight.w500,
-    //         color: Colors.white),
-    //   ),
-    // );
-
     return meetings;
   }
 
@@ -157,8 +131,10 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
                     ? 1.0
                     : meeting.from.isAfter(now.value)
                         ? 0
-                        : (now.value.difference(meeting.from).inSeconds
-                                as double) /
+                        : (now.value
+                                .difference(meeting.from)
+                                .inSeconds
+                                .toDouble()) /
                             meeting.to.difference(meeting.from).inSeconds),
               ),
             ),
@@ -312,8 +288,9 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
                   itemCount: listDateTime.length,
                   itemSize: 100,
                   dispatchScrollNotifications: true,
-                  initialIndex: onFocus as double,
+                  initialIndex: onFocus.toDouble(),
                   scrollPhysics: const ScrollPhysics(),
+                  duration: 1000,
                   onItemFocus: (int index) {
                     setState(() {
                       onFocus = index;

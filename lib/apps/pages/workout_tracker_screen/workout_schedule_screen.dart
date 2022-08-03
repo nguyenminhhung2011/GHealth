@@ -280,14 +280,13 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
             Container(
               padding: const EdgeInsets.all(15),
               height: heightDevice * 0.2,
-              decoration: const BoxDecoration(color: Colors.red),
-              // child: ClipRRect(
-              //   borderRadius: BorderRadius.circular(15),
-              //   child: YoutubePlayer(
-              //     controller: _controller,
-              //     showVideoProgressIndicator: true,
-              //   ),
-              // ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: YoutubePlayer(
+                  controller: _controller,
+                  showVideoProgressIndicator: true,
+                ),
+              ),
             ),
             const SizedBox(height: 10),
             Text(
