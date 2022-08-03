@@ -433,7 +433,7 @@ class PopularFoodCard extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 17,
@@ -442,14 +442,14 @@ class PopularFoodCard extends StatelessWidget {
               const SizedBox(height: 10),
               Text(
                 '${level} | ${time}mins | ${kCal}kCal',
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
-          Spacer(),
+          const Spacer(),
           InkWell(
             borderRadius: BorderRadius.circular(13),
             onTap: press,
@@ -459,7 +459,7 @@ class PopularFoodCard extends StatelessWidget {
                 shape: BoxShape.circle,
                 border: Border.all(width: 1, color: AppColors.primaryColor1),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.arrow_forward_ios,
                 color: AppColors.primaryColor1,
               ),

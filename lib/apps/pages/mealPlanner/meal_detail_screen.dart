@@ -60,7 +60,7 @@ class MealDetailScreen extends StatelessWidget {
                   width: widthDevice / 1.7,
                   'assets/images/sushi.png',
                 ),
-              ),
+              ),  
             ),
           ),
           // ignore: avoid_unnecessary_containers

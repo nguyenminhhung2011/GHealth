@@ -13,33 +13,35 @@ import '../../global_widgets/ButtonText.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
 import 'category_meal_screen.dart';
+import 'meal_schedule_screen.dart';
 
 class MealPlannerScreen extends StatelessWidget {
   const MealPlannerScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    var _heightDevice = MediaQuery.of(context).size.height;
-    var _widthDevice = MediaQuery.of(context).size.width;
+    var heightDevice = MediaQuery.of(context).size.height;
+    var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       extendBody: true,
       body: Stack(
         children: [
           Container(
-            width: _widthDevice,
-            height: _heightDevice,
+            width: widthDevice,
+            height: heightDevice,
             decoration: BoxDecoration(
               color: AppColors.mainColor,
             ),
           ),
+          // ignore: avoid_unnecessary_containers
           Container(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.transparent,
               ),
               child: ListView(
-                physics: BouncingScrollPhysics(
+                physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
                 children: [
@@ -47,10 +49,10 @@ class MealPlannerScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       ConstrainedBox(
-                        constraints: BoxConstraints(minHeight: _heightDevice),
+                        constraints: BoxConstraints(minHeight: heightDevice),
                         child: Container(
                           width: double.maxFinite,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 10,
                           ),
@@ -61,7 +63,7 @@ class MealPlannerScreen extends StatelessWidget {
                             physics: const NeverScrollableScrollPhysics(),
                             child: Column(
                               children: [
-                                AppBarDesign(title: 'Meal Planner'),
+                                const AppBarDesign(title: 'Meal Planner'),
                                 const SizedBox(height: 20),
                                 Row(
                                   children: [
@@ -74,7 +76,7 @@ class MealPlannerScreen extends StatelessWidget {
                                             fontSize: 17,
                                           ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     ButtonIconGradientColor(
                                       title: ' Week',
                                       icon: Icons.calendar_month,
@@ -84,7 +86,7 @@ class MealPlannerScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20),
                                 SizedBox(
-                                  width: _widthDevice,
+                                  width: widthDevice,
                                   height: 200,
                                   child: Container(
                                     child: LineChartOneLine(),
@@ -94,25 +96,25 @@ class MealPlannerScreen extends StatelessWidget {
                                 SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
-                                    children: [
+                                    children: const [
                                       ControlMealCard(
                                           header: 'Calories', percent: 0.82),
-                                      const SizedBox(width: 20),
+                                      SizedBox(width: 20),
                                       ControlMealCard(
                                           header: 'Sugar', percent: 0.39),
-                                      const SizedBox(width: 20),
+                                      SizedBox(width: 20),
                                       ControlMealCard(
                                           header: 'Fibre', percent: 0.88),
-                                      const SizedBox(width: 20),
+                                      SizedBox(width: 20),
                                       ControlMealCard(
                                           header: 'fats', percent: 0.42),
-                                      const SizedBox(width: 20),
+                                      SizedBox(width: 20),
                                     ],
                                   ),
                                 ),
                                 const SizedBox(height: 20),
                                 Container(
-                                  width: _widthDevice,
+                                  width: widthDevice,
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 20, horizontal: 20),
                                   decoration: BoxDecoration(
@@ -129,7 +131,7 @@ class MealPlannerScreen extends StatelessWidget {
                                   ),
                                   child: Row(
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Daily Meal Scheduele',
                                         style: TextStyle(
                                           color: Colors.black,
@@ -137,9 +139,17 @@ class MealPlannerScreen extends StatelessWidget {
                                           fontSize: 16,
                                         ),
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       ButtonText(
-                                        press: () {},
+                                        press: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MealScheduleScreen(),
+                                            ),
+                                          );
+                                        },
                                         title: 'Check',
                                         color: AppColors.primaryColor1,
                                       ),
@@ -158,7 +168,7 @@ class MealPlannerScreen extends StatelessWidget {
                                             fontSize: 17,
                                           ),
                                     ),
-                                    Spacer(),
+                                    const Spacer(),
                                     ButtonIconGradientColor(
                                       title: ' Breakfast',
                                       icon: Icons.keyboard_arrow_down_sharp,
@@ -170,7 +180,7 @@ class MealPlannerScreen extends StatelessWidget {
                                 Column(
                                   children: [
                                     TodayMealCard(
-                                      widthDevice: _widthDevice,
+                                      widthDevice: widthDevice,
                                       title: 'Salmin Nigiri',
                                       time: 'Today | 7am',
                                       press: () {},
@@ -178,7 +188,7 @@ class MealPlannerScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 10),
                                     TodayMealCard(
-                                      widthDevice: _widthDevice,
+                                      widthDevice: widthDevice,
                                       title: 'Lowfat Mild',
                                       time: 'Today | 8am',
                                       press: () {},
@@ -282,22 +292,22 @@ class AppBarDesign extends StatelessWidget {
               color: AppColors.primaryColor1.withOpacity(0.2),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back_ios,
               color: Colors.black,
             ),
           ),
         ),
-        Spacer(),
+        const Spacer(),
         Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
         ),
-        Spacer(),
+        const Spacer(),
         InkWell(
           onTap: () {},
           child: Container(
@@ -306,7 +316,7 @@ class AppBarDesign extends StatelessWidget {
               color: AppColors.primaryColor1.withOpacity(0.2),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(
+            child: const Icon(
               Icons.more_horiz,
               color: Colors.black,
             ),
