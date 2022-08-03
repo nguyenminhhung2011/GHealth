@@ -43,6 +43,44 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
     'Sunday',
   ];
   @override
+  static int getDaysInMonth(int year, int month) {
+    if (month == DateTime.february) {
+      final bool isLeapYear =
+          (year % 4 == 0) && (year % 100 != 0) || (year % 400 == 0);
+      return isLeapYear ? 29 : 28;
+    }
+    const List<int> daysInMonth = <int>[
+      31,
+      -1,
+      31,
+      30,
+      31,
+      30,
+      31,
+      31,
+      30,
+      31,
+      30,
+      31
+    ];
+    return daysInMonth[month - 1];
+  }
+
+  int noDate = 0;
+  int selectDate = 1;
+  @override
+  void initState() {
+    super.initState();
+    getDate();
+  }
+
+  void getDate() {
+    setState(() {
+      noDate = getDaysInMonth(dateTime.year, dateTime.month);
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
@@ -134,7 +172,61 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
                                 SingleChildScrollView(
                                   scrollDirection: Axis.horizontal,
                                   child: Row(
-                                    children: [],
+                                    children: [
+                                      for (int i = 1; i <= noDate; i++)
+                                        InkWell(
+                                          onTap: () {
+                                            setState(() {
+                                              selectDate = i;
+                                            });
+                                          },
+                                          child: Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 20, vertical: 15),
+                                            margin: const EdgeInsets.only(
+                                                right: 10),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              gradient: (selectDate == i)
+                                                  ? AppColors.colorGradient
+                                                  : LinearGradient(
+                                                      colors: [
+                                                        Colors.grey
+                                                            .withOpacity(0.1),
+                                                        Colors.grey
+                                                            .withOpacity(0.1),
+                                                      ],
+                                                    ),
+                                            ),
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  '${i}/${dateTime.month}',
+                                                  style: TextStyle(
+                                                    color: (selectDate == i)
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 18,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Text(
+                                                  dateTime.year.toString(),
+                                                  style: TextStyle(
+                                                    color: (selectDate == i)
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                    ],
                                   ),
                                 ),
                                 const SizedBox(height: 20),
