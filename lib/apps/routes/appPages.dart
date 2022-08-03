@@ -15,6 +15,7 @@ import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart'
 import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/dashboard_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
 import '../pages/dashboard/notification_screen.dart';
@@ -109,5 +110,10 @@ class AppPages {
       // binding: NotificationBiding(),
       transition: Transition.fade,
     ),
+    GetPage(
+      name: RouteName.workoutScheduleScreen,
+      page: () => const WorkoutScheduleScreen(),
+      transition: Transition.fade,
+    )
   ];
 }

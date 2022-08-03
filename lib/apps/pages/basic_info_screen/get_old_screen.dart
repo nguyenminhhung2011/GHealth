@@ -71,13 +71,14 @@ class _GetOldScreenState extends State<GetOldScreen> {
                       TextSpan(
                           style: Theme.of(context).textTheme.headline4,
                           children: [
-                            TextSpan(
+                            const TextSpan(
                               text: 'Your age: ',
                               style: TextStyle(fontWeight: FontWeight.w400),
                             ),
                             TextSpan(
                               text: age.toString(),
-                              style: TextStyle(color: AppColors.primaryColor),
+                              style: const TextStyle(
+                                  color: AppColors.primaryColor),
                             ),
                           ]),
                     ),

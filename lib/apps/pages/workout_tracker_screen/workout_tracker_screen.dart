@@ -2,11 +2,13 @@ import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
 
 import '../../global_widgets/RowText_Seemore.dart';
+import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/widgets/button_gradient.dart';
 
@@ -27,7 +29,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
           Container(
             width: widthDevice,
             height: heightDevice,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.primaryColor1,
             ),
             child: Align(
@@ -35,184 +37,183 @@ class WorkoutTrackerScreen extends StatelessWidget {
               child: SizedBox(
                 height: heightDevice * 0.38,
                 width: widthDevice,
-                child: Padding(
-                  padding: const EdgeInsets.only(
+                child: const Padding(
+                  padding: EdgeInsets.only(
                     right: 30,
                     top: 80,
                     left: 10,
                   ),
-                  child: Container(
-                    child: _LineChart(isShowingMainData: true),
-                  ),
+                  child: _LineChart(isShowingMainData: true),
                 ),
               ),
             ),
           ),
           Container(
-            child: Container(
-              decoration: BoxDecoration(
-                color: Colors.transparent,
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+            ),
+            child: ListView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
               ),
-              child: ListView(
-                physics: BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        height: heightDevice * 0.35,
-                      ),
-                      ConstrainedBox(
-                        constraints:
-                            BoxConstraints(minHeight: heightDevice * 0.86),
-                        child: Container(
-                          width: double.maxFinite,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.mainColor,
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(50),
-                              topRight: Radius.circular(50),
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 65,
-                                  height: 7,
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryColor1
-                                        .withOpacity(0.3),
-                                    borderRadius: BorderRadius.circular(15),
-                                  ),
-                                ),
-                                const SizedBox(height: 40),
-                                Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 20,
-                                    vertical: 25,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(20),
-                                    gradient: AppColors.colorGradient2,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        'Daily Workout Schedule',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4!
-                                            .copyWith(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 18,
-                                            ),
-                                      ),
-                                      Spacer(),
-                                      ButtonGradient(
-                                        height: 40.0,
-                                        width: 90.0,
-                                        linearGradient: LinearGradient(
-                                          colors: [
-                                            AppColors.primaryColor1,
-                                            AppColors.primaryColor1,
-                                          ],
-                                        ),
-                                        onPressed: () {},
-                                        title: const Text(
-                                          'Check',
-                                          style: TextStyle(
-                                            fontFamily: 'Sen',
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 12,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: 30),
-                                RowText_Seemore(
-                                  press: () {},
-                                  title: 'Upcoming Workout',
-                                ),
-                                const SizedBox(height: 15),
-                                Column(
-                                  children: [
-                                    UpComingWorkoutContainer(
-                                      val: val,
-                                      imagePath: 'assets/images/fitness.png',
-                                      main: 'Fullbody Workout',
-                                      time: 'Today, 03:00pm',
-                                    ),
-                                    const SizedBox(height: 15),
-                                    UpComingWorkoutContainer(
-                                      val: val,
-                                      imagePath: 'assets/images/drinking.png',
-                                      main: 'Uperbody Workout',
-                                      time: 'June 05, 02:00pm',
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 20),
-                                RowText_Seemore(
-                                  press: () {},
-                                  title: 'What Do You Want to Train',
-                                ),
-                                const SizedBox(height: 15),
-                                Column(
-                                  children: [
-                                    CategoriesWorkoutCard(
-                                      cate_name: 'Fullbody Workout',
-                                      press: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                WorkoutDetailScreen(),
-                                          ),
-                                        );
-                                      },
-                                      imagePath: 'assets/images/fitness.png',
-                                      exer: 11,
-                                      time: 32,
-                                    ),
-                                    CategoriesWorkoutCard(
-                                      cate_name: 'Lowebody Workout',
-                                      press: () {},
-                                      imagePath: 'assets/images/yoga.png',
-                                      exer: 12,
-                                      time: 40,
-                                    ),
-                                    CategoriesWorkoutCard(
-                                      cate_name: 'AB Workout',
-                                      press: () {},
-                                      imagePath: 'assets/images/drinking.png',
-                                      exer: 14,
-                                      time: 20,
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    SizedBox(
+                      height: heightDevice * 0.35,
+                    ),
+                    ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: heightDevice * 0.86),
+                      child: Container(
+                        width: double.maxFinite,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor,
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(50),
+                            topRight: Radius.circular(50),
                           ),
                         ),
-                      )
-                    ],
-                  )
-                ],
-              ),
+                        child: SingleChildScrollView(
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Container(
+                                width: 65,
+                                height: 7,
+                                decoration: BoxDecoration(
+                                  color:
+                                      AppColors.primaryColor1.withOpacity(0.3),
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
+                              ),
+                              const SizedBox(height: 40),
+                              Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 25,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: AppColors.colorGradient2,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Daily Workout Schedule',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4!
+                                          .copyWith(
+                                            color: Colors.black,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 18,
+                                          ),
+                                    ),
+                                    const Spacer(),
+                                    ButtonGradient(
+                                      height: 40.0,
+                                      width: 90.0,
+                                      linearGradient: const LinearGradient(
+                                        colors: [
+                                          AppColors.primaryColor1,
+                                          AppColors.primaryColor1,
+                                        ],
+                                      ),
+                                      onPressed: () {
+                                        Get.toNamed(
+                                            RouteName.workoutScheduleScreen);
+                                      },
+                                      title: const Text(
+                                        'Check',
+                                        style: TextStyle(
+                                          fontFamily: 'Sen',
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 30),
+                              RowText_Seemore(
+                                press: () {},
+                                title: 'Upcoming Workout',
+                              ),
+                              const SizedBox(height: 15),
+                              Column(
+                                children: [
+                                  UpComingWorkoutContainer(
+                                    val: val,
+                                    imagePath: 'assets/images/fitness.png',
+                                    main: 'Fullbody Workout',
+                                    time: 'Today, 03:00pm',
+                                  ),
+                                  const SizedBox(height: 15),
+                                  UpComingWorkoutContainer(
+                                    val: val,
+                                    imagePath: 'assets/images/drinking.png',
+                                    main: 'Uperbody Workout',
+                                    time: 'June 05, 02:00pm',
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              RowText_Seemore(
+                                press: () {},
+                                title: 'What Do You Want to Train',
+                              ),
+                              const SizedBox(height: 15),
+                              Column(
+                                children: [
+                                  CategoriesWorkoutCard(
+                                    cate_name: 'Fullbody Workout',
+                                    press: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              WorkoutDetailScreen(),
+                                        ),
+                                      );
+                                    },
+                                    imagePath: 'assets/images/fitness.png',
+                                    exer: 11,
+                                    time: 32,
+                                  ),
+                                  CategoriesWorkoutCard(
+                                    cate_name: 'Lowebody Workout',
+                                    press: () {},
+                                    imagePath: 'assets/images/yoga.png',
+                                    exer: 12,
+                                    time: 40,
+                                  ),
+                                  CategoriesWorkoutCard(
+                                    cate_name: 'AB Workout',
+                                    press: () {},
+                                    imagePath: 'assets/images/drinking.png',
+                                    exer: 14,
+                                    time: 20,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              ],
             ),
           ),
           Column(
@@ -238,14 +239,14 @@ class WorkoutTrackerScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.arrow_back_ios,
                         color: Colors.black54,
                       ),
                     ),
                   ),
-                  Spacer(),
-                  Text(
+                  const Spacer(),
+                  const Text(
                     'Workout Tracker',
                     style: TextStyle(
                       color: Colors.white,
@@ -253,7 +254,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   InkWell(
                     onTap: () {},
                     child: Container(
@@ -269,7 +270,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      child: Icon(
+                      child: const Icon(
                         Icons.more_horiz,
                         color: Colors.black54,
                       ),

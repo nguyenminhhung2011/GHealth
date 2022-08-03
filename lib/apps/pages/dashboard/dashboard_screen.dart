@@ -55,17 +55,10 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return AnimatedSlide(
-                duration: const Duration(milliseconds: 600),
-                offset: Offset.zero,
-                child: snapshot.data as Widget,
-              );
+              return snapshot.data as Widget;
             }
           }
-          return const AnimatedSlide(
-              duration: Duration(milliseconds: 600),
-              offset: Offset.zero,
-              child: Center(child: CircularProgressIndicator()));
+          return const Center(child: CircularProgressIndicator());
         },
         future: refreshPage(),
       ),
