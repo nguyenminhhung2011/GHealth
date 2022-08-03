@@ -1270,6 +1270,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         child: Center(
                                                           child:
                                                               CircularPercentIndicator(
+                                                            rotateLinearGradient:
+                                                                true,
                                                             radius:
                                                                 heightOfWaterChart /
                                                                         2 -
@@ -1278,6 +1280,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                                             animationDuration:
                                                                 1800,
                                                             lineWidth: 15.0,
+                                                            circularStrokeCap:
+                                                                CircularStrokeCap
+                                                                    .round,
+                                                            onAnimationEnd: () {
+                                                              print('finished');
+                                                            },
                                                             percent: 0.7,
                                                             center:
                                                                 CircularPercentIndicator(
@@ -1290,8 +1298,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                   1900,
                                                               lineWidth: 15.0,
                                                               percent: 0.5,
+                                                              circularStrokeCap:
+                                                                  CircularStrokeCap
+                                                                      .round,
                                                               center:
                                                                   CircularPercentIndicator(
+                                                                circularStrokeCap:
+                                                                    CircularStrokeCap
+                                                                        .round,
                                                                 radius:
                                                                     heightOfWaterChart /
                                                                             2 -
@@ -1300,7 +1314,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 animationDuration:
                                                                     2000,
                                                                 lineWidth: 15.0,
-                                                                percent: 0.3,
+                                                                percent: 0.8,
                                                                 backgroundColor:
                                                                     const Color
                                                                             .fromARGB(

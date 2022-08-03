@@ -55,6 +55,9 @@ dependencies:
   circular_countdown_timer: ^0.2.0
   flutter_ringtone_player: ^3.2.0
   readmore: ^2.2.0
+  video_player: ^2.4.5
+  youtube_player_flutter: ^8.1.0
+  syncfusion_flutter_calendar: ^20.2.40
 
 
   

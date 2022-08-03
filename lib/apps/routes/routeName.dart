@@ -1,3 +1,5 @@
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
+
 abstract class RouteName {
   static const splash = "/splash";
   static const intro = "/intro";
@@ -13,4 +15,5 @@ abstract class RouteName {
   static const dashboardScreen = '/dashboard_screen';
   static const activityTrackerScreen = '/activity_trackerScreen';
   static const notificationScreen = '/notification_screen';
+  static const workoutScheduleScreen = '/workout_schedule_screen';
 }
