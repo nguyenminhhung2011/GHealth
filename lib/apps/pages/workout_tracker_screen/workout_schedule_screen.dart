@@ -209,141 +209,144 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
 
-    return ScreenTemplate(
-      child: Column(
-        //padding: const EdgeInsets.all(20),
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primaryColor1,
-                  ),
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.black54,
-                  ),
-                ),
-              ),
-              Text(
-                'Workout Schedule',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontSize: 20),
-              ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push<void>(MaterialPageRoute<void>(
-                    builder: (BuildContext context) =>
-                        const OnClickScheduleScreen(),
-                  ));
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: AppColors.primaryColor1,
-                  ),
-                  child: const Icon(
-                    Icons.more_horiz,
-                    color: Colors.black54,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Container(
-            padding: const EdgeInsets.all(15),
-            height: heightDevice * 0.2,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: YoutubePlayer(
-                controller: _controller,
-                showVideoProgressIndicator: true,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            exerciseName,
-            style:
-                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-          ),
-          Text(
-            '$level | $caloriesBurn',
-            style: Theme.of(context).textTheme.headline5,
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'Description',
-            style:
-                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-          ),
-          const SizedBox(height: 10),
-          ReadMoreText(
-            description,
-            trimLines: 3,
-            colorClickableText: Colors.pink,
-            trimMode: TrimMode.Line,
-            trimCollapsedText: 'Read more',
-            trimExpandedText: 'Show less',
-            moreStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor1,
-            ),
-            lessStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryColor1,
-            ),
-          ),
-          const SizedBox(height: 20),
-          Text(
-            'How To Do It',
-            style:
-                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-          ),
-          const SizedBox(height: 10),
-          ...listInstructions,
-          const SizedBox(height: 10),
-          Text(
-            'Custom Repetitions',
-            style:
-                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            height: heightDevice * 0.2,
-            child: CupertinoPicker(
-              looping: true,
-              diameterRatio: 1,
-              itemExtent: 64,
-              onSelectedItemChanged: (int value) {},
-              selectionOverlay: Container(
-                decoration: BoxDecoration(
-                  border: Border.symmetric(
-                    horizontal: BorderSide(
-                      width: 1,
-                      color: Colors.grey[300]!,
+    return Scaffold(
+      backgroundColor: AppColors.mainColor,
+      body: ScreenTemplate(
+        child: Column(
+          //padding: const EdgeInsets.all(20),
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.primaryColor1,
+                    ),
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.black54,
                     ),
                   ),
                 ),
-              ),
-              children: listRepetitionsChoice,
+                Text(
+                  'Workout Schedule',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4!
+                      .copyWith(fontSize: 20),
+                ),
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).push<void>(MaterialPageRoute<void>(
+                      builder: (BuildContext context) =>
+                          const OnClickScheduleScreen(),
+                    ));
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: AppColors.primaryColor1,
+                    ),
+                    child: const Icon(
+                      Icons.more_horiz,
+                      color: Colors.black54,
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-        ],
+            const SizedBox(height: 20),
+            Container(
+              padding: const EdgeInsets.all(15),
+              height: heightDevice * 0.2,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: YoutubePlayer(
+                  controller: _controller,
+                  showVideoProgressIndicator: true,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              exerciseName,
+              style:
+                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+            ),
+            Text(
+              '$level | $caloriesBurn',
+              style: Theme.of(context).textTheme.headline5,
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'Description',
+              style:
+                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+            ),
+            const SizedBox(height: 10),
+            ReadMoreText(
+              description,
+              trimLines: 3,
+              colorClickableText: Colors.pink,
+              trimMode: TrimMode.Line,
+              trimCollapsedText: 'Read more',
+              trimExpandedText: 'Show less',
+              moreStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor1,
+              ),
+              lessStyle: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryColor1,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Text(
+              'How To Do It',
+              style:
+                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+            ),
+            const SizedBox(height: 10),
+            ...listInstructions,
+            const SizedBox(height: 10),
+            Text(
+              'Custom Repetitions',
+              style:
+                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: heightDevice * 0.2,
+              child: CupertinoPicker(
+                looping: true,
+                diameterRatio: 1,
+                itemExtent: 64,
+                onSelectedItemChanged: (int value) {},
+                selectionOverlay: Container(
+                  decoration: BoxDecoration(
+                    border: Border.symmetric(
+                      horizontal: BorderSide(
+                        width: 1,
+                        color: Colors.grey[300]!,
+                      ),
+                    ),
+                  ),
+                ),
+                children: listRepetitionsChoice,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

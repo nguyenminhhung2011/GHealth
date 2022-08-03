@@ -18,60 +18,55 @@ class _ScreenTemplateState extends State<ScreenTemplate> {
     late FixedExtentScrollController _controller =
         FixedExtentScrollController();
 
-    return Scaffold(
-      backgroundColor: AppColors.mainColor,
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      body: Stack(
-        children: [
-          Container(
-            width: widthDevice,
-            height: heightDevice,
-            decoration: BoxDecoration(
-              color: AppColors.mainColor,
-            ),
-            child: const Align(
-              alignment: Alignment.topCenter,
-            ),
+    return Stack(
+      children: [
+        Container(
+          width: widthDevice,
+          height: heightDevice,
+          decoration: BoxDecoration(
+            color: AppColors.mainColor,
           ),
-          // ignore: avoid_unnecessary_containers
-          Container(
-            child: Container(
-              decoration: const BoxDecoration(
-                color: Colors.transparent,
+          child: const Align(
+            alignment: Alignment.topCenter,
+          ),
+        ),
+        // ignore: avoid_unnecessary_containers
+        Container(
+          child: Container(
+            decoration: const BoxDecoration(
+              color: Colors.transparent,
+            ),
+            child: ListView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
               ),
-              child: ListView(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      ConstrainedBox(
-                        constraints: BoxConstraints(minHeight: heightDevice),
-                        child: Container(
-                          width: double.maxFinite,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 20,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.mainColor,
-                          ),
-                          child: SingleChildScrollView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              child: widget.child),
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ConstrainedBox(
+                      constraints: BoxConstraints(minHeight: heightDevice),
+                      child: Container(
+                        width: double.maxFinite,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 10,
                         ),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor,
+                        ),
+                        child: SingleChildScrollView(
+                            physics: const NeverScrollableScrollPhysics(),
+                            child: widget.child),
                       ),
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                  ],
+                )
+              ],
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

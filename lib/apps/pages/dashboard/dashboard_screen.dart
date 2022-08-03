@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controls/dashboard_control.dart';
 import '../dashboard/home_screen.dart';
+import '../progress_tracker/widgets/progress_photo_screen.dart';
 import 'activity_trackerScreen.dart';
 import './profileScreen.dart';
 
@@ -24,13 +25,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   final List<Widget> listPage = [
     const HomeScreen(),
     const ActivityTrackerScreen(),
-    Center(
-      child: Container(
-        height: 100,
-        width: 100,
-        color: Colors.red,
-      ),
-    ),
+    const ProgressPhotoScreen(),
     const ProfileScreen(),
   ];
 

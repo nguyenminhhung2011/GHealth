@@ -20,127 +20,130 @@ class CategoryMealScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var _heightDevice = MediaQuery.of(context).size.height;
     var _widthDevice = MediaQuery.of(context).size.width;
-    return ScreenTemplate(
-      child: Column(
-        children: [
-          AppBarDesign(title: 'Beakfast'),
-          const SizedBox(height: 40),
-          SearchContainer(widthDevice: _widthDevice),
-          const SizedBox(height: 30),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Category',
-              style: Theme.of(context).textTheme.headline4!.copyWith(
-                    fontSize: 18,
+    return Scaffold(
+      backgroundColor: AppColors.mainColor,
+      body: ScreenTemplate(
+        child: Column(
+          children: [
+            AppBarDesign(title: 'Beakfast'),
+            const SizedBox(height: 40),
+            SearchContainer(widthDevice: _widthDevice),
+            const SizedBox(height: 30),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Category',
+                style: Theme.of(context).textTheme.headline4!.copyWith(
+                      fontSize: 18,
+                    ),
+              ),
+            ),
+            const SizedBox(height: 20),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  CategoryMealCard(
+                    imagePath: 'assets/images/break.png',
+                    name: "Salad",
+                    press: () {},
                   ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              children: [
-                CategoryMealCard(
-                  imagePath: 'assets/images/break.png',
-                  name: "Salad",
-                  press: () {},
-                ),
-                CategoryMealCard(
-                  imagePath: 'assets/images/lunch.png',
-                  name: "Cake",
-                  press: () {},
-                ),
-                CategoryMealCard(
-                  imagePath: 'assets/images/dinner.png',
-                  name: "Pie",
-                  press: () {},
-                ),
-                CategoryMealCard(
-                  imagePath: 'assets/images/break.png',
-                  name: "Smoothing",
-                  press: () {},
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Recommendation for Diet',
-              style: Theme.of(context).textTheme.headline4!.copyWith(
-                    fontSize: 18,
+                  CategoryMealCard(
+                    imagePath: 'assets/images/lunch.png',
+                    name: "Cake",
+                    press: () {},
                   ),
+                  CategoryMealCard(
+                    imagePath: 'assets/images/dinner.png',
+                    name: "Pie",
+                    press: () {},
+                  ),
+                  CategoryMealCard(
+                    imagePath: 'assets/images/break.png',
+                    name: "Smoothing",
+                    press: () {},
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 10),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Recommendation for Diet',
+                style: Theme.of(context).textTheme.headline4!.copyWith(
+                      fontSize: 18,
+                    ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  FoodViewCard(
+                    nameFoods: 'Honey Pancak',
+                    imagePath: 'assets/images/lunch.png',
+                    level: "Easy",
+                    time: 30,
+                    kCal: 180,
+                    press: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MealDetailScreen(),
+                        ),
+                      );
+                    },
+                    checkCOlor: 0,
+                  ),
+                  FoodViewCard(
+                    nameFoods: 'Canai Breach',
+                    imagePath: 'assets/images/dinner.png',
+                    level: "Easy",
+                    time: 20,
+                    kCal: 230,
+                    press: () {},
+                    checkCOlor: 1,
+                  ),
+                  FoodViewCard(
+                    nameFoods: 'Honey Pancak',
+                    imagePath: 'assets/images/lunch.png',
+                    level: "Easy",
+                    time: 30,
+                    kCal: 180,
+                    press: () {},
+                    checkCOlor: 0,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                'Popular',
+                style: Theme.of(context).textTheme.headline4!.copyWith(
+                      fontSize: 18,
+                    ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Column(
               children: [
-                FoodViewCard(
-                  nameFoods: 'Honey Pancak',
-                  imagePath: 'assets/images/lunch.png',
-                  level: "Easy",
+                PopularFoodCard(
+                  widthDevice: _widthDevice,
+                  title: 'Blubery Pancake',
                   time: 30,
-                  kCal: 180,
-                  press: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => MealDetailScreen(),
-                      ),
-                    );
-                  },
-                  checkCOlor: 0,
-                ),
-                FoodViewCard(
-                  nameFoods: 'Canai Breach',
-                  imagePath: 'assets/images/dinner.png',
-                  level: "Easy",
-                  time: 20,
+                  imagePath: 'assets/images/lunch.png',
+                  press: () {},
+                  level: 'Medium',
                   kCal: 230,
-                  press: () {},
-                  checkCOlor: 1,
-                ),
-                FoodViewCard(
-                  nameFoods: 'Honey Pancak',
-                  imagePath: 'assets/images/lunch.png',
-                  level: "Easy",
-                  time: 30,
-                  kCal: 180,
-                  press: () {},
-                  checkCOlor: 0,
-                ),
+                )
               ],
             ),
-          ),
-          const SizedBox(height: 20),
-          Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              'Popular',
-              style: Theme.of(context).textTheme.headline4!.copyWith(
-                    fontSize: 18,
-                  ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Column(
-            children: [
-              PopularFoodCard(
-                widthDevice: _widthDevice,
-                title: 'Blubery Pancake',
-                time: 30,
-                imagePath: 'assets/images/lunch.png',
-                press: () {},
-                level: 'Medium',
-                kCal: 230,
-              )
-            ],
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -8,8 +8,6 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/workout_tracker_sc
 import '../../controls/home_screen_control.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
-import 'dart:math';
-
 import 'package:get/get.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
