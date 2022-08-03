@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../global_widgets/GradientText.dart';
@@ -207,145 +208,141 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: AppColors.mainColor,
-      extendBody: true,
-      extendBodyBehindAppBar: true,
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColors.primaryColor1,
-                          Colors.grey.withOpacity(0.1),
-                        ],
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ),
-                Text(
-                  'Workout Schedule',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4!
-                      .copyWith(fontSize: 25),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).push<void>(MaterialPageRoute<void>(
-                      builder: (BuildContext context) =>
-                          const OnClickScheduleScreen(),
-                    ));
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          AppColors.primaryColor1,
-                          Colors.grey.withOpacity(0.1),
-                        ],
-                      ),
-                    ),
-                    child: const Icon(
-                      Icons.more_horiz,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(15),
-              height: heightDevice * 0.2,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: YoutubePlayer(
-                  controller: _controller,
-                  showVideoProgressIndicator: true,
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              exerciseName,
-              style:
-                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-            ),
-            Text(
-              '$level | $caloriesBurn',
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'Description',
-              style:
-                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              description,
-              style: Theme.of(context).textTheme.headline5,
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'How To Do It',
-              style:
-                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            ...listInstructions,
-            const SizedBox(height: 10),
-            Text(
-              'Custom Repetitions',
-              style:
-                  Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              height: heightDevice * 0.2,
-              child: CupertinoPicker(
-                looping: true,
-                diameterRatio: 1,
-                itemExtent: 64,
-                onSelectedItemChanged: (int value) {},
-                selectionOverlay: Container(
+    return ScreenTemplate(
+      child: Column(
+        //padding: const EdgeInsets.all(20),
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    border: Border.symmetric(
-                      horizontal: BorderSide(
-                        width: 1,
-                        color: Colors.grey[300]!,
-                      ),
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.primaryColor1,
+                        Colors.grey.withOpacity(0.1),
+                      ],
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+              Text(
+                'Workout Schedule',
+                style: Theme.of(context)
+                    .textTheme
+                    .headline4!
+                    .copyWith(fontSize: 25),
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.of(context).push<void>(MaterialPageRoute<void>(
+                    builder: (BuildContext context) =>
+                        const OnClickScheduleScreen(),
+                  ));
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.primaryColor1,
+                        Colors.grey.withOpacity(0.1),
+                      ],
+                    ),
+                  ),
+                  child: const Icon(
+                    Icons.more_horiz,
+                    color: Colors.black54,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(15),
+            height: heightDevice * 0.2,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: YoutubePlayer(
+                controller: _controller,
+                showVideoProgressIndicator: true,
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            exerciseName,
+            style:
+                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+          ),
+          Text(
+            '$level | $caloriesBurn',
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'Description',
+            style:
+                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            description,
+            style: Theme.of(context).textTheme.headline5,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'How To Do It',
+            style:
+                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+          ),
+          const SizedBox(height: 10),
+          ...listInstructions,
+          const SizedBox(height: 10),
+          Text(
+            'Custom Repetitions',
+            style:
+                Theme.of(context).textTheme.headline4!.copyWith(fontSize: 18),
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            height: heightDevice * 0.2,
+            child: CupertinoPicker(
+              looping: true,
+              diameterRatio: 1,
+              itemExtent: 64,
+              onSelectedItemChanged: (int value) {},
+              selectionOverlay: Container(
+                decoration: BoxDecoration(
+                  border: Border.symmetric(
+                    horizontal: BorderSide(
+                      width: 1,
+                      color: Colors.grey[300]!,
                     ),
                   ),
                 ),
-                children: listRepetitionsChoice,
               ),
+              children: listRepetitionsChoice,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
