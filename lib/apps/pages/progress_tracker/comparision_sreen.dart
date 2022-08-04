@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../global_widgets/screenTemplate.dart';
 import '../../template/misc/colors.dart';
+import 'compare_result_screen.dart';
 
 class ComparisionScreen extends StatefulWidget {
   const ComparisionScreen({Key? key}) : super(key: key);
@@ -58,7 +59,14 @@ class _ComparisionScreenState extends State<ComparisionScreen> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: InkWell(
                       borderRadius: BorderRadius.circular(20),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CompareResultScreen(),
+                          ),
+                        );
+                      },
                       child: Container(
                         alignment: Alignment.center,
                         width: widthDevice,

@@ -50,8 +50,9 @@ class MealPlannerScreen extends StatelessWidget {
             SizedBox(
               width: widthDevice,
               height: 200,
+              // ignore: avoid_unnecessary_containers
               child: Container(
-                child: LineChartOneLine(),
+                child: const LineChartOneLine(),
               ),
             ),
             const SizedBox(height: 20),
