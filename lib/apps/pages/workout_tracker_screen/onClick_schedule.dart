@@ -105,9 +105,10 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
             builder: (context) => Dialog(
               elevation: 5,
               child: Container(
-                padding: const EdgeInsets.all(30),
-                height: Get.mediaQuery.size.height * 0.32,
-                //width: Get.mediaQuery.size.width * 0.6,
+                padding: const EdgeInsets.only(
+                    right: 15, top: 15, bottom: 15, left: 20),
+                height: Get.mediaQuery.size.height * 0.3,
+                width: Get.mediaQuery.size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
