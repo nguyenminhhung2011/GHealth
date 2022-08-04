@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controls/dashboard_control.dart';
 import '../dashboard/home_screen.dart';
-import '../progress_tracker/widgets/progress_photo_screen.dart';
+import '../progress_tracker/progress_photo_screen.dart';
 import 'activity_trackerScreen.dart';
 import './profileScreen.dart';
 

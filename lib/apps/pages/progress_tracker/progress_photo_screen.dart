@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gold_health/apps/global_widgets/ButtonText.dart';
-import '../../../global_widgets/screenTemplate.dart';
-import '../../../template/misc/colors.dart';
+import '../../global_widgets/screenTemplate.dart';
+import '../../template/misc/colors.dart';
+import 'comparision_sreen.dart';
 
 class ProgressPhotoScreen extends StatefulWidget {
   const ProgressPhotoScreen({Key? key}) : super(key: key);
@@ -52,13 +53,14 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
       backgroundColor: AppColors.mainColor,
       extendBody: true,
       extendBodyBehindAppBar: true,
-      floatingActionButton: IconButton(
-        padding: EdgeInsets.zero,
-        iconSize: 50,
-        color: AppColors.primaryColor1,
-        icon: const Icon(Icons.camera_alt),
-        onPressed: () {},
-      ),
+      floatingActionButton: InkWell(
+          onTap: () {},
+          child: Container(
+            padding: const EdgeInsets.all(15),
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle, color: AppColors.primaryColor1),
+            child: const Icon(Icons.camera_alt, color: Colors.white),
+          )),
       body: ScreenTemplate(
         child: Column(
           children: [
@@ -222,7 +224,14 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
                   ),
                   const Spacer(),
                   ButtonText(
-                    press: () {},
+                    press: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ComparisionScreen(),
+                        ),
+                      );
+                    },
                     title: 'Compare',
                     color: AppColors.primaryColor1,
                   )
