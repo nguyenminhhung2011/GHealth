@@ -19,7 +19,7 @@ class AddScheduleScreen extends StatefulWidget {
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
   Map<String, Map<String, dynamic>> data = {
     'Choose Workout': {
-      'icon': 'icons/barbel_1.svg',
+      'icon': 'assets/icons/barbel_1.svg',
       'listDropDownValue': [
         'Upperbody Workout',
         'Lowerbody Workout',
@@ -29,7 +29,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       ],
     },
     'Difficulty': {
-      'icon': 'icons/Icon-Swap.svg',
+      'icon': 'assets/icons/Icon-Swap.svg',
       'listDropDownValue': [
         'Beginner',
         'Intermediate',
@@ -39,7 +39,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       ],
     },
     'Custom Repetitions': {
-      'icon': 'icons/Icon-Repetitions.svg',
+      'icon': 'assets/icons/Icon-Repetitions.svg',
       'listDropDownValue': [
         '10',
         '15',
@@ -52,7 +52,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       ],
     },
     'Custom Weights': {
-      'icon': 'icons/Icon-Weight.svg',
+      'icon': 'assets/icons/Icon-Weight.svg',
       'listDropDownValue': [
         '10 kg',
         '15 kg',
@@ -88,7 +88,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -138,9 +138,9 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                 ),
               ),
               const SizedBox(height: 15),
-              SizedBox(
+              Container(
+                alignment: Alignment.center,
                 height: Get.mediaQuery.size.height * 0.2,
-                width: Get.mediaQuery.size.width * 0.7,
                 child: CupertinoDatePicker(
                   mode: CupertinoDatePickerMode.time,
                   onDateTimeChanged: (value) {
@@ -165,16 +165,17 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                 ),
               ),
               const SizedBox(height: 15),
-              Padding(
-                padding: const EdgeInsets.only(left: 10),
+              Container(
+                width: Get.mediaQuery.size.width,
+                padding: const EdgeInsets.only(left: 10, right: 10),
                 child: Column(
                   children: [
                     Container(
                       height: 50,
+                      width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey[300]),
-                      width: Get.mediaQuery.size.width * 0.8,
                       child: Row(
                         children: [
                           const SizedBox(width: 10),
@@ -183,7 +184,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                           const SizedBox(width: 10),
                           const Expanded(
                             child: Text('Choose Workout',
-                                style: const TextStyle(fontSize: 15)),
+                                style: TextStyle(fontSize: 15)),
                           ),
                           SizedBox(
                             height: 30,
@@ -198,7 +199,11 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                                   .map(
                                     (e) => DropdownMenuItem<String>(
                                       value: e,
-                                      child: Text(e),
+                                      child: Text(e,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black54,
+                                          )),
                                     ),
                                   )
                                   .toList(),
@@ -215,10 +220,10 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     const SizedBox(height: 15),
                     Container(
                       height: 50,
+                      width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey[300]),
-                      width: Get.mediaQuery.size.width * 0.8,
                       child: Row(
                         children: [
                           const SizedBox(width: 10),
@@ -242,7 +247,11 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                                       .map(
                                         (e) => DropdownMenuItem<String>(
                                           value: e,
-                                          child: Text(e),
+                                          child: Text(e,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black54,
+                                              )),
                                         ),
                                       )
                                       .toList(),
@@ -259,10 +268,10 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     const SizedBox(height: 15),
                     Container(
                       height: 50,
+                      width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey[300]),
-                      width: Get.mediaQuery.size.width * 0.8,
                       child: Row(
                         children: [
                           const SizedBox(width: 10),
@@ -286,7 +295,11 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                                   .map(
                                     (e) => DropdownMenuItem<String>(
                                       value: e,
-                                      child: Text(e),
+                                      child: Text(e,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.black54,
+                                          )),
                                     ),
                                   )
                                   .toList(),
@@ -303,10 +316,10 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     const SizedBox(height: 15),
                     Container(
                       height: 50,
+                      width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(15),
                           color: Colors.grey[300]),
-                      width: Get.mediaQuery.size.width * 0.8,
                       child: Row(
                         children: [
                           const SizedBox(width: 10),
@@ -330,7 +343,13 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                                   .map(
                                     (e) => DropdownMenuItem<String>(
                                       value: e,
-                                      child: Text(e),
+                                      child: Text(
+                                        e,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          color: Colors.black54,
+                                        ),
+                                      ),
                                     ),
                                   )
                                   .toList(),
@@ -347,36 +366,39 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   ],
                 ),
               ),
-              const SizedBox(height: 30),
-              ButtonGradient(
-                height: Get.mediaQuery.size.height * 0.06,
-                width: Get.mediaQuery.size.width * 0.9,
-                linearGradient: LinearGradient(colors: [
-                  Colors.blue[200]!,
-                  Colors.blue[300]!,
-                  Colors.blue[400]!
-                ]),
-                onPressed: () {
-                  Function(Meeting) addMeeting =
-                      Get.arguments as Function(Meeting);
-                  print(selectDate.toIso8601String());
-                  addMeeting(
-                    Meeting(
-                      eventName: dropDownValueChooseWorkout,
-                      from: selectDate,
-                      to: selectDate.add(const Duration(hours: 1, minutes: 30)),
-                      background: Colors.black,
-                      isAllDay: false,
-                    ),
-                  );
-                  Get.back();
-                },
-                title: const Text(
-                  'Save',
-                  style: TextStyle(
-                      fontFamily: 'Sen',
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold),
+              const SizedBox(height: 50),
+              Center(
+                child: ButtonGradient(
+                  height: Get.mediaQuery.size.height * 0.06,
+                  width: Get.mediaQuery.size.width * 0.9,
+                  linearGradient: LinearGradient(colors: [
+                    Colors.blue[200]!,
+                    Colors.blue[300]!,
+                    Colors.blue[400]!
+                  ]),
+                  onPressed: () {
+                    Function(Meeting) addMeeting =
+                        Get.arguments as Function(Meeting);
+                    print(selectDate.toIso8601String());
+                    addMeeting(
+                      Meeting(
+                        eventName: dropDownValueChooseWorkout,
+                        from: selectDate,
+                        to: selectDate
+                            .add(const Duration(hours: 1, minutes: 30)),
+                        background: Colors.black,
+                        isAllDay: false,
+                      ),
+                    );
+                    Get.back();
+                  },
+                  title: const Text(
+                    'Save',
+                    style: TextStyle(
+                        fontFamily: 'Sen',
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
             ],
