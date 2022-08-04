@@ -107,7 +107,7 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
               child: Container(
                 padding: const EdgeInsets.all(30),
                 height: Get.mediaQuery.size.height * 0.32,
-                width: Get.mediaQuery.size.width * 0.6,
+                //width: Get.mediaQuery.size.width * 0.6,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -126,8 +126,9 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
                         const Text(
                           'Workout Schedule',
                           style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
                             fontFamily: 'Sen',
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),

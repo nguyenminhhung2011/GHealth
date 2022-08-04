@@ -19,7 +19,7 @@ class AddScheduleScreen extends StatefulWidget {
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
   Map<String, Map<String, dynamic>> data = {
     'Choose Workout': {
-      'icon': 'icons/barbel_1.svg',
+      'icon': 'assets/icons/barbel_1.svg',
       'listDropDownValue': [
         'Upperbody Workout',
         'Lowerbody Workout',
@@ -29,7 +29,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       ],
     },
     'Difficulty': {
-      'icon': 'icons/Icon-Swap.svg',
+      'icon': 'assets/icons/Icon-Swap.svg',
       'listDropDownValue': [
         'Beginner',
         'Intermediate',
@@ -39,7 +39,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       ],
     },
     'Custom Repetitions': {
-      'icon': 'icons/Icon-Repetitions.svg',
+      'icon': 'assets/icons/Icon-Repetitions.svg',
       'listDropDownValue': [
         '10',
         '15',
@@ -52,7 +52,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       ],
     },
     'Custom Weights': {
-      'icon': 'icons/Icon-Weight.svg',
+      'icon': 'assets/icons/Icon-Weight.svg',
       'listDropDownValue': [
         '10 kg',
         '15 kg',
