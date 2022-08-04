@@ -6,6 +6,9 @@ import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../template/misc/colors.dart';
 import 'package:intl/intl.dart';
+import './add_schedule_screen.dart';
+
+import '../dashboard/widgets/button_gradient.dart';
 
 class OnClickScheduleScreen extends StatefulWidget {
   const OnClickScheduleScreen({Key? key}) : super(key: key);
@@ -23,9 +26,30 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
     for (int i = 0; i <= 30; i++) DateTime(2022, 8, 1).add(Duration(days: i))
   ];
   GlobalKey<ScrollSnapListState> sslKey = GlobalKey();
-  late int onFocus;
+  late int onFocus = listDateTime.indexWhere((element) =>
+      DateFormat().add_yMd().format(element) ==
+      DateFormat().add_yMd().format(DateTime.now()));
   final CalendarController _calendarController = CalendarController();
-
+  List<Meeting> meetings = [
+    Meeting(
+        from: DateTime.now().subtract(const Duration(hours: 3)),
+        to: DateTime.now().subtract(const Duration(hours: 1)),
+        eventName: 'Meeting',
+        isAllDay: false,
+        background: Colors.black),
+    Meeting(
+        from: DateTime.now().subtract(const Duration(hours: 3)),
+        to: DateTime.now().add(const Duration(hours: 1)),
+        eventName: 'Meeting',
+        isAllDay: false,
+        background: Colors.black),
+    Meeting(
+        from: DateTime.now().subtract(const Duration(hours: 1)),
+        to: DateTime.now().add(const Duration(hours: 1)),
+        eventName: 'Meeting 2',
+        isAllDay: false,
+        background: Colors.black),
+  ];
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
       alignment: Alignment.center,
@@ -70,88 +94,137 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
     );
   }
 
-  List<Meeting> _getScheduleData() {
-    List<Meeting> meetings = [];
-    meetings.add(Meeting(
-        from: DateTime.now().subtract(const Duration(hours: 3)),
-        to: DateTime.now().add(const Duration(hours: 1)),
-        eventName: 'Meeting',
-        isAllDay: false,
-        background: Colors.black));
-    meetings.add(Meeting(
-        from: DateTime.now().subtract(const Duration(hours: 1)),
-        to: DateTime.now().add(const Duration(hours: 1)),
-        eventName: 'Meeting 2',
-        isAllDay: false,
-        background: Colors.black));
-    // meetings.add(Meeting(
-    //   startTime: DateTime.now().add(const Duration(hours: 4, days: -1)),
-    //   endTime: DateTime.now().add(const Duration(hours: 5, days: -1)),
-    //   eventName: 'Release Meeting',
-    //   isDone: true,
-    // ));
-    // meetings.add(Meeting(
-    //   startTime: DateTime.now().add(const Duration(hours: 2, days: -4)),
-    //   endTime: DateTime.now().add(const Duration(hours: 4, days: -4)),
-    //   eventName: 'Performance check',
-    //   isDone: false,
-    // ));
-    // meetings.add(Meeting(
-    //   startTime: DateTime.now().add(const Duration(hours: 11, days: -2)),
-    //   endTime: DateTime.now().add(const Duration(hours: 12, days: -2)),
-    //   eventName: 'Customer Meeting   Tokyo, Japan',
-    //   isDone: true,
-    // ));
-    // meetings.add(Meeting(
-    //   startTime: DateTime.now().add(const Duration(hours: 6, days: 2)),
-    //   endTime: DateTime.now().add(const Duration(hours: 7, days: 2)),
-    //   eventName: 'Retrospective',
-    //   isDone: false,
-    // ));
-
-    return meetings;
-  }
-
   Widget _scheduleBuilder(
       BuildContext context, CalendarAppointmentDetails details) {
     final Meeting meeting = details.appointments.first;
     return Obx(
-      () => Stack(
-        alignment: Alignment.center,
-        fit: StackFit.expand,
-        children: [
-          RotatedBox(
-            quarterTurns: 1,
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: LinearProgressIndicator(
-                color: AppColors.primaryColor1.withOpacity(0.6),
-                backgroundColor: Colors.grey.withOpacity(0.5),
-                value: (meeting.to.isBefore(now.value)
-                    ? 1.0
-                    : meeting.from.isAfter(now.value)
-                        ? 0
-                        : (now.value
-                                .difference(meeting.from)
-                                .inSeconds
-                                .toDouble()) /
-                            meeting.to.difference(meeting.from).inSeconds),
+      () => InkWell(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => Dialog(
+              elevation: 5,
+              child: Container(
+                padding: const EdgeInsets.all(30),
+                height: Get.mediaQuery.size.height * 0.32,
+                width: Get.mediaQuery.size.width * 0.6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 20,
+                          ),
+                        ),
+                        const Text(
+                          'Workout Schedule',
+                          style: TextStyle(
+                            fontFamily: 'Sen',
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.more_horiz),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      meeting.eventName,
+                      style: const TextStyle(
+                        fontFamily: 'Sen',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Icon(Icons.access_time_outlined),
+                        const SizedBox(width: 10),
+                        Text(
+                          '${DateFormat().add_E().format(meeting.from)} | ${DateFormat('kk:mm').format(meeting.from)}',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Expanded(
+                      child: Center(
+                        child: ButtonGradient(
+                          height: 50,
+                          width: 250,
+                          linearGradient: LinearGradient(colors: [
+                            Colors.blue[200]!,
+                            Colors.blue[300]!,
+                            Colors.blue[400]!
+                          ]),
+                          onPressed: () {},
+                          title: const Text(
+                            'Mark as Done',
+                            style: TextStyle(
+                                fontFamily: 'Sen',
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: Text(
-              meeting.eventName,
-              style: const TextStyle(
-                color: Colors.blueGrey,
-                fontFamily: 'Sen',
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
+          );
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            RotatedBox(
+              quarterTurns: 1,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(35),
+                child: LinearProgressIndicator(
+                  color: Colors.blue[300],
+                  backgroundColor: Colors.grey.withOpacity(0.5),
+                  value: (meeting.to.isBefore(now.value)
+                      ? 1.0
+                      : meeting.from.isAfter(now.value)
+                          ? 0
+                          : (now.value
+                                  .difference(meeting.from)
+                                  .inSeconds
+                                  .toDouble()) /
+                              meeting.to.difference(meeting.from).inSeconds),
+                ),
               ),
             ),
-          ),
-        ],
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                meeting.eventName,
+                style: const TextStyle(
+                  color: Colors.blueGrey,
+                  fontFamily: 'Sen',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -162,12 +235,12 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       now.value = DateTime.now();
     });
-    for (int i = 0; i < listDateTime.length; i++) {
-      if (DateFormat().add_yMd().format(listDateTime[i]) ==
-          DateFormat().add_yMd().format(DateTime.now())) {
-        onFocus = i;
-      }
-    }
+  }
+
+  void addMeeting(Meeting value) {
+    setState(() {
+      meetings.add(value);
+    });
   }
 
   @override
@@ -175,6 +248,30 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(() => AddScheduleScreen(dateTime: listDateTime[onFocus]),
+              arguments: addMeeting);
+        },
+        child: Container(
+          height: 60,
+          width: 60,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 226, 145, 201),
+                Color.fromARGB(255, 199, 152, 231),
+              ],
+            ),
+          ),
+          child: const Icon(
+            Icons.add_outlined,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -295,7 +392,7 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
                   view: CalendarView.day,
                   headerHeight: 0,
                   viewHeaderHeight: 0,
-                  dataSource: MeetingDataSource(_getScheduleData()),
+                  dataSource: MeetingDataSource(meetings),
                   appointmentBuilder: _scheduleBuilder,
                 ),
               ),
