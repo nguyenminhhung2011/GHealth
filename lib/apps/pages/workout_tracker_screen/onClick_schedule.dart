@@ -127,8 +127,9 @@ class _OnClickScheduleScreenState extends State<OnClickScheduleScreen> {
                         const Text(
                           'Workout Schedule',
                           style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
                             fontFamily: 'Sen',
-                            fontSize: 20,
+                            fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
