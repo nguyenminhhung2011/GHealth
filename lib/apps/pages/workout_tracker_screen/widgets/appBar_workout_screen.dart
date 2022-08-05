@@ -27,22 +27,22 @@ class AppBarWorkout extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                 ),
-                child: Icon(
+                child: const Icon(
                   Icons.arrow_back_ios,
                   color: Colors.black54,
                 ),
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Text(
               title,
-              style: TextStyle(
+              style:const  TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             InkWell(
               onTap: press,
               child: Container(
@@ -51,7 +51,7 @@ class AppBarWorkout extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                 ),
-                child: Icon(
+                child:const  Icon(
                   Icons.more_horiz,
                   color: Colors.black54,
                 ),
