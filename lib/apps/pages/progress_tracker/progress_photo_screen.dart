@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gold_health/apps/global_widgets/ButtonText.dart';
+import 'package:gold_health/apps/pages/progress_tracker/take_photo_screen.dart';
 import '../../global_widgets/screenTemplate.dart';
 import '../../template/misc/colors.dart';
 import 'comparision_sreen.dart';
@@ -54,7 +55,14 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       floatingActionButton: InkWell(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => TakePhotoScreen(),
+              ),
+            );
+          },
           child: Container(
             padding: const EdgeInsets.all(15),
             decoration: const BoxDecoration(
