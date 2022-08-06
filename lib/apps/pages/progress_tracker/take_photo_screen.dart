@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 
@@ -11,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import '../../template/misc/colors.dart';
 
 /// CameraApp is the Main Application.
+// ignore: must_be_immutable
 class TakePhotoScreen extends StatefulWidget {
   /// Default Constructor
   List<Map<String, dynamic>> fakeDta;
@@ -124,9 +124,9 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                               ),
                             ),
                             InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 DateTime timeTemp = DateTime.now();
-                                showModalBottomSheet(
+                                await showModalBottomSheet(
                                   context: context,
                                   transitionAnimationController:
                                       AnimationController(
@@ -183,6 +183,7 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                                                             'image': listImage,
                                                             'type': 1,
                                                           });
+                                                    Navigator.pop(context);
                                                   },
                                                   child: Container(
                                                     alignment: Alignment.center,
@@ -352,6 +353,4 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
       ),
     );
   }
-
-  showDialogFunction() {}
 }

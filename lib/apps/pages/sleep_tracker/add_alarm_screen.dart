@@ -122,8 +122,9 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.linear,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromARGB(255, 218, 224, 229)),
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.primaryColor1.withOpacity(0.2),
+                      ),
                       height: isExpandBedTime.value
                           ? heightDevice * 0.25
                           : heightDevice * 0.1,
@@ -248,8 +249,9 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.linear,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromARGB(255, 218, 224, 229)),
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.primaryColor1.withOpacity(0.2),
+                      ),
                       height: isExpandHoursOfSleep.value
                           ? heightDevice * 0.25
                           : heightDevice * 0.1,
@@ -376,8 +378,9 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                       duration: const Duration(milliseconds: 500),
                       curve: Curves.linear,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: const Color.fromARGB(255, 218, 224, 229)),
+                        borderRadius: BorderRadius.circular(20),
+                        color: AppColors.primaryColor1.withOpacity(0.2),
+                      ),
                       height: isExpandRepeat.value
                           ? heightDevice * 0.17
                           : heightDevice * 0.1,
@@ -510,7 +513,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: const Color.fromARGB(255, 218, 224, 229),
+                      color: AppColors.primaryColor1.withOpacity(0.2),
                     ),
                     alignment: Alignment.center,
                     height: heightDevice * 0.1,
