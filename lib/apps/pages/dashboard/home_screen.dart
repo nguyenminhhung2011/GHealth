@@ -14,6 +14,7 @@ import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 import '../../template/misc/colors.dart';
+import '../list_plan_screen/mealPlan_screen.dart';
 import '../mealPlanner/mealPlannerScreen.dart';
 import 'widgets/button_gradient.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -527,7 +528,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                               const Spacer(),
                                               InkWell(
-                                                onTap: () {},
+                                                onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          const MealPlanScreen(),
+                                                    ),
+                                                  );
+                                                },
                                                 child: Container(
                                                   padding: const EdgeInsets
                                                           .symmetric(

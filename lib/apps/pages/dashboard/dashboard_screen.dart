@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controls/dashboard_control.dart';
 import '../dashboard/home_screen.dart';
+import '../list_plan_screen/mealPlan_screen.dart';
 import '../progress_tracker/progress_photo_screen.dart';
 import 'activity_trackerScreen.dart';
 import './profileScreen.dart';
@@ -24,9 +25,9 @@ class _DashBoardScreenState extends State<DashBoardScreen>
 
   final List<Widget> listPage = [
     const HomeScreen(),
-    const ActivityTrackerScreen(),
+    const MealPlanScreen(),
     const ProgressPhotoScreen(),
-    const ProfileScreen(),
+    const ActivityTrackerScreen(),
   ];
 
   final List<IconData> _iconList = [
