@@ -226,97 +226,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                 () => Column(
                   children: listFood
                       .map(
-                        (e) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.2),
-                                  blurRadius: 5,
-                                )
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10, vertical: 20),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 80,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      image: DecorationImage(
-                                        image: AssetImage(
-                                          e['image'],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 5),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              e['name'],
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 17,
-                                              ),
-                                            ),
-                                            const Spacer(),
-                                            Text(
-                                              e['date'],
-                                              style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 12,
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Text(
-                                              e['kCal'].toString() + 'kCal',
-                                              style: const TextStyle(
-                                                color: AppColors.primaryColor1,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 15,
-                                              ),
-                                            ),
-                                            const Spacer(),
-                                            const Icon(
-                                              Icons.access_time_rounded,
-                                              color: AppColors.primaryColor1,
-                                              size: 18,
-                                            ),
-                                            Text(
-                                              e['time'],
-                                              style: const TextStyle(
-                                                color: Colors.grey,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 13,
-                                              ),
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
+                        (e) => FoodAbsorbed(data: e),
                       )
                       .toList(),
                 ),
@@ -324,6 +234,103 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class FoodAbsorbed extends StatelessWidget {
+  const FoodAbsorbed({Key? key, required this.data}) : super(key: key);
+  final Map<String, dynamic> data;
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              blurRadius: 5,
+            )
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          child: Row(
+            children: [
+              Container(
+                width: 80,
+                height: 50,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  image: DecorationImage(
+                    image: AssetImage(
+                      data['image'],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 5),
+              Expanded(
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          data['name'],
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                          ),
+                        ),
+                        const Spacer(),
+                        Text(
+                          data['date'],
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        Text(
+                          data['kCal'].toString() + 'kCal',
+                          style: const TextStyle(
+                            color: AppColors.primaryColor1,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          Icons.access_time_rounded,
+                          color: AppColors.primaryColor1,
+                          size: 18,
+                        ),
+                        Text(
+                          data['time'],
+                          style: const TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
