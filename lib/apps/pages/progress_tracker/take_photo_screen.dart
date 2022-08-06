@@ -2,8 +2,10 @@ import 'dart:ffi';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../template/misc/colors.dart';
@@ -11,14 +13,16 @@ import '../../template/misc/colors.dart';
 /// CameraApp is the Main Application.
 class TakePhotoScreen extends StatefulWidget {
   /// Default Constructor
-  const TakePhotoScreen({Key? key}) : super(key: key);
+  List<Map<String, dynamic>> fakeDta;
 
+  TakePhotoScreen({Key? key, required this.fakeDta}) : super(key: key);
   @override
   State<TakePhotoScreen> createState() => _TakePhotoScreenState();
 }
 
-class _TakePhotoScreenState extends State<TakePhotoScreen> {
-  List<File?> listImage = [null, null, null, null, null];
+class _TakePhotoScreenState extends State<TakePhotoScreen>
+    with TickerProviderStateMixin {
+  List<File?> listImage = [null, null, null, null];
   int onFocus = 0;
   List<Map<String, dynamic>> basicListImage = [
     {
@@ -97,27 +101,131 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 60),
                       Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.all(5),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.white,
-                              ),
-                              child: const Icon(
-                                Icons.arrow_back_ios,
-                                color: Colors.black54,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: const Icon(
+                                  Icons.arrow_back_ios,
+                                  color: Colors.black54,
+                                ),
                               ),
                             ),
-                          ),
+                            InkWell(
+                              onTap: () {
+                                DateTime timeTemp = DateTime.now();
+                                showModalBottomSheet(
+                                  context: context,
+                                  transitionAnimationController:
+                                      AnimationController(
+                                    vsync: this,
+                                    duration: const Duration(
+                                      milliseconds: 400,
+                                    ),
+                                  ),
+                                  builder: (context) => Container(
+                                    height: 250,
+                                    color: AppColors.mainColor,
+                                    child: Column(
+                                      children: [
+                                        // ignore: avoid_unnecessary_containers
+                                        SizedBox(
+                                          height: 180,
+                                          child: CupertinoDatePicker(
+                                            mode: CupertinoDatePickerMode.date,
+                                            onDateTimeChanged: (value) {
+                                              timeTemp = value;
+                                            },
+                                            initialDateTime: DateTime.now(),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 20),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20),
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    var count = listImage
+                                                        .where((element) =>
+                                                            element == null)
+                                                        .toList()
+                                                        .length;
+                                                    (count > 0)
+                                                        ? widget.fakeDta.add({
+                                                            'm': timeTemp.month,
+                                                            'd': timeTemp.day,
+                                                            'image': [
+                                                              'assets/images/work1.png',
+                                                              'assets/images/work2.png',
+                                                              'assets/images/work3.png',
+                                                              'assets/images/work4.png',
+                                                            ],
+                                                            'type': 0,
+                                                          })
+                                                        : widget.fakeDta.add({
+                                                            'm': timeTemp.month,
+                                                            'd': timeTemp.day,
+                                                            'image': listImage,
+                                                            'type': 1,
+                                                          });
+                                                  },
+                                                  child: Container(
+                                                    alignment: Alignment.center,
+                                                    height: 50,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(15),
+                                                        color: AppColors
+                                                            .primaryColor1),
+                                                    child: const Text(
+                                                      'Save',
+                                                      style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.white,
+                                ),
+                                child: const Icon(
+                                  Icons.save,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       const Spacer(),
@@ -244,4 +352,6 @@ class _TakePhotoScreenState extends State<TakePhotoScreen> {
       ),
     );
   }
+
+  showDialogFunction() {}
 }

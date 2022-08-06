@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gold_health/apps/global_widgets/ButtonText.dart';
 import 'package:gold_health/apps/pages/progress_tracker/take_photo_screen.dart';
 import '../../global_widgets/screenTemplate.dart';
@@ -13,9 +14,9 @@ class ProgressPhotoScreen extends StatefulWidget {
 }
 
 class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
-  final List<Map<String, dynamic>> fakeData = [
+  RxList<Map<String, dynamic>> fakeData = [
     {
-      'm': 'June',
+      'm': "June",
       'd': 2,
       'image': [
         'assets/images/work1.png',
@@ -23,6 +24,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
         'assets/images/work3.png',
         'assets/images/work4.png',
       ],
+      'type': 0,
     },
     {
       'm': 'May',
@@ -33,6 +35,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
         'assets/images/work7.png',
         'assets/images/work8.png',
       ],
+      'type': 0,
     },
     {
       'm': 'Nov',
@@ -43,8 +46,9 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
         'assets/images/work8.png',
         'assets/images/work5.png',
       ],
+      'type': 0,
     }
-  ];
+  ].obs;
   @override
   Widget build(BuildContext context) {
     // var heightDevice = MediaQuery.of(context).size.height;
@@ -59,7 +63,9 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => TakePhotoScreen(),
+                builder: (context) => TakePhotoScreen(
+                  fakeDta: fakeData,
+                ),
               ),
             );
           },
@@ -183,7 +189,9 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
                           color: AppColors.primaryColor1,
                         ),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            print(fakeData.length);
+                          },
                           style: ElevatedButton.styleFrom(
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -272,42 +280,59 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
               ),
             ),
             const SizedBox(height: 20),
-            Column(
-                children: fakeData.map((e) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${e['d']} ${e['m']}',
-                    style: const TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
-                  const SizedBox(height: 10),
-                  // ignore: sized_box_for_whitespace
-                  Container(
-                    height: 100,
-                    width: widthDevice,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: e['image'].length,
-                      itemBuilder: (context, index) => Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        width: 100,
-                        height: 100,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(
-                              e['image'][index],
-                            ),
-                          ),
-                        ),
+            Obx(
+              () => Column(
+                  children: fakeData.map((e) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '${e['d']} ${e['m']}',
+                      style: const TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                    const SizedBox(height: 10),
+                    // ignore: sized_box_for_whitespace
+                    Container(
+                      height: 100,
+                      width: widthDevice,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: e['image'].length,
+                        itemBuilder: (context, index) => (e['type'] == 0)
+                            ? Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: AssetImage(
+                                      e['image'][index],
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                width: 100,
+                                height: 100,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(15),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: FileImage(
+                                      e['image'][index],
+                                    ),
+                                  ),
+                                ),
+                              ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            }).toList()),
+                  ],
+                );
+              }).toList()),
+            ),
           ],
         ),
       ),
