@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+import 'package:gold_health/apps/pages/mealPlanner/widgets/SearchContainer.dart';
 import 'package:intl/intl.dart';
 
 import '../../template/misc/colors.dart';
+import 'addFood_nutri_screen.dart';
 
 class MealPlanScreen extends StatefulWidget {
   const MealPlanScreen({Key? key}) : super(key: key);
@@ -50,11 +52,31 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
   DateTime time = DateTime.now();
   @override
   Widget build(BuildContext context) {
+    var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: InkWell(
         borderRadius: BorderRadius.circular(50),
-        onTap: () {},
+        onTap: () {
+          Get.bottomSheet(
+            isScrollControlled: true,
+            enterBottomSheetDuration: const Duration(milliseconds: 400),
+            Container(
+              margin: const EdgeInsets.only(top: 48),
+              // ignore: prefer_const_constructors
+              height: heightDevice,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
+                ),
+                child: AddFoodScreen(
+                  listFood: listFood,
+                ),
+              ),
+            ),
+          );
+        },
         child: Container(
           padding: const EdgeInsets.all(10),
           decoration: const BoxDecoration(
