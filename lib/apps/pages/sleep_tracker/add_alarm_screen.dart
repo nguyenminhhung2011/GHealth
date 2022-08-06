@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:intl/intl.dart';
 
+import '../../template/misc/colors.dart';
 import '../dashboard/widgets/button_gradient.dart';
 
 class AddAlarmScreen extends StatefulWidget {
@@ -53,8 +54,11 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
               height: (listVariable[day] as RxBool).value ? 30 : 0,
               width: (listVariable[day] as RxBool).value ? 43 : 0,
               decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Colors.blue[400]!)),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: AppColors.primaryColor2,
+                ),
+              ),
             ),
           ),
           Container(
@@ -198,22 +202,32 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       TextButton(
-                                          onPressed: () {
-                                            choseTime.value = tempTime;
-                                            isExpandBedTime.value =
-                                                !isExpandBedTime.value;
-                                          },
-                                          child: Text('Save',
-                                              style: TextStyle(
-                                                  color: Colors.blue[400]))),
+                                        onPressed: () {
+                                          choseTime.value = tempTime;
+                                          isExpandBedTime.value =
+                                              !isExpandBedTime.value;
+                                        },
+                                        child: Text(
+                                          'Save',
+                                          style: TextStyle(
+                                            color: Colors.blue[400],
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                       TextButton(
-                                          onPressed: () {
-                                            isExpandBedTime.value =
-                                                !isExpandBedTime.value;
-                                          },
-                                          child: Text('Cancel',
-                                              style: TextStyle(
-                                                  color: Colors.blue[400])))
+                                        onPressed: () {
+                                          isExpandBedTime.value =
+                                              !isExpandBedTime.value;
+                                        },
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                            color: Colors.blue[400],
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      )
                                     ],
                                   );
                                 } else {
@@ -316,22 +330,32 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       TextButton(
-                                          onPressed: () {
-                                            choseDuration.value = tempDuration;
-                                            isExpandHoursOfSleep.value =
-                                                !isExpandHoursOfSleep.value;
-                                          },
-                                          child: Text('Save',
-                                              style: TextStyle(
-                                                  color: Colors.blue[400]))),
+                                        onPressed: () {
+                                          choseDuration.value = tempDuration;
+                                          isExpandHoursOfSleep.value =
+                                              !isExpandHoursOfSleep.value;
+                                        },
+                                        child: Text(
+                                          'Save',
+                                          style: TextStyle(
+                                            color: Colors.blue[400],
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                       TextButton(
-                                          onPressed: () {
-                                            isExpandHoursOfSleep.value =
-                                                !isExpandHoursOfSleep.value;
-                                          },
-                                          child: Text('Cancel',
-                                              style: TextStyle(
-                                                  color: Colors.blue[400])))
+                                        onPressed: () {
+                                          isExpandHoursOfSleep.value =
+                                              !isExpandHoursOfSleep.value;
+                                        },
+                                        child: Text(
+                                          'Cancel',
+                                          style: TextStyle(
+                                            color: Colors.blue[400],
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      )
                                     ],
                                   );
                                 } else {

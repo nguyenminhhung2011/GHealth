@@ -1,7 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/button_gradient.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/add_alarm_screen.dart';
@@ -9,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
+// ignore: must_be_immutable
 class SleepScheduleScreen extends StatefulWidget {
   SleepScheduleScreen(
       {Key? key, required this.itemBuilder, required this.listSchedule})

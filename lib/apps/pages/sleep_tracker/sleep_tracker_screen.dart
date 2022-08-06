@@ -335,7 +335,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                 ),
                 const SizedBox(height: 30),
                 Card(
-                  elevation: 5,
+                  elevation: 0,
                   child: Container(
                     padding: const EdgeInsets.only(left: 12),
                     height: heightDevice * 0.3 + 60,
@@ -467,7 +467,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                 ),
                 const SizedBox(height: 30),
                 Card(
-                  elevation: 5,
+                  elevation: 0,
                   child: Column(
                     children: [
                       const SizedBox(height: 5),
