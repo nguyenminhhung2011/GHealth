@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/data/sleep_tracker_data.dart';
+import 'package:gold_health/apps/pages/sleep_tracker/sleep_tracker_screen.dart';
 import 'package:time_chart/time_chart.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_tracker_screen.dart';
 import '../../controls/home_screen_control.dart';
@@ -642,17 +643,47 @@ class _HomeScreenState extends State<HomeScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        const Padding(
-                                          padding: EdgeInsets.only(
+                                        Padding(
+                                          padding: const EdgeInsets.only(
                                               left: 20.0, top: 10.0),
-                                          child: Text(
-                                            'Sleep',
-                                            style: TextStyle(
-                                              fontFamily: 'Sen',
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w600,
-                                              color: Colors.black,
-                                            ),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            children: [
+                                              const Text(
+                                                'Sleep',
+                                                style: TextStyle(
+                                                  fontFamily: 'Sen',
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              Expanded(
+                                                child: Container(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 15),
+                                                  alignment:
+                                                      Alignment.centerRight,
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .push<void>(
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const SleepTrackerScreen(),
+                                                        ),
+                                                      );
+                                                    },
+                                                    child: const Icon(
+                                                        Icons
+                                                            .arrow_forward_ios_outlined,
+                                                        size: 20),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                         Padding(
