@@ -25,7 +25,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
 
   final List<Widget> listPage = [
     const HomeScreen(),
-    const MealPlanScreen(),
+    MealPlanScreen(),
     const ProgressPhotoScreen(),
     const ActivityTrackerScreen(),
   ];

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../controls/dailyPlanController/dailyNutritionController.dart';
 import '../../template/misc/colors.dart';
 
 // ignore: must_be_immutable
@@ -8,16 +9,15 @@ class SelectAmountFood extends StatefulWidget {
   SelectAmountFood({
     Key? key,
     required this.foodItem,
-    required this.foodTemp,
   }) : super(key: key);
   RxMap<String, dynamic> foodItem;
-  List<Map<String, dynamic>> foodTemp;
   @override
   State<SelectAmountFood> createState() => _SelectAmountFoodState();
 }
 
 class _SelectAmountFoodState extends State<SelectAmountFood> {
   double slideValue = 0;
+  final _controller = Get.find<DailyNutritionController>();
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -37,7 +37,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           IconButton(
             onPressed: () {
               widget.foodItem['select'] = true;
-              widget.foodTemp.add(
+              _controller.foodTemp.add(
                 {
                   'image': widget.foodItem['image'],
                   'name': widget.foodItem['name'],

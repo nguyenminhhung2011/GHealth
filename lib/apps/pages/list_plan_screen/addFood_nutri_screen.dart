@@ -2,52 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
 
+import '../../controls/dailyPlanController/dailyNutritionController.dart';
 import '../../template/misc/colors.dart';
 
 class AddFoodScreen extends StatefulWidget {
-  AddFoodScreen({Key? key, required this.listFood}) : super(key: key);
-  RxList<Map<String, dynamic>> listFood;
+  // ignore: prefer_const_constructors_in_immutables
+  AddFoodScreen({Key? key}) : super(key: key);
 
   @override
   State<AddFoodScreen> createState() => _AddFoodScreenState();
 }
 
 class _AddFoodScreenState extends State<AddFoodScreen> {
-  RxList<RxMap<String, dynamic>> allFood = [
-    {
-      'name': 'Banh xeo',
-      'image': 'assets/images/break.png',
-      'kCal': 800,
-      'gam': 400,
-      'Carbs': 54,
-      'Protein': 20,
-      'Fat': 20,
-      'select': false,
-    }.obs,
-    {
-      'name': 'Banh Kep',
-      'image': 'assets/images/lunch.png',
-      'kCal': 900,
-      'gam': 450,
-      'Carbs': 54,
-      'Protein': 20,
-      'Fat': 20,
-      'select': false,
-    }.obs,
-    {
-      'name': 'Banh beo',
-      'image': 'assets/images/dinner.png',
-      'kCal': 1000,
-      'gam': 500,
-      'Carbs': 54,
-      'Protein': 20,
-      'Fat': 20,
-      'select': false,
-    }.obs,
-  ].obs;
-  List<Map<String, dynamic>> foodTemp = [
-    {'temp': 0}
-  ];
+  final _controller = Get.find<DailyNutritionController>();
+
+  // List<Map<String, dynamic>> foodTemp = [
+  //   {'temp': 0}
+  // ];
   // RxMap<String, dynamic> foodData = [];
   @override
   Widget build(BuildContext context) {
@@ -61,7 +32,10 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            _controller.clearFoodTemp();
+            Navigator.pop(context);
+          },
         ),
         title: const Text(
           'Add Food',
@@ -72,13 +46,11 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              int count = 0;
-              for (var item in foodTemp) {
-                if (count != 0) {
-                  widget.listFood.add(item);
-                }
-                count++;
+              for (var item in _controller.foodTemp) {
+                _controller.listFoodToday.add(item);
               }
+              ;
+              _controller.clearFoodTemp();
               Navigator.pop(context);
             },
             icon: const Icon(Icons.check, color: AppColors.primaryColor1),
@@ -91,7 +63,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
                   color: Colors.grey.withOpacity(0.08)),
@@ -111,35 +83,38 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 30),
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 15),
-          //   child: Align(
-          //     alignment: Alignment.centerLeft,
-          //     child: RichText(
-          //       text: TextSpan(
-          //         style: const TextStyle(
-          //           fontSize: 16,
-          //           fontWeight: FontWeight.bold,
-          //         ),
-          //         children: [
-          //           TextSpan(
-          //             text: "Amount: ",
-          //             style: TextStyle(
-          //               color: Colors.black.withOpacity(0.9),
-          //             ),
-          //           ),
-          //           TextSpan(
-          //             text: (foodTemp.length - 1).toString(),
-          //             style: const TextStyle(
-          //               color: AppColors.primaryColor1,
-          //             ),
-          //           ),
-          //         ],
-          //       ),
-          //     ),
-          //   ),
-          // ),
+          const SizedBox(height: 10),
+          Obx(
+            () => Padding(
+              padding: const EdgeInsets.only(left: 15),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: RichText(
+                  text: TextSpan(
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    children: [
+                      TextSpan(
+                        text: "Amount: ",
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.9),
+                        ),
+                      ),
+                      TextSpan(
+                        text: (_controller.foodTemp.length).toString(),
+                        style: const TextStyle(
+                          color: AppColors.primaryColor1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 10),
           // ignore: avoid_unnecessary_containers
           Obx(
             () => Expanded(
@@ -149,7 +124,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
-                children: allFood
+                children: _controller.allFood
                     .map(
                       (e) => _foodSelectCard(e),
                     )
@@ -180,17 +155,15 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     topLeft: Radius.circular(10.0),
                     topRight: Radius.circular(10.0),
                   ),
-                  child: SelectAmountFood(
-                    foodItem: e,
-                    foodTemp: foodTemp,
-                  ),
+                  child: SelectAmountFood(foodItem: e),
                 ),
               ),
             );
           } else {
             setState(() {
               e['select'] = false;
-              foodTemp.removeWhere((element) => element['name'] == e['name']);
+              _controller.foodTemp
+                  .removeWhere((element) => element['name'] == e['name']);
             });
           }
         },

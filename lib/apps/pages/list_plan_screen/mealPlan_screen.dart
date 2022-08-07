@@ -1,59 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_rx/src/rx_types/rx_types.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
-import 'package:gold_health/apps/pages/mealPlanner/widgets/SearchContainer.dart';
+// import 'package:get/get_rx/src/rx_types/rx_types.dart';
+// import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+// import 'package:gold_health/apps/pages/mealPlanner/widgets/SearchContainer.dart';
 import 'package:intl/intl.dart';
 
+import '../../controls/dailyPlanController/dailyNutritionController.dart';
 import '../../template/misc/colors.dart';
 import 'addFood_nutri_screen.dart';
 
-class MealPlanScreen extends StatefulWidget {
-  const MealPlanScreen({Key? key}) : super(key: key);
-
-  @override
-  State<MealPlanScreen> createState() => _MealPlanScreenState();
-}
-
-class _MealPlanScreenState extends State<MealPlanScreen> {
-  List<String> tabs = [
-    "Nutrition",
-    "Workout",
-    "Water",
-    "Step",
-    "Fasting",
-  ];
-  RxList<Map<String, dynamic>> listFood = [
-    {
-      'image': 'assets/images/lunch.png',
-      'name': 'Banh Xeo',
-      'kCal': 200,
-      'Carbs': 54,
-      'Protein': 20,
-      'Fat': 20,
-      'time': '10:54',
-      'date': '20/11/2002',
-    },
-  ].obs;
-  List<Map<String, dynamic>> listNutri = [
-    {
-      'data': 0,
-      'name': 'Carbs',
-    },
-    {
-      'data': 0,
-      'name': 'Protein',
-    },
-    {
-      'data': 0,
-      'name': 'Fat',
-    },
-  ];
-  DateTime time = DateTime.now();
+class MealPlanScreen extends StatelessWidget {
+  // ignore: prefer_const_constructors_in_immutables
+  MealPlanScreen({Key? key}) : super(key: key);
+  final _controller = Get.put(DailyNutritionController());
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
+    List<String> tabs = [
+      "Nutrition",
+      "Workout",
+      "Water",
+      "Step",
+      "Fasting",
+    ];
+
+    List<Map<String, dynamic>> listNutri = [
+      {
+        'data': 0,
+        'name': 'Carbs',
+      },
+      {
+        'data': 0,
+        'name': 'Protein',
+      },
+      {
+        'data': 0,
+        'name': 'Fat',
+      },
+    ];
+    DateTime time = DateTime.now();
     return Scaffold(
       floatingActionButton: InkWell(
         borderRadius: BorderRadius.circular(50),
@@ -70,9 +56,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                   topLeft: Radius.circular(10.0),
                   topRight: Radius.circular(10.0),
                 ),
-                child: AddFoodScreen(
-                  listFood: listFood,
-                ),
+                child: AddFoodScreen(),
               ),
             ),
           );
@@ -137,7 +121,8 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              listFood.fold<int>(0, (sum, element) {
+                              _controller.listFoodToday.fold<int>(0,
+                                  (sum, element) {
                                 return sum + element['kCal'] as int;
                               }).toString(),
                               style: const TextStyle(
@@ -178,8 +163,8 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                                       child: Column(
                                         children: [
                                           Text(
-                                            listFood.fold<int>(0,
-                                                (sum, element) {
+                                            _controller.listFoodToday
+                                                .fold<int>(0, (sum, element) {
                                               return sum + element[e['name']]
                                                   as int;
                                             }).toString(),
@@ -246,7 +231,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
               const SizedBox(height: 20),
               Obx(
                 () => Column(
-                  children: listFood
+                  children: _controller.listFoodToday
                       .map(
                         (e) => FoodAbsorbed(data: e),
                       )

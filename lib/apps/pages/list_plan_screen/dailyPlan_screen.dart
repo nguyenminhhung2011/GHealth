@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controls/DailyPlanControls.dart';
+import '../../controls/dailyPlanController/DailyPlanControls.dart';
 
 class DailyPlan extends StatelessWidget {
   DailyPlan({Key? key}) : super(key: key);
