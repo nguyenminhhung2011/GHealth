@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
 
 import '../../template/misc/colors.dart';
-import '../mealPlanner/widgets/SearchContainer.dart';
 
 class AddFoodScreen extends StatefulWidget {
   AddFoodScreen({Key? key, required this.listFood}) : super(key: key);
@@ -13,7 +13,7 @@ class AddFoodScreen extends StatefulWidget {
 }
 
 class _AddFoodScreenState extends State<AddFoodScreen> {
-  final List<Map<String, dynamic>> allFood = [
+  RxList<RxMap<String, dynamic>> allFood = [
     {
       'name': 'Banh xeo',
       'image': 'assets/images/break.png',
@@ -23,7 +23,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       'Protein': 20,
       'Fat': 20,
       'select': false,
-    },
+    }.obs,
     {
       'name': 'Banh Kep',
       'image': 'assets/images/lunch.png',
@@ -33,7 +33,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       'Protein': 20,
       'Fat': 20,
       'select': false,
-    },
+    }.obs,
     {
       'name': 'Banh beo',
       'image': 'assets/images/dinner.png',
@@ -43,13 +43,13 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       'Protein': 20,
       'Fat': 20,
       'select': false,
-    },
-  ];
-  final List<Map<String, dynamic>> foodTemp = [];
+    }.obs,
+  ].obs;
+  List<Map<String, dynamic>> foodTemp = [];
   @override
   Widget build(BuildContext context) {
-    var widthDevice = MediaQuery.of(context).size.width;
-    var heightDevice = MediaQuery.of(context).size.height;
+    // var widthDevice = MediaQuery.of(context).size.width;
+    // var heightDevice = MediaQuery.of(context).size.height;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).cardColor,
@@ -153,29 +153,43 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     );
   }
 
-  Padding _foodSelectCard(Map<String, dynamic> e) {
+  Padding _foodSelectCard(RxMap<String, dynamic> e) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: InkWell(
-        onTap: () {
-          setState(() {
-            e['select'] = !e['select'];
-            (e['select'])
-                ? foodTemp.add(
-                    {
-                      'image': e['image'],
-                      'name': e['name'],
-                      'kCal': e['kCal'],
-                      'Carbs': e['Carbs'],
-                      'Protein': e['Protein'],
-                      'Fat': e['Fat'],
-                      'time': '${DateTime.now().hour}:${DateTime.now().minute}',
-                      'date':
-                          '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-                    },
-                  )
-                : foodTemp.removeWhere((ele) => ele['name'] == e['name']);
-          });
+        onTap: () async {
+          // e['select'] = !e['select'];
+          // (e['select'])
+          //     ? foodTemp.add(
+          //         {
+          //           'image': e['image'],
+          //           'name': e['name'],
+          //           'kCal': e['kCal'],
+          //           'Carbs': e['Carbs'],
+          //           'Protein': e['Protein'],
+          //           'Fat': e['Fat'],
+          //           'time': '${DateTime.now().hour}:${DateTime.now().minute}',
+          //           'date':
+          //               '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+          //         },
+          //       )
+          //     : foodTemp.removeWhere((ele) => ele['name'] == e['name']);
+          await Get.bottomSheet(
+            isScrollControlled: true,
+            enterBottomSheetDuration: const Duration(milliseconds: 100),
+            Container(
+              margin: const EdgeInsets.only(top: 100),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(10.0),
+                ),
+                child: SelectAmountFood(
+                  foodItem: e,
+                ),
+              ),
+            ),
+          );
         },
         child: Container(
           width: double.infinity,
@@ -222,7 +236,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                       ),
                     ),
                     Text(
-                      '${e['kCal']}/${e['gam']}',
+                      '${e['kCal']}kCal/${e['gam']}gam',
                       style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 15,

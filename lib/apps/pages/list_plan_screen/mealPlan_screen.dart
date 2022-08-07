@@ -60,9 +60,9 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
         onTap: () {
           Get.bottomSheet(
             isScrollControlled: true,
-            enterBottomSheetDuration: const Duration(milliseconds: 400),
+            enterBottomSheetDuration: const Duration(milliseconds: 100),
             Container(
-              margin: const EdgeInsets.only(top: 48),
+              margin: const EdgeInsets.only(top: 50),
               // ignore: prefer_const_constructors
               height: heightDevice,
               child: ClipRRect(
