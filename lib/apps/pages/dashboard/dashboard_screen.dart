@@ -4,7 +4,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../controls/dashboard_control.dart';
-import '../dashboard/home_screen.dart';
+import 'home_screen.dart';
 import '../list_plan_screen/mealPlan_screen.dart';
 import '../progress_tracker/progress_photo_screen.dart';
 import 'activity_trackerScreen.dart';
@@ -40,8 +40,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   bool isPressButton = false;
 
   Future<Widget> refreshPage() async {
-    return Future<Widget>.delayed(const Duration(milliseconds: 600),
-        () => listPage[_dashBoardScreenC.tabIndex.value]);
+    return Future<Widget>.sync(() => listPage[_dashBoardScreenC.tabIndex.value])
+        .then((value) => value);
   }
 
   @override
@@ -49,48 +49,65 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     return Scaffold(
       body: FutureBuilder(
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              return snapshot.data as Widget;
-            }
+          if (snapshot.connectionState != ConnectionState.done) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            return snapshot.data as Widget;
           }
-          return const Center(child: CircularProgressIndicator());
         },
         future: refreshPage(),
       ),
-      floatingActionButton: Container(
-        height: 65,
-        width: 65,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [Colors.blue[100]!, Colors.blue[200]!],
+      bottomNavigationBar: BottomNavigationBar(
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.home_outlined,
+            ),
+            label: 'aa',
           ),
-          shape: BoxShape.circle,
-        ),
-        child: IconButton(
-          onPressed: () {},
-          icon: const Icon(
-            Icons.search,
-            color: Colors.white,
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.local_activity_outlined,
+            ),
+            label: 'aa',
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.camera_alt_outlined,
+            ),
+            label: 'aa',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.person_outline,
+            ),
+            label: 'aa',
+          )
+        ],
+        selectedItemColor: Colors.purple.withOpacity(0.5),
+        unselectedItemColor: Colors.grey,
+        currentIndex: _dashBoardScreenC.tabIndex.value,
+        elevation: 5,
+        onTap: (value) => setState(() {
+          _dashBoardScreenC.tabIndex.value = value;
+        }),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: AnimatedBottomNavigationBar(
-        icons: _iconList,
-        activeIndex: _dashBoardScreenC.tabIndex.value,
-        onTap: (index) {
-          setState(() {
-            _dashBoardScreenC.tabIndex.value = index;
-          });
-        },
-        notchSmoothness: NotchSmoothness.verySmoothEdge,
-        blurEffect: true,
-        activeColor: Colors.purple.withOpacity(0.5),
-        gapLocation: GapLocation.center,
-        leftCornerRadius: 32,
-        rightCornerRadius: 32,
-      ),
+      // bottomNavigationBar: AnimatedBottomNavigationBar(
+      //   icons: _iconList,
+      //   activeIndex: _dashBoardScreenC.tabIndex.value,
+      //   onTap: (index) {
+      //     setState(() {
+      //       _dashBoardScreenC.tabIndex.value = index;
+      //     });
+      //   },
+
+      //   notchSmoothness: NotchSmoothness.verySmoothEdge,
+      //   blurEffect: true,
+      //   activeColor: Colors.purple.withOpacity(0.5),
+      //   gapLocation: GapLocation.center,
+      //   leftCornerRadius: 32,
+      //   rightCornerRadius: 32,
+      // ),
     );
   }
 }
