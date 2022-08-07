@@ -111,35 +111,35 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               ),
             ),
           ),
-          const SizedBox(height: 10),
-          Padding(
-            padding: const EdgeInsets.only(left: 15),
-            child: Align(
-              alignment: Alignment.centerLeft,
-              child: RichText(
-                text: TextSpan(
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: "Amount: ",
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(0.9),
-                      ),
-                    ),
-                    const TextSpan(
-                      text: "22",
-                      style: TextStyle(
-                        color: AppColors.primaryColor1,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+          const SizedBox(height: 30),
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 15),
+          //   child: Align(
+          //     alignment: Alignment.centerLeft,
+          //     child: RichText(
+          //       text: TextSpan(
+          //         style: const TextStyle(
+          //           fontSize: 16,
+          //           fontWeight: FontWeight.bold,
+          //         ),
+          //         children: [
+          //           TextSpan(
+          //             text: "Amount: ",
+          //             style: TextStyle(
+          //               color: Colors.black.withOpacity(0.9),
+          //             ),
+          //           ),
+          //           TextSpan(
+          //             text: (foodTemp.length - 1).toString(),
+          //             style: const TextStyle(
+          //               color: AppColors.primaryColor1,
+          //             ),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+          // ),
           // ignore: avoid_unnecessary_containers
           Obx(
             () => Expanded(
@@ -169,23 +169,30 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
         onTap: () async {
           // e['select'] = !e['select'];
 
-          await Get.bottomSheet(
-            isScrollControlled: true,
-            enterBottomSheetDuration: const Duration(milliseconds: 100),
-            Container(
-              margin: const EdgeInsets.only(top: 100),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(10.0),
-                ),
-                child: SelectAmountFood(
-                  foodItem: e,
-                  foodTemp: foodTemp,
+          if (!e['select']) {
+            await Get.bottomSheet(
+              isScrollControlled: true,
+              enterBottomSheetDuration: const Duration(milliseconds: 100),
+              Container(
+                margin: const EdgeInsets.only(top: 100),
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(10.0),
+                    topRight: Radius.circular(10.0),
+                  ),
+                  child: SelectAmountFood(
+                    foodItem: e,
+                    foodTemp: foodTemp,
+                  ),
                 ),
               ),
-            ),
-          );
+            );
+          } else {
+            setState(() {
+              e['select'] = false;
+              foodTemp.removeWhere((element) => element['name'] == e['name']);
+            });
+          }
         },
         child: Container(
           width: double.infinity,
