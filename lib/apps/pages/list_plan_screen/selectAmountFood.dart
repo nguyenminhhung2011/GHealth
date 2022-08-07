@@ -5,8 +5,13 @@ import '../../template/misc/colors.dart';
 
 // ignore: must_be_immutable
 class SelectAmountFood extends StatefulWidget {
-  SelectAmountFood({Key? key, required this.foodItem}) : super(key: key);
+  SelectAmountFood({
+    Key? key,
+    required this.foodItem,
+    required this.foodTemp,
+  }) : super(key: key);
   RxMap<String, dynamic> foodItem;
+  List<Map<String, dynamic>> foodTemp;
   @override
   State<SelectAmountFood> createState() => _SelectAmountFoodState();
 }
@@ -30,7 +35,34 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
         centerTitle: true,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              widget.foodItem['select'] = true;
+              widget.foodTemp.add(
+                {
+                  'image': widget.foodItem['image'],
+                  'name': widget.foodItem['name'],
+                  'kCal': ((widget.foodItem['kCal'] / widget.foodItem['gam']) *
+                          slideValue)
+                      .round(),
+                  'Carbs':
+                      ((widget.foodItem['Carbs'] / widget.foodItem['gam']) *
+                              slideValue)
+                          .round(),
+                  'Protein':
+                      ((widget.foodItem['Protein'] / widget.foodItem['gam']) *
+                              slideValue)
+                          .round(),
+                  'Fat': ((widget.foodItem['Fat'] / widget.foodItem['gam']) *
+                          slideValue)
+                      .round(),
+                  'time': '${DateTime.now().hour}:${DateTime.now().minute}',
+                  'date':
+                      '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+                },
+              );
+
+              Navigator.pop(context);
+            },
             icon: const Icon(Icons.check, color: AppColors.primaryColor1),
           )
         ],

@@ -45,7 +45,10 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       'select': false,
     }.obs,
   ].obs;
-  List<Map<String, dynamic>> foodTemp = [];
+  List<Map<String, dynamic>> foodTemp = [
+    {'temp': 0}
+  ];
+  // RxMap<String, dynamic> foodData = [];
   @override
   Widget build(BuildContext context) {
     // var widthDevice = MediaQuery.of(context).size.width;
@@ -69,8 +72,12 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
         actions: [
           IconButton(
             onPressed: () {
+              int count = 0;
               for (var item in foodTemp) {
-                widget.listFood.add(item);
+                if (count != 0) {
+                  widget.listFood.add(item);
+                }
+                count++;
               }
               Navigator.pop(context);
             },
@@ -134,20 +141,22 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
             ),
           ),
           // ignore: avoid_unnecessary_containers
-          Expanded(
-            // height: heightDevice,
-            // width: widthDevice,
-            child: ListView(
-              physics: const BouncingScrollPhysics(
-                parent: AlwaysScrollableScrollPhysics(),
+          Obx(
+            () => Expanded(
+              // height: heightDevice,
+              // width: widthDevice,
+              child: ListView(
+                physics: const BouncingScrollPhysics(
+                  parent: AlwaysScrollableScrollPhysics(),
+                ),
+                children: allFood
+                    .map(
+                      (e) => _foodSelectCard(e),
+                    )
+                    .toList(),
               ),
-              children: allFood
-                  .map(
-                    (e) => _foodSelectCard(e),
-                  )
-                  .toList(),
             ),
-          ),
+          )
         ],
       ),
     );
@@ -159,21 +168,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       child: InkWell(
         onTap: () async {
           // e['select'] = !e['select'];
-          // (e['select'])
-          //     ? foodTemp.add(
-          //         {
-          //           'image': e['image'],
-          //           'name': e['name'],
-          //           'kCal': e['kCal'],
-          //           'Carbs': e['Carbs'],
-          //           'Protein': e['Protein'],
-          //           'Fat': e['Fat'],
-          //           'time': '${DateTime.now().hour}:${DateTime.now().minute}',
-          //           'date':
-          //               '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-          //         },
-          //       )
-          //     : foodTemp.removeWhere((ele) => ele['name'] == e['name']);
+
           await Get.bottomSheet(
             isScrollControlled: true,
             enterBottomSheetDuration: const Duration(milliseconds: 100),
@@ -186,6 +181,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 ),
                 child: SelectAmountFood(
                   foodItem: e,
+                  foodTemp: foodTemp,
                 ),
               ),
             ),
