@@ -9,6 +9,7 @@ import 'package:gold_health/apps/pages/mealPlanner/widgets/MealSelect.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/TodayMealCard.dart';
 
 import '../../global_widgets/ButtonText.dart';
+import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
 import 'category_meal_screen.dart';
@@ -165,6 +166,42 @@ class MealPlannerScreen extends StatelessWidget {
                           builder: (context) => MealScheduleScreen(),
                         ),
                       );
+                    },
+                    title: 'Check',
+                    color: AppColors.primaryColor1,
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 20),
+            Container(
+              width: widthDevice,
+              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: [
+                    AppColors.primaryColor1.withOpacity(0.1),
+                    AppColors.primaryColor2.withOpacity(0.1)
+                  ],
+                ),
+              ),
+              child: Row(
+                children: [
+                  const Text(
+                    'Amount of food absorbed',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Spacer(),
+                  ButtonText(
+                    press: () {
+                      Get.toNamed(RouteName.dailyNutritionScreen);
                     },
                     title: 'Check',
                     color: AppColors.primaryColor1,

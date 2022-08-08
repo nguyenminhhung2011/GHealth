@@ -12,7 +12,7 @@ import 'addFood_nutri_screen.dart';
 class DailyNutriScreen extends StatelessWidget {
   // ignore: prefer_const_constructors_in_immutables
   DailyNutriScreen({Key? key}) : super(key: key);
-  final _controller = Get.put(DailyNutritionController());
+  final _controller = Get.find<DailyNutritionController>();
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -76,13 +76,18 @@ class DailyNutriScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         title: Row(
-          children: const [
-            Icon(
-              Icons.calendar_month,
-              color: AppColors.primaryColor1,
+          children: [
+            IconButton(
+              onPressed: () {
+                Get.back();
+              },
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: AppColors.primaryColor1,
+              ),
             ),
-            SizedBox(width: 2),
-            Text(
+            const SizedBox(width: 2),
+            const Text(
               "Nutrition",
               style: TextStyle(
                 color: Colors.black,

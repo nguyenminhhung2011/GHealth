@@ -16,4 +16,5 @@ abstract class RouteName {
   static const activityTrackerScreen = '/activity_trackerScreen';
   static const notificationScreen = '/notification_screen';
   static const workoutScheduleScreen = '/workout_schedule_screen';
+  static const dailyNutritionScreen = '/daily_nutrition_screen';
 }

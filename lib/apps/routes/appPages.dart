@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:gold_health/apps/binding/dailyNutrition_binding.dart';
 import 'package:gold_health/apps/binding/fillProfileBinding.dart';
 import 'package:gold_health/apps/binding/loginBinding.dart';
 import 'package:gold_health/apps/binding/select_durationBinding.dart';
@@ -28,6 +29,7 @@ import '../pages/basic_info_screen/get_height_screen.dart';
 import '../pages/basic_info_screen/get_old_screen.dart';
 import '../pages/basic_info_screen/select_gender_screen.dart';
 import '../pages/dashboard/home_screen.dart';
+import '../pages/list_plan_screen/dailynutri_screen.dart';
 
 class AppPages {
   static final pages = [
@@ -114,6 +116,11 @@ class AppPages {
       name: RouteName.workoutScheduleScreen,
       page: () => const WorkoutScheduleScreen(),
       transition: Transition.fade,
-    )
+    ),
+    GetPage(
+      name: RouteName.dailyNutritionScreen,
+      page: () => DailyNutriScreen(),
+      binding: DailyNutritionB(),
+    ),
   ];
 }
