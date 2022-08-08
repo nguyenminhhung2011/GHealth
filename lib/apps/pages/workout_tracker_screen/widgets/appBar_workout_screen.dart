@@ -13,7 +13,6 @@ class AppBarWorkout extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 50),
         Row(
           children: [
             const SizedBox(width: 10),
@@ -36,7 +35,7 @@ class AppBarWorkout extends StatelessWidget {
             const Spacer(),
             Text(
               title,
-              style:const  TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
                 fontSize: 20,
@@ -51,7 +50,7 @@ class AppBarWorkout extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.white,
                 ),
-                child:const  Icon(
+                child: const Icon(
                   Icons.more_horiz,
                   color: Colors.black54,
                 ),
