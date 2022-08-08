@@ -28,25 +28,34 @@ class ActivityTrackerScreen extends StatelessWidget {
     var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
+      appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        backgroundColor: AppColors.mainColor,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Activity Tracker',
+          style: Theme.of(context).textTheme.headline4!.copyWith(
+                fontSize: 18,
+                fontFamily: "Sen",
+              ),
+        ),
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(),
+                  ),
+                );
+              },
+              icon: const Icon(Icons.settings, color: Colors.black))
+        ],
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-              height: 50,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Activity Tracker',
-                    style: Theme.of(context).textTheme.headline4!.copyWith(
-                          fontSize: 25,
-                          fontFamily: "Sen",
-                        ),
-                  ),
-                ),
-              ),
-            ),
             // Expanded(
             //   flex: (heightDevice / 20 * 5).round(),
             //   child: Padding(
@@ -240,7 +249,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Padding(
-                                padding: EdgeInsets.only(left: 20.0, top: 20.0),
+                                padding: EdgeInsets.only(top: 20.0),
                                 child: Text(
                                   'Heart Rate',
                                   style: TextStyle(
