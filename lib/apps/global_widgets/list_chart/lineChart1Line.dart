@@ -42,6 +42,8 @@ class LineChartOneLine extends StatelessWidget {
         rightTitles: AxisTitles(
           sideTitles: leftTitles(),
         ),
+        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+        leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
       );
 
   List<LineChartBarData> get lineBarsData1 => [

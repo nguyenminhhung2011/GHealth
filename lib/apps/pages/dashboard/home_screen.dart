@@ -504,15 +504,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                               const Spacer(),
                                               InkWell(
-                                                onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          MealPlanScreen(),
-                                                    ),
-                                                  );
-                                                },
+                                                onTap: () {},
                                                 child: Container(
                                                   padding: const EdgeInsets
                                                           .symmetric(

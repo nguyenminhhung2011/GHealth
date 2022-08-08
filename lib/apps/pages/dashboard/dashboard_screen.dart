@@ -63,25 +63,25 @@ class _DashBoardScreenState extends State<DashBoardScreen>
             icon: Icon(
               Icons.home_outlined,
             ),
-            label: 'aa',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.local_activity_outlined,
             ),
-            label: 'aa',
+            label: 'Planner',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.camera_alt_outlined,
             ),
-            label: 'aa',
+            label: 'Progress',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.person_outline,
             ),
-            label: 'aa',
+            label: 'Person',
           )
         ],
         selectedItemColor: Colors.purple.withOpacity(0.5),
