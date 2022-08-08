@@ -40,8 +40,10 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   bool isPressButton = false;
 
   Future<Widget> refreshPage() async {
-    return Future<Widget>.sync(() => listPage[_dashBoardScreenC.tabIndex.value])
-        .then((value) => value);
+    final result = await Future<Widget>.delayed(
+        const Duration(milliseconds: 600),
+        () => listPage[_dashBoardScreenC.tabIndex.value]);
+    return result;
   }
 
   @override
@@ -84,30 +86,15 @@ class _DashBoardScreenState extends State<DashBoardScreen>
             label: 'Person',
           )
         ],
-        selectedItemColor: Colors.purple.withOpacity(0.5),
+        type: BottomNavigationBarType.shifting,
+        selectedItemColor: Colors.blue[300],
         unselectedItemColor: Colors.grey,
         currentIndex: _dashBoardScreenC.tabIndex.value,
-        elevation: 5,
+        elevation: 10,
         onTap: (value) => setState(() {
           _dashBoardScreenC.tabIndex.value = value;
         }),
       ),
-      // bottomNavigationBar: AnimatedBottomNavigationBar(
-      //   icons: _iconList,
-      //   activeIndex: _dashBoardScreenC.tabIndex.value,
-      //   onTap: (index) {
-      //     setState(() {
-      //       _dashBoardScreenC.tabIndex.value = index;
-      //     });
-      //   },
-
-      //   notchSmoothness: NotchSmoothness.verySmoothEdge,
-      //   blurEffect: true,
-      //   activeColor: Colors.purple.withOpacity(0.5),
-      //   gapLocation: GapLocation.center,
-      //   leftCornerRadius: 32,
-      //   rightCornerRadius: 32,
-      // ),
     );
   }
 }

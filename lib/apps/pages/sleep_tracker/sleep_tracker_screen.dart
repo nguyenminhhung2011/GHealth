@@ -1,9 +1,5 @@
-import 'dart:ui';
-
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
@@ -24,6 +20,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
   int touchedIndex = -1;
   var bedTimeSwitchButton = true.obs;
   var alarmSwitchButton = true.obs;
+  // ignore: unnecessary_cast
   var listSchedule = ([
     {
       'name': 'Bedtime',

@@ -1,11 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import '../../global_widgets/boxData.dart';
 import '../../global_widgets/buttonMain.dart';
 import 'package:get/get.dart';
 import '../../routes/routeName.dart';
-import 'dart:math';
 
 import '../../template/misc/colors.dart';
 

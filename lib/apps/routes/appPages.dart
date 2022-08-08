@@ -97,7 +97,7 @@ class AppPages {
     ),
     GetPage(
       name: RouteName.dashboardScreen,
-      page: () => DashBoardScreen(),
+      page: () => const DashBoardScreen(),
       binding: DashBoardBinding(),
       transition: Transition.fade,
     ),
