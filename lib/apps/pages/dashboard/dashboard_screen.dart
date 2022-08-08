@@ -3,9 +3,10 @@ import 'dart:io';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/dailyPlan_screen.dart';
 import '../../controls/dashboard_control.dart';
 import '../dashboard/home_screen.dart';
-import '../list_plan_screen/mealPlan_screen.dart';
+import '../list_plan_screen/dailynutri_screen.dart';
 import '../progress_tracker/progress_photo_screen.dart';
 import 'activity_trackerScreen.dart';
 import './profileScreen.dart';
@@ -25,7 +26,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
 
   final List<Widget> listPage = [
     const HomeScreen(),
-    MealPlanScreen(),
+    DailyPlanScreen(),
     const ProgressPhotoScreen(),
     const ActivityTrackerScreen(),
   ];

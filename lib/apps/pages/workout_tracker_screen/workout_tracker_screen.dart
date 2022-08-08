@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/workout_plan_controller.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
@@ -13,12 +15,19 @@ import '../../template/misc/colors.dart';
 import '../dashboard/widgets/button_gradient.dart';
 
 class WorkoutTrackerScreen extends StatelessWidget {
-  const WorkoutTrackerScreen({Key? key}) : super(key: key);
-
+  WorkoutTrackerScreen({Key? key}) : super(key: key);
+  final controller = Get.put(WorkoutPlanController());
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
+    List<String> tabs = [
+      'Nutrition',
+      'Workout',
+      'Foot step',
+      'Water',
+      'Fasting',
+    ];
     bool val = true;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
@@ -40,7 +49,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
                 child: const Padding(
                   padding: EdgeInsets.only(
                     right: 30,
-                    top: 80,
+                    top: 100,
                     left: 10,
                   ),
                   child: _LineChart(isShowingMainData: true),
@@ -223,35 +232,41 @@ class WorkoutTrackerScreen extends StatelessWidget {
                 children: [
                   const SizedBox(width: 10),
                   InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
+                    onTap: () async {
+                      int? newIndex;
+                      await _showDialogMethod(
+                        context: context,
+                        tabs: tabs,
+                        onselectedTabs: (value) {
+                          newIndex = value;
+                        },
+                        done: () {
+                          print(newIndex);
+                          if (newIndex != null) {
+                            controller.changeTab(newIndex ?? 0);
+                          } else {
+                            controller.changeTab(0);
+                          }
+                          Navigator.pop(context);
+                        },
+                      );
                     },
-                    child: Container(
-                      padding: const EdgeInsets.all(5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.primaryColor1,
-                            Colors.grey.withOpacity(0.1),
-                          ],
+                    child: Row(
+                      children: const [
+                        Text(
+                          'Workout Planner',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
                         ),
-                      ),
-                      child: const Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.black54,
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  const Text(
-                    'Workout Tracker',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20,
+                        Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          color: Colors.black,
+                          size: 24,
+                        )
+                      ],
                     ),
                   ),
                   const Spacer(),
@@ -261,14 +276,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            AppColors.primaryColor1,
-                            Colors.grey.withOpacity(0.1),
-                          ],
-                        ),
+                        color: Colors.white,
                       ),
                       child: const Icon(
                         Icons.more_horiz,
@@ -283,6 +291,94 @@ class WorkoutTrackerScreen extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+
+  _showDialogMethod({
+    required BuildContext context,
+    required List<String> tabs,
+    required Function(int)? onselectedTabs,
+    required Function() done,
+  }) async {
+    await showDialog(
+      useRootNavigator: false,
+      barrierColor: Colors.black54,
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            alignment: Alignment.center,
+            height: 300,
+            width: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppColors.mainColor,
+              //   color: Colors.transparent,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: 200,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: CupertinoPicker(
+                    onSelectedItemChanged: onselectedTabs,
+                    selectionOverlay: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            width: 3, color: AppColors.primaryColor1),
+                      ),
+                    ),
+                    itemExtent: 50,
+                    diameterRatio: 1.2,
+                    children: [
+                      for (var item in tabs)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.primaryColor1,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: done,
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        primary: Colors.transparent,
+                        shadowColor: Colors.transparent),
+                    child: const Text(
+                      'Learn More',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

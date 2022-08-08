@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 
 import '../../controls/dailyPlanController/DailyPlanControls.dart';
 
-class DailyPlan extends StatelessWidget {
-  DailyPlan({Key? key}) : super(key: key);
+class DailyPlanScreen extends StatelessWidget {
+  DailyPlanScreen({Key? key}) : super(key: key);
   final controller = Get.find<DailyPlanController>();
   @override
   Widget build(BuildContext context) {

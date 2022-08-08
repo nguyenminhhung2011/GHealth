@@ -1,14 +1,12 @@
-import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/meal_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/list_chart/lineChart1Line.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/ControlMealCard.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/MealSelect.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/TodayMealCard.dart';
-import 'package:percent_indicator/percent_indicator.dart';
 
 import '../../global_widgets/ButtonText.dart';
 import '../../template/misc/colors.dart';
@@ -17,18 +15,80 @@ import 'category_meal_screen.dart';
 import 'meal_schedule_screen.dart';
 
 class MealPlannerScreen extends StatelessWidget {
-  const MealPlannerScreen({Key? key}) : super(key: key);
-
+  MealPlannerScreen({Key? key}) : super(key: key);
+  final controller = Get.put(MealPlanController());
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
+
+    List<String> tabs = [
+      'Nutrition',
+      'Workout',
+      'Foot step',
+      'Water',
+      'Fasting',
+    ];
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: ScreenTemplate(
         child: Column(
           children: [
-            const AppBarDesign(title: 'Meal Planner'),
+            Row(
+              children: [
+                InkWell(
+                  onTap: () async {
+                    int? newIndex;
+                    await _showDialogMethod(
+                      context: context,
+                      tabs: tabs,
+                      onselectedTabs: (value) {
+                        newIndex = value;
+                      },
+                      done: () {
+                        print(newIndex);
+                        if (newIndex != null) {
+                          controller.changeTab(newIndex ?? 0);
+                        }
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                  child: Row(
+                    children: const [
+                      Text(
+                        'Meal Planner',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ),
+                      ),
+                      Icon(
+                        Icons.keyboard_arrow_down_outlined,
+                        color: Colors.black,
+                        size: 24,
+                      )
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                InkWell(
+                  onTap: () {},
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryColor1.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: const Icon(
+                      Icons.more_horiz,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 20),
             Row(
               children: [
@@ -204,6 +264,94 @@ class MealPlannerScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  _showDialogMethod({
+    required BuildContext context,
+    required List<String> tabs,
+    required Function(int)? onselectedTabs,
+    required Function() done,
+  }) async {
+    await showDialog(
+      useRootNavigator: false,
+      barrierColor: Colors.black54,
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            alignment: Alignment.center,
+            height: 300,
+            width: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppColors.mainColor,
+              //   color: Colors.transparent,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: 200,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: CupertinoPicker(
+                    onSelectedItemChanged: onselectedTabs,
+                    selectionOverlay: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            width: 3, color: AppColors.primaryColor1),
+                      ),
+                    ),
+                    itemExtent: 50,
+                    diameterRatio: 1.2,
+                    children: [
+                      for (var item in tabs)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.primaryColor1,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: done,
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        primary: Colors.transparent,
+                        shadowColor: Colors.transparent),
+                    child: const Text(
+                      'Learn More',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

@@ -9,9 +9,9 @@ import '../../controls/dailyPlanController/dailyNutritionController.dart';
 import '../../template/misc/colors.dart';
 import 'addFood_nutri_screen.dart';
 
-class MealPlanScreen extends StatelessWidget {
+class DailyNutriScreen extends StatelessWidget {
   // ignore: prefer_const_constructors_in_immutables
-  MealPlanScreen({Key? key}) : super(key: key);
+  DailyNutriScreen({Key? key}) : super(key: key);
   final _controller = Get.put(DailyNutritionController());
   @override
   Widget build(BuildContext context) {
@@ -206,6 +206,7 @@ class MealPlanScreen extends StatelessWidget {
                           InkWell(
                             onTap: () {},
                             child: Container(
+                              padding: const EdgeInsets.all(2),
                               child: Row(
                                 children: [
                                   Text(
