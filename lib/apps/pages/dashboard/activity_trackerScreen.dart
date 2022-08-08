@@ -31,57 +31,19 @@ class ActivityTrackerScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
-              flex: (heightDevice / 20 * 2).round(),
+            SizedBox(
+              height: 50,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () => Navigator.pop(context),
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.primaryColor.withOpacity(0.2),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Activity Tracker',
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                          fontSize: 25,
+                          fontFamily: "Sen",
                         ),
-                        child: const Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    Text(
-                      'Activity Tracker',
-                      style: Theme.of(context).textTheme.headline4!.copyWith(
-                            fontSize: 18,
-                            fontFamily: "Sen",
-                          ),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ProfileScreen(),
-                          ),
-                        );
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.primaryColor.withOpacity(0.2),
-                        ),
-                        child: const Icon(
-                          Icons.settings,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -159,9 +121,8 @@ class ActivityTrackerScreen extends StatelessWidget {
             //   ),
             // ),
 
-            const SizedBox(height: 20),
             Expanded(
-              flex: (heightDevice / 20 * 15).round(),
+              // flex: (heightDevice / 20 * 15).round(),
               child: ScreenTemplate(
                 child: Column(
                   children: [
@@ -181,7 +142,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                                       fontSize: 17,
                                     ),
                               ),
-                              Spacer(),
+                              const Spacer(),
                               ButtonIconGradientColor(
                                 title: 'Select Week',
                                 icon: Icons.calendar_month,
@@ -191,7 +152,14 @@ class ActivityTrackerScreen extends StatelessWidget {
                           ),
                           const SizedBox(height: 15),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SleepTrackerScreen(),
+                                ),
+                              );
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
@@ -204,7 +172,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                                   ),
                                   BoxShadow(
                                     color: Colors.black.withOpacity(0.05),
-                                    offset: Offset(-2, -3),
+                                    offset: const Offset(-2, -3),
                                     blurRadius: 20,
                                   )
                                 ],
@@ -304,7 +272,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                                 ),
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.05),
-                                  offset: Offset(-2, -3),
+                                  offset: const Offset(-2, -3),
                                   blurRadius: 20,
                                 )
                               ],

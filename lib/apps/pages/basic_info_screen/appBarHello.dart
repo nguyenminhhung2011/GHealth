@@ -13,19 +13,19 @@ class AppBarHello extends StatelessWidget {
     return Row(
       children: [
         Hero(
+          tag: 'Splash image',
           child: Image.asset(
             'assets/images/intro.png',
             height: widthDevice / 10,
             width: widthDevice / 10,
           ),
-          tag: 'Splash image',
         ),
         const SizedBox(width: 5),
         Text.rich(
           TextSpan(
             style:
                 Theme.of(context).textTheme.headline4!.copyWith(fontSize: 15),
-            children: [
+            children: const [
               TextSpan(
                 text: 'Hello, I am ',
                 style: TextStyle(color: Colors.black),
