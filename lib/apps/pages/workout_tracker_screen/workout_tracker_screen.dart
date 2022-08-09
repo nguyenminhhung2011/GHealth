@@ -339,8 +339,8 @@ class WorkoutTrackerScreen extends StatelessWidget {
                           child: Text(
                             item,
                             style: const TextStyle(
-                              color: Colors.grey,
-                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         )

@@ -104,7 +104,7 @@ class _GetHeightScreenState extends State<GetHeightScreen> {
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
-                                Text(
+                                const Text(
                                   'cm',
                                   style: TextStyle(
                                     color: Colors.black,
