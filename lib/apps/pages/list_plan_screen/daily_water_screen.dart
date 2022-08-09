@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailyWaterController.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/widgets/WaterConsumeCard.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/showDialogEditWater.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
@@ -266,6 +267,41 @@ class DailyWaterScreen extends StatelessWidget {
                   ),
                 ),
               )),
+            ),
+            const SizedBox(height: 10),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: widthDevice * 0.7,
+                height: 1,
+                color: Colors.grey.withOpacity(0.5),
+              ),
+            ),
+            const SizedBox(height: 20),
+            const Align(
+              alignment: Alignment.center,
+              child: Text(
+                'History',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 23,
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            Obx(
+              () => _controller.waterConsumeToday.value.length > 0
+                  ? Column(
+                      children: _controller.waterConsumeToday.value.map((e) {
+                      return WaterConsumeCard(data: e);
+                    }).toList())
+                  : const Text(
+                      'No Water Consume Today',
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
             )
           ],
         ),
@@ -361,5 +397,3 @@ class DailyWaterScreen extends StatelessWidget {
     );
   }
 }
-
-//
