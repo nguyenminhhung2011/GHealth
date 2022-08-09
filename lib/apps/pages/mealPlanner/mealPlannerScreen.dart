@@ -375,7 +375,7 @@ class MealPlannerScreen extends StatelessWidget {
                         primary: Colors.transparent,
                         shadowColor: Colors.transparent),
                     child: const Text(
-                      'Learn More',
+                      'Done',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

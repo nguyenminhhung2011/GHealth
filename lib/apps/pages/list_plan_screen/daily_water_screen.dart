@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailyWaterController.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/widgets/showDialogEditWater.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../global_widgets/list_chart/ColumnChart2Column.dart';
@@ -44,6 +45,7 @@ class DailyWaterScreen extends StatelessWidget {
                         newIndex = value;
                       },
                       done: () {
+                        print(newIndex);
                         if (newIndex != null) {
                           _controller.changeTab(newIndex ?? 0);
                         } else {}
@@ -184,145 +186,90 @@ class DailyWaterScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const RichTextCustom(
-                  size: 18,
-                  title: 'Consume: ',
-                  data: 200,
-                ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  height: 20,
-                  width: 0.5,
-                  color: Colors.grey,
-                ),
-                const RichTextCustom(
-                  size: 18,
-                  title: 'Target: ',
-                  data: 4000,
-                ),
-              ],
+            Obx(
+              () => Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  RichTextCustom(
+                    size: 18,
+                    title: 'Consume: ',
+                    data: _controller.waterConsume.value,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    height: 20,
+                    width: 0.5,
+                    color: Colors.grey,
+                  ),
+                  RichTextCustom(
+                    size: 18,
+                    title: 'Target: ',
+                    data: _controller.waterTarget.value,
+                  ),
+                ],
+              ),
             ),
-            Center(
-                child: SizedBox(
-              height: 200,
-              width: 100,
-              child: CircularPercentIndicator(
-                animateFromLastPercent: true,
-                animationDuration: 2000,
-                radius: 80,
-                lineWidth: 15.0,
-                percent: 0.8,
-                backgroundColor: Colors.grey.withOpacity(0.2),
-                progressColor: AppColors.primaryColor1,
-                circularStrokeCap: CircularStrokeCap.round,
-                center: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: InkWell(
-                    radius: 80,
-                    onTap: () async {
-                      double target_value = 300;
-                      double consume_value = 3000;
-                      await _showDialogEditWater(
-                        context: context,
-                        slideValue_target: target_value,
-                        slideValue_consume: consume_value,
-                      );
-                    },
-                    child: Container(
-                      alignment: Alignment.center,
-                      decoration: const BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.primaryColor1,
+            Obx(
+              () => Center(
+                  child: SizedBox(
+                height: 200,
+                width: 100,
+                child: CircularPercentIndicator(
+                  animateFromLastPercent: true,
+                  animationDuration: 2000,
+                  radius: 80,
+                  lineWidth: 15.0,
+                  percent: (_controller.waterConsume.value <
+                          _controller.waterTarget.value)
+                      ? (_controller.waterConsume.value /
+                          _controller.waterTarget.value)
+                      : 1,
+                  backgroundColor: Colors.grey.withOpacity(0.2),
+                  progressColor: (_controller.waterConsume.value <
+                          _controller.waterTarget.value)
+                      ? AppColors.primaryColor1
+                      : Colors.green.withOpacity(0.7),
+                  circularStrokeCap: CircularStrokeCap.round,
+                  center: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: InkWell(
+                      radius: 80,
+                      onTap: () async {
+                        int targetValue = _controller.waterTarget.value;
+                        int consumeValue = _controller.waterConsume.value;
+                        final r = await showDialog(
+                          useRootNavigator: false,
+                          barrierColor: Colors.black54,
+                          context: context,
+                          builder: (context) => showDialogEditWater(
+                            max: 2000,
+                            min: 0,
+                            waterConsumer: consumeValue,
+                            waterTarget: targetValue,
+                          ),
+                        );
+                        if (r != null) {
+                          _controller.updateWaterTargetAndConsume(
+                              r['target'], r['consume']);
+                        }
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: AppColors.primaryColor1,
+                        ),
+                        child: const Icon(Icons.add,
+                            color: Colors.white, size: 30.0),
                       ),
-                      child: const Icon(Icons.add,
-                          color: Colors.white, size: 30.0),
                     ),
                   ),
                 ),
-              ),
-            )),
+              )),
+            )
           ],
         ),
       ),
-    );
-  }
-
-  _showDialogEditWater({
-    required BuildContext context,
-    required double slideValue_target,
-    required double slideValue_consume,
-  }) async {
-    await showDialog(
-      useRootNavigator: false,
-      barrierColor: Colors.black54,
-      context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          child: Container(
-            height: 400,
-            width: 120,
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: AppColors.mainColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Column(
-              children: [
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Water',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Target: ',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 17,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                Slider(
-                  value: slideValue_consume,
-                  min: 0,
-                  max: 4000,
-                  divisions: 95,
-                  activeColor: AppColors.primaryColor1,
-                  inactiveColor: Colors.grey.withOpacity(0.2),
-                  onChanged: (value) {},
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    Text(
-                      '200ml',
-                      style: TextStyle(
-                        color: AppColors.primaryColor1,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                )
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 
@@ -397,7 +344,7 @@ class DailyWaterScreen extends StatelessWidget {
                         primary: Colors.transparent,
                         shadowColor: Colors.transparent),
                     child: const Text(
-                      'Learn More',
+                      'Done',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -414,3 +361,5 @@ class DailyWaterScreen extends StatelessWidget {
     );
   }
 }
+
+//
