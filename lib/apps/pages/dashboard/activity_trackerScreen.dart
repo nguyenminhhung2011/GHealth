@@ -13,6 +13,7 @@ import 'package:gold_health/apps/pages/dashboard/widgets/ChartBoard.dart';
 import '../../global_widgets/BarChartItem.dart';
 import '../../global_widgets/TargetCard.dart';
 import '../../global_widgets/actiCard.dart';
+import '../../global_widgets/list_chart/ColumnChart2Column.dart';
 import '../../template/misc/colors.dart';
 
 import 'package:gold_health/apps/data/sleep_tracker_data.dart';
@@ -500,13 +501,10 @@ class ActivityTrackerScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 20),
-                        ChartBoard(
-                          widthDevice: widthDevice,
-                          heightDevice: heightDevice,
-                          week: 'Week 25/7/2022 - 1/8/2022',
-                          title: 'Amount of water consumed: ',
-                          data: '300ml',
-                          color: AppColors.primaryColor1.withOpacity(0.1),
+                        SizedBox(
+                          height: heightDevice / 2.9,
+                          width: double.infinity,
+                          child: const ColumnChartTwoColumnCustom(),
                         ),
                       ],
                     ),

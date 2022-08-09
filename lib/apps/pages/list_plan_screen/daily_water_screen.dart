@@ -113,7 +113,7 @@ class DailyWaterScreen extends StatelessWidget {
             SizedBox(
               height: heightDevice / 2.9,
               width: double.infinity,
-              child: ColumnChartTwoColumnCustom(),
+              child: const ColumnChartTwoColumnCustom(),
             ),
             const SizedBox(height: 20),
             Padding(
