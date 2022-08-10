@@ -59,6 +59,7 @@ dependencies:
   youtube_player_flutter: ^8.1.0
   syncfusion_flutter_calendar: ^20.2.40
   liquid_progress_indicator: ^0.4.0
+  pedometer: ^3.0.0
 
 
 
