@@ -7,9 +7,11 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailyStep_controller.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../global_widgets/list_chart/columnChart1Column.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
 
@@ -22,57 +24,8 @@ class DailyStepScreen extends StatefulWidget {
 
 class _DailyStepScreenState extends State<DailyStepScreen> {
   final _controller = Get.put(DailyStepController());
-  late Stream<StepCount> _stepCountStream;
-  late Stream<PedestrianStatus> _pedestrianStatusStream;
-  String _status = 'walking', _steps = '?';
 
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
-
-  void onStepCount(StepCount event) {
-    print(event);
-    setState(() {
-      _steps = event.steps.toString();
-    });
-  }
-
-  void onPedestrianStatusChanged(PedestrianStatus event) {
-    print(event);
-    setState(() {
-      _status = event.status;
-    });
-  }
-
-  void onPedestrianStatusError(error) {
-    print('onPedestrianStatusError: $error');
-    setState(() {
-      _status = 'Pedestrian Status not available';
-    });
-    print(_status);
-  }
-
-  void onStepCountError(error) {
-    print('onStepCountError: $error');
-    setState(() {
-      _steps = 'Step Count not available';
-    });
-  }
-
-  void initPlatformState() {
-    _pedestrianStatusStream = Pedometer.pedestrianStatusStream;
-    _pedestrianStatusStream
-        .listen(onPedestrianStatusChanged)
-        .onError(onPedestrianStatusError);
-
-    _stepCountStream = Pedometer.stepCountStream;
-    _stepCountStream.listen(onStepCount).onError(onStepCountError);
-
-    if (!mounted) return;
-  }
-
+  // First data
   double x = 0.0;
   double y = 0.0;
   double z = 0.0;
@@ -83,6 +36,38 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
   int steps = 0;
   double previousDistacne = 0.0;
   double distance = 0.0;
+  bool isCount = true;
+
+  @override
+  double getValue(double x, double y, double z) {
+    if (isCount) {
+      double magnitude = sqrt(x * x + y * y + z * z);
+      getPreviousValue();
+      double modDistance = magnitude - previousDistacne;
+      setPreviousValue(magnitude);
+      return modDistance;
+    }
+    return 0;
+  }
+
+  void setPreviousValue(double distance) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    _pref.setDouble("preValue", distance);
+  }
+
+  void getPreviousValue() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setState(() {
+      previousDistacne = _pref.getDouble("preValue") ?? 0.0;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.saveData(steps, calories, miles, duration);
+  }
+  // void calculate data
 
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -108,9 +93,9 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
             if (distance > 6) {
               steps++;
             }
-            calories = calculateCalories(steps);
-            duration = calculateDuration(steps);
-            miles = calculateMiles(steps);
+            calories = _controller.calculateCalories(steps);
+            duration = _controller.calculateDuration(steps);
+            miles = _controller.calculateMiles(steps);
           }
           return ScreenTemplate(
             child: Column(
@@ -193,14 +178,145 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
                   ],
                 ),
                 const SizedBox(height: 10),
+                SizedBox(
+                  height: heightDevice / 3,
+                  width: double.infinity,
+                  child: BarChartSample1(),
+                ),
+                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    width: widthDevice * 0.7,
+                    height: 1,
+                    color: Colors.grey.withOpacity(0.5),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                const Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Today',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 23,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
                 Column(
                   children: [
-                    Text(steps.toString()),
-                    Text(miles.toStringAsFixed(1)),
-                    Text(calories.toStringAsFixed(1)),
-                    Text(duration.toStringAsFixed(1)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 20),
+                        RichText(
+                          text: TextSpan(
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            children: [
+                              TextSpan(
+                                text: steps.toString(),
+                                style: const TextStyle(
+                                    fontSize: 25, color: Colors.black),
+                              ),
+                              const TextSpan(
+                                text: '/3000',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: AppColors.primaryColor1),
+                              )
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isCount = !isCount;
+                            });
+                          },
+                          icon: isCount
+                              ? const Icon(Icons.pause,
+                                  color: AppColors.primaryColor1)
+                              : const Icon(Icons.play_arrow,
+                                  color: AppColors.primaryColor1),
+                        )
+                      ],
+                    ),
+                    !isCount
+                        ? Padding(
+                            padding: const EdgeInsets.only(left: 20),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 5,
+                                ),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: AppColors.primaryColor1,
+                                ),
+                                child: const Text(
+                                  'Stop',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
+                    const SizedBox(height: 20),
+                    SizedBox(
+                      width: widthDevice,
+                      height: 15,
+                      child: LinearPercentIndicator(
+                        lineHeight: 40,
+                        percent: steps / 1000,
+                        progressColor: AppColors.primaryColor1,
+                        backgroundColor: Colors.grey.withOpacity(0.2),
+                        animation: true,
+                        animationDuration: 1000,
+                        barRadius: const Radius.circular(20),
+                      ),
+                    ),
+                    const SizedBox(height: 50),
+                    SizedBox(
+                      width: double.infinity,
+                      child: Row(
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: DataStepCard(
+                              data: miles,
+                              imagePath: 'assets/images/miles.png',
+                              title: 'Miles',
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: DataStepCard(
+                              data: calories,
+                              imagePath: 'assets/images/calories.png',
+                              title: 'Calories',
+                            ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: DataStepCard(
+                              data: duration,
+                              imagePath: 'assets/images/duration.png',
+                              title: 'Duration',
+                            ),
+                          )
+                        ],
+                      ),
+                    )
                   ],
-                ),
+                )
               ],
             ),
           );
@@ -296,41 +412,37 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
       },
     );
   }
+}
 
-  //Caluculate
-  double getValue(double x, double y, double z) {
-    double magnitude = sqrt(x * x + y * y + z * z);
-    getPreviousValue();
-    double modDistance = magnitude - previousDistacne;
-    setPreviousValue(magnitude);
-    return modDistance;
-  }
+class DataStepCard extends StatelessWidget {
+  const DataStepCard({
+    Key? key,
+    required this.data,
+    required this.title,
+    required this.imagePath,
+  }) : super(key: key);
 
-  void setPreviousValue(double distance) async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    _pref.setDouble("preValue", distance);
-  }
+  final double data;
+  final String title;
+  final String imagePath;
 
-  void getPreviousValue() async {
-    SharedPreferences _pref = await SharedPreferences.getInstance();
-    setState(() {
-      previousDistacne = _pref.getDouble("preValue") ?? 0.0;
-    });
-  }
-
-  // void calculate data
-  double calculateMiles(int steps) {
-    double milesValue = (2.2 * steps) / 5280;
-    return milesValue;
-  }
-
-  double calculateDuration(int steps) {
-    double durationValue = (steps * 1 / 1000);
-    return durationValue;
-  }
-
-  double calculateCalories(int steps) {
-    double caloriesValue = (steps * 0.0566);
-    return caloriesValue;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Image.asset(imagePath, height: 50, width: 50),
+        Text(
+          data.toStringAsFixed(2),
+          style: const TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+        ),
+        Text(
+          title,
+          style: const TextStyle(
+              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
+        )
+      ],
+    );
   }
 }
