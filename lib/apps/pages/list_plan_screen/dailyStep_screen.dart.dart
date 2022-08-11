@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailyStep_controller.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
@@ -70,6 +73,17 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
     if (!mounted) return;
   }
 
+  double x = 0.0;
+  double y = 0.0;
+  double z = 0.0;
+  double miles = 0.0;
+  double duration = 0.0;
+  double calories = 0.0;
+  double addValue = 0.025;
+  int steps = 0;
+  double previousDistacne = 0.0;
+  double distance = 0.0;
+
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
@@ -83,122 +97,114 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
     ];
     return Scaffold(
       backgroundColor: AppColors.mainColor,
-      body: ScreenTemplate(
-        child: Column(
-          children: [
-            Row(
+      body: StreamBuilder<AccelerometerEvent>(
+        stream: SensorsPlatform.instance.accelerometerEvents,
+        builder: (context, snapShort) {
+          if (snapShort.hasData) {
+            x = snapShort.data!.x;
+            y = snapShort.data!.y;
+            z = snapShort.data!.z;
+            distance = getValue(x, y, z);
+            if (distance > 6) {
+              steps++;
+            }
+            calories = calculateCalories(steps);
+            duration = calculateDuration(steps);
+            miles = calculateMiles(steps);
+          }
+          return ScreenTemplate(
+            child: Column(
               children: [
-                InkWell(
-                  onTap: () async {
-                    int? newIndex;
-                    await _showDialogMethod(
-                      context: context,
-                      tabs: tabs,
-                      onselectedTabs: (value) {
-                        newIndex = value;
-                      },
-                      done: () {
-                        print(newIndex);
-                        if (newIndex != null) {
-                          _controller.changeTab(newIndex ?? 0);
-                        } else {
-                          _controller.changeTab(0);
-                        }
+                Row(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                        int? newIndex;
+                        await _showDialogMethod(
+                          context: context,
+                          tabs: tabs,
+                          onselectedTabs: (value) {
+                            newIndex = value;
+                          },
+                          done: () {
+                            print(newIndex);
+                            if (newIndex != null) {
+                              _controller.changeTab(newIndex ?? 0);
+                            } else {
+                              _controller.changeTab(0);
+                            }
 
-                        Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                        );
                       },
-                    );
-                  },
-                  child: Row(
-                    children: const [
-                      Text(
-                        'Foot Step Planner',
-                        style: TextStyle(
+                      child: Row(
+                        children: const [
+                          Text(
+                            'Foot Step Planner',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: Colors.black,
+                            size: 24,
+                          )
+                        ],
+                      ),
+                    ),
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor1.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.more_horiz,
                           color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
                         ),
                       ),
-                      Icon(
-                        Icons.keyboard_arrow_down_outlined,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    const Text(
+                      'Step Count',
+                      style: TextStyle(
                         color: Colors.black,
-                        size: 24,
-                      )
-                    ],
-                  ),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Spacer(),
+                    ButtonIconGradientColor(
+                      title: ' Week',
+                      icon: Icons.calendar_month,
+                      press: () {},
+                    )
+                  ],
                 ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor1.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    child: const Icon(
-                      Icons.more_horiz,
-                      color: Colors.black,
-                    ),
-                  ),
+                const SizedBox(height: 10),
+                Column(
+                  children: [
+                    Text(steps.toString()),
+                    Text(miles.toStringAsFixed(1)),
+                    Text(calories.toStringAsFixed(1)),
+                    Text(duration.toStringAsFixed(1)),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                const Text(
-                  'Step Count',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-                const Spacer(),
-                ButtonIconGradientColor(
-                  title: ' Week',
-                  icon: Icons.calendar_month,
-                  press: () {},
-                )
-              ],
-            ),
-            const SizedBox(height: 10),
-            const Text(
-              'Steps taken:',
-              style: TextStyle(fontSize: 30),
-            ),
-            Text(
-              _steps,
-              style: TextStyle(fontSize: 60),
-            ),
-            const Divider(
-              height: 100,
-              thickness: 0,
-              color: Colors.white,
-            ),
-            const Text(
-              'Pedestrian status:',
-              style: TextStyle(fontSize: 30),
-            ),
-            Icon(
-              _status == 'walking'
-                  ? Icons.directions_walk
-                  : _status == 'stopped'
-                      ? Icons.accessibility_new
-                      : Icons.error,
-              size: 100,
-            ),
-            Center(
-              child: Text(
-                _status,
-                style: _status == 'walking' || _status == 'stopped'
-                    ? const TextStyle(fontSize: 30)
-                    : const TextStyle(fontSize: 20, color: Colors.red),
-              ),
-            )
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -289,5 +295,42 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
         );
       },
     );
+  }
+
+  //Caluculate
+  double getValue(double x, double y, double z) {
+    double magnitude = sqrt(x * x + y * y + z * z);
+    getPreviousValue();
+    double modDistance = magnitude - previousDistacne;
+    setPreviousValue(magnitude);
+    return modDistance;
+  }
+
+  void setPreviousValue(double distance) async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    _pref.setDouble("preValue", distance);
+  }
+
+  void getPreviousValue() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+    setState(() {
+      previousDistacne = _pref.getDouble("preValue") ?? 0.0;
+    });
+  }
+
+  // void calculate data
+  double calculateMiles(int steps) {
+    double milesValue = (2.2 * steps) / 5280;
+    return milesValue;
+  }
+
+  double calculateDuration(int steps) {
+    double durationValue = (steps * 1 / 1000);
+    return durationValue;
+  }
+
+  double calculateCalories(int steps) {
+    double caloriesValue = (steps * 0.0566);
+    return caloriesValue;
   }
 }
