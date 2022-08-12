@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailyStep_controller.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/widgets/DataStepCard.dart';
 import 'package:pedometer/pedometer.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../services/notificationApi.dart';
 import '../../global_widgets/list_chart/columnChart1Column.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
@@ -411,39 +413,6 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class DataStepCard extends StatelessWidget {
-  const DataStepCard({
-    Key? key,
-    required this.data,
-    required this.title,
-    required this.imagePath,
-  }) : super(key: key);
-
-  final double data;
-  final String title;
-  final String imagePath;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Image.asset(imagePath, height: 50, width: 50),
-        Text(
-          data.toStringAsFixed(2),
-          style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
-        ),
-        Text(
-          title,
-          style: const TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 17),
-        )
-      ],
     );
   }
 }

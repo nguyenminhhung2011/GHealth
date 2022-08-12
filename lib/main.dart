@@ -1,16 +1,20 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/route_manager.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splashScreen.dart';
-import 'package:gold_health/apps/pages/sleep_tracker/sleep_tracker_screen.dart';
 import 'package:gold_health/apps/routes/appPages.dart';
 
 import 'apps/routes/routeName.dart';
 import 'apps/template/misc/colors.dart';
 
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailySleep_controller.dart';
 import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
@@ -8,9 +9,12 @@ import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/sleep_schedule_screen.dart';
 import 'package:intl/intl.dart';
 
+import '../../../main.dart';
+import '../../../services/notificationApi.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
 import '../dashboard/widgets/button_gradient.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class SleepTrackerScreen extends StatefulWidget {
   const SleepTrackerScreen({Key? key}) : super(key: key);
@@ -396,7 +400,11 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                             ButtonIconGradientColor(
                               title: ' Week',
                               icon: Icons.calendar_month,
-                              press: () {},
+                              press: () {
+                                print(1);
+                                // scheduleAlarm(DateTime.now(),
+                                //     isRepeating: true);
+                              },
                             )
                           ],
                         ),
@@ -764,4 +772,78 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
       },
     );
   }
+
+  // void scheduleAlarm(DateTime scheduledNotificationDateTime,
+  //     {required bool isRepeating}) async {
+  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //     'alarm_notif',
+  //     'alarm_notif',
+  //     channelDescription: 'Channel for Alarm notification',
+  //     icon: 'codex_logo',
+  //     sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+  //     largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
+  //   );
+
+  //   var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+  //     sound: 'a_long_cold_sting.wav',
+  //     presentAlert: true,
+  //     presentBadge: true,
+  //     presentSound: true,
+  //   );
+  //   var platformChannelSpecifics = NotificationDetails(
+  //     android: androidPlatformChannelSpecifics,
+  //     iOS: iOSPlatformChannelSpecifics,
+  //   );
+
+  //   if (isRepeating)
+  //     await flutterLocalNotificationsPlugin.showDailyAtTime(
+  //       0,
+  //       'Office',
+  //       'OK',
+  //       Time(
+  //         scheduledNotificationDateTime.hour,
+  //         scheduledNotificationDateTime.minute,
+  //         scheduledNotificationDateTime.second,
+  //       ),
+  //       platformChannelSpecifics,
+  //     );
+  //   else
+  //     await flutterLocalNotificationsPlugin.zonedSchedule(
+  //       0,
+  //       'Office',
+  //       'Ok',
+  //       tz.TZDateTime.from(scheduledNotificationDateTime, tz.local),
+  //       platformChannelSpecifics,
+  //       androidAllowWhileIdle: true,
+  //       uiLocalNotificationDateInterpretation:
+  //           UILocalNotificationDateInterpretation.absoluteTime,
+  //     );
+  // }
+
+  // void onSaveAlarm(bool _isRepeating) {
+  //   DateTime? scheduleAlarmDateTime;
+  //   if (_alarmTime!.isAfter(DateTime.now()))
+  //     scheduleAlarmDateTime = _alarmTime;
+  //   else
+  //     scheduleAlarmDateTime = _alarmTime!.add(Duration(days: 1));
+
+  //   var alarmInfo = AlarmInfo(
+  //     alarmDateTime: scheduleAlarmDateTime,
+  //     gradientColorIndex: _currentAlarms!.length,
+  //     title: 'alarm',
+  //   );
+  //   _alarmHelper.insertAlarm(alarmInfo);
+  //   if (scheduleAlarmDateTime != null) {
+  //     scheduleAlarm(scheduleAlarmDateTime, alarmInfo,
+  //         isRepeating: _isRepeating);
+  //   }
+  //   Navigator.pop(context);
+  //   loadAlarms();
+  // }
+
+  // void deleteAlarm(int? id) {
+  //   _alarmHelper.delete(id);
+  //   //unsubscribe for notification
+  //   loadAlarms();
+  // }
 }
