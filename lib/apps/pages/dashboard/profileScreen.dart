@@ -7,6 +7,7 @@ import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/global_widgets/gradientIcon..dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
+import 'package:gold_health/apps/pages/dashboard/contactUsScreen.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/activityHistoryDialog.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/targerlDataDialog.dart';
 import '../../global_widgets/ToggleButtonIos.dart';
@@ -53,12 +54,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                   Spacer(),
-                  Text(
-                    'Profile',
-                    style: Theme.of(context).textTheme.headline4!.copyWith(
-                          fontSize: 18,
-                          fontFamily: "Sen",
-                        ),
+                  Hero(
+                    tag: 'Hero tag',
+                    child: Text(
+                      'Profile',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                            fontSize: 18,
+                            fontFamily: "Sen",
+                          ),
+                    ),
                   ),
                   Spacer(),
                   SizedBox(width: 40),
@@ -288,7 +292,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ButtonSvgIcon(
                         title: 'Contact Us',
                         iconPath: 'assets/icons/Message.svg',
-                        press: () {},
+                        press: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ContactUsScren(),
+                              ));
+                        },
                       ),
                       const SizedBox(height: 10),
                       ButtonSvgIcon(

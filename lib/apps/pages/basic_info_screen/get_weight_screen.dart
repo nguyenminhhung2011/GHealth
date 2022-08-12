@@ -39,13 +39,13 @@ class _GetWeightScreenState extends State<GetWeightScreen> {
                 children: [
                   Text(
                     '${list[index]}',
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 50.0,
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text(
+                  const Text(
                     'Kg',
                     style: TextStyle(
                       fontSize: 20,
