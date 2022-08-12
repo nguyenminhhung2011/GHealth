@@ -8,6 +8,7 @@ import 'package:gold_health/apps/global_widgets/gradientIcon..dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
 import 'package:gold_health/apps/pages/dashboard/contactUsScreen.dart';
+import 'package:gold_health/apps/pages/dashboard/settingScreen.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/activityHistoryDialog.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/targerlDataDialog.dart';
 import '../../global_widgets/ToggleButtonIos.dart';
@@ -302,15 +303,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 10),
                       ButtonSvgIcon(
-                        title: 'Privacy Policy',
-                        iconPath: 'assets/icons/Shield Done.svg',
-                        press: () {},
-                      ),
-                      const SizedBox(height: 10),
-                      ButtonSvgIcon(
                         title: 'Settings',
                         iconPath: 'assets/icons/Setting.svg',
-                        press: () {},
+                        press: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SettingScreen(),
+                              ));
+                        },
                       ),
                       const SizedBox(height: 10),
                       ButtonSvgIcon(
