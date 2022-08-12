@@ -7,6 +7,7 @@ import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/global_widgets/gradientIcon..dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
+import 'package:gold_health/apps/pages/dashboard/widgets/targerlDataDialog.dart';
 import '../../global_widgets/ToggleButtonIos.dart';
 import '../../template/misc/colors.dart';
 
@@ -113,14 +114,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                   const SizedBox(height: 15),
-                  Row(
-                    children: [
-                      InforCard(title: 'Height', data: '180cm'),
-                      Spacer(),
-                      InforCard(title: 'Weight', data: '65Kg'),
-                      Spacer(),
-                      InforCard(title: 'Age', data: '22yo'),
-                    ],
+                  Hero(
+                    tag: 'Basic data tag',
+                    child: Row(
+                      children: const [
+                        InforCard(title: 'Height', data: '180cm'),
+                        Spacer(),
+                        InforCard(title: 'Weight', data: '65Kg'),
+                        Spacer(),
+                        InforCard(title: 'Age', data: '22yo'),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -161,9 +165,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 20),
                       ButtonSvgIcon(
-                        title: 'Personal Data',
+                        title: 'Target Data',
                         iconPath: 'assets/icons/Profile.svg',
-                        press: () {},
+                        press: () async {
+                          await showDialog(
+                            useRootNavigator: false,
+                            barrierColor: Colors.black54,
+                            context: context,
+                            builder: (context) => TargetDataDialog(),
+                          );
+                        },
                       ),
                       const SizedBox(height: 10),
                       ButtonSvgIcon(
