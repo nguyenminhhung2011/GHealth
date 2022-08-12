@@ -7,6 +7,7 @@ import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/global_widgets/gradientIcon..dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
+import 'package:gold_health/apps/pages/dashboard/widgets/activityHistoryDialog.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/targerlDataDialog.dart';
 import '../../global_widgets/ToggleButtonIos.dart';
 import '../../template/misc/colors.dart';
@@ -178,21 +179,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(height: 10),
                       ButtonSvgIcon(
-                        title: 'Achievement',
-                        iconPath: 'assets/icons/Document.svg',
-                        press: () {},
-                      ),
-                      const SizedBox(height: 10),
-                      ButtonSvgIcon(
                         title: 'Activity History',
                         iconPath: 'assets/icons/Graph.svg',
-                        press: () {},
-                      ),
-                      const SizedBox(height: 10),
-                      ButtonSvgIcon(
-                        title: 'Workout Progress',
-                        iconPath: 'assets/icons/Chart.svg',
-                        press: () {},
+                        press: () async {
+                          await showDialog(
+                            useRootNavigator: false,
+                            barrierColor: Colors.black54,
+                            context: context,
+                            builder: (context) => ActivityHistory(),
+                          );
+                        },
                       )
                     ],
                   ),
@@ -304,6 +300,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ButtonSvgIcon(
                         title: 'Settings',
                         iconPath: 'assets/icons/Setting.svg',
+                        press: () {},
+                      ),
+                      const SizedBox(height: 10),
+                      ButtonSvgIcon(
+                        title: 'Sign Out',
+                        iconPath: 'assets/icons/Logout.svg',
                         press: () {},
                       ),
                     ],
