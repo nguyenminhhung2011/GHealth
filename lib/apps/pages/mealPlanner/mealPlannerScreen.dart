@@ -29,6 +29,7 @@ class MealPlannerScreen extends StatelessWidget {
       'Foot step',
       'Water',
       'Fasting',
+      'Sleep',
     ];
     return Scaffold(
       backgroundColor: AppColors.mainColor,

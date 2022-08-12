@@ -57,80 +57,6 @@ class ActivityTrackerScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Expanded(
-            //   flex: (heightDevice / 20 * 5).round(),
-            //   child: Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 20),
-            //     child: Container(
-            //       width: widthDevice,
-            //       padding:
-            //           const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-            //       decoration: BoxDecoration(
-            //         //color: AppColors.primaryColor,
-            //         borderRadius: BorderRadius.circular(25),
-            //         gradient: AppColors.colorContainerTodayTarget,
-            //       ),
-            //       child: Column(
-            //         children: [
-            //           Expanded(
-            //             flex: 2,
-            //             child: Container(
-            //               alignment: Alignment.center,
-            //               child: Row(children: [
-            //                 Text(
-            //                   'Today Target',
-            //                   style: TextStyle(
-            //                     color: Colors.black,
-            //                     fontWeight: FontWeight.bold,
-            //                     fontSize: 17,
-            //                   ),
-            //                 ),
-            //                 Spacer(),
-            //                 InkWell(
-            //                   borderRadius: BorderRadius.circular(15),
-            //                   onTap: () {},
-            //                   child: Container(
-            //                     padding: const EdgeInsets.all(5),
-            //                     decoration: BoxDecoration(
-            //                       borderRadius: BorderRadius.circular(15),
-            //                       color:
-            //                           AppColors.primaryColor.withOpacity(0.2),
-            //                     ),
-            //                     child: Icon(
-            //                       Icons.edit,
-            //                       color: Colors.white,
-            //                     ),
-            //                   ),
-            //                 )
-            //               ]),
-            //             ),
-            //           ),
-            //           Expanded(
-            //             flex: 3,
-            //             child: Container(
-            //               child: Row(
-            //                 children: [
-            //                   TargetCard(
-            //                     imagePath: 'assets/images/cup.png',
-            //                     data: '8L',
-            //                     targetType: 'Water Intake',
-            //                   ),
-            //                   const SizedBox(width: 20),
-            //                   TargetCard(
-            //                     imagePath: 'assets/images/shoes.png',
-            //                     data: '2400',
-            //                     targetType: 'Foot Steps',
-            //                   )
-            //                 ],
-            //               ),
-            //             ),
-            //           )
-            //         ],
-            //       ),
-            //     ),
-            //   ),
-            // ),
-
             Expanded(
               // flex: (heightDevice / 20 * 15).round(),
               child: ScreenTemplate(
@@ -161,81 +87,61 @@ class ActivityTrackerScreen extends StatelessWidget {
                             ],
                           ),
                           const SizedBox(height: 15),
-                          InkWell(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const SleepTrackerScreen(),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.white,
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  offset: const Offset(2, 3),
+                                  blurRadius: 20,
                                 ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors.white,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
-                                    offset: const Offset(2, 3),
-                                    blurRadius: 20,
-                                  ),
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
-                                    offset: const Offset(-2, -3),
-                                    blurRadius: 20,
-                                  )
-                                ],
-                              ),
-                              padding: const EdgeInsets.all(20),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      const GradientText(
-                                        'Week 25/7/2022 - 1/8/2022',
-                                        gradient: LinearGradient(colors: [
-                                          Colors.black,
-                                          Colors.black
-                                        ]),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 17,
-                                        ),
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.05),
+                                  offset: const Offset(-2, -3),
+                                  blurRadius: 20,
+                                )
+                              ],
+                            ),
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: const [
+                                    GradientText(
+                                      'Week 25/7/2022 - 1/8/2022',
+                                      gradient: LinearGradient(
+                                          colors: [Colors.black, Colors.black]),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17,
                                       ),
-                                      InkWell(
-                                        onTap: () {},
-                                        child: const Icon(
-                                          Icons.arrow_forward_ios_outlined,
-                                          color: Colors.grey,
-                                          size: 15,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const GradientText(
-                                    'Average: 7hours 15minutes',
-                                    gradient: LinearGradient(
-                                        colors: [Colors.black, Colors.black]),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
                                     ),
+                                  ],
+                                ),
+                                const GradientText(
+                                  'Average: 7hours 15minutes',
+                                  gradient: LinearGradient(
+                                      colors: [Colors.black, Colors.black]),
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
                                   ),
-                                  TimeChart(
-                                    timeChartSizeAnimationDuration:
-                                        const Duration(milliseconds: 3000),
-                                    height: heightDevice * 0.3,
-                                    activeTooltip: true,
-                                    data: SleepTrackerData.data,
-                                    viewMode: ViewMode.weekly,
-                                    barColor: AppColors.primaryColor1,
-                                  ),
-                                ],
-                              ),
+                                ),
+                                TimeChart(
+                                  timeChartSizeAnimationDuration:
+                                      const Duration(milliseconds: 3000),
+                                  height: heightDevice * 0.3,
+                                  activeTooltip: true,
+                                  data: SleepTrackerData.data,
+                                  viewMode: ViewMode.weekly,
+                                  barColor: AppColors.primaryColor1,
+                                ),
+                              ],
                             ),
                           ),
                         ],

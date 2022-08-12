@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/dailySleep_controller.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailyStep_controller.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailyWaterController.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/daily_water_screen.dart';
+import 'package:gold_health/apps/pages/sleep_tracker/sleep_tracker_screen.dart';
 
 import '../../pages/list_plan_screen/dailyStep_screen.dart.dart';
 import '../../pages/mealPlanner/mealPlannerScreen.dart';
@@ -37,6 +39,9 @@ class DailyPlanController extends GetxController {
       case 3:
         Get.delete<DailyWaterController>();
         break;
+      case 5:
+        Get.delete<DailySleepController>();
+        break;
       default:
         break;
     }
@@ -54,6 +59,8 @@ class DailyPlanController extends GetxController {
         return DailyStepScreen();
       case 3:
         return DailyWaterScreen();
+      case 5:
+        return SleepTrackerScreen();
       default:
         return MealPlannerScreen();
     }

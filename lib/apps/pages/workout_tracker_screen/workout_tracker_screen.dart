@@ -31,6 +31,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
       'Foot step',
       'Water',
       'Fasting',
+      'Sleep',
     ];
     bool val = true;
     return Scaffold(

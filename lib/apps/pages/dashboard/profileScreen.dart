@@ -7,8 +7,6 @@ import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/global_widgets/gradientIcon..dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
-
-import '../../global_widgets/CustomSwitch .dart';
 import '../../global_widgets/ToggleButtonIos.dart';
 import '../../template/misc/colors.dart';
 

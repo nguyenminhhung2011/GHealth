@@ -79,6 +79,7 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
       'Foot step',
       'Water',
       'Fasting',
+      'Sleep',
     ];
     return Scaffold(
       backgroundColor: AppColors.mainColor,

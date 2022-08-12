@@ -1,12 +1,15 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/dailySleep_controller.dart';
 import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/sleep_schedule_screen.dart';
 import 'package:intl/intl.dart';
 
 import '../../template/misc/colors.dart';
+import '../dashboard/activity_trackerScreen.dart';
 import '../dashboard/widgets/button_gradient.dart';
 
 class SleepTrackerScreen extends StatefulWidget {
@@ -17,6 +20,7 @@ class SleepTrackerScreen extends StatefulWidget {
 }
 
 class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
+  final _controller = Get.put(DailySleepController());
   int touchedIndex = -1;
   var bedTimeSwitchButton = true.obs;
   var alarmSwitchButton = true.obs;
@@ -36,6 +40,15 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
     },
   ] as List<Map<String, dynamic>>)
       .obs;
+
+  List<String> tabs = [
+    'Nutrition',
+    'Workout',
+    'Foot step',
+    'Water',
+    'Fasting',
+    'Sleep',
+  ];
 
   @override
   void initState() {
@@ -305,46 +318,89 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
+                    InkWell(
+                      onTap: () async {
+                        int? newIndex;
+                        await _showDialogMethod(
+                          context: context,
+                          tabs: tabs,
+                          onselectedTabs: (value) {
+                            newIndex = value;
+                          },
+                          done: () {
+                            print(newIndex);
+                            if (newIndex != null) {
+                              _controller.changeTab(newIndex ?? 0);
+                            } else {
+                              _controller.changeTab(0);
+                            }
+                            Navigator.pop(context);
+                          },
+                        );
                       },
-                      icon: const Icon(
-                        Icons.close,
-                        size: 20,
+                      child: Row(
+                        children: const [
+                          Text(
+                            'Sleep Planner',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                          Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: Colors.black,
+                            size: 24,
+                          )
+                        ],
                       ),
                     ),
-                    const Text(
-                      'Sleep Tracker',
-                      style: TextStyle(
-                        fontFamily: 'Sen',
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
+                    const Spacer(),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryColor1.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: const Icon(
+                          Icons.more_horiz,
+                          color: Colors.black,
+                        ),
                       ),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.more_horiz),
-                    )
                   ],
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 10),
                 Card(
                   elevation: 0,
                   child: Container(
-                    padding: const EdgeInsets.only(left: 12),
-                    height: heightDevice * 0.3 + 60,
+                    height: heightDevice * 0.3 + 80,
                     child: Column(
                       children: [
                         const SizedBox(height: 10),
-                        const Text(
-                          'Your Weekly Sleep Tracker',
-                          style: TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w600),
+                        Row(
+                          children: [
+                            const Text(
+                              'Step Count',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const Spacer(),
+                            ButtonIconGradientColor(
+                              title: ' Week',
+                              icon: Icons.calendar_month,
+                              press: () {},
+                            )
+                          ],
                         ),
-                        const SizedBox(height: 10),
+                        const SizedBox(height: 15),
                         SizedBox(
                           height: heightDevice * 0.3 + 10,
                           child: LineChart(
@@ -462,7 +518,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 20),
                 Card(
                   elevation: 0,
                   child: Column(
@@ -552,7 +608,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 20),
                 Container(
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   alignment: Alignment.center,
@@ -618,6 +674,94 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  _showDialogMethod({
+    required BuildContext context,
+    required List<String> tabs,
+    required Function(int)? onselectedTabs,
+    required Function() done,
+  }) async {
+    await showDialog(
+      useRootNavigator: false,
+      barrierColor: Colors.black54,
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: Container(
+            alignment: Alignment.center,
+            height: 300,
+            width: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(20),
+              color: AppColors.mainColor,
+              //   color: Colors.transparent,
+            ),
+            child: Column(
+              children: [
+                Container(
+                  height: 200,
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: CupertinoPicker(
+                    onSelectedItemChanged: onselectedTabs,
+                    selectionOverlay: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                            width: 3, color: AppColors.primaryColor1),
+                      ),
+                    ),
+                    itemExtent: 50,
+                    diameterRatio: 1.2,
+                    children: [
+                      for (var item in tabs)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10),
+                          child: Text(
+                            item,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
+                ),
+                const Spacer(),
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppColors.primaryColor1,
+                  ),
+                  child: ElevatedButton(
+                    onPressed: done,
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        primary: Colors.transparent,
+                        shadowColor: Colors.transparent),
+                    child: const Text(
+                      'Done',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }
