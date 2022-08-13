@@ -4,6 +4,7 @@ import 'package:gold_health/apps/controls/dailyPlanController/dailySleep_control
 import 'package:gold_health/apps/controls/dailyPlanController/dailyStep_controller.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/dailyWaterController.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/daily_water_screen.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/fasting_plan/fasting_plan_screen.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/sleep_tracker_screen.dart';
 
 import '../../pages/list_plan_screen/dailyStep_screen.dart.dart';
@@ -59,6 +60,8 @@ class DailyPlanController extends GetxController {
         return DailyStepScreen();
       case 3:
         return DailyWaterScreen();
+      case 4:
+        return FastingPlanScreen();
       case 5:
         return SleepTrackerScreen();
       default:
