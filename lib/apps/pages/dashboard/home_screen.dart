@@ -624,7 +624,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   color: Colors.black26,
                                                   blurRadius: 2.0,
                                                   spreadRadius: 0.0,
-                                                  offset: Offset(0.5, 0.5),
+                                                  offset: Offset(1, 1),
                                                 )
                                               ],
                                             ),
@@ -840,6 +840,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             children: [
                                               Expanded(
                                                 child: Container(
+                                                  margin: const EdgeInsets.only(
+                                                      right: 5),
                                                   padding:
                                                       const EdgeInsets.all(2),
                                                   decoration: BoxDecoration(
@@ -852,8 +854,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         color: Colors.black26,
                                                         blurRadius: 2.0,
                                                         spreadRadius: 0.0,
-                                                        offset:
-                                                            Offset(0.5, 0.5),
+                                                        offset: Offset(1, 1),
                                                       )
                                                     ],
                                                   ),
@@ -1126,6 +1127,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               Expanded(
                                                 child: Container(
                                                   width: double.infinity,
+                                                  margin: const EdgeInsets.only(
+                                                      right: 5),
                                                   padding:
                                                       const EdgeInsets.all(2),
                                                   decoration: BoxDecoration(
@@ -1138,8 +1141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                         color: Colors.black26,
                                                         blurRadius: 2.0,
                                                         spreadRadius: 0.0,
-                                                        offset:
-                                                            Offset(0.5, 0.5),
+                                                        offset: Offset(1, 1),
                                                       )
                                                     ],
                                                   ),

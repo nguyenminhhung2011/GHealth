@@ -49,7 +49,6 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               for (var item in _controller.foodTemp) {
                 _controller.listFoodToday.add(item);
               }
-              ;
               _controller.clearFoodTemp();
               Navigator.pop(context);
             },
