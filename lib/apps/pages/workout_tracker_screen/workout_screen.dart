@@ -244,7 +244,10 @@ class _WorkoutScreenState extends State<WorkoutScreen>
               ),
             ),
           ),
-          AppBarWorkout(title: 'Warm Up', press: () {}),
+          Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: AppBarWorkout(title: 'Warm Up', press: () {}),
+          ),
         ],
       ),
     );
