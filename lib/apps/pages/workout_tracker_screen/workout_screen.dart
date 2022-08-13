@@ -2,8 +2,10 @@ import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/circle_progress.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../template/misc/colors.dart';
 
@@ -131,104 +133,204 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                     'assets/gift/Workout2.gif',
                                   ),
                                 ),
-                                Container(
-                                  width: _widthDevice,
-                                  height: 0.5,
-                                  color: Colors.grey,
-                                ),
-                                const SizedBox(height: (100 - 60) / 2 + 10),
+                                const Divider(),
                                 const SizedBox(height: 20),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Container(
-                                      child: Center(),
-                                    ),
-                                    const SizedBox(height: 10),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          height: 50,
-                                          width: 120,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: AppColors.primaryColor1,
-                                          ),
-                                          child: ElevatedButton(
-                                            onPressed: () {},
-                                            style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                primary: Colors.transparent,
-                                                shadowColor:
-                                                    Colors.transparent),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.arrow_back_ios,
-                                                  color: AppColors.mainColor,
-                                                  size: 17,
-                                                ),
-                                                const SizedBox(width: 2),
-                                                const Text(
-                                                  'Previous',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
+                                        Expanded(
+                                          child: CircularPercentIndicator(
+                                            circularStrokeCap:
+                                                CircularStrokeCap.round,
+                                            percent: 0.6,
+                                            progressColor:
+                                                AppColors.primaryColor2,
+                                            backgroundColor:
+                                                Colors.grey.withOpacity(0.2),
+                                            radius: 70,
+                                            curve: Curves.linear,
+                                            backgroundWidth: 7,
+                                            lineWidth: 7,
+                                            center: CircularPercentIndicator(
+                                              circularStrokeCap:
+                                                  CircularStrokeCap.round,
+                                              percent: 0.3,
+                                              progressColor:
+                                                  AppColors.primaryColor1,
+                                              backgroundColor:
+                                                  Colors.grey.withOpacity(0.2),
+                                              radius: 60,
+                                              curve: Curves.linear,
+                                              backgroundWidth: 7,
+                                              lineWidth: 7,
+                                              center: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                child: Container(
+                                                  child: Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .center,
+                                                    children: [
+                                                      const Text(
+                                                        'Ready',
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                      const Text(
+                                                        '00:00',
+                                                        style: TextStyle(
+                                                          color: Colors.grey,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                      InkWell(
+                                                        radius: 40,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(50),
+                                                        onTap: () {},
+                                                        child: const Icon(
+                                                          Icons.play_circle,
+                                                          color: AppColors
+                                                              .primaryColor1,
+                                                          size: 35,
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
-                                                )
-                                              ],
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                         Container(
-                                          height: 50,
-                                          width: 120,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: AppColors.primaryColor1,
-                                          ),
-                                          child: ElevatedButton(
-                                            onPressed: () {},
-                                            style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
+                                            padding: const EdgeInsets.all(20),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.mainColor,
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.05),
+                                                  offset: const Offset(2, 3),
+                                                  blurRadius: 10,
                                                 ),
-                                                primary: Colors.transparent,
-                                                shadowColor:
-                                                    Colors.transparent),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const Text(
-                                                  'Skip',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 2),
-                                                Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  color: AppColors.mainColor,
-                                                  size: 17,
-                                                ),
+                                                BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.05),
+                                                  offset: const Offset(-2, -3),
+                                                  blurRadius: 10,
+                                                )
                                               ],
                                             ),
-                                          ),
-                                        )
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                  'Jumping Jacks',
+                                                  style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                        'assets/images/calories.png',
+                                                        height: 15,
+                                                        width: 15),
+                                                    const RichTextCustom(
+                                                      size: 15,
+                                                      title:
+                                                          'Calories Burned: ',
+                                                      data: 300,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Row(
+                                                  children: [
+                                                    Image.asset(
+                                                        'assets/images/duration.png',
+                                                        height: 15,
+                                                        width: 15),
+                                                    const RichTextCustom(
+                                                      size: 15,
+                                                      title: 'Time: ',
+                                                      data: 45,
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 10),
+                                                Container(
+                                                  height: 40,
+                                                  width: 120,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color:
+                                                        AppColors.primaryColor1,
+                                                  ),
+                                                  child: ElevatedButton(
+                                                    onPressed: () {},
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            primary: Colors
+                                                                .transparent,
+                                                            shadowColor: Colors
+                                                                .transparent),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const Text(
+                                                          'Skip',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 2),
+                                                        Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          color: AppColors
+                                                              .mainColor,
+                                                          size: 17,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
+                                            )),
                                       ],
                                     ),
                                   ],
@@ -245,7 +347,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 40),
+            padding: const EdgeInsets.only(top: 50),
             child: AppBarWorkout(title: 'Warm Up', press: () {}),
           ),
         ],
