@@ -18,7 +18,7 @@ class ContactUsScren extends StatelessWidget {
         'Id': '20120483',
         'facebook': 'https://www.facebook.com/truonghuynh.duchoang',
         'instagram': 'https://www.instagram.com/truonghuynhduchoang/',
-        'email': '',
+        'email': 'hungnguyen.201102ak@gmail.com',
         'git': 'hoangankin2211',
         'image': 'assets/images/hoang.png'
       },
@@ -176,7 +176,14 @@ class ContactUsScren extends StatelessWidget {
                                   color: Colors.blue,
                                 ),
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    final url = e['facebook'];
+                                    // ignore: deprecated_member_use
+                                    if (await canLaunch(url)) {
+                                      // ignore: deprecated_member_use
+                                      await launch(url);
+                                    }
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5),
@@ -210,7 +217,14 @@ class ContactUsScren extends StatelessWidget {
                                       .withOpacity(0.4),
                                 ),
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    final url = e['instagram'];
+                                    // ignore: deprecated_member_use
+                                    if (await canLaunch(url)) {
+                                      // ignore: deprecated_member_use
+                                      await launch(url);
+                                    }
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5),
@@ -243,7 +257,18 @@ class ContactUsScren extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    final toEmail = e['email'];
+                                    final subject = "Contact with us";
+                                    final message = '';
+                                    final url =
+                                        'mailto:$toEmail?subject=${subject}&body=${Uri.encodeFull(message)}';
+                                    // ignore: deprecated_member_use
+                                    if (await canLaunch(url)) {
+                                      // ignore: deprecated_member_use
+                                      await launch(url);
+                                    }
+                                  },
                                   style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(5),

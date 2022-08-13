@@ -11,6 +11,7 @@ import 'package:gold_health/apps/pages/dashboard/contactUsScreen.dart';
 import 'package:gold_health/apps/pages/dashboard/settingScreen.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/activityHistoryDialog.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/targerlDataDialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../global_widgets/ToggleButtonIos.dart';
 import '../../template/misc/colors.dart';
 
@@ -311,6 +312,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               MaterialPageRoute(
                                 builder: (context) => SettingScreen(),
                               ));
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      ButtonSvgIcon(
+                        title: 'See more',
+                        iconPath: 'assets/icons/Document.svg',
+                        press: () async {
+                          const url = 'https://github.com/minhunsocute/GHealth';
+                          // ignore: deprecated_member_use
+                          if (await canLaunch(url)) {
+                            // ignore: deprecated_member_use
+                            await launch(url);
+                          }
                         },
                       ),
                       const SizedBox(height: 10),
