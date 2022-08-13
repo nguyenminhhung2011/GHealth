@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/dailyPlan_screen.dart';
 import '../../controls/dashboard_control.dart';
+import '../../template/misc/colors.dart';
 import '../dashboard/home_screen.dart';
 import '../progress_tracker/progress_photo_screen.dart';
 import 'activity_trackerScreen.dart';
@@ -60,34 +62,46 @@ class _DashBoardScreenState extends State<DashBoardScreen>
         future: refreshPage(),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.home_outlined,
+            icon: SvgPicture.asset(
+              'assets/icons/Home.svg',
+              color: _dashBoardScreenC.tabIndex.value == 0
+                  ? AppColors.primaryColor1
+                  : Colors.grey,
             ),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.local_activity_outlined,
+            icon: SvgPicture.asset(
+              'assets/icons/Document.svg',
+              color: _dashBoardScreenC.tabIndex.value == 1
+                  ? AppColors.primaryColor1
+                  : Colors.grey,
             ),
             label: 'Planner',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.camera_alt_outlined,
+            icon: SvgPicture.asset(
+              'assets/icons/Camera.svg',
+              color: _dashBoardScreenC.tabIndex.value == 2
+                  ? AppColors.primaryColor1
+                  : Colors.grey,
             ),
             label: 'Progress',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              Icons.person_outline,
+            icon: SvgPicture.asset(
+              'assets/icons/Profile.svg',
+              color: _dashBoardScreenC.tabIndex.value == 3
+                  ? AppColors.primaryColor1
+                  : Colors.grey,
             ),
             label: 'Person',
           )
         ],
         type: BottomNavigationBarType.shifting,
-        selectedItemColor: Colors.blue[300],
+        selectedItemColor: AppColors.primaryColor1,
         unselectedItemColor: Colors.grey,
         currentIndex: _dashBoardScreenC.tabIndex.value,
         elevation: 10,

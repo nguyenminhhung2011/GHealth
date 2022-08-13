@@ -60,7 +60,7 @@ class MealDetailScreen extends StatelessWidget {
                   width: widthDevice / 1.7,
                   'assets/images/sushi.png',
                 ),
-              ),  
+              ),
             ),
           ),
           // ignore: avoid_unnecessary_containers
@@ -448,7 +448,10 @@ class MealDetailScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              AppBarWorkout(title: '', press: () {}),
+              Padding(
+                padding: const EdgeInsets.only(top: 40),
+                child: AppBarWorkout(title: '', press: () {}),
+              ),
               const Spacer(),
               InkWell(
                 onTap: () {},

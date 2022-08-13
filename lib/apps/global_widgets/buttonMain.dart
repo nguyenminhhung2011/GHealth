@@ -74,14 +74,14 @@ class ButtonDesign1 extends StatelessWidget {
             ),
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
-              offset: Offset(-2, -3),
+              offset: const Offset(-2, -3),
               blurRadius: 2,
             )
           ],
         ),
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             color: AppColors.primaryColor,
             fontWeight: FontWeight.bold,
             fontSize: 15,
