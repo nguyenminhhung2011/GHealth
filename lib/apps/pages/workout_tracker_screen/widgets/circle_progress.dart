@@ -2,8 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import '../../../template/misc/colors.dart';
-
 class CircleProgress extends CustomPainter {
   final double strokeCircle;
   final double currentProgress;
@@ -11,6 +9,7 @@ class CircleProgress extends CustomPainter {
   final double radius;
   final Color fillColor;
   final Color backGroundColor;
+  final StrokeCap? strokeCap;
   CircleProgress(
     this.currentProgress,
     this.parentProgress,
@@ -18,11 +17,13 @@ class CircleProgress extends CustomPainter {
     this.strokeCircle,
     this.fillColor,
     this.backGroundColor,
+    this.strokeCap,
   );
   @override
   void paint(Canvas canvas, Size size) {
     // Draw Circle
     Paint circle = Paint()
+      ..strokeCap = strokeCap!
       ..strokeWidth = strokeCircle
       ..color = backGroundColor
       ..style = PaintingStyle.stroke;
@@ -34,6 +35,7 @@ class CircleProgress extends CustomPainter {
       ..color = fillColor
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
+
     double angle = 2 * pi * (currentProgress / parentProgress);
 
     canvas.drawArc(Rect.fromCircle(center: center, radius: radius), pi / 2,

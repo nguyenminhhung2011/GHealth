@@ -68,11 +68,11 @@ class _WorkoutScreenState extends State<WorkoutScreen>
         children: [
           Container(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.primaryColor1,
               ),
               child: ListView(
-                physics: BouncingScrollPhysics(
+                physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
                 children: [
@@ -88,7 +88,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                             BoxConstraints(minHeight: _heightDevice * 0.95),
                         child: Container(
                           width: double.maxFinite,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 10,
                           ),
@@ -114,7 +114,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                   ),
                                 ),
                                 const SizedBox(height: 30),
-                                Text(
+                                const Text(
                                   '2/120 Exercises',
                                   style: TextStyle(
                                     color: Colors.black,
@@ -177,7 +177,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                                   size: 17,
                                                 ),
                                                 const SizedBox(width: 2),
-                                                Text(
+                                                const Text(
                                                   'Previous',
                                                   style: TextStyle(
                                                     color: Colors.white,
@@ -211,7 +211,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                Text(
+                                                const Text(
                                                   'Skip',
                                                   style: TextStyle(
                                                     color: Colors.white,
