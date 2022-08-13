@@ -6,7 +6,6 @@ import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/WaterConsumeCard.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/showDialogEditWater.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../global_widgets/list_chart/ColumnChart2Column.dart';
 import '../../global_widgets/screenTemplate.dart';
@@ -236,7 +235,7 @@ class DailyWaterScreen extends StatelessWidget {
                         r['target'], r['consume']);
                   }
                 },
-                child: Container(
+                child: SizedBox(
                   height: 180.0,
                   width: 180.0,
                   child: LiquidCircularProgressIndicator(
@@ -257,7 +256,7 @@ class DailyWaterScreen extends StatelessWidget {
                     center: (_controller.waterConsume.value <
                             _controller.waterTarget.value)
                         ? Text(
-                            '${((_controller.waterConsume.value / _controller.waterTarget.value) * 100).round()}%',
+                            '${((_controller.waterConsume.value / _controller.waterTarget.value) * 100).round()} \%',
                             style: const TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
@@ -427,5 +426,17 @@ class DailyWaterScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  Path _buildHeartPath() {
+    return Path()
+      ..moveTo(55, 15)
+      ..cubicTo(55, 12, 50, 0, 30, 0)
+      ..cubicTo(0, 0, 0, 37.5, 0, 37.5)
+      ..cubicTo(0, 55, 20, 77, 55, 95)
+      ..cubicTo(90, 77, 110, 55, 110, 37.5)
+      ..cubicTo(110, 37.5, 110, 0, 80, 0)
+      ..cubicTo(65, 0, 55, 12, 55, 15)
+      ..close();
   }
 }
