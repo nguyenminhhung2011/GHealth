@@ -1,154 +1,194 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
-class TimeCustom extends StatefulWidget {
-  final Color fillColor;
-  final Color backGroundColor;
-  final VoidCallback oncomplete;
-  final VoidCallback onStart;
-  final int duration;
-  final int initiaDuration;
-  final double width;
-  final double height;
-  final double strokeCircle;
-  final StrokeCap strokeCap;
-  final bool isReverse;
-  final bool isReverseAnimation;
-  final bool isTimerTextShown;
-  final bool autoStart;
-  final Widget? childWidget;
-  final double indicatorWidth;
-  final Color indicatorColor;
-  final CountDownController? controller;
-  const TimeCustom({
+import '../../../template/misc/colors.dart';
+
+class CountTImeWorkout extends StatefulWidget {
+  const CountTImeWorkout({
     Key? key,
-    required this.fillColor,
-    required this.backGroundColor,
-    required this.oncomplete,
-    required this.onStart,
-    required this.duration,
-    required this.initiaDuration,
-    required this.width,
-    required this.strokeCircle,
-    required this.strokeCap,
-    required this.isReverse,
-    required this.isReverseAnimation,
-    required this.isTimerTextShown,
-    required this.autoStart,
-    this.childWidget,
-    required this.indicatorWidth,
-    required this.indicatorColor,
-    this.controller,
-    required this.height,
+    required this.currentTime,
+    required this.currentAllTime,
+    this.isReady,
+    required this.onComPleted,
+    required this.currentReadyTime,
   }) : super(key: key);
-
+  final Duration currentTime;
+  final Duration currentAllTime;
+  final Duration currentReadyTime;
+  final int? isReady;
+  final VoidCallback onComPleted;
   @override
-  TimeCustomState createState() => TimeCustomState();
+  State<CountTImeWorkout> createState() => _CountTImeWorkoutState();
 }
 
-class TimeCustomState extends State<TimeCustom> with TickerProviderStateMixin {
-  AnimationController? controller;
-  Animation<double>? countDownAnimation;
-
-  void setAnimation() {
-    if (widget.autoStart) {
-      widget.isReverse ? controller!.reverse(from: 1) : controller!.forward();
-    }
-  }
-
-  void setAnimationDirection() {
-    if ((!widget.isReverse && widget.isReverseAnimation) ||
-        (widget.isReverse && !widget.isReverseAnimation)) {
-      countDownAnimation = Tween<double>(begin: 1, end: 0).animate(controller!);
-    }
-  }
-
-  void setController() {
-    widget.controller?.state = this;
-    widget.controller?.isReverse = widget.isReverse;
-    widget.controller?.initalDuration = widget.initiaDuration;
-    widget.controller?.duration = widget.duration;
-
-    if (widget.initiaDuration > 0 && widget.autoStart) {
-      widget.isReverse
-          ? controller?.value = 1 - (widget.initiaDuration / widget.duration)
-          : controller?.value = (widget.initiaDuration / widget.duration);
-      widget.controller!.start();
-    }
-  }
-
-  void onStart() {
-    if (widget.onStart != null) {
-      widget.onStart();
-    }
-  }
-
-  void onComplete() {
-    if (widget.oncomplete != null) {
-      widget.oncomplete();
-    }
+class _CountTImeWorkoutState extends State<CountTImeWorkout>
+    with TickerProviderStateMixin {
+  AnimationController? _controllerCurrentTime;
+  AnimationController? _controllerAllTime;
+  double progress = 0;
+  double progressAll = 0;
+  RxBool isPlay = true.obs;
+  String get countText {
+    Duration count =
+        _controllerCurrentTime!.duration! * _controllerCurrentTime!.value;
+    int minute = (count.inMinutes - count.inHours * 60);
+    int seconds = (count.inSeconds - count.inMinutes * 60);
+    return '$minute:$seconds';
   }
 
   @override
+  void onComplete() {
+    if (widget.onComPleted != null) {
+      widget.onComPleted();
+      if (widget.isReady == 1) {
+        _controllerCurrentTime!.stop();
+        _controllerCurrentTime =
+            AnimationController(vsync: this, duration: widget.currentTime);
+        _controllerCurrentTime!.forward(from: _controllerCurrentTime!.value);
+      } else if (widget.isReady == -1) {
+        _controllerCurrentTime!.stop();
+        _controllerCurrentTime =
+            AnimationController(vsync: this, duration: widget.currentReadyTime);
+        _controllerCurrentTime!.forward(from: _controllerCurrentTime!.value);
+      } else if (widget.isReady == 0) {
+        _controllerCurrentTime!.stop();
+      }
+      if (widget.isReady != 0) {
+        _controllerCurrentTime!.addStatusListener((status) {
+          switch (status) {
+            case AnimationStatus.forward:
+              break;
+            case AnimationStatus.completed:
+              onComplete();
+              break;
+            default:
+              break;
+          }
+        });
+      }
+    }
+  }
+
   void initState() {
     super.initState();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: widget.duration),
-    );
-    controller!.addStatusListener((status) {
+    _controllerCurrentTime =
+        AnimationController(vsync: this, duration: widget.currentReadyTime);
+    _controllerAllTime =
+        AnimationController(vsync: this, duration: widget.currentAllTime);
+    _controllerCurrentTime!.addListener(() {
+      setState(() {
+        progress = _controllerCurrentTime!.value;
+      });
+    });
+    _controllerCurrentTime!.addStatusListener((status) {
       switch (status) {
         case AnimationStatus.forward:
-          onStart();
-          break;
-        case AnimationStatus.reverse:
-          onStart();
-          break;
-        case AnimationStatus.dismissed:
-          onComplete();
           break;
         case AnimationStatus.completed:
-          if (!widget.isReverse) onComplete();
+          onComplete();
           break;
         default:
           break;
       }
     });
-    setAnimation();
-    setAnimationDirection();
-    setController();
+    _controllerAllTime!.addListener(() {
+      setState(() {
+        progressAll = _controllerAllTime!.value;
+      });
+    });
+    _controllerCurrentTime!.forward(from: _controllerCurrentTime!.value);
+    _controllerAllTime!.forward(from: _controllerAllTime!.value);
+  }
+
+  @override
+  void dispose() {
+    if (_controllerAllTime != null) {
+      _controllerAllTime?.dispose();
+    }
+    if (_controllerCurrentTime != null) {
+      _controllerCurrentTime?.dispose();
+    }
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
-    return Container(
-      width: widget.width,
-      height: widget.height,
+    return CircularPercentIndicator(
+      circularStrokeCap: CircularStrokeCap.round,
+      percent: progressAll,
+      progressColor: AppColors.primaryColor2,
+      backgroundColor: Colors.grey.withOpacity(0.2),
+      radius: 70,
+      curve: Curves.linear,
+      backgroundWidth: 7,
+      lineWidth: 7,
+      center: CircularPercentIndicator(
+        circularStrokeCap: CircularStrokeCap.round,
+        percent: _controllerCurrentTime!.value,
+        progressColor: AppColors.primaryColor1,
+        backgroundColor: Colors.grey.withOpacity(0.2),
+        radius: 60,
+        curve: Curves.linear,
+        backgroundWidth: 7,
+        lineWidth: 7,
+        onAnimationEnd: () {
+          setState(() {
+            widget.onComPleted;
+          });
+        },
+        center: Padding(
+          padding: const EdgeInsets.all(10),
+          // ignore: avoid_unnecessary_containers
+          child: Container(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  (widget.isReady == 1) ? 'Ready' : 'Workout',
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+                Text(
+                  countText,
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                  ),
+                ),
+                InkWell(
+                  radius: 40,
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: () {
+                    if (isPlay.value) {
+                      _controllerCurrentTime!.stop();
+                      _controllerAllTime!.stop();
+                    } else {
+                      _controllerCurrentTime!
+                          .forward(from: _controllerCurrentTime!.value);
+                      _controllerAllTime!
+                          .forward(from: _controllerAllTime!.value);
+                    }
+                    isPlay.value = !isPlay.value;
+                  },
+                  child: Obx(
+                    () => Icon(
+                      isPlay.value
+                          ? Icons.pause_circle_filled_rounded
+                          : Icons.play_circle_fill_rounded,
+                      color: AppColors.primaryColor1,
+                      size: 35,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
-  }
-}
-
-class CountDownController {
-  late TimeCustomState state;
-  late bool isReverse;
-  int? initalDuration, duration;
-
-  void start() {
-    (isReverse)
-        ? state.controller?.reverse(
-            from: initalDuration == 0 ? 1 : 1 - (initalDuration! / duration!))
-        : state.controller?.forward(
-            from: initalDuration == 0 ? 0 : (initalDuration! / duration!));
-  }
-
-  void pause() {
-    state.controller!.stop(canceled: false);
-  }
-
-  void reset() {
-    (isReverse)
-        ? state.controller?.reverse(from: 0)
-        : state.controller?.forward(from: 1);
-    pause();
   }
 }

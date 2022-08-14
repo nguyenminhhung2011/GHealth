@@ -7,7 +7,7 @@ import 'dailyPlanController/DailyPlanControls.dart';
 class WorkoutPlanController extends GetxController with TrackerController {
   TextEditingController text = TextEditingController();
   RxInt allTime = 60.obs;
-  RxBool isReady = true.obs;
+  RxInt isReady = 1.obs;
   RxInt currentWorkoutIndex = 0.obs;
   RxList<Map<String, dynamic>> listWorkout = [
     {

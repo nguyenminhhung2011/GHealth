@@ -91,7 +91,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
             RichText(
               text: TextSpan(
                 text: key,
-                style: TextStyle(
+                style: const TextStyle(
                   fontFamily: 'Sen',
                   fontSize: 25,
                   color: Colors.black54,
@@ -299,12 +299,12 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
               trimMode: TrimMode.Line,
               trimCollapsedText: 'Read more',
               trimExpandedText: 'Show less',
-              moreStyle: TextStyle(
+              moreStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryColor1,
               ),
-              lessStyle: TextStyle(
+              lessStyle: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.bold,
                 color: AppColors.primaryColor1,
