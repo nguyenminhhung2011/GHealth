@@ -6,10 +6,21 @@ import 'dailyPlanController/DailyPlanControls.dart';
 
 class WorkoutPlanController extends GetxController with TrackerController {
   TextEditingController text = TextEditingController();
-
-  //@override
-  // fetchTracksByDate(DateTime date) {
-  //   // TODO: implement fetchTracksByDate
-  //   throw UnimplementedError();
-  // }
+  RxInt allTime = 60.obs;
+  RxBool isReady = true.obs;
+  RxInt currentWorkoutIndex = 0.obs;
+  RxList<Map<String, dynamic>> listWorkout = [
+    {
+      'name': 'Jumping Jacks',
+      'time': 20,
+      'ready': 10,
+      'calo': 300,
+    },
+    {
+      'name': 'Warm Up',
+      'time': 20,
+      'ready': 10,
+      'calo': 400,
+    }
+  ].obs;
 }

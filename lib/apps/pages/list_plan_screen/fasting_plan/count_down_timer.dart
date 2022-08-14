@@ -43,8 +43,9 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   @override
   void dispose() {
-    super.dispose();
+    _controller.stop();
     _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -98,13 +99,15 @@ class _CountDownTimerState extends State<CountDownTimer>
                       isPlay.value = !isPlay.value;
                     },
                     radius: 60,
-                    child: Obx(() => Icon(
-                          isPlay.value
-                              ? Icons.pause_circle_filled_rounded
-                              : Icons.play_circle_fill_rounded,
-                          color: Colors.blue[300],
-                          size: 45,
-                        )),
+                    child: Obx(
+                      () => Icon(
+                        isPlay.value
+                            ? Icons.pause_circle_filled_rounded
+                            : Icons.play_circle_fill_rounded,
+                        color: Colors.blue[300],
+                        size: 45,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   Text(
