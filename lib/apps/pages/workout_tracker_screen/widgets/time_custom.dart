@@ -52,6 +52,7 @@ class _CountTImeWorkoutState extends State<CountTImeWorkout>
             AnimationController(vsync: this, duration: widget.currentReadyTime);
         _controllerCurrentTime!.forward(from: _controllerCurrentTime!.value);
       } else if (widget.isReady == 0) {
+        _controllerCurrentTime!.reset();
         _controllerCurrentTime!.stop();
       }
       if (widget.isReady != 0) {
@@ -115,7 +116,7 @@ class _CountTImeWorkoutState extends State<CountTImeWorkout>
   Widget build(BuildContext context) {
     return CircularPercentIndicator(
       circularStrokeCap: CircularStrokeCap.round,
-      percent: progressAll,
+      percent: _controllerAllTime!.value,
       progressColor: AppColors.primaryColor2,
       backgroundColor: Colors.grey.withOpacity(0.2),
       radius: 70,
@@ -159,31 +160,37 @@ class _CountTImeWorkoutState extends State<CountTImeWorkout>
                     fontSize: 16,
                   ),
                 ),
-                InkWell(
-                  radius: 40,
-                  borderRadius: BorderRadius.circular(50),
-                  onTap: () {
-                    if (isPlay.value) {
-                      _controllerCurrentTime!.stop();
-                      _controllerAllTime!.stop();
-                    } else {
-                      _controllerCurrentTime!
-                          .forward(from: _controllerCurrentTime!.value);
-                      _controllerAllTime!
-                          .forward(from: _controllerAllTime!.value);
-                    }
-                    isPlay.value = !isPlay.value;
-                  },
-                  child: Obx(
-                    () => Icon(
-                      isPlay.value
-                          ? Icons.pause_circle_filled_rounded
-                          : Icons.play_circle_fill_rounded,
-                      color: AppColors.primaryColor1,
-                      size: 35,
-                    ),
-                  ),
-                ),
+                (widget.isReady != 0)
+                    ? InkWell(
+                        radius: 40,
+                        borderRadius: BorderRadius.circular(50),
+                        onTap: () {
+                          if (isPlay.value) {
+                            _controllerCurrentTime!.stop();
+                            _controllerAllTime!.stop();
+                          } else {
+                            _controllerCurrentTime!
+                                .forward(from: _controllerCurrentTime!.value);
+                            _controllerAllTime!
+                                .forward(from: _controllerAllTime!.value);
+                          }
+                          isPlay.value = !isPlay.value;
+                        },
+                        child: Obx(
+                          () => Icon(
+                            isPlay.value
+                                ? Icons.pause_circle_filled_rounded
+                                : Icons.play_circle_fill_rounded,
+                            color: AppColors.primaryColor1,
+                            size: 35,
+                          ),
+                        ),
+                      )
+                    : Icon(
+                        Icons.check_circle,
+                        color: Colors.green.withOpacity(0.5),
+                        size: 35,
+                      ),
               ],
             ),
           ),
