@@ -130,7 +130,7 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                       'Sleep Schedule',
                       style: TextStyle(
                         fontFamily: 'Sen',
-                        fontSize: 25,
+                        fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -145,6 +145,7 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                   height: heightDevice * 0.23,
                   width: widthDevice,
                   padding: const EdgeInsets.all(20),
+                  margin: const EdgeInsets.symmetric(horizontal: 20.0),
                   decoration: BoxDecoration(
                     color: Colors.blue[100]!.withOpacity(0.5),
                     borderRadius: BorderRadius.circular(20),
@@ -211,12 +212,15 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                   ),
                 ),
                 const SizedBox(height: 40),
-                Text(
-                  'Your Schedule',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5!
-                      .copyWith(fontWeight: FontWeight.w600),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    'Your Schedule',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(fontWeight: FontWeight.w600),
+                  ),
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
@@ -283,6 +287,7 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                 Container(
                   height: heightDevice * 0.15,
                   width: widthDevice,
+                  margin: const EdgeInsets.symmetric(horizontal: 20.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Colors.purple[50]!,

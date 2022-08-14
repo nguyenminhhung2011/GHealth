@@ -92,6 +92,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
             const SizedBox(height: 20),
             Container(
               width: widthDevice,
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               decoration: BoxDecoration(
                 color: Colors.red.withOpacity(0.3),
@@ -146,6 +147,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
             Container(
               width: widthDevice,
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
               decoration: BoxDecoration(
                 color: AppColors.primaryColor1.withOpacity(0.3),
                 borderRadius: BorderRadius.circular(18),
@@ -223,6 +225,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
             const SizedBox(height: 40),
             Container(
               width: widthDevice,
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
               padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               decoration: BoxDecoration(
                 color: AppColors.primaryColor1.withOpacity(0.3),
@@ -258,6 +261,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
             // ignore: avoid_unnecessary_containers, sized_box_for_whitespace
             Container(
               width: double.infinity,
+              margin: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Row(
                 children: [
                   const Text(
@@ -286,9 +290,13 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '${e['d']} ${e['m']}',
-                      style: const TextStyle(color: Colors.grey, fontSize: 14),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Text(
+                        '${e['d']} ${e['m']}',
+                        style:
+                            const TextStyle(color: Colors.grey, fontSize: 14),
+                      ),
                     ),
                     const SizedBox(height: 10),
                     // ignore: sized_box_for_whitespace
@@ -300,7 +308,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
                         itemCount: e['image'].length,
                         itemBuilder: (context, index) => (e['type'] == 0)
                             ? Container(
-                                margin: const EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(left: 10),
                                 width: 100,
                                 height: 100,
                                 decoration: BoxDecoration(
@@ -314,7 +322,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
                                 ),
                               )
                             : Container(
-                                margin: const EdgeInsets.only(right: 10),
+                                margin: const EdgeInsets.only(left: 10),
                                 width: 100,
                                 height: 100,
                                 decoration: BoxDecoration(

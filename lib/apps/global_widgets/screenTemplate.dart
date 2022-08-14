@@ -49,7 +49,6 @@ class _ScreenTemplateState extends State<ScreenTemplate> {
                       child: Container(
                         width: double.maxFinite,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 20,
                           vertical: 10,
                         ),
                         decoration: BoxDecoration(

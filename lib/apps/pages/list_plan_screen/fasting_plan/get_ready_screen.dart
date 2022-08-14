@@ -64,43 +64,51 @@ class GetReadyScreen extends StatelessWidget {
       body: ScreenTemplate(
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.back();
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    color: Colors.black,
-                    size: 24,
-                  ),
-                ),
-                const SizedBox(width: 5),
-                const Text(
-                  'Get Ready !!!',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryColor1.withOpacity(0.2),
-                      borderRadius: BorderRadius.circular(10),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Get.back();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.primaryColor1.withOpacity(0.2),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black54,
+                      ),
                     ),
-                    child: const Icon(
-                      Icons.more_horiz,
+                  ),
+                  const Text(
+                    'Get Ready !!!',
+                    style: TextStyle(
                       color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
                     ),
                   ),
-                ),
-              ],
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryColor1.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             Row(
@@ -111,7 +119,7 @@ class GetReadyScreen extends StatelessWidget {
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
-                    fontSize: 30,
+                    fontSize: 24,
                   ),
                 ),
                 ElevatedButton(
@@ -127,12 +135,12 @@ class GetReadyScreen extends StatelessWidget {
                     () => isTapExpandDetail.value
                         ? Icon(
                             Icons.keyboard_arrow_down,
-                            size: 30,
+                            size: 28,
                             color: Colors.blueGrey[400],
                           )
                         : Icon(
                             Icons.keyboard_arrow_up,
-                            size: 30,
+                            size: 28,
                             color: Colors.blueGrey[400],
                           ),
                   ),
@@ -147,13 +155,16 @@ class GetReadyScreen extends StatelessWidget {
                 child: Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    Icon(
-                      Icons.arrow_drop_up_sharp,
-                      size: 100,
-                      color: Colors.blue[50],
+                    Positioned(
+                      top: -30,
+                      child: Icon(
+                        Icons.arrow_drop_up_sharp,
+                        size: 100,
+                        color: Colors.blue[50],
+                      ),
                     ),
                     Positioned(
-                      top: 50,
+                      top: 20,
                       child: Container(
                         padding: const EdgeInsets.only(left: 20),
                         width: 300,
@@ -224,31 +235,35 @@ class GetReadyScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
                 fixedSize: Size(widthDevice * 0.8, 55),
-                primary: Colors.blue[300]!,
+                primary: AppColors.primaryColor1,
               ),
               child: const Text(
                 'Start Fasting',
                 style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                    color: Colors.white),
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
               ),
             ),
             const SizedBox(height: 20),
-            SizedBox(
-              width: double.infinity,
-              child: Text(
-                'Try weekly plan',
-                style: TextStyle(
-                  color: Colors.blueGrey[600],
-                  fontWeight: FontWeight.w500,
-                  fontSize: 20,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  'Try weekly plan',
+                  style: TextStyle(
+                    color: Colors.blueGrey[600],
+                    fontWeight: FontWeight.w500,
+                    fontSize: 17,
+                  ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
             SizedBox(
-              width: widthDevice * 0.9,
+              width: widthDevice,
               child: SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child:
@@ -259,7 +274,7 @@ class GetReadyScreen extends StatelessWidget {
             Container(
               height: heightDevice * 0.42,
               width: double.infinity,
-              margin: const EdgeInsets.all(10),
+              margin: const EdgeInsets.all(20),
               padding: const EdgeInsets.symmetric(horizontal: 30),
               decoration: BoxDecoration(
                 color: Colors.blue[100]!.withOpacity(0.5),
@@ -373,6 +388,7 @@ class GetReadyScreen extends StatelessWidget {
 
   Widget _itemBuilder(dynamic e) {
     return Container(
+      alignment: Alignment.center,
       margin: const EdgeInsets.symmetric(horizontal: 15),
       child: Material(
         borderRadius: BorderRadius.circular(20),
@@ -389,6 +405,7 @@ class GetReadyScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

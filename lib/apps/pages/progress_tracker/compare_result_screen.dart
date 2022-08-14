@@ -87,182 +87,186 @@ class _CompareResultScreenState extends State<CompareResultScreen> {
           ],
         ),
         body: ScreenTemplate(
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              // ignore: avoid_unnecessary_containers
-              Container(
-                height: 70,
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(30),
-                    color: AppColors.primaryColor1.withOpacity(0.1)),
-                child: TabBar(
-                  labelColor: Colors.white,
-                  unselectedLabelColor: Colors.grey,
-                  labelStyle: const TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.bold),
-                  indicator: BoxDecoration(
-                    color: AppColors.primaryColor1,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  tabs: const [
-                    Tab(text: 'Photo'),
-                    Tab(text: 'Statisic'),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 40),
-              SizedBox(
-                height: heightDevice + 200,
-                child: TabBarView(
-                  children: [
-                    PhotoTab(widthDevice, heightDevice),
-                    Container(
-                      color: AppColors.mainColor,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 10),
-                          SizedBox(
-                            width: widthDevice - 60,
-                            height: 200,
-                            // ignore: avoid_unnecessary_containers
-                            child: Container(
-                              child: const LineChartTwoLine(),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          Row(
-                            children: [
-                              Text(
-                                fakeData[0]['m'],
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              const Spacer(),
-                              Text(
-                                fakeData[1]['m'],
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Lose Weight',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          LinePercent(
-                            widthDevice: widthDevice,
-                            percent: 0.33,
-                          ),
-                          const SizedBox(height: 20),
-                          const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Height Increase',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          LinePercent(
-                            widthDevice: widthDevice,
-                            percent: 0.88,
-                          ),
-                          const SizedBox(height: 20),
-                          const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Muscle Mass Increase',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          LinePercent(
-                            widthDevice: widthDevice,
-                            percent: 0.33,
-                          ),
-                          const SizedBox(height: 20),
-                          const Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Abs',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 15,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          LinePercent(
-                            widthDevice: widthDevice,
-                            percent: 0.89,
-                          ),
-                          const SizedBox(height: 30),
-                          InkWell(
-                            borderRadius: BorderRadius.circular(20),
-                            onTap: () {},
-                            child: Container(
-                              alignment: Alignment.center,
-                              width: widthDevice,
-                              padding: const EdgeInsets.symmetric(vertical: 20),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(40),
-                                color: AppColors.primaryColor1,
-                                boxShadow: [
-                                  // BoxShadow(
-                                  //   color: Colors.black.withOpacity(0.05),
-                                  //   offset: const Offset(2, 3),
-                                  //   blurRadius: 2,
-                                  // ),
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.05),
-                                    offset: const Offset(-2, -3),
-                                    blurRadius: 2,
-                                  )
-                                ],
-                              ),
-                              child: const Text(
-                                'Back to Home',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                // ignore: avoid_unnecessary_containers
+                Container(
+                  height: 70,
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      color: AppColors.primaryColor1.withOpacity(0.1)),
+                  child: TabBar(
+                    labelColor: Colors.white,
+                    unselectedLabelColor: Colors.grey,
+                    labelStyle: const TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                    indicator: BoxDecoration(
+                      color: AppColors.primaryColor1,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  ],
+                    tabs: const [
+                      Tab(text: 'Photo'),
+                      Tab(text: 'Statisic'),
+                    ],
+                  ),
                 ),
-              )
-            ],
+                const SizedBox(height: 40),
+                SizedBox(
+                  height: heightDevice + 200,
+                  child: TabBarView(
+                    children: [
+                      PhotoTab(widthDevice, heightDevice),
+                      Container(
+                        color: AppColors.mainColor,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              width: widthDevice - 60,
+                              height: 200,
+                              // ignore: avoid_unnecessary_containers
+                              child: Container(
+                                child: const LineChartTwoLine(),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Text(
+                                  fakeData[0]['m'],
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  fakeData[1]['m'],
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            const Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Lose Weight',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            LinePercent(
+                              widthDevice: widthDevice,
+                              percent: 0.33,
+                            ),
+                            const SizedBox(height: 20),
+                            const Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Height Increase',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            LinePercent(
+                              widthDevice: widthDevice,
+                              percent: 0.88,
+                            ),
+                            const SizedBox(height: 20),
+                            const Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Muscle Mass Increase',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            LinePercent(
+                              widthDevice: widthDevice,
+                              percent: 0.33,
+                            ),
+                            const SizedBox(height: 20),
+                            const Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Abs',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 15,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 20),
+                            LinePercent(
+                              widthDevice: widthDevice,
+                              percent: 0.89,
+                            ),
+                            const SizedBox(height: 30),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(20),
+                              onTap: () {},
+                              child: Container(
+                                alignment: Alignment.center,
+                                width: widthDevice,
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 20),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(40),
+                                  color: AppColors.primaryColor1,
+                                  boxShadow: [
+                                    // BoxShadow(
+                                    //   color: Colors.black.withOpacity(0.05),
+                                    //   offset: const Offset(2, 3),
+                                    //   blurRadius: 2,
+                                    // ),
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.05),
+                                      offset: const Offset(-2, -3),
+                                      blurRadius: 2,
+                                    )
+                                  ],
+                                ),
+                                child: const Text(
+                                  'Back to Home',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

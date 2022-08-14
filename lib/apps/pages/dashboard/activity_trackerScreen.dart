@@ -55,64 +55,154 @@ class ActivityTrackerScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              // flex: (heightDevice / 20 * 15).round(),
-              child: ScreenTemplate(
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: heightDevice * 0.5,
-                      // padding: const EdgeInsets.all(15),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Text(
-                                'Sleep',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                      fontSize: 17,
-                                    ),
-                              ),
-                              const Spacer(),
-                              ButtonIconGradientColor(
-                                title: 'Select Week',
-                                icon: Icons.calendar_month,
-                                press: () {},
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 15),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25),
-                              color: Colors.white,
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  offset: const Offset(2, 3),
-                                  blurRadius: 20,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            children: [
+              Expanded(
+                // flex: (heightDevice / 20 * 15).round(),
+                child: ScreenTemplate(
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: heightDevice * 0.5,
+                        // padding: const EdgeInsets.all(15),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'Sleep',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        fontSize: 17,
+                                      ),
                                 ),
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  offset: const Offset(-2, -3),
-                                  blurRadius: 20,
+                                const Spacer(),
+                                ButtonIconGradientColor(
+                                  title: 'Select Week',
+                                  icon: Icons.calendar_month,
+                                  press: () {},
                                 )
                               ],
                             ),
-                            padding: const EdgeInsets.all(20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            const SizedBox(height: 15),
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.white,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    offset: const Offset(2, 3),
+                                    blurRadius: 20,
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    offset: const Offset(-2, -3),
+                                    blurRadius: 20,
+                                  )
+                                ],
+                              ),
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: const [
+                                      GradientText(
+                                        'Week 25/7/2022 - 1/8/2022',
+                                        gradient: LinearGradient(colors: [
+                                          Colors.black,
+                                          Colors.black
+                                        ]),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const GradientText(
+                                    'Average: 7hours 15minutes',
+                                    gradient: LinearGradient(
+                                        colors: [Colors.black, Colors.black]),
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  TimeChart(
+                                    timeChartSizeAnimationDuration:
+                                        const Duration(milliseconds: 3000),
+                                    height: heightDevice * 0.3,
+                                    activeTooltip: true,
+                                    data: SleepTrackerData.data,
+                                    viewMode: ViewMode.weekly,
+                                    barColor: AppColors.primaryColor1,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: heightDevice * 0.4,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    GradientText(
+                                const Padding(
+                                  padding: EdgeInsets.only(top: 20.0),
+                                  child: Text(
+                                    'Heart Rate',
+                                    style: TextStyle(
+                                      fontFamily: 'Sen',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                                ButtonIconGradientColor(
+                                  title: 'Select Week',
+                                  icon: Icons.calendar_month,
+                                  press: () {},
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 15),
+                            Container(
+                              height: heightDevice * 0.3,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: AppColors.backGroundTableColor,
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    offset: const Offset(2, 3),
+                                    blurRadius: 20,
+                                  ),
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.05),
+                                    offset: const Offset(-2, -3),
+                                    blurRadius: 20,
+                                  )
+                                ],
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: GradientText(
                                       'Week 25/7/2022 - 1/8/2022',
                                       gradient: LinearGradient(
                                           colors: [Colors.black, Colors.black]),
@@ -121,52 +211,133 @@ class ActivityTrackerScreen extends StatelessWidget {
                                         fontSize: 17,
                                       ),
                                     ),
-                                  ],
-                                ),
-                                const GradientText(
-                                  'Average: 7hours 15minutes',
-                                  gradient: LinearGradient(
-                                      colors: [Colors.black, Colors.black]),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 16,
                                   ),
-                                ),
-                                TimeChart(
-                                  timeChartSizeAnimationDuration:
-                                      const Duration(milliseconds: 3000),
-                                  height: heightDevice * 0.3,
-                                  activeTooltip: true,
-                                  data: SleepTrackerData.data,
-                                  viewMode: ViewMode.weekly,
-                                  barColor: AppColors.primaryColor1,
-                                ),
-                              ],
+                                  const Padding(
+                                    padding: EdgeInsets.only(left: 20.0),
+                                    child: GradientText(
+                                      'Average: 78 BPM',
+                                      gradient: LinearGradient(
+                                          colors: [Colors.black, Colors.black]),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: heightDevice * 0.2,
+                                    child: LineChart(
+                                      LineChartData(
+                                        borderData: FlBorderData(show: false),
+                                        gridData: FlGridData(show: false),
+                                        titlesData: FlTitlesData(show: false),
+                                        lineTouchData: LineTouchData(
+                                          enabled: true,
+                                          touchTooltipData:
+                                              LineTouchTooltipData(
+                                            tooltipRoundedRadius: 20,
+                                            tooltipBgColor:
+                                                AppColors.primaryColor1,
+                                            getTooltipItems: (List<LineBarSpot>
+                                                touchedBarSpots) {
+                                              return touchedBarSpots
+                                                  .map((barSpot) {
+                                                final flSpot = barSpot;
+                                                return LineTooltipItem(
+                                                  '${flSpot.x.toInt()}mins ago',
+                                                  const TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                );
+                                              }).toList();
+                                            },
+                                          ),
+                                        ),
+                                        minX: 1,
+                                        maxX: 30,
+                                        minY: 80,
+                                        maxY: 170,
+                                        lineBarsData: [
+                                          LineChartBarData(
+                                            spots: const [
+                                              FlSpot(1, 100),
+                                              FlSpot(2, 130),
+                                              FlSpot(3, 90),
+                                              FlSpot(4, 150),
+                                              FlSpot(5, 110),
+                                              FlSpot(6, 120),
+                                              FlSpot(7, 100),
+                                              FlSpot(8, 120),
+                                              FlSpot(9, 125),
+                                              FlSpot(10, 100),
+                                              FlSpot(11, 90),
+                                              FlSpot(12, 150),
+                                              FlSpot(13, 85),
+                                              FlSpot(14, 100),
+                                              FlSpot(15, 80),
+                                              FlSpot(16, 100),
+                                              FlSpot(17, 130),
+                                              FlSpot(18, 90),
+                                              FlSpot(19, 150),
+                                              FlSpot(20, 110),
+                                              FlSpot(21, 120),
+                                              FlSpot(22, 100),
+                                              FlSpot(23, 120),
+                                              FlSpot(24, 125),
+                                              FlSpot(25, 100),
+                                              FlSpot(26, 90),
+                                              FlSpot(27, 150),
+                                              FlSpot(28, 85),
+                                              FlSpot(29, 100),
+                                              FlSpot(30, 120),
+                                            ],
+                                            barWidth: 2,
+                                            dotData: FlDotData(show: false),
+                                            gradient: AppColors.colorGradient,
+                                            belowBarData: BarAreaData(
+                                              show: true,
+                                              gradient: AppColors
+                                                  .colorContainerTodayTarget,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        gradient:
+                                            AppColors.colorContainerTodayTarget,
+                                        borderRadius: const BorderRadius.only(
+                                          bottomLeft: Radius.circular(20),
+                                          bottomRight: Radius.circular(20),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: heightDevice * 0.4,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 20),
+                      Column(
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Padding(
-                                padding: EdgeInsets.only(top: 20.0),
-                                child: Text(
-                                  'Heart Rate',
-                                  style: TextStyle(
-                                    fontFamily: 'Sen',
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black,
-                                  ),
-                                ),
+                              Text(
+                                'Activity Progress',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      fontSize: 17,
+                                    ),
                               ),
+                              Spacer(),
                               ButtonIconGradientColor(
                                 title: 'Select Week',
                                 icon: Icons.calendar_month,
@@ -174,12 +345,145 @@ class ActivityTrackerScreen extends StatelessWidget {
                               )
                             ],
                           ),
-                          const SizedBox(height: 15),
+                          const SizedBox(height: 20),
+                          ChartBoard(
+                              widthDevice: widthDevice,
+                              heightDevice: heightDevice,
+                              week: 'Week 25/7/2022 - 1/8/2022',
+                              title: 'Calories burned: ',
+                              data: '3000Kcal',
+                              color: Colors.white)
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Calories Absorbed',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      fontSize: 17,
+                                    ),
+                              ),
+                              Spacer(),
+                              ButtonIconGradientColor(
+                                title: 'Select Week',
+                                icon: Icons.calendar_month,
+                                press: () {},
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          ChartBoard(
+                            widthDevice: widthDevice,
+                            heightDevice: heightDevice,
+                            week: 'Week 25/7/2022 - 1/8/2022',
+                            title: 'Calories Absorbed: ',
+                            data: '4000Kcal',
+                            color: AppColors.primaryColor2.withOpacity(0.1),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Water consumed',
+                                overflow: TextOverflow.clip,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      fontSize: 17,
+                                    ),
+                              ),
+                              Spacer(),
+                              ButtonIconGradientColor(
+                                title: 'Select Week',
+                                icon: Icons.calendar_month,
+                                press: () {},
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: heightDevice / 2.9,
+                            width: double.infinity,
+                            child: const ColumnChartTwoColumnCustom(),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'FootSteps',
+                                overflow: TextOverflow.clip,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      fontSize: 17,
+                                    ),
+                              ),
+                              Spacer(),
+                              ButtonIconGradientColor(
+                                title: 'Select Week',
+                                icon: Icons.calendar_month,
+                                press: () {},
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          ChartBoard(
+                            widthDevice: widthDevice,
+                            heightDevice: heightDevice,
+                            week: 'Week 25/7/2022 - 1/8/2022',
+                            title: 'Number of FootSteps: ',
+                            data: '300',
+                            color: AppColors.mainColor,
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Weight Trackers',
+                                overflow: TextOverflow.clip,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      fontSize: 17,
+                                    ),
+                              ),
+                              Spacer(),
+                              ButtonIconGradientColor(
+                                title: 'Select Days',
+                                icon: Icons.calendar_month,
+                                press: () {},
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 20),
                           Container(
-                            height: heightDevice * 0.3,
+                            width: widthDevice,
+                            height: heightDevice / 3,
+                            padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
-                              color: AppColors.backGroundTableColor,
+                              color: AppColors.primaryColor1,
                               boxShadow: [
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.05),
@@ -188,7 +492,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                                 ),
                                 BoxShadow(
                                   color: Colors.black.withOpacity(0.05),
-                                  offset: const Offset(-2, -3),
+                                  offset: Offset(-2, -3),
                                   blurRadius: 20,
                                 )
                               ],
@@ -196,407 +500,109 @@ class ActivityTrackerScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 20.0),
-                                  child: GradientText(
-                                    'Week 25/7/2022 - 1/8/2022',
-                                    gradient: LinearGradient(
-                                        colors: [Colors.black, Colors.black]),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 17,
-                                    ),
+                                const Text(
+                                  'Week 25/7/2022 - 1/8/2022',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
                                   ),
                                 ),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 20.0),
-                                  child: GradientText(
-                                    'Average: 78 BPM',
-                                    gradient: LinearGradient(
-                                        colors: [Colors.black, Colors.black]),
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: heightDevice * 0.2,
-                                  child: LineChart(
-                                    LineChartData(
-                                      borderData: FlBorderData(show: false),
-                                      gridData: FlGridData(show: false),
-                                      titlesData: FlTitlesData(show: false),
-                                      lineTouchData: LineTouchData(
-                                        enabled: true,
-                                        touchTooltipData: LineTouchTooltipData(
-                                          tooltipRoundedRadius: 20,
-                                          tooltipBgColor:
-                                              AppColors.primaryColor1,
-                                          getTooltipItems: (List<LineBarSpot>
-                                              touchedBarSpots) {
-                                            return touchedBarSpots
-                                                .map((barSpot) {
-                                              final flSpot = barSpot;
-                                              return LineTooltipItem(
-                                                '${flSpot.x.toInt()}mins ago',
-                                                const TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              );
-                                            }).toList();
-                                          },
-                                        ),
+                                Row(
+                                  children: const [
+                                    Text(
+                                      'Weight(kg):',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
                                       ),
-                                      minX: 1,
-                                      maxX: 30,
-                                      minY: 80,
-                                      maxY: 170,
-                                      lineBarsData: [
-                                        LineChartBarData(
-                                          spots: const [
-                                            FlSpot(1, 100),
-                                            FlSpot(2, 130),
-                                            FlSpot(3, 90),
-                                            FlSpot(4, 150),
-                                            FlSpot(5, 110),
-                                            FlSpot(6, 120),
-                                            FlSpot(7, 100),
-                                            FlSpot(8, 120),
-                                            FlSpot(9, 125),
-                                            FlSpot(10, 100),
-                                            FlSpot(11, 90),
-                                            FlSpot(12, 150),
-                                            FlSpot(13, 85),
-                                            FlSpot(14, 100),
-                                            FlSpot(15, 80),
-                                            FlSpot(16, 100),
-                                            FlSpot(17, 130),
-                                            FlSpot(18, 90),
-                                            FlSpot(19, 150),
-                                            FlSpot(20, 110),
-                                            FlSpot(21, 120),
-                                            FlSpot(22, 100),
-                                            FlSpot(23, 120),
-                                            FlSpot(24, 125),
-                                            FlSpot(25, 100),
-                                            FlSpot(26, 90),
-                                            FlSpot(27, 150),
-                                            FlSpot(28, 85),
-                                            FlSpot(29, 100),
-                                            FlSpot(30, 120),
-                                          ],
-                                          barWidth: 2,
-                                          dotData: FlDotData(show: false),
-                                          gradient: AppColors.colorGradient,
-                                          belowBarData: BarAreaData(
-                                            show: true,
-                                            gradient: AppColors
-                                                .colorContainerTodayTarget,
-                                          ),
-                                        ),
-                                      ],
                                     ),
-                                  ),
+                                    Text(
+                                      '40',
+                                      style: TextStyle(
+                                        color: AppColors.primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                    )
+                                  ],
                                 ),
+                                const SizedBox(height: 10),
                                 Expanded(
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      gradient:
-                                          AppColors.colorContainerTodayTarget,
-                                      borderRadius: const BorderRadius.only(
-                                        bottomLeft: Radius.circular(20),
-                                        bottomRight: Radius.circular(20),
-                                      ),
-                                    ),
-                                  ),
-                                )
+                                  child: LineChartWidget(),
+                                ),
                               ],
                             ),
                           ),
                         ],
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Activity Progress',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    fontSize: 17,
-                                  ),
-                            ),
-                            Spacer(),
-                            ButtonIconGradientColor(
-                              title: 'Select Week',
-                              icon: Icons.calendar_month,
-                              press: () {},
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        ChartBoard(
-                            widthDevice: widthDevice,
-                            heightDevice: heightDevice,
-                            week: 'Week 25/7/2022 - 1/8/2022',
-                            title: 'Calories burned: ',
-                            data: '3000Kcal',
-                            color: Colors.white)
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Calories Absorbed',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    fontSize: 17,
-                                  ),
-                            ),
-                            Spacer(),
-                            ButtonIconGradientColor(
-                              title: 'Select Week',
-                              icon: Icons.calendar_month,
-                              press: () {},
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        ChartBoard(
-                          widthDevice: widthDevice,
-                          heightDevice: heightDevice,
-                          week: 'Week 25/7/2022 - 1/8/2022',
-                          title: 'Calories Absorbed: ',
-                          data: '4000Kcal',
-                          color: AppColors.primaryColor2.withOpacity(0.1),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Water consumed',
-                              overflow: TextOverflow.clip,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    fontSize: 17,
-                                  ),
-                            ),
-                            Spacer(),
-                            ButtonIconGradientColor(
-                              title: 'Select Week',
-                              icon: Icons.calendar_month,
-                              press: () {},
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          height: heightDevice / 2.9,
-                          width: double.infinity,
-                          child: const ColumnChartTwoColumnCustom(),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'FootSteps',
-                              overflow: TextOverflow.clip,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    fontSize: 17,
-                                  ),
-                            ),
-                            Spacer(),
-                            ButtonIconGradientColor(
-                              title: 'Select Week',
-                              icon: Icons.calendar_month,
-                              press: () {},
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        ChartBoard(
-                          widthDevice: widthDevice,
-                          heightDevice: heightDevice,
-                          week: 'Week 25/7/2022 - 1/8/2022',
-                          title: 'Number of FootSteps: ',
-                          data: '300',
-                          color: AppColors.mainColor,
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              'Weight Trackers',
-                              overflow: TextOverflow.clip,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    fontSize: 17,
-                                  ),
-                            ),
-                            Spacer(),
-                            ButtonIconGradientColor(
-                              title: 'Select Days',
-                              icon: Icons.calendar_month,
-                              press: () {},
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Container(
-                          width: widthDevice,
-                          height: heightDevice / 3,
-                          padding: const EdgeInsets.all(20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: AppColors.primaryColor1,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                offset: const Offset(2, 3),
-                                blurRadius: 20,
+                      const SizedBox(height: 20),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Hero(
+                                tag: 'latest tag',
+                                child: Text(
+                                  'Latest Activity',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        fontSize: 17,
+                                      ),
+                                ),
                               ),
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.05),
-                                offset: Offset(-2, -3),
-                                blurRadius: 20,
+                              Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => LatestActiScreen(),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'See more',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 17,
+                                  ),
+                                ),
                               )
                             ],
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          const SizedBox(height: 20),
+                          Column(
                             children: [
-                              const Text(
-                                'Week 25/7/2022 - 1/8/2022',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: 16,
-                                ),
+                              ActiCard(
+                                widthDevice: widthDevice,
+                                imagePath: 'assets/images/drinking.png',
+                                title: 'About 3 minutes ago',
+                                mainTitle: 'Drinking 300ml Water',
+                                press: () {},
                               ),
-                              Row(
-                                children: const [
-                                  Text(
-                                    'Weight(kg):',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    '40',
-                                    style: TextStyle(
-                                      color: AppColors.primaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16,
-                                    ),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Expanded(
-                                child: LineChartWidget(),
+                              ActiCard(
+                                widthDevice: widthDevice,
+                                imagePath: 'assets/images/eating.png',
+                                title: 'About 10 minutes ago',
+                                mainTitle: 'Eat Snack (Fitbar)',
+                                press: () {},
                               ),
                             ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Column(
-                      children: [
-                        Row(
-                          children: [
-                            Hero(
-                              tag: 'latest tag',
-                              child: Text(
-                                'Latest Activity',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                      fontSize: 17,
-                                    ),
-                              ),
-                            ),
-                            Spacer(),
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => LatestActiScreen(),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                'See more',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 17,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Column(
-                          children: [
-                            ActiCard(
-                              widthDevice: widthDevice,
-                              imagePath: 'assets/images/drinking.png',
-                              title: 'About 3 minutes ago',
-                              mainTitle: 'Drinking 300ml Water',
-                              press: () {},
-                            ),
-                            ActiCard(
-                              widthDevice: widthDevice,
-                              imagePath: 'assets/images/eating.png',
-                              title: 'About 10 minutes ago',
-                              mainTitle: 'Eat Snack (Fitbar)',
-                              press: () {},
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

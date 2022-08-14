@@ -54,287 +54,288 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
       extendBody: true,
       extendBodyBehindAppBar: true,
       body: ScreenTemplate(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.primaryColor1,
-                    ),
-                    child: const Icon(
-                      Icons.arrow_back_ios,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {},
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: AppColors.primaryColor1,
-                    ),
-                    child: const Icon(
-                      Icons.more_horiz,
-                      color: Colors.black54,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Obx(
-                  (() => Text(
-                        _controller.listWorkout
-                                .value[_controller.currentWorkoutIndex.value]
-                            ['name'],
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
-                      )),
-                ),
-                const SizedBox(width: 5),
-                Icon(Icons.check_circle, color: AppColors.primaryColor1)
-              ],
-            ),
-            const SizedBox(height: 10),
-            Obx(
-              () => Text(
-                // ignore: invalid_use_of_protected_member
-                '${_controller.currentWorkoutIndex.value + 1}/${_controller.listWorkout.value.length} Exercises',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            Obx(
-              () => SizedBox(
-                width: widthDevice,
-                height: heightDevice * 0.55,
-                child: Stack(
-                  children: [
-                    Container(
-                      width: widthDevice,
-                      height: heightDevice * 0.55,
-                      decoration: BoxDecoration(color: AppColors.mainColor),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(5),
-                        child: YoutubePlayer(
-                          controller: _videoController,
-                          showVideoProgressIndicator: true,
-                        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Row(
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.primaryColor1,
+                      ),
+                      child: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.black54,
                       ),
                     ),
-                    (_controller.isReady.value == 1)
-                        ? Positioned(
-                            top: 0,
-                            left: 0,
-                            width: widthDevice,
-                            height: heightDevice * 0.55,
-                            // Note: without ClipRect, the blur region will be expanded to full
-                            // size of the Image instead of custom size
-                            child: ClipRect(
-                              child: BackdropFilter(
-                                filter: ImageFilter.blur(
-                                    sigmaX: _sigmaX, sigmaY: _sigmaY),
-                                child: Container(
-                                  color: Colors.black.withOpacity(_opacity),
-                                  child: Center(
-                                    child: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 20, vertical: 10),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: AppColors.primaryColor1,
-                                      ),
-                                      child: const Text(
-                                        'Ready',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ))
-                        : Container()
-                  ],
-                ),
-              ),
-            ),
-            const Divider(),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // ignore: prefer_const_constructors
-                Obx(
-                  () => Expanded(
-                    // ignore: prefer_const_constructors
-                    child: CountTImeWorkout(
-                      currentAllTime:
-                          Duration(seconds: _controller.allTime.value),
-                      // ignore: invalid_use_of_protected_member
-                      currentTime: Duration(
-                          seconds: _controller.listWorkout
-                                  .value[_controller.currentWorkoutIndex.value]
-                              ['time']),
-                      currentReadyTime: Duration(
-                          seconds: _controller.listWorkout
-                                  .value[_controller.currentWorkoutIndex.value]
-                              ['ready']),
-                      isReady: _controller.isReady.value,
-                      onComPleted: () async {
-                        if (_controller.isReady.value != 0) {
-                          _controller.isReady.value =
-                              0 - _controller.isReady.value;
-                          if (_controller.isReady.value == 1) {
-                            if (_controller.currentWorkoutIndex.value <
-                                _controller.listWorkout.value.length - 1) {
-                              _controller.currentWorkoutIndex.value++;
-                            } else {
-                              _controller.isReady.value = 0;
-                              await _showDialogSuccess();
-                            }
-                          }
-                        }
-                      },
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      padding: const EdgeInsets.all(5),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: AppColors.primaryColor1,
+                      ),
+                      child: const Icon(
+                        Icons.more_horiz,
+                        color: Colors.black54,
+                      ),
                     ),
                   ),
-                ),
-                Obx(
-                  () => Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: AppColors.mainColor,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          offset: const Offset(2, 3),
-                          blurRadius: 10,
-                        ),
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.05),
-                          offset: const Offset(-2, -3),
-                          blurRadius: 10,
-                        )
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Obx(
+                    (() => Text(
                           _controller.listWorkout
                                   .value[_controller.currentWorkoutIndex.value]
                               ['name'],
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
-                            fontSize: 17,
+                            fontSize: 20,
+                          ),
+                        )),
+                  ),
+                  const SizedBox(width: 5),
+                  Icon(Icons.check_circle, color: AppColors.primaryColor1)
+                ],
+              ),
+              const SizedBox(height: 10),
+              Obx(
+                () => Text(
+                  // ignore: invalid_use_of_protected_member
+                  '${_controller.currentWorkoutIndex.value + 1}/${_controller.listWorkout.value.length} Exercises',
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
+              Obx(
+                () => SizedBox(
+                  width: widthDevice,
+                  height: heightDevice * 0.55,
+                  child: Stack(
+                    children: [
+                      Container(
+                        width: widthDevice,
+                        height: heightDevice * 0.55,
+                        decoration: BoxDecoration(color: AppColors.mainColor),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(5),
+                          child: YoutubePlayer(
+                            controller: _videoController,
+                            showVideoProgressIndicator: true,
                           ),
                         ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Image.asset('assets/images/calories.png',
-                                height: 15, width: 15),
-                            RichTextCustom(
-                              size: 15,
-                              title: 'Calories Burned: ',
-                              data: _controller.listWorkout.value[_controller
-                                  .currentWorkoutIndex.value]['calo'],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            Image.asset('assets/images/duration.png',
-                                height: 15, width: 15),
-                            RichTextCustom(
-                              size: 15,
-                              title: 'Time: ',
-                              data: _controller.listWorkout.value[_controller
-                                  .currentWorkoutIndex.value]['time'],
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Container(
-                          height: 40,
-                          width: 120,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: AppColors.primaryColor1,
-                          ),
-                          child: ElevatedButton(
-                            onPressed: () {
+                      ),
+                      (_controller.isReady.value == 1)
+                          ? Positioned(
+                              top: 0,
+                              left: 0,
+                              width: widthDevice,
+                              height: heightDevice * 0.55,
+                              // Note: without ClipRect, the blur region will be expanded to full
+                              // size of the Image instead of custom size
+                              child: ClipRect(
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(
+                                      sigmaX: _sigmaX, sigmaY: _sigmaY),
+                                  child: Container(
+                                    color: Colors.black.withOpacity(_opacity),
+                                    child: Center(
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20, vertical: 10),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          color: AppColors.primaryColor1,
+                                        ),
+                                        child: const Text(
+                                          'Ready',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 17,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ))
+                          : Container()
+                    ],
+                  ),
+                ),
+              ),
+              const Divider(),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  // ignore: prefer_const_constructors
+                  Obx(
+                    () => Expanded(
+                      // ignore: prefer_const_constructors
+                      child: CountTImeWorkout(
+                        currentAllTime:
+                            Duration(seconds: _controller.allTime.value),
+                        // ignore: invalid_use_of_protected_member
+                        currentTime: Duration(
+                            seconds: _controller.listWorkout.value[
+                                _controller.currentWorkoutIndex.value]['time']),
+                        currentReadyTime: Duration(
+                            seconds: _controller.listWorkout.value[_controller
+                                .currentWorkoutIndex.value]['ready']),
+                        isReady: _controller.isReady.value,
+                        onComPleted: () async {
+                          if (_controller.isReady.value != 0) {
+                            _controller.isReady.value =
+                                0 - _controller.isReady.value;
+                            if (_controller.isReady.value == 1) {
                               if (_controller.currentWorkoutIndex.value <
                                   _controller.listWorkout.value.length - 1) {
                                 _controller.currentWorkoutIndex.value++;
-                                _controller.isReady.value = 1;
-                                _controller.allTime +=
-                                    _controller.listWorkout.value[
-                                        _controller.currentWorkoutIndex.value -
-                                            1]['time'];
+                              } else {
+                                _controller.isReady.value = 0;
+                                await _showDialogSuccess();
                               }
-                            },
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                primary: Colors.transparent,
-                                shadowColor: Colors.transparent),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  'Skip',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                  ),
-                                ),
-                                const SizedBox(width: 2),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  color: AppColors.mainColor,
-                                  size: 17,
-                                ),
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
+                            }
+                          }
+                        },
+                      ),
                     ),
                   ),
-                )
-              ],
-            )
-          ],
+                  Obx(
+                    () => Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            offset: const Offset(2, 3),
+                            blurRadius: 10,
+                          ),
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.05),
+                            offset: const Offset(-2, -3),
+                            blurRadius: 10,
+                          )
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            _controller.listWorkout.value[
+                                _controller.currentWorkoutIndex.value]['name'],
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 17,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Image.asset('assets/images/calories.png',
+                                  height: 15, width: 15),
+                              RichTextCustom(
+                                size: 15,
+                                title: 'Calories Burned: ',
+                                data: _controller.listWorkout.value[_controller
+                                    .currentWorkoutIndex.value]['calo'],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Image.asset('assets/images/duration.png',
+                                  height: 15, width: 15),
+                              RichTextCustom(
+                                size: 15,
+                                title: 'Time: ',
+                                data: _controller.listWorkout.value[_controller
+                                    .currentWorkoutIndex.value]['time'],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 10),
+                          Container(
+                            height: 40,
+                            width: 120,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: AppColors.primaryColor1,
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if (_controller.currentWorkoutIndex.value <
+                                    _controller.listWorkout.value.length - 1) {
+                                  _controller.currentWorkoutIndex.value++;
+                                  _controller.isReady.value = 1;
+                                  _controller.allTime += _controller
+                                          .listWorkout.value[
+                                      _controller.currentWorkoutIndex.value -
+                                          1]['time'];
+                                }
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  primary: Colors.transparent,
+                                  shadowColor: Colors.transparent),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Text(
+                                    'Skip',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 2),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: AppColors.mainColor,
+                                    size: 17,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );

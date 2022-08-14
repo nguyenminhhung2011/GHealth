@@ -25,17 +25,26 @@ class CategoryMealScreen extends StatelessWidget {
       body: ScreenTemplate(
         child: Column(
           children: [
-            AppBarDesign(title: 'Beakfast'),
+            const Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: AppBarDesign(title: 'Beakfast'),
+            ),
             const SizedBox(height: 40),
-            SearchContainer(widthDevice: _widthDevice),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: SearchContainer(widthDevice: _widthDevice),
+            ),
             const SizedBox(height: 30),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Category',
-                style: Theme.of(context).textTheme.headline4!.copyWith(
-                      fontSize: 18,
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Category',
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        fontSize: 18,
+                      ),
+                ),
               ),
             ),
             const SizedBox(height: 20),
@@ -67,13 +76,16 @@ class CategoryMealScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Recommendation for Diet',
-                style: Theme.of(context).textTheme.headline4!.copyWith(
-                      fontSize: 18,
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Recommendation for Diet',
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        fontSize: 18,
+                      ),
+                ),
               ),
             ),
             const SizedBox(height: 10),
@@ -119,28 +131,34 @@ class CategoryMealScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Popular',
-                style: Theme.of(context).textTheme.headline4!.copyWith(
-                      fontSize: 18,
-                    ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Popular',
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        fontSize: 18,
+                      ),
+                ),
               ),
             ),
             const SizedBox(height: 10),
-            Column(
-              children: [
-                PopularFoodCard(
-                  widthDevice: _widthDevice,
-                  title: 'Blubery Pancake',
-                  time: 30,
-                  imagePath: 'assets/images/lunch.png',
-                  press: () {},
-                  level: 'Medium',
-                  kCal: 230,
-                )
-              ],
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  PopularFoodCard(
+                    widthDevice: _widthDevice,
+                    title: 'Blubery Pancake',
+                    time: 30,
+                    imagePath: 'assets/images/lunch.png',
+                    press: () {},
+                    level: 'Medium',
+                    kCal: 230,
+                  )
+                ],
+              ),
             ),
           ],
         ),

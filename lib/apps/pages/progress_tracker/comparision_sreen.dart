@@ -26,71 +26,74 @@ class _ComparisionScreenState extends State<ComparisionScreen> {
     var heightDevice = MediaQuery.of(context).size.height;
     return Scaffold(
       body: ScreenTemplate(
-        child: Stack(
-          children: [
-            Column(
-              children: [
-                const AppBarDesign(title: 'Comparision'),
-                const SizedBox(height: 20),
-                ButtonSelectCalender(
-                  widthDevice: widthDevice,
-                  iconCalender: iconCalender,
-                  date: DateFormat().add_yMMM().format(month1),
-                  month: 1,
-                  press: () => showDialogFunction(1),
-                ),
-                const SizedBox(height: 10),
-                ButtonSelectCalender(
-                  widthDevice: widthDevice,
-                  iconCalender: iconCalender,
-                  date: DateFormat().add_yMMM().format(month2),
-                  month: 2,
-                  press: () => showDialogFunction(2),
-                ),
-              ],
-            ),
-            // ignore: sized_box_for_whitespace
-            Container(
-              height: heightDevice,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Stack(
+            children: [
+              Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(20),
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CompareResultScreen(),
+                  const AppBarDesign(title: 'Comparision'),
+                  const SizedBox(height: 20),
+                  ButtonSelectCalender(
+                    widthDevice: widthDevice,
+                    iconCalender: iconCalender,
+                    date: DateFormat().add_yMMM().format(month1),
+                    month: 1,
+                    press: () => showDialogFunction(1),
+                  ),
+                  const SizedBox(height: 10),
+                  ButtonSelectCalender(
+                    widthDevice: widthDevice,
+                    iconCalender: iconCalender,
+                    date: DateFormat().add_yMMM().format(month2),
+                    month: 2,
+                    press: () => showDialogFunction(2),
+                  ),
+                ],
+              ),
+              // ignore: sized_box_for_whitespace
+              Container(
+                height: heightDevice,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const CompareResultScreen(),
+                            ),
+                          );
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: widthDevice,
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: AppColors.primaryColor1,
                           ),
-                        );
-                      },
-                      child: Container(
-                        alignment: Alignment.center,
-                        width: widthDevice,
-                        padding: const EdgeInsets.symmetric(vertical: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: AppColors.primaryColor1,
-                        ),
-                        child: const Text(
-                          'Compare',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                          child: const Text(
+                            'Compare',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 60),
-                ],
+                    const SizedBox(height: 60),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

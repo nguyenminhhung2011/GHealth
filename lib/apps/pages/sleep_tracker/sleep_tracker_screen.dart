@@ -318,366 +318,370 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
       body: ScreenTemplate(
         child: SafeArea(
           child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        int? newIndex;
-                        await _showDialogMethod(
-                          context: context,
-                          tabs: tabs,
-                          onselectedTabs: (value) {
-                            newIndex = value;
-                          },
-                          done: () {
-                            print(newIndex);
-                            if (newIndex != null) {
-                              _controller.changeTab(newIndex ?? 0);
-                            } else {
-                              _controller.changeTab(0);
-                            }
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                      child: Row(
-                        children: const [
-                          Text(
-                            'Sleep Planner',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                          ),
-                          Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: Colors.black,
-                            size: 24,
-                          )
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor1.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: const Icon(
-                          Icons.more_horiz,
-                          color: Colors.black,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Card(
-                  elevation: 0,
-                  child: Container(
-                    height: heightDevice * 0.3 + 80,
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const Text(
-                              'Step Count',
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          int? newIndex;
+                          await _showDialogMethod(
+                            context: context,
+                            tabs: tabs,
+                            onselectedTabs: (value) {
+                              newIndex = value;
+                            },
+                            done: () {
+                              print(newIndex);
+                              if (newIndex != null) {
+                                _controller.changeTab(newIndex ?? 0);
+                              } else {
+                                _controller.changeTab(0);
+                              }
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: const [
+                            Text(
+                              'Sleep Planner',
                               style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                                fontSize: 20,
                               ),
                             ),
-                            const Spacer(),
-                            ButtonIconGradientColor(
-                              title: ' Week',
-                              icon: Icons.calendar_month,
-                              press: () {
-                                print(1);
-                                // scheduleAlarm(DateTime.now(),
-                                //     isRepeating: true);
-                              },
+                            Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: Colors.black,
+                              size: 24,
                             )
                           ],
                         ),
-                        const SizedBox(height: 15),
-                        SizedBox(
-                          height: heightDevice * 0.3 + 10,
-                          child: LineChart(
-                            LineChartData(
-                              borderData: FlBorderData(show: false),
-                              gridData: FlGridData(
-                                  show: false,
-                                  getDrawingHorizontalLine: (value) {
-                                    return FlLine(
-                                      color: Colors.black,
-                                      strokeWidth: 0.4,
-                                    );
-                                  },
-                                  getDrawingVerticalLine: (value) {
-                                    return FlLine(
-                                      color: Colors.black,
-                                      strokeWidth: 0,
-                                    );
-                                  }),
-                              titlesData: FlTitlesData(
-                                show: true,
-                                topTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor1.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.more_horiz,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Card(
+                    elevation: 0,
+                    child: Container(
+                      height: heightDevice * 0.3 + 80,
+                      child: Column(
+                        children: [
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              const Text(
+                                'Step Count',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
                                 ),
-                                leftTitles: AxisTitles(
-                                  sideTitles: SideTitles(showTitles: false),
-                                ),
-                                rightTitles: AxisTitles(
-                                  sideTitles: SideTitles(
+                              ),
+                              const Spacer(),
+                              ButtonIconGradientColor(
+                                title: ' Week',
+                                icon: Icons.calendar_month,
+                                press: () {
+                                  print(1);
+                                  // scheduleAlarm(DateTime.now(),
+                                  //     isRepeating: true);
+                                },
+                              )
+                            ],
+                          ),
+                          const SizedBox(height: 15),
+                          SizedBox(
+                            height: heightDevice * 0.3 + 10,
+                            child: LineChart(
+                              LineChartData(
+                                borderData: FlBorderData(show: false),
+                                gridData: FlGridData(
+                                    show: false,
+                                    getDrawingHorizontalLine: (value) {
+                                      return FlLine(
+                                        color: Colors.black,
+                                        strokeWidth: 0.4,
+                                      );
+                                    },
+                                    getDrawingVerticalLine: (value) {
+                                      return FlLine(
+                                        color: Colors.black,
+                                        strokeWidth: 0,
+                                      );
+                                    }),
+                                titlesData: FlTitlesData(
+                                  show: true,
+                                  topTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  leftTitles: AxisTitles(
+                                    sideTitles: SideTitles(showTitles: false),
+                                  ),
+                                  rightTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                        reservedSize: 32,
+                                        interval: 1,
+                                        showTitles: true,
+                                        getTitlesWidget: rightTitleWidget),
+                                  ),
+                                  bottomTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
                                       reservedSize: 32,
                                       interval: 1,
-                                      showTitles: true,
-                                      getTitlesWidget: rightTitleWidget),
-                                ),
-                                bottomTitles: AxisTitles(
-                                  sideTitles: SideTitles(
-                                    showTitles: true,
-                                    reservedSize: 32,
-                                    interval: 1,
-                                    getTitlesWidget: bottomTitleWidgets,
-                                  ),
-                                ),
-                              ),
-                              lineTouchData: LineTouchData(
-                                enabled: true,
-                                touchTooltipData: LineTouchTooltipData(
-                                  tooltipRoundedRadius: 20,
-                                  tooltipBgColor: Colors.white,
-                                  getTooltipItems:
-                                      (List<LineBarSpot> touchedBarSpots) {
-                                    return touchedBarSpots.map((barSpot) {
-                                      final flSpot = barSpot;
-                                      return LineTooltipItem(
-                                        '43% increase',
-                                        const TextStyle(
-                                          color: Colors.green,
-                                        ),
-                                      );
-                                    }).toList();
-                                  },
-                                ),
-                              ),
-                              minX: 1,
-                              maxX: 7,
-                              minY: 0,
-                              maxY: 8,
-                              lineBarsData: [
-                                LineChartBarData(
-                                  spots: const [
-                                    FlSpot(1, 7),
-                                    FlSpot(2, 6),
-                                    FlSpot(3, 8),
-                                    FlSpot(4, 6),
-                                    FlSpot(5, 8),
-                                    FlSpot(6, 6.5),
-                                    FlSpot(7, 7.5),
-                                  ],
-                                  barWidth: 2,
-                                  dotData: FlDotData(show: false),
-                                  gradient: AppColors.colorGradient,
-                                  isCurved: true,
-                                  belowBarData: BarAreaData(
-                                    show: true,
-                                    gradient: LinearGradient(
-                                      begin: Alignment.bottomCenter,
-                                      end: Alignment.topCenter,
-                                      colors: [
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(0.08),
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(0.1),
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(0.2),
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(0.4),
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(0.5),
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(0.7),
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(0.8),
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(0.9),
-                                        Color.fromARGB(255, 187, 216, 239)
-                                            .withOpacity(1),
-                                      ],
+                                      getTitlesWidget: bottomTitleWidgets,
                                     ),
                                   ),
                                 ),
-                              ],
+                                lineTouchData: LineTouchData(
+                                  enabled: true,
+                                  touchTooltipData: LineTouchTooltipData(
+                                    tooltipRoundedRadius: 20,
+                                    tooltipBgColor: Colors.white,
+                                    getTooltipItems:
+                                        (List<LineBarSpot> touchedBarSpots) {
+                                      return touchedBarSpots.map((barSpot) {
+                                        final flSpot = barSpot;
+                                        return LineTooltipItem(
+                                          '43% increase',
+                                          const TextStyle(
+                                            color: Colors.green,
+                                          ),
+                                        );
+                                      }).toList();
+                                    },
+                                  ),
+                                ),
+                                minX: 1,
+                                maxX: 7,
+                                minY: 0,
+                                maxY: 8,
+                                lineBarsData: [
+                                  LineChartBarData(
+                                    spots: const [
+                                      FlSpot(1, 7),
+                                      FlSpot(2, 6),
+                                      FlSpot(3, 8),
+                                      FlSpot(4, 6),
+                                      FlSpot(5, 8),
+                                      FlSpot(6, 6.5),
+                                      FlSpot(7, 7.5),
+                                    ],
+                                    barWidth: 2,
+                                    dotData: FlDotData(show: false),
+                                    gradient: AppColors.colorGradient,
+                                    isCurved: true,
+                                    belowBarData: BarAreaData(
+                                      show: true,
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                        colors: [
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(0.08),
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(0.1),
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(0.2),
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(0.4),
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(0.5),
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(0.7),
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(0.8),
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(0.9),
+                                          Color.fromARGB(255, 187, 216, 239)
+                                              .withOpacity(1),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Card(
+                    elevation: 0,
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 5),
+                        const Text(
+                          'Your last night time analyst',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w600),
+                        ),
+                        Row(
+                          children: [
+                            SizedBox(
+                              height: heightDevice * 0.35,
+                              width: widthDevice * 0.6,
+                              child: PieChart(
+                                PieChartData(
+                                    pieTouchData: PieTouchData(
+                                      touchCallback:
+                                          (flTouchEvent, pieTouchResponse) {
+                                        setState(() {
+                                          if (!flTouchEvent
+                                                  .isInterestedForInteractions ||
+                                              pieTouchResponse == null ||
+                                              pieTouchResponse.touchedSection ==
+                                                  null) {
+                                            touchedIndex = -1;
+                                            return;
+                                          }
+                                          touchedIndex = pieTouchResponse
+                                              .touchedSection!
+                                              .touchedSectionIndex;
+                                        });
+                                      },
+                                    ),
+                                    sectionsSpace: 0,
+                                    centerSpaceRadius: 40,
+                                    sections: showingSections(widthDevice)),
+                                swapAnimationDuration:
+                                    const Duration(milliseconds: 300),
+                                swapAnimationCurve: Curves.ease,
+                              ),
+                            ),
+                            Expanded(
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.square,
+                                          color: Colors.blue[300]),
+                                      const Text('Awake'),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.square,
+                                          color: Colors.amber[300]),
+                                      const Text('REM'),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.square,
+                                          color: const Color.fromARGB(
+                                                  255, 108, 39, 176)
+                                              .withOpacity(0.6)),
+                                      const Text('Core'),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Row(
+                                    children: [
+                                      Icon(Icons.square,
+                                          color: Colors.green[300]),
+                                      const Text(
+                                        'Deep',
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
                         ),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                Card(
-                  elevation: 0,
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 5),
-                      const Text(
-                        'Your last night time analyst',
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
-                      ),
-                      Row(
-                        children: [
-                          SizedBox(
-                            height: heightDevice * 0.35,
-                            width: widthDevice * 0.6,
-                            child: PieChart(
-                              PieChartData(
-                                  pieTouchData: PieTouchData(
-                                    touchCallback:
-                                        (flTouchEvent, pieTouchResponse) {
-                                      setState(() {
-                                        if (!flTouchEvent
-                                                .isInterestedForInteractions ||
-                                            pieTouchResponse == null ||
-                                            pieTouchResponse.touchedSection ==
-                                                null) {
-                                          touchedIndex = -1;
-                                          return;
-                                        }
-                                        touchedIndex = pieTouchResponse
-                                            .touchedSection!
-                                            .touchedSectionIndex;
-                                      });
-                                    },
-                                  ),
-                                  sectionsSpace: 0,
-                                  centerSpaceRadius: 40,
-                                  sections: showingSections(widthDevice)),
-                              swapAnimationDuration:
-                                  const Duration(milliseconds: 300),
-                              swapAnimationCurve: Curves.ease,
-                            ),
-                          ),
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(Icons.square, color: Colors.blue[300]),
-                                    const Text('Awake'),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Icon(Icons.square,
-                                        color: Colors.amber[300]),
-                                    const Text('REM'),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Icon(Icons.square,
-                                        color: const Color.fromARGB(
-                                                255, 108, 39, 176)
-                                            .withOpacity(0.6)),
-                                    const Text('Core'),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    Icon(Icons.square,
-                                        color: Colors.green[300]),
-                                    const Text(
-                                      'Deep',
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.blue[100]!.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  height: heightDevice * 0.08,
-                  width: widthDevice * 0.9,
-                  child: ListTile(
-                    leading: const Text(
-                      'Daily Sleep Schedule',
-                      style: TextStyle(
-                        fontFamily: 'Sen',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  const SizedBox(height: 20),
+                  Container(
+                    padding: const EdgeInsets.only(left: 10, right: 10),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Colors.blue[100]!.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    trailing: ButtonGradient(
-                        height: 35,
-                        width: 80,
-                        title: const Text(
-                          'Check',
-                          style: TextStyle(color: Colors.white, fontSize: 12),
+                    height: heightDevice * 0.08,
+                    width: widthDevice * 0.9,
+                    child: ListTile(
+                      leading: const Text(
+                        'Daily Sleep Schedule',
+                        style: TextStyle(
+                          fontFamily: 'Sen',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
                         ),
-                        onPressed: () {
-                          Navigator.of(context).push<void>(
-                            MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  SleepScheduleScreen(
-                                      itemBuilder: itemBuilder,
-                                      listSchedule: listSchedule),
-                            ),
-                          );
-                        },
-                        linearGradient: LinearGradient(colors: [
-                          Colors.blue[200]!,
-                          Colors.blue[300]!,
-                          Colors.blue[400]!
-                        ])),
+                      ),
+                      trailing: ButtonGradient(
+                          height: 35,
+                          width: 80,
+                          title: const Text(
+                            'Check',
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
+                          onPressed: () {
+                            Navigator.of(context).push<void>(
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    SleepScheduleScreen(
+                                        itemBuilder: itemBuilder,
+                                        listSchedule: listSchedule),
+                              ),
+                            );
+                          },
+                          linearGradient: LinearGradient(colors: [
+                            Colors.blue[200]!,
+                            Colors.blue[300]!,
+                            Colors.blue[400]!
+                          ])),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 40),
-                Text(
-                  'Today Schedule',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline5!
-                      .copyWith(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 15),
-                Obx(
-                  () => Column(
-                    children: [
-                      ...(listSchedule.value).map((element) {
-                        return itemBuilder(element, widthDevice);
-                      }).toList(),
-                    ],
+                  const SizedBox(height: 40),
+                  Text(
+                    'Today Schedule',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5!
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
-                )
-              ],
+                  const SizedBox(height: 15),
+                  Obx(
+                    () => Column(
+                      children: [
+                        ...(listSchedule.value).map((element) {
+                          return itemBuilder(element, widthDevice);
+                        }).toList(),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),

@@ -24,8 +24,9 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        const SizedBox(height: 20),
         SizedBox(
-          width: MediaQuery.of(context).size.width * 0.8,
+          width: MediaQuery.of(context).size.width,
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -53,115 +54,119 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
             Get.to(
               () => Scaffold(
                 body: ScreenTemplate(
-                    child: Column(
-                  children: [
-                    SizedBox(
-                      width: Get.mediaQuery.size.width * 0.9,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: () => Get.back(),
-                            child: const Icon(
-                              Icons.arrow_back_ios_new_outlined,
-                              color: Colors.grey,
+                    child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: Get.mediaQuery.size.width * 0.9,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: () => Get.back(),
+                              child: const Icon(
+                                Icons.arrow_back_ios_new_outlined,
+                                color: Colors.grey,
+                              ),
                             ),
-                          ),
-                          Text(
-                            'Change your plan',
-                            style: TextStyle(
-                              color: Colors.blueGrey[600],
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
+                            Text(
+                              'Change your plan',
+                              style: TextStyle(
+                                color: Colors.blueGrey[600],
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          const SizedBox(width: 1),
-                        ],
+                            const SizedBox(width: 1),
+                          ],
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    ...fastingPlanController.choices
-                        .map(
-                          (e) => Container(
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                            child: Material(
-                              borderRadius: BorderRadius.circular(20),
-                              elevation: 5,
-                              color: Colors.white,
-                              child: InkWell(
+                      const SizedBox(height: 50),
+                      ...fastingPlanController.choices
+                          .map(
+                            (e) => Container(
+                              margin: const EdgeInsets.only(bottom: 20),
+                              child: Material(
                                 borderRadius: BorderRadius.circular(20),
-                                onTap: () {
-                                  fastingPlanController.fastingMode = e;
-                                  Get.back();
-                                  setState(() {});
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  height: Get.mediaQuery.size.height * 0.2,
-                                  width: double.infinity,
-                                  decoration: BoxDecoration(
-                                    color: e['color'] as Color,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            '${e['fastingTime']}-${e['eatingTime']}',
-                                            style: const TextStyle(
-                                              fontSize: 28,
-                                              fontWeight: FontWeight.bold,
+                                elevation: 5,
+                                color: Colors.white,
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(20),
+                                  onTap: () {
+                                    fastingPlanController.fastingMode = e;
+                                    Get.back();
+                                    setState(() {});
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(20),
+                                    height: Get.mediaQuery.size.height * 0.2,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: e['color'] as Color,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              '${e['fastingTime']}-${e['eatingTime']}',
+                                              style: const TextStyle(
+                                                fontSize: 28,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          for (int i = 1; i <= 4; i++)
-                                            Icon(
-                                              Icons.flash_on,
-                                              color: i > (e['stars'] as int)
-                                                  ? (e['opacityStarColor']
-                                                      as Color)
-                                                  : e['starColor'] as Color,
-                                              size: 25,
-                                            ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 5),
-                                      ...(e['information'] as List<String>)
-                                          .map((info) => Row(
-                                                children: [
-                                                  Icon(
-                                                    Icons.circle,
-                                                    size: 10,
-                                                    color: (e['starColor']
-                                                            as Color)
-                                                        .withOpacity(0.5),
-                                                  ),
-                                                  const SizedBox(width: 10),
-                                                  Text(
-                                                    info,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontSize: 16),
-                                                  )
-                                                ],
-                                              ))
-                                          .toList(),
-                                    ],
+                                          ],
+                                        ),
+                                        Row(
+                                          children: [
+                                            for (int i = 1; i <= 4; i++)
+                                              Icon(
+                                                Icons.flash_on,
+                                                color: i > (e['stars'] as int)
+                                                    ? (e['opacityStarColor']
+                                                        as Color)
+                                                    : e['starColor'] as Color,
+                                                size: 25,
+                                              ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 5),
+                                        ...(e['information'] as List<String>)
+                                            .map((info) => Row(
+                                                  children: [
+                                                    Icon(
+                                                      Icons.circle,
+                                                      size: 10,
+                                                      color: (e['starColor']
+                                                              as Color)
+                                                          .withOpacity(0.5),
+                                                    ),
+                                                    const SizedBox(width: 10),
+                                                    Text(
+                                                      info,
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 16),
+                                                    )
+                                                  ],
+                                                ))
+                                            .toList(),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        )
-                        .toList(),
-                  ],
+                          )
+                          .toList(),
+                    ],
+                  ),
                 )),
               ),
               transition: Transition.downToUp,
@@ -202,7 +207,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
         const SizedBox(height: 20),
         Container(
           height: Get.mediaQuery.size.height * 0.18,
-          width: Get.mediaQuery.size.width * 0.8,
+          width: Get.mediaQuery.size.width,
           decoration: BoxDecoration(
             color: Colors.amber[100],
             borderRadius: BorderRadius.circular(20),
@@ -241,8 +246,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
         const SizedBox(height: 20),
         Container(
           height: Get.mediaQuery.size.height * 0.25,
-          width: Get.mediaQuery.size.width * 0.8,
-          margin: const EdgeInsets.all(10),
+          width: Get.mediaQuery.size.width,
           padding: const EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
             color: Colors.green[100]!.withOpacity(0.5),
@@ -453,7 +457,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
           style: ElevatedButton.styleFrom(
             primary: Colors.white,
             shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(40),
+                borderRadius: BorderRadius.circular(10),
                 side: const BorderSide(width: 2, color: Colors.deepOrange)),
             alignment: Alignment.center,
             elevation: 0,
@@ -466,7 +470,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
             'End fasting',
             style: TextStyle(
               color: Colors.deepOrange,
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -481,7 +485,6 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
       onTap: () {},
       borderRadius: BorderRadius.circular(20),
       child: Container(
-          margin: const EdgeInsets.only(right: 15),
           height: 150,
           width: 120,
           decoration: BoxDecoration(

@@ -101,285 +101,288 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: ScreenTemplate(
-        child: Column(
-          // ignore: prefer_const_literals_to_create_immutables
-          children: [
-            const AppBarDesign(title: 'Meal Schedule'),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () {
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            // ignore: prefer_const_literals_to_create_immutables
+            children: [
+              const AppBarDesign(title: 'Meal Schedule'),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        onFocus--;
+                        sslKey.currentState!.focusToItem(onFocus);
+                        _calendarController.displayDate = listDateTime[onFocus];
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                      size: 18,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    '${DateFormat().add_MMM().format(listDateTime[onFocus])} ${listDateTime[onFocus].year}',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        onFocus++;
+                        sslKey.currentState!.focusToItem(onFocus);
+                        _calendarController.displayDate = listDateTime[onFocus];
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 18,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.17,
+                child: ScrollSnapList(
+                  key: sslKey,
+                  itemBuilder: _itemBuilder,
+                  background: Colors.blue[200],
+                  itemCount: listDateTime.length,
+                  itemSize: 100,
+                  dispatchScrollNotifications: true,
+                  initialIndex: onFocus.toDouble(),
+                  scrollPhysics: const ScrollPhysics(),
+                  duration: 1000,
+                  onItemFocus: (int index) {
                     setState(() {
-                      onFocus--;
-                      sslKey.currentState!.focusToItem(onFocus);
+                      onFocus = index;
                       _calendarController.displayDate = listDateTime[onFocus];
                     });
                   },
-                  icon: Icon(
-                    Icons.arrow_back_ios_new_outlined,
-                    size: 18,
-                    color: Colors.grey[400],
-                  ),
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  '${DateFormat().add_MMM().format(listDateTime[onFocus])} ${listDateTime[onFocus].year}',
-                  style: Theme.of(context).textTheme.headline5,
-                ),
-                const SizedBox(width: 8),
-                IconButton(
-                  onPressed: () {
-                    setState(() {
-                      onFocus++;
-                      sslKey.currentState!.focusToItem(onFocus);
-                      _calendarController.displayDate = listDateTime[onFocus];
-                    });
-                  },
-                  icon: Icon(
-                    Icons.arrow_forward_ios_outlined,
-                    size: 18,
-                    color: Colors.grey[400],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.17,
-              child: ScrollSnapList(
-                key: sslKey,
-                itemBuilder: _itemBuilder,
-                background: Colors.blue[200],
-                itemCount: listDateTime.length,
-                itemSize: 100,
-                dispatchScrollNotifications: true,
-                initialIndex: onFocus.toDouble(),
-                scrollPhysics: const ScrollPhysics(),
-                duration: 1000,
-                onItemFocus: (int index) {
-                  setState(() {
-                    onFocus = index;
-                    _calendarController.displayDate = listDateTime[onFocus];
-                  });
-                },
               ),
-            ),
-            const SizedBox(height: 20),
-            // ignore: avoid_unnecessary_containers, sized_box_for_whitespace
-            Container(
-              width: double.infinity,
-              child: Row(
-                children: const [
-                  Text(
-                    'Breakfast',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+              const SizedBox(height: 20),
+              // ignore: avoid_unnecessary_containers, sized_box_for_whitespace
+              Container(
+                width: double.infinity,
+                child: Row(
+                  children: const [
+                    Text(
+                      'Breakfast',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
+                    Spacer(),
+                    Text(
+                      '2 meals | 230 calories',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+              Column(
+                children: [
+                  FoodScheduleCard(
+                    imagePath: 'assets/images/lunch.png',
+                    name: 'Honey Pancake',
+                    time: '07:00am',
+                    press: () {},
+                    color: AppColors.primaryColor1.withOpacity(0.2),
                   ),
-                  Spacer(),
-                  Text(
-                    '2 meals | 230 calories',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
-                  )
+                  const SizedBox(height: 10),
+                  FoodScheduleCard(
+                    imagePath: 'assets/images/dinner.png',
+                    name: 'Banh xeo',
+                    time: '08:00am',
+                    press: () {},
+                    color: AppColors.primaryColor2.withOpacity(0.2),
+                  ),
                 ],
               ),
-            ),
-            const SizedBox(height: 15),
-            Column(
-              children: [
-                FoodScheduleCard(
-                  imagePath: 'assets/images/lunch.png',
-                  name: 'Honey Pancake',
-                  time: '07:00am',
-                  press: () {},
-                  color: AppColors.primaryColor1.withOpacity(0.2),
-                ),
-                const SizedBox(height: 10),
-                FoodScheduleCard(
-                  imagePath: 'assets/images/dinner.png',
-                  name: 'Banh xeo',
-                  time: '08:00am',
-                  press: () {},
-                  color: AppColors.primaryColor2.withOpacity(0.2),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            // ignore: sized_box_for_whitespace
-            Container(
-              width: double.infinity,
-              child: Row(
-                children: const [
-                  Text(
-                    'Lunch',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+              const SizedBox(height: 15),
+              // ignore: sized_box_for_whitespace
+              Container(
+                width: double.infinity,
+                child: Row(
+                  children: const [
+                    Text(
+                      'Lunch',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
+                    Spacer(),
+                    Text(
+                      '2 meals | 500 calories',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+              Column(
+                children: [
+                  FoodScheduleCard(
+                    imagePath: 'assets/images/sushi.png',
+                    name: 'SuShi',
+                    time: '11:00am',
+                    press: () {},
+                    color: AppColors.primaryColor1.withOpacity(0.2),
                   ),
-                  Spacer(),
-                  Text(
-                    '2 meals | 500 calories',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
-                  )
+                  const SizedBox(height: 10),
+                  FoodScheduleCard(
+                    imagePath: 'assets/images/break.png',
+                    name: 'Banh kep',
+                    time: '11:40am',
+                    press: () {},
+                    color: AppColors.primaryColor2.withOpacity(0.2),
+                  ),
                 ],
               ),
-            ),
-            const SizedBox(height: 15),
-            Column(
-              children: [
-                FoodScheduleCard(
-                  imagePath: 'assets/images/sushi.png',
-                  name: 'SuShi',
-                  time: '11:00am',
-                  press: () {},
-                  color: AppColors.primaryColor1.withOpacity(0.2),
-                ),
-                const SizedBox(height: 10),
-                FoodScheduleCard(
-                  imagePath: 'assets/images/break.png',
-                  name: 'Banh kep',
-                  time: '11:40am',
-                  press: () {},
-                  color: AppColors.primaryColor2.withOpacity(0.2),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            // ignore: sized_box_for_whitespace
-            Container(
-              width: double.infinity,
-              child: Row(
-                children: const [
-                  Text(
-                    'Snacks',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+              const SizedBox(height: 15),
+              // ignore: sized_box_for_whitespace
+              Container(
+                width: double.infinity,
+                child: Row(
+                  children: const [
+                    Text(
+                      'Snacks',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
+                    Spacer(),
+                    Text(
+                      '2 meals | 140 calories',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+              Column(
+                children: [
+                  FoodScheduleCard(
+                    imagePath: 'assets/images/eating.png',
+                    name: 'Com tam',
+                    time: '14:00pm',
+                    press: () {},
+                    color: AppColors.primaryColor1.withOpacity(0.2),
                   ),
-                  Spacer(),
-                  Text(
-                    '2 meals | 140 calories',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
-                  )
+                  const SizedBox(height: 10),
+                  FoodScheduleCard(
+                    imagePath: 'assets/images/strach.png',
+                    name: 'Banh Mi',
+                    time: '15:40am',
+                    press: () {},
+                    color: AppColors.primaryColor2.withOpacity(0.2),
+                  ),
                 ],
               ),
-            ),
-            const SizedBox(height: 15),
-            Column(
-              children: [
-                FoodScheduleCard(
-                  imagePath: 'assets/images/eating.png',
-                  name: 'Com tam',
-                  time: '14:00pm',
-                  press: () {},
-                  color: AppColors.primaryColor1.withOpacity(0.2),
-                ),
-                const SizedBox(height: 10),
-                FoodScheduleCard(
-                  imagePath: 'assets/images/strach.png',
-                  name: 'Banh Mi',
-                  time: '15:40am',
-                  press: () {},
-                  color: AppColors.primaryColor2.withOpacity(0.2),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            // ignore: sized_box_for_whitespace
-            Container(
-              width: double.infinity,
-              child: Row(
-                children: const [
-                  Text(
-                    'Dinner',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+              const SizedBox(height: 15),
+              // ignore: sized_box_for_whitespace
+              Container(
+                width: double.infinity,
+                child: Row(
+                  children: const [
+                    Text(
+                      'Dinner',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
                     ),
+                    Spacer(),
+                    Text(
+                      '2 meals | 180 calories',
+                      style: TextStyle(color: Colors.grey, fontSize: 15),
+                    )
+                  ],
+                ),
+              ),
+              const SizedBox(height: 15),
+              Column(
+                children: [
+                  FoodScheduleCard(
+                    imagePath: 'assets/images/egg.png',
+                    name: 'Eggs',
+                    time: '19:00pm',
+                    press: () {},
+                    color: AppColors.primaryColor1.withOpacity(0.2),
                   ),
-                  Spacer(),
-                  Text(
-                    '2 meals | 180 calories',
-                    style: TextStyle(color: Colors.grey, fontSize: 15),
-                  )
+                  const SizedBox(height: 10),
+                  FoodScheduleCard(
+                    imagePath: 'assets/images/dinner.png',
+                    name: 'Banh mat ong',
+                    time: '19:40am',
+                    press: () {},
+                    color: AppColors.primaryColor2.withOpacity(0.2),
+                  ),
                 ],
               ),
-            ),
-            const SizedBox(height: 15),
-            Column(
-              children: [
-                FoodScheduleCard(
-                  imagePath: 'assets/images/egg.png',
-                  name: 'Eggs',
-                  time: '19:00pm',
-                  press: () {},
-                  color: AppColors.primaryColor1.withOpacity(0.2),
-                ),
-                const SizedBox(height: 10),
-                FoodScheduleCard(
-                  imagePath: 'assets/images/dinner.png',
-                  name: 'Banh mat ong',
-                  time: '19:40am',
-                  press: () {},
-                  color: AppColors.primaryColor2.withOpacity(0.2),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            const Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                'Today Meal Nutritions',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 18,
+              const SizedBox(height: 15),
+              const Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Today Meal Nutritions',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 15),
-            Column(
-              children: [
-                MealNutritionCard(
-                  widthDevice: widthDevice,
-                  imagePath: 'assets/images/calories.png',
-                  title: 'Calories',
-                  data: '320 kCal',
-                  percent: 0.72,
-                ),
-                MealNutritionCard(
-                  widthDevice: widthDevice,
-                  imagePath: 'assets/images/protein.png',
-                  title: 'Proteins',
-                  data: '300g',
-                  percent: 0.43,
-                ),
-                MealNutritionCard(
-                  widthDevice: widthDevice,
-                  imagePath: 'assets/images/trans-fat.png',
-                  title: 'Fats',
-                  data: '320g',
-                  percent: 0.6,
-                ),
-                MealNutritionCard(
-                  widthDevice: widthDevice,
-                  imagePath: 'assets/images/strach.png',
-                  title: 'Carbo',
-                  data: '320 kCal',
-                  percent: 0.2,
-                ),
-              ],
-            ),
-          ],
+              const SizedBox(height: 15),
+              Column(
+                children: [
+                  MealNutritionCard(
+                    widthDevice: widthDevice,
+                    imagePath: 'assets/images/calories.png',
+                    title: 'Calories',
+                    data: '320 kCal',
+                    percent: 0.72,
+                  ),
+                  MealNutritionCard(
+                    widthDevice: widthDevice,
+                    imagePath: 'assets/images/protein.png',
+                    title: 'Proteins',
+                    data: '300g',
+                    percent: 0.43,
+                  ),
+                  MealNutritionCard(
+                    widthDevice: widthDevice,
+                    imagePath: 'assets/images/trans-fat.png',
+                    title: 'Fats',
+                    data: '320g',
+                    percent: 0.6,
+                  ),
+                  MealNutritionCard(
+                    widthDevice: widthDevice,
+                    imagePath: 'assets/images/strach.png',
+                    title: 'Carbo',
+                    data: '320 kCal',
+                    percent: 0.2,
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

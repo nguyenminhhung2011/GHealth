@@ -101,226 +101,230 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
             miles = _controller.calculateMiles(steps);
           }
           return ScreenTemplate(
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        int? newIndex;
-                        await _showDialogMethod(
-                          context: context,
-                          tabs: tabs,
-                          onselectedTabs: (value) {
-                            newIndex = value;
-                          },
-                          done: () {
-                            print(newIndex);
-                            if (newIndex != null) {
-                              _controller.changeTab(newIndex ?? 0);
-                            } else {
-                              _controller.changeTab(0);
-                            }
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          int? newIndex;
+                          await _showDialogMethod(
+                            context: context,
+                            tabs: tabs,
+                            onselectedTabs: (value) {
+                              newIndex = value;
+                            },
+                            done: () {
+                              print(newIndex);
+                              if (newIndex != null) {
+                                _controller.changeTab(newIndex ?? 0);
+                              } else {
+                                _controller.changeTab(0);
+                              }
 
-                            Navigator.pop(context);
-                          },
-                        );
-                      },
-                      child: Row(
-                        children: const [
-                          Text(
-                            'Foot Step Planner',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: const [
+                            Text(
+                              'Foot Step Planner',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
                             ),
+                            Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: Colors.black,
+                              size: 24,
+                            )
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {},
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor1.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          Icon(
-                            Icons.keyboard_arrow_down_outlined,
+                          child: const Icon(
+                            Icons.more_horiz,
                             color: Colors.black,
-                            size: 24,
-                          )
-                        ],
-                      ),
-                    ),
-                    const Spacer(),
-                    InkWell(
-                      onTap: () {},
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryColor1.withOpacity(0.2),
-                          borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.more_horiz,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: [
+                      const Text(
+                        'Step Count',
+                        style: TextStyle(
                           color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
                         ),
                       ),
+                      const Spacer(),
+                      ButtonIconGradientColor(
+                        title: ' Week',
+                        icon: Icons.calendar_month,
+                        press: () {},
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    height: heightDevice / 3,
+                    width: double.infinity,
+                    child: BarChartSample1(),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.center,
+                    child: Container(
+                      width: widthDevice * 0.7,
+                      height: 1,
+                      color: Colors.grey.withOpacity(0.5),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                Row(
-                  children: [
-                    const Text(
-                      'Step Count',
+                  ),
+                  const SizedBox(height: 20),
+                  const Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Today',
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
-                        fontSize: 18,
+                        fontSize: 23,
                       ),
                     ),
-                    const Spacer(),
-                    ButtonIconGradientColor(
-                      title: ' Week',
-                      icon: Icons.calendar_month,
-                      press: () {},
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: heightDevice / 3,
-                  width: double.infinity,
-                  child: BarChartSample1(),
-                ),
-                const SizedBox(height: 20),
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                    width: widthDevice * 0.7,
-                    height: 1,
-                    color: Colors.grey.withOpacity(0.5),
                   ),
-                ),
-                const SizedBox(height: 20),
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    'Today',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 23,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const SizedBox(width: 20),
-                        RichText(
-                          text: TextSpan(
-                            style: const TextStyle(fontWeight: FontWeight.bold),
-                            children: [
-                              TextSpan(
-                                text: steps.toString(),
-                                style: const TextStyle(
-                                    fontSize: 25, color: Colors.black),
-                              ),
-                              const TextSpan(
-                                text: '/3000',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    color: AppColors.primaryColor1),
-                              )
-                            ],
-                          ),
-                        ),
-                        const Spacer(),
-                        IconButton(
-                          onPressed: () {
-                            setState(() {
-                              isCount = !isCount;
-                            });
-                          },
-                          icon: isCount
-                              ? const Icon(Icons.pause,
-                                  color: AppColors.primaryColor1)
-                              : const Icon(Icons.play_arrow,
-                                  color: AppColors.primaryColor1),
-                        )
-                      ],
-                    ),
-                    !isCount
-                        ? Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 5,
-                                ),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: AppColors.primaryColor1,
-                                ),
-                                child: const Text(
-                                  'Stop',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          )
-                        : Container(),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: widthDevice,
-                      height: 15,
-                      child: LinearPercentIndicator(
-                        lineHeight: 40,
-                        percent: steps / 1000,
-                        progressColor: AppColors.primaryColor1,
-                        backgroundColor: Colors.grey.withOpacity(0.2),
-                        animation: true,
-                        animationDuration: 1000,
-                        barRadius: const Radius.circular(20),
-                      ),
-                    ),
-                    const SizedBox(height: 50),
-                    SizedBox(
-                      width: double.infinity,
-                      child: Row(
+                  const SizedBox(height: 20),
+                  Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Expanded(
-                            flex: 1,
-                            child: DataStepCard(
-                              data: miles,
-                              imagePath: 'assets/images/miles.png',
-                              title: 'Miles',
+                          const SizedBox(width: 20),
+                          RichText(
+                            text: TextSpan(
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                              children: [
+                                TextSpan(
+                                  text: steps.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 25, color: Colors.black),
+                                ),
+                                const TextSpan(
+                                  text: '/3000',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: AppColors.primaryColor1),
+                                )
+                              ],
                             ),
                           ),
-                          Expanded(
-                            flex: 1,
-                            child: DataStepCard(
-                              data: calories,
-                              imagePath: 'assets/images/calories.png',
-                              title: 'Calories',
-                            ),
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: DataStepCard(
-                              data: duration,
-                              imagePath: 'assets/images/duration.png',
-                              title: 'Duration',
-                            ),
+                          const Spacer(),
+                          IconButton(
+                            onPressed: () {
+                              setState(() {
+                                isCount = !isCount;
+                              });
+                            },
+                            icon: isCount
+                                ? const Icon(Icons.pause,
+                                    color: AppColors.primaryColor1)
+                                : const Icon(Icons.play_arrow,
+                                    color: AppColors.primaryColor1),
                           )
                         ],
                       ),
-                    )
-                  ],
-                )
-              ],
+                      !isCount
+                          ? Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 10,
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(5),
+                                    color: AppColors.primaryColor1,
+                                  ),
+                                  child: const Text(
+                                    'Stop',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: widthDevice,
+                        height: 15,
+                        child: LinearPercentIndicator(
+                          lineHeight: 40,
+                          percent: steps / 1000,
+                          progressColor: AppColors.primaryColor1,
+                          backgroundColor: Colors.grey.withOpacity(0.2),
+                          animation: true,
+                          animationDuration: 1000,
+                          barRadius: const Radius.circular(20),
+                        ),
+                      ),
+                      const SizedBox(height: 50),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 1,
+                              child: DataStepCard(
+                                data: miles,
+                                imagePath: 'assets/images/miles.png',
+                                title: 'Miles',
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: DataStepCard(
+                                data: calories,
+                                imagePath: 'assets/images/calories.png',
+                                title: 'Calories',
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: DataStepCard(
+                                data: duration,
+                                imagePath: 'assets/images/duration.png',
+                                title: 'Duration',
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
           );
         },

@@ -21,6 +21,7 @@ class CategoryMealCard extends StatelessWidget {
         onTap: press,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+          margin: const EdgeInsets.only(left: 20),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: AppColors.primaryColor1.withOpacity(0.4)),

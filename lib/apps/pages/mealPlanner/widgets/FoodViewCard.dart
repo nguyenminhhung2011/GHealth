@@ -25,7 +25,7 @@ class FoodViewCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      margin: const EdgeInsets.only(right: 10),
+      margin: const EdgeInsets.only(right: 10, left: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: (checkCOlor == 0)
