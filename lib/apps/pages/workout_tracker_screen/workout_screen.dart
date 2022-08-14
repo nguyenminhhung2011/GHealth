@@ -205,7 +205,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                                   .value[_controller.currentWorkoutIndex.value]
                               ['ready']),
                       isReady: _controller.isReady.value,
-                      onComPleted: () {
+                      onComPleted: () async {
                         if (_controller.isReady.value != 0) {
                           _controller.isReady.value =
                               0 - _controller.isReady.value;
@@ -215,104 +215,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                               _controller.currentWorkoutIndex.value++;
                             } else {
                               _controller.isReady.value = 0;
-                              showDialog(
-                                useRootNavigator: false,
-                                context: context,
-                                builder: (context) => Dialog(
-                                  backgroundColor: Colors.transparent,
-                                  child: Container(
-                                    width: double.infinity,
-                                    height: heightDevice * 0.4,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: Colors.white,
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.topCenter,
-                                          child: Stack(
-                                            children: [
-                                              SizedBox(
-                                                height: heightDevice * 0.28,
-                                                width: double.infinity,
-                                                child: Image.asset(
-                                                  'assets/images/success.png',
-                                                  fit: BoxFit.cover,
-                                                  color:
-                                                      AppColors.primaryColor1,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: heightDevice * 0.28,
-                                                width: widthDevice,
-                                                child: Center(
-                                                  child: Column(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: const [
-                                                      Icon(
-                                                        Icons.check_circle,
-                                                        color: AppColors
-                                                            .primaryColor1,
-                                                        size: 70,
-                                                      ),
-                                                      SizedBox(height: 5),
-                                                      Text(
-                                                        'Complete all workout session',
-                                                        style: TextStyle(
-                                                          color: AppColors
-                                                              .primaryColor1,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18,
-                                                        ),
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        Container(
-                                          height: 50,
-                                          width: double.infinity,
-                                          margin: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: AppColors.primaryColor1,
-                                          ),
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                primary: Colors.transparent,
-                                                shadowColor:
-                                                    Colors.transparent),
-                                            child: const Text(
-                                              'Done',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              );
+                              await _showDialogSuccess();
                             }
                           }
                         }
@@ -432,6 +335,98 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
               ],
             )
           ],
+        ),
+      ),
+    );
+  }
+
+  _showDialogSuccess() async {
+    await showDialog(
+      useRootNavigator: false,
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.4,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          child: Column(
+            children: [
+              Align(
+                alignment: Alignment.topCenter,
+                child: Stack(
+                  children: [
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.28,
+                      width: double.infinity,
+                      child: Image.asset(
+                        'assets/images/success.png',
+                        fit: BoxFit.cover,
+                        color: AppColors.primaryColor1,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.28,
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.check_circle,
+                              color: AppColors.primaryColor1,
+                              size: 70,
+                            ),
+                            SizedBox(height: 5),
+                            Text(
+                              'Complete all workout session',
+                              style: TextStyle(
+                                color: AppColors.primaryColor1,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const Spacer(),
+              Container(
+                height: 50,
+                width: double.infinity,
+                margin: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: AppColors.primaryColor1,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      primary: Colors.transparent,
+                      shadowColor: Colors.transparent),
+                  child: const Text(
+                    'Done',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
