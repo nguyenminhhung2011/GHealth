@@ -6,9 +6,13 @@ import 'package:timelines/timelines.dart';
 
 class FastingPlanController extends GetxController with TrackerController {
   var isCountDown = false.obs;
+  var chooseDateTime = DateTime.now().obs;
+  var isRemainMode = false.obs;
+  dynamic fastingMode = null;
   List<Map<String, dynamic>> choices = [
     {
-      'name': '14-10',
+      'fastingTime': 14,
+      'eatingTime': 10,
       'stars': 1,
       'badge': 'assets/images/1.PNG',
       'information': [
@@ -21,7 +25,8 @@ class FastingPlanController extends GetxController with TrackerController {
       'opacityStarColor': Colors.brown[200]!.withOpacity(0.4),
     },
     {
-      'name': '16-8',
+      'fastingTime': 16,
+      'eatingTime': 8,
       'stars': 2,
       'badge': 'assets/images/2.png',
       'information': [
@@ -34,7 +39,8 @@ class FastingPlanController extends GetxController with TrackerController {
       'opacityStarColor': Colors.blue[200]!.withOpacity(0.4),
     },
     {
-      'name': '18-6',
+      'fastingTime': 18,
+      'eatingTime': 6,
       'stars': 3,
       'badge': 'assets/images/3.png',
       'information': [
@@ -47,7 +53,8 @@ class FastingPlanController extends GetxController with TrackerController {
       'opacityStarColor': Colors.amber[200]!.withOpacity(0.4),
     },
     {
-      'name': '20-4',
+      'fastingTime': 20,
+      'eatingTime': 4,
       'stars': 4,
       'badge': 'assets/images/4.png',
       'information': [
@@ -149,19 +156,21 @@ class FastingPlanController extends GetxController with TrackerController {
   }
 
   _showBottomSheetTimePicker() {
+    double bottomSheetHeight = Get.mediaQuery.size.height * 0.37;
     return Get.bottomSheet(
-      enterBottomSheetDuration: const Duration(milliseconds: 300),
-      exitBottomSheetDuration: const Duration(milliseconds: 300),
+      elevation: 5,
       backgroundColor: Colors.white,
-      enableDrag: false,
-      SizedBox(
-        height: Get.mediaQuery.size.height * 0.4,
+      Container(
+        decoration: BoxDecoration(border: Border.all(width: 2)),
+        height: bottomSheetHeight,
         child: Column(
           children: [
             SizedBox(
-              height: 250,
+              height: bottomSheetHeight * 0.3,
               child: CupertinoDatePicker(
                 onDateTimeChanged: (value) {},
+                minimumDate: DateTime.now().subtract(const Duration(days: 15)),
+                maximumDate: DateTime.now().add(const Duration(days: 15)),
                 initialDateTime: DateTime.now(),
               ),
             ),
@@ -187,7 +196,6 @@ class FastingPlanController extends GetxController with TrackerController {
           ],
         ),
       ),
-      elevation: 5,
     );
   }
 }

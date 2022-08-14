@@ -65,6 +65,7 @@ dependencies:
   timelines: ^0.1.0
   flutter_local_notifications: ^9.7.0
   url_launcher: ^6.1.5
+  badges: ^2.0.3
       
 
 

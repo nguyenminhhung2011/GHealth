@@ -1,21 +1,21 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
-import 'package:gold_health/apps/pages/progress_tracker/compare_result_screen.dart';
-import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
 
 import '../../../template/misc/colors.dart';
 
+// ignore: must_be_immutable
 class GetReadyScreen extends StatelessWidget {
-  final String name;
-  GetReadyScreen({Key? key, required this.name}) : super(key: key);
-  var isTap = false.obs;
+  final Map<String, dynamic> fastingMode;
+  GetReadyScreen({Key? key, required this.fastingMode}) : super(key: key);
 
   final fastingPlanController = Get.find<FastingPlanController>();
+
+  var isTapExpandDetail = false.obs;
 
   List<Map<String, dynamic>> choices = [
     {
@@ -107,7 +107,7 @@ class GetReadyScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  name,
+                  '${fastingMode['fastingTime']}-${fastingMode['eatingTime']}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
@@ -116,7 +116,7 @@ class GetReadyScreen extends StatelessWidget {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    isTap.value = !isTap.value;
+                    isTapExpandDetail.value = !isTapExpandDetail.value;
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
@@ -124,7 +124,7 @@ class GetReadyScreen extends StatelessWidget {
                     primary: Colors.blueGrey[50],
                   ),
                   child: Obx(
-                    () => isTap.value
+                    () => isTapExpandDetail.value
                         ? Icon(
                             Icons.keyboard_arrow_down,
                             size: 30,
@@ -142,7 +142,7 @@ class GetReadyScreen extends StatelessWidget {
             Obx(
               () => AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
-                height: isTap.value ? 200 : 0,
+                height: isTapExpandDetail.value ? 200 : 0,
                 width: double.infinity,
                 child: Stack(
                   alignment: Alignment.topCenter,
@@ -173,9 +173,9 @@ class GetReadyScreen extends StatelessWidget {
                                   color: Colors.green[400],
                                 ),
                                 const SizedBox(width: 10),
-                                const Text(
-                                  '14 hours fasting',
-                                  style: TextStyle(
+                                Text(
+                                  '${fastingMode['fastingTime']} hours fasting',
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       color: Colors.grey,
                                       fontSize: 18),
@@ -191,9 +191,9 @@ class GetReadyScreen extends StatelessWidget {
                                   color: Colors.amber[500],
                                 ),
                                 const SizedBox(width: 10),
-                                const Text(
-                                  '10 hours eating period',
-                                  style: TextStyle(
+                                Text(
+                                  '${fastingMode['eatingTime']} hours eating period',
+                                  style: const TextStyle(
                                       fontWeight: FontWeight.w500,
                                       color: Colors.grey,
                                       fontSize: 18),
@@ -212,94 +212,7 @@ class GetReadyScreen extends StatelessWidget {
               margin: const EdgeInsets.only(top: 10),
               height: 100,
               width: 300,
-              child: Timeline.tileBuilder(
-                builder: TimelineTileBuilder.connected(
-                  contentsAlign: ContentsAlign.basic,
-                  connectorBuilder: (context, index, type) {
-                    return Connector.dashedLine();
-                  },
-                  indicatorBuilder: (context, index) {
-                    switch (index) {
-                      case 0:
-                        return DotIndicator(
-                          color: Colors.white,
-                          size: 12,
-                          border:
-                              Border.all(color: Colors.green[400]!, width: 3),
-                        );
-                      case 1:
-                        return DotIndicator(
-                          color: Colors.white,
-                          size: 12,
-                          border:
-                              Border.all(color: Colors.amber[400]!, width: 3),
-                        );
-                    }
-                    return null;
-                  },
-                  contentsBuilder: (context, index) {
-                    switch (index) {
-                      case 0:
-                        return Row(
-                          children: [
-                            const SizedBox(width: 5),
-                            const Text(
-                              'Start',
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.grey),
-                            ),
-                            const Expanded(
-                              child: Text(
-                                'Today, 21:11',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 53, 162, 57),
-                                    fontWeight: FontWeight.w500),
-                                textAlign: TextAlign.end,
-                              ),
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                shape: CircleBorder(),
-                                primary: Colors.green[50],
-                              ),
-                              onPressed: () {
-                                _showBottomSheetTimePicker();
-                              },
-                              child: const Icon(
-                                Icons.edit,
-                                size: 20,
-                                color: Color.fromARGB(255, 53, 162, 57),
-                              ),
-                            )
-                          ],
-                        );
-                      case 1:
-                        return Row(
-                          children: const [
-                            SizedBox(width: 5),
-                            Text(
-                              'End (expected)',
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.grey),
-                            ),
-                            Expanded(
-                              child: Text(
-                                'T omorrow, 11:11',
-                                textAlign: TextAlign.end,
-                                style: TextStyle(color: Colors.grey),
-                              ),
-                            ),
-                          ],
-                        );
-                    }
-                    return null;
-                  },
-                  nodePositionBuilder: (context, index) => 0,
-                  itemExtent: 50.0,
-                  itemCount: 2,
-                ),
-              ),
+              child: CustomTimeLine(fastingMode: fastingMode),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -458,49 +371,6 @@ class GetReadyScreen extends StatelessWidget {
     );
   }
 
-  _showBottomSheetTimePicker() {
-    return Get.bottomSheet(
-      enterBottomSheetDuration: const Duration(milliseconds: 300),
-      exitBottomSheetDuration: const Duration(milliseconds: 300),
-      backgroundColor: Colors.white,
-      enableDrag: false,
-      SizedBox(
-        height: Get.mediaQuery.size.height * 0.4,
-        child: Column(
-          children: [
-            SizedBox(
-              height: 250,
-              child: CupertinoDatePicker(
-                onDateTimeChanged: (value) {},
-                initialDateTime: DateTime.now(),
-              ),
-            ),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                fixedSize: const Size(300, 50),
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                primary: Colors.blue[200],
-              ),
-              onPressed: () {
-                Get.back();
-              },
-              child: const Text(
-                'Done',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500),
-              ),
-            )
-          ],
-        ),
-      ),
-      elevation: 5,
-    );
-  }
-
   Widget _itemBuilder(dynamic e) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15),
@@ -567,6 +437,158 @@ class GetReadyScreen extends StatelessWidget {
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class CustomTimeLine extends StatelessWidget {
+  CustomTimeLine({Key? key, this.fastingMode}) : super(key: key);
+  DateTime tempDateTime = DateTime.now();
+
+  final fastingMode;
+  final fastingPlanController = Get.find<FastingPlanController>();
+  @override
+  Widget build(BuildContext context) {
+    return Timeline.tileBuilder(
+      builder: TimelineTileBuilder.connected(
+        contentsAlign: ContentsAlign.basic,
+        connectorBuilder: (context, index, type) {
+          return Connector.dashedLine();
+        },
+        indicatorBuilder: (context, index) {
+          switch (index) {
+            case 0:
+              return DotIndicator(
+                color: Colors.white,
+                size: 12,
+                border: Border.all(color: Colors.green[400]!, width: 3),
+              );
+            case 1:
+              return DotIndicator(
+                color: Colors.white,
+                size: 12,
+                border: Border.all(color: Colors.amber[400]!, width: 3),
+              );
+          }
+          return null;
+        },
+        contentsBuilder: (context, index) {
+          switch (index) {
+            case 0:
+              return Row(
+                children: [
+                  const SizedBox(width: 5),
+                  const Text(
+                    'Start',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  Expanded(
+                    child: Obx(() => Text(
+                          DateFormat().add_E().add_jm().format(
+                              fastingPlanController.chooseDateTime.value),
+                          style: const TextStyle(
+                              color: Color.fromARGB(255, 53, 162, 57),
+                              fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.end,
+                        )),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      shape: CircleBorder(),
+                      primary: Colors.green[50],
+                    ),
+                    onPressed: () {
+                      _showBottomSheetTimePicker();
+                    },
+                    child: const Icon(
+                      Icons.edit,
+                      size: 20,
+                      color: Color.fromARGB(255, 53, 162, 57),
+                    ),
+                  )
+                ],
+              );
+            case 1:
+              return Row(
+                children: [
+                  const SizedBox(width: 5),
+                  const Text(
+                    'End (expected)',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                  Expanded(
+                      child: Obx(
+                    () => Text(
+                      DateFormat().add_E().add_jm().format(
+                            fastingPlanController.chooseDateTime.value.add(
+                              Duration(
+                                  hours: fastingMode['fastingTime'] as int),
+                            ),
+                          ),
+                      textAlign: TextAlign.end,
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  )),
+                ],
+              );
+          }
+          return null;
+        },
+        nodePositionBuilder: (context, index) => 0,
+        itemExtent: 50.0,
+        itemCount: 2,
+      ),
+    );
+  }
+
+  _showBottomSheetTimePicker() {
+    double bottomSheetHeight = Get.mediaQuery.size.height * 0.37;
+    return Get.bottomSheet(
+      elevation: 5,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+      Container(
+        height: bottomSheetHeight,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: bottomSheetHeight * 0.7,
+              child: CupertinoDatePicker(
+                onDateTimeChanged: (value) {
+                  tempDateTime = value;
+                },
+                minimumDate: DateTime.now().subtract(const Duration(days: 15)),
+                maximumDate: DateTime.now().add(const Duration(days: 15)),
+                initialDateTime: DateTime.now(),
+              ),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(300, 50),
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)),
+                primary: Colors.blue[200],
+              ),
+              onPressed: () {
+                fastingPlanController.chooseDateTime.value = tempDateTime;
+                Get.back();
+              },
+              child: const Text(
+                'Done',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500),
+              ),
+            )
+          ],
         ),
       ),
     );

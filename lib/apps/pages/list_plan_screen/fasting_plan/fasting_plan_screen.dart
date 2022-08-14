@@ -31,7 +31,9 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
                     child: InkWell(
                       borderRadius: BorderRadius.circular(20),
                       onTap: () {
-                        Get.to(() => GetReadyScreen(name: e['name'] as String));
+                        controller.fastingMode = e;
+                        Get.to(() => GetReadyScreen(
+                            fastingMode: controller.fastingMode));
                       },
                       child: Container(
                         padding: const EdgeInsets.all(20),
@@ -47,7 +49,7 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text(
-                                  e['name'] as String,
+                                  '${e['fastingTime']}-${e['eatingTime']}',
                                   style: const TextStyle(
                                     fontSize: 28,
                                     fontWeight: FontWeight.bold,
@@ -171,7 +173,10 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
             ),
             ...choicesWidget,
             Obx(() => controller.isCountDown.value
-                ? const FastingCountdownScreen()
+                ? FastingCountdownScreen(
+                    timeline:
+                        CustomTimeLine(fastingMode: controller.fastingMode),
+                  )
                 : const SizedBox()),
           ],
         ),
