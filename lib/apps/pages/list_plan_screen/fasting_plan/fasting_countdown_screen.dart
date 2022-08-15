@@ -204,12 +204,18 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
         ),
         const SizedBox(height: 20),
         /////
-        SizedBox(height: 100, child: widget.timeline),
+        SizedBox(
+            height: 100,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: widget.timeline,
+            )),
         /////
         const SizedBox(height: 20),
         Container(
           height: Get.mediaQuery.size.height * 0.18,
           width: Get.mediaQuery.size.width,
+          margin: const EdgeInsets.symmetric(horizontal: 20.0),
           decoration: BoxDecoration(
             color: Colors.amber[100],
             borderRadius: BorderRadius.circular(20),
@@ -249,6 +255,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
         Container(
           height: Get.mediaQuery.size.height * 0.25,
           width: Get.mediaQuery.size.width,
+          margin: const EdgeInsets.symmetric(horizontal: 20.0),
           padding: const EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
             color: Colors.green[100]!.withOpacity(0.5),
@@ -334,36 +341,39 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
           ),
         ),
         const SizedBox(height: 30),
-        ElevatedButton(
-          onPressed: () {
-            Get.dialog(
-              YesNoDialog(
-                press: () {
-                  fastingPlanController.fastingMode = null;
-                  Get.back();
-                  fastingPlanController.isCountDown.value = false;
-                },
-                question: 'End fasting ?',
-                title1: 'You haven\'t finish your goal yet.',
-                title2: 'Are you sure you want to end fasting early ?',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: ElevatedButton(
+            onPressed: () {
+              Get.dialog(
+                YesNoDialog(
+                  press: () {
+                    fastingPlanController.fastingMode = null;
+                    Get.back();
+                    fastingPlanController.isCountDown.value = false;
+                  },
+                  question: 'End fasting ?',
+                  title1: 'You haven\'t finish your goal yet.',
+                  title2: 'Are you sure you want to end fasting early ?',
+                ),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              primary: Colors.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: const BorderSide(width: 2, color: Colors.deepOrange)),
+              alignment: Alignment.center,
+              elevation: 0,
+              fixedSize: Size(Get.mediaQuery.size.width, 70),
+            ),
+            child: const Text(
+              'End fasting',
+              style: TextStyle(
+                color: Colors.deepOrange,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
-            );
-          },
-          style: ElevatedButton.styleFrom(
-            primary: Colors.white,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-                side: const BorderSide(width: 2, color: Colors.deepOrange)),
-            alignment: Alignment.center,
-            elevation: 0,
-            fixedSize: Size(Get.mediaQuery.size.width, 70),
-          ),
-          child: const Text(
-            'End fasting',
-            style: TextStyle(
-              color: Colors.deepOrange,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
             ),
           ),
         ),
@@ -418,7 +428,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
       onTap: () {},
       borderRadius: BorderRadius.circular(20),
       child: Container(
-        margin: const EdgeInsets.only(right: 15),
+        margin: const EdgeInsets.only(left: 20),
         height: 150,
         width: 120,
         decoration: BoxDecoration(

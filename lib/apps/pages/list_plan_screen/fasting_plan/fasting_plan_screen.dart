@@ -20,82 +20,86 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
 
   late final choicesWidget = controller.choices
       .map(
-        (e) => Obx(
-          () => !controller.isCountDown.value
-              ? Container(
-                  margin: const EdgeInsets.symmetric(vertical: 15),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(20),
-                    elevation: 5,
-                    color: Colors.white,
-                    child: InkWell(
+        (e) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Obx(
+            () => !controller.isCountDown.value
+                ? Container(
+                    margin: const EdgeInsets.symmetric(vertical: 15),
+                    child: Material(
                       borderRadius: BorderRadius.circular(20),
-                      onTap: () {
-                        controller.fastingMode = e;
-                        Get.to(() => GetReadyScreen(
-                            fastingMode: controller.fastingMode));
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.all(20),
-                        height: Get.mediaQuery.size.height * 0.2,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: e['color'] as Color,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${e['fastingTime']}-${e['eatingTime']}',
-                                  style: const TextStyle(
-                                    fontSize: 28,
-                                    fontWeight: FontWeight.bold,
+                      elevation: 5,
+                      color: Colors.white,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(20),
+                        onTap: () {
+                          controller.fastingMode = e;
+                          Get.to(() => GetReadyScreen(
+                              fastingMode: controller.fastingMode));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          height: Get.mediaQuery.size.height * 0.2,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: e['color'] as Color,
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    '${e['fastingTime']}-${e['eatingTime']}',
+                                    style: const TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                for (int i = 1; i <= 4; i++)
-                                  Icon(
-                                    Icons.flash_on,
-                                    color: i > (e['stars'] as int)
-                                        ? (e['opacityStarColor'] as Color)
-                                        : e['starColor'] as Color,
-                                    size: 25,
-                                  ),
-                              ],
-                            ),
-                            const SizedBox(height: 5),
-                            ...(e['information'] as List<String>)
-                                .map((info) => Row(
-                                      children: [
-                                        Icon(
-                                          Icons.circle,
-                                          size: 10,
-                                          color: (e['starColor'] as Color)
-                                              .withOpacity(0.5),
-                                        ),
-                                        const SizedBox(width: 10),
-                                        Text(
-                                          info,
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 16),
-                                        )
-                                      ],
-                                    ))
-                                .toList(),
-                          ],
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  for (int i = 1; i <= 4; i++)
+                                    Icon(
+                                      Icons.flash_on,
+                                      color: i > (e['stars'] as int)
+                                          ? (e['opacityStarColor'] as Color)
+                                          : e['starColor'] as Color,
+                                      size: 25,
+                                    ),
+                                ],
+                              ),
+                              const SizedBox(height: 5),
+                              ...(e['information'] as List<String>)
+                                  .map((info) => Row(
+                                        children: [
+                                          Icon(
+                                            Icons.circle,
+                                            size: 10,
+                                            color: (e['starColor'] as Color)
+                                                .withOpacity(0.5),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Text(
+                                            info,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16),
+                                          )
+                                        ],
+                                      ))
+                                  .toList(),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              : const SizedBox(),
+                  )
+                : const SizedBox(),
+          ),
         ),
       )
       .toList();
@@ -115,11 +119,11 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: ScreenTemplate(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            children: [
-              Row(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: Row(
                 children: [
                   InkWell(
                     onTap: () async {
@@ -175,15 +179,15 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
                   ),
                 ],
               ),
-              ...choicesWidget,
-              Obx(() => controller.isCountDown.value
-                  ? FastingCountdownScreen(
-                      timeline:
-                          CustomTimeLine(fastingMode: controller.fastingMode),
-                    )
-                  : const SizedBox()),
-            ],
-          ),
+            ),
+            ...choicesWidget,
+            Obx(() => controller.isCountDown.value
+                ? FastingCountdownScreen(
+                    timeline:
+                        CustomTimeLine(fastingMode: controller.fastingMode),
+                  )
+                : const SizedBox()),
+          ],
         ),
       ),
     );
