@@ -143,6 +143,7 @@ class ActivityTrackerScreen extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Column _WeightTrackersViewFiled(
       BuildContext context, double widthDevice, double heightDevice) {
     return Column(
@@ -294,6 +295,7 @@ class ActivityTrackerScreen extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Column _CaloriesAbsorbedVIewWeekField(BuildContext context) {
     return Column(
       children: [
@@ -461,6 +463,7 @@ class ActivityTrackerScreen extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   SizedBox _SleepViewWeekField(double heightDevice, BuildContext context) {
     return SizedBox(
       height: heightDevice * 0.5,

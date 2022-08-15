@@ -2,12 +2,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gold_health/apps/data/sleep_tracker_data.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/Badge.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/LoadHeightWeight.dart';
-import 'package:gold_health/apps/pages/sleep_tracker/sleep_tracker_screen.dart';
-import 'package:time_chart/time_chart.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/workout_tracker_screen.dart';
 import '../../controls/home_screen_control.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
@@ -16,8 +12,6 @@ import 'package:gold_health/apps/data/fakeData.dart';
 import 'package:gold_health/apps/global_widgets/GradientText.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 import '../../template/misc/colors.dart';
-import '../list_plan_screen/dailynutri_screen.dart';
-import '../mealPlanner/mealPlannerScreen.dart';
 import 'widgets/button_gradient.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -286,6 +280,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Container _ActivityViewField(
       BuildContext context, double heightOfWaterChart) {
     return Container(
