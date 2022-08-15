@@ -5,7 +5,11 @@
 ![framework](https://img.shields.io/badge/-dart-2196F3)
 ![framework](https://img.shields.io/badge/-flutter-2196F3)
 
-A new Flutter project.
+<br>
+
+<p align="center">
+ <img src="./assets/images/intro.png" alt="ViPT Logo" height = "200"></a>
+</p>
 
 ## Screen UI
 ### Splash and Intro UI
