@@ -1,9 +1,9 @@
 # GHealth
-[![tag](https://img.shields.io/badge/-workout-F44336)]
-[![tag](https://img.shields.io/badge/-fitness-F44336)]
-[![os](https://img.shields.io/badge/-android-32DE84)]
-[![framework](https://img.shields.io/badge/-dart-2196F3)]
-[![framework](https://img.shields.io/badge/-flutter-2196F3)]
+![tag](https://img.shields.io/badge/-workout-F44336)
+![tag](https://img.shields.io/badge/-fitness-F44336)
+![os](https://img.shields.io/badge/-android-32DE84)
+![framework](https://img.shields.io/badge/-dart-2196F3)
+![framework](https://img.shields.io/badge/-flutter-2196F3)
 
 A new Flutter project.
 
