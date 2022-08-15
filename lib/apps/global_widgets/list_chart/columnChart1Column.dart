@@ -6,14 +6,25 @@ import 'package:flutter/material.dart';
 import '../../template/misc/colors.dart';
 import '../GradientText.dart';
 
-class BarChartSample1 extends StatefulWidget {
-  const BarChartSample1({Key? key}) : super(key: key);
-
+class ColumnChart1Column extends StatefulWidget {
+  const ColumnChart1Column(
+      {Key? key,
+      required this.week,
+      required this.color,
+      required this.title,
+      required this.data,
+      required this.columnColor})
+      : super(key: key);
+  final String week;
+  final Color columnColor;
+  final Color color;
+  final String title;
+  final String data;
   @override
-  State<StatefulWidget> createState() => BarChartSample1State();
+  State<StatefulWidget> createState() => ColumnChart1ColumnState();
 }
 
-class BarChartSample1State extends State<BarChartSample1> {
+class ColumnChart1ColumnState extends State<ColumnChart1Column> {
   final Color barBackgroundColor = const Color(0xff72d8bf);
   final Duration animDuration = const Duration(milliseconds: 250);
 
@@ -28,40 +39,50 @@ class BarChartSample1State extends State<BarChartSample1> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
-          color: AppColors.primaryColor1.withOpacity(0.2),
+          color: widget.color,
         ),
         child: Stack(
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
                     child: GradientText(
-                      'Week 25/7/2022 - 1/8/2022',
-                      gradient:
-                          LinearGradient(colors: [Colors.black, Colors.black]),
-                      style: TextStyle(
+                      widget.week,
+                      gradient: const LinearGradient(
+                          colors: [Colors.black, Colors.black]),
+                      style: const TextStyle(
                         fontWeight: FontWeight.w600,
                         fontSize: 17,
                       ),
                     ),
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 20.0),
-                    child: GradientText(
-                      'Foot steps: 5000steps',
-                      gradient:
-                          LinearGradient(colors: [Colors.black, Colors.black]),
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 16,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 20),
+                      Text(
+                        widget.title,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
+                      Text(
+                        widget.data,
+                        style: const TextStyle(
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      )
+                    ],
                   ),
                   const SizedBox(
                     height: 38,
@@ -91,7 +112,7 @@ class BarChartSample1State extends State<BarChartSample1> {
     int x,
     double y, {
     bool isTouched = false,
-    Color barColor = AppColors.primaryColor1,
+    required Color barColor,
     double width = 22,
     List<int> showTooltips = const [],
   }) {
@@ -103,7 +124,7 @@ class BarChartSample1State extends State<BarChartSample1> {
           color: isTouched ? Colors.yellow : barColor,
           width: width,
           borderSide: isTouched
-              ? BorderSide(color: Colors.yellow, width: 1)
+              ? const BorderSide(color: Colors.yellow, width: 1)
               : const BorderSide(color: Colors.white, width: 0),
           backDrawRodData: BackgroundBarChartRodData(
             show: true,
@@ -119,19 +140,26 @@ class BarChartSample1State extends State<BarChartSample1> {
   List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, 5, isTouched: i == touchedIndex);
+            return makeGroupData(0, 5,
+                isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 1:
-            return makeGroupData(1, 6.5, isTouched: i == touchedIndex);
+            return makeGroupData(1, 6.5,
+                isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 2:
-            return makeGroupData(2, 5, isTouched: i == touchedIndex);
+            return makeGroupData(2, 5,
+                isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 3:
-            return makeGroupData(3, 7.5, isTouched: i == touchedIndex);
+            return makeGroupData(3, 7.5,
+                isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 4:
-            return makeGroupData(4, 9, isTouched: i == touchedIndex);
+            return makeGroupData(4, 9,
+                isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 5:
-            return makeGroupData(5, 11.5, isTouched: i == touchedIndex);
+            return makeGroupData(5, 11.5,
+                isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 6:
-            return makeGroupData(6, 6.5, isTouched: i == touchedIndex);
+            return makeGroupData(6, 6.5,
+                isTouched: i == touchedIndex, barColor: widget.columnColor);
           default:
             return throw Error();
         }

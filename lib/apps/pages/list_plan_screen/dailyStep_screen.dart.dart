@@ -13,6 +13,7 @@ import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../services/notificationApi.dart';
+import '../../global_widgets/ButtonIconGradientColor.dart';
 import '../../global_widgets/list_chart/columnChart1Column.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
@@ -186,7 +187,13 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
                   SizedBox(
                     height: heightDevice / 3,
                     width: double.infinity,
-                    child: BarChartSample1(),
+                    child: ColumnChart1Column(
+                      week: 'Week 25/7/2022 - 1/8/2022',
+                      title: 'Number of FootSteps: ',
+                      data: '300',
+                      color: AppColors.primaryColor1.withOpacity(0.2),
+                      columnColor: AppColors.primaryColor1,
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Align(

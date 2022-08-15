@@ -6,8 +6,6 @@ import 'package:gold_health/apps/controls/workout_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/time_custom.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../template/misc/colors.dart';

@@ -12,6 +12,7 @@ import 'package:gold_health/apps/pages/dashboard/settingScreen.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/activityHistoryDialog.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/targerlDataDialog.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../../global_widgets/ButtonIconGradientColor.dart';
 import '../../global_widgets/ToggleButtonIos.dart';
 import '../../template/misc/colors.dart';
 
@@ -40,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 child: Row(
                   children: [
                     InkWell(
@@ -51,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           borderRadius: BorderRadius.circular(10),
                           color: AppColors.primaryColor.withOpacity(0.2),
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.arrow_back_ios,
                           color: Colors.black,
                         ),
