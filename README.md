@@ -85,4 +85,33 @@ A new Flutter project.
 <img width="200" src=".\UI\52.png"></a>
 <img width="200" src=".\UI\53.png"></a>
 
+## Progress Photo
+
+<img width="200" src=".\UI\54.png"></a>
+<img width="200" src=".\UI\55.png"></a>
+<img width="200" src=".\UI\56.png"></a>
+<img width="200" src=".\UI\57.png"></a>
+<img width="200" src=".\UI\58.png"></a>
+<img width="200" src=".\UI\59.png"></a>
+<img width="200" src=".\UI\60.png"></a>
+<img width="200" src=".\UI\61.png"></a>
+
+## Acitivity Tracker
+
+<img width="200" src=".\UI\62.png"></a>
+<img width="200" src=".\UI\63.png"></a>
+<img width="200" src=".\UI\64.png"></a>
+<img width="200" src=".\UI\65.png"></a>
+
+##Profile and Setting
+
+<img width="200" src=".\UI\66.png"></a>
+<img width="200" src=".\UI\67.png"></a>
+<img width="200" src=".\UI\68.png"></a>
+<img width="200" src=".\UI\69.png"></a>
+<img width="200" src=".\UI\70.png"></a>
+<img width="200" src=".\UI\71.png"></a>
+<img width="200" src=".\UI\72.png"></a>
+
+
 
