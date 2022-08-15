@@ -8,10 +8,14 @@ A new Flutter project.
 <img width="200" src=".\UI\2.png"></a>
 <img width="200" src=".\UI\3.png"></a>
 <img width="200" src=".\UI\4.png"></a>
+
 ##SignUp SignIn
+
 <img width="200" src=".\UI\5.png"></a>
 <img width="200" src=".\UI\6.png"></a>
+
 ##Basic Info
+
 <img width="200" src=".\UI\7.png"></a>
 <img width="200" src=".\UI\8.png"></a>
 <img width="200" src=".\UI\9.png"></a>
