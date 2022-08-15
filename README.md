@@ -55,3 +55,34 @@ A new Flutter project.
 <img width="200" src=".\UI\33.png"></a>
 <img width="200" src=".\UI\34.png"></a>
 <img width="200" src=".\UI\35.png"></a>
+
+## Foot steps Plan
+<img width="200" src=".\UI\36.png"></a>
+
+## Water Plan
+
+<img width="200" src=".\UI\37.png"></a>
+<img width="200" src=".\UI\38.png"></a>
+<img width="200" src=".\UI\39.png"></a>
+<img width="200" src=".\UI\40.png"></a>
+
+## Fasting Plan
+
+<img width="200" src=".\UI\41.png"></a>
+<img width="200" src=".\UI\42.png"></a>
+<img width="200" src=".\UI\43.png"></a>
+<img width="200" src=".\UI\44.png"></a>
+<img width="200" src=".\UI\45.png"></a>
+<img width="200" src=".\UI\46.png"></a>
+<img width="200" src=".\UI\47.png"></a>
+<img width="200" src=".\UI\48.png"></a>
+<img width="200" src=".\UI\49.png"></a>
+
+## Sleep Plan
+
+<img width="200" src=".\UI\50.png"></a>
+<img width="200" src=".\UI\51.png"></a>
+<img width="200" src=".\UI\52.png"></a>
+<img width="200" src=".\UI\53.png"></a>
+
+
