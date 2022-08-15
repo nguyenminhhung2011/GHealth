@@ -1,7 +1,8 @@
-# gold_health
+# GHealth
 
 A new Flutter project.
 
+<<<<<<< HEAD
 ## Getting Started
 
 This project is a starting point for a Flutter application.
@@ -16,3 +17,5 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
  <img width="200" src=".\UI\1.png"></a>
 
+=======
+>>>>>>> d83f8c1c1e099d9855a50f21d448c6d1d3625ff5
