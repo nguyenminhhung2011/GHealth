@@ -41,3 +41,17 @@ A new Flutter project.
 <img width="200" src=".\UI\23.png"></a>
 <img width="200" src=".\UI\24.png"></a>
 
+## Workout plan
+
+<img width="200" src=".\UI\25.png"></a>
+<img width="200" src=".\UI\26.png"></a>
+<img width="200" src=".\UI\27.png"></a>
+<img width="200" src=".\UI\28,5.png"></a>
+<img width="200" src=".\UI\28.png"></a>
+<img width="200" src=".\UI\29.png"></a>
+<img width="200" src=".\UI\30.png"></a>
+<img width="200" src=".\UI\31.png"></a>
+<img width="200" src=".\UI\32.png"></a>
+<img width="200" src=".\UI\33.png"></a>
+<img width="200" src=".\UI\34.png"></a>
+<img width="200" src=".\UI\35.png"></a>
