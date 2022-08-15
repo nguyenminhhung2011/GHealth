@@ -11,6 +11,9 @@
  <img src="./assets/images/intro.png" alt="ViPT Logo" height = "200"></a>
 </p>
 
+<p align="center">
+ <b>GHEALTH</b>
+</p>
 ## Screen UI
 ### Splash and Intro UI
 <img width="200" src=".\UI\1.png"></a>
