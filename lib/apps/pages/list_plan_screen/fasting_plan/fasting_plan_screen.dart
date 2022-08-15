@@ -115,6 +115,7 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
       'Foot step',
       'Water',
       'Fasting',
+      'Sleep'
     ];
     return Scaffold(
       backgroundColor: AppColors.mainColor,
