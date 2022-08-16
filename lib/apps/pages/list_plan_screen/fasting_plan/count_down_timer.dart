@@ -37,7 +37,11 @@ class _CountDownTimerState extends State<CountDownTimer>
   void initState() {
     super.initState();
     _controllerOpacity = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 600));
+      vsync: this,
+      duration: const Duration(
+        milliseconds: 600,
+      ),
+    );
     _animationOpacity = Tween(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(parent: _controllerOpacity, curve: Curves.easeIn));
     _controller = AnimationController(vsync: this, duration: widget.duration);

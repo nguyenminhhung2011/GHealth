@@ -1,22 +1,11 @@
-import 'dart:ui';
-
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/data/fakeData.dart';
-import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/listWorkoutScreen.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/ExerciseCard.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_workout_screen.dart';
 
-import '../../global_widgets/GradientText.dart';
-import '../../global_widgets/RowText_Seemore.dart';
 import '../../template/misc/colors.dart';
-import '../dashboard/widgets/button_gradient.dart';
 
 class WorkoutDetailScreen extends StatelessWidget {
   const WorkoutDetailScreen({Key? key}) : super(key: key);
@@ -35,7 +24,7 @@ class WorkoutDetailScreen extends StatelessWidget {
           Container(
             width: _widthDevice,
             height: _heightDevice,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: AppColors.primaryColor1,
             ),
             child: Align(
@@ -54,13 +43,13 @@ class WorkoutDetailScreen extends StatelessWidget {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.transparent,
               ),
               child: ListView(
-                physics: BouncingScrollPhysics(
+                physics: const BouncingScrollPhysics(
                   parent: AlwaysScrollableScrollPhysics(),
                 ),
                 children: [
@@ -76,7 +65,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                             BoxConstraints(minHeight: _heightDevice * 0.86),
                         child: Container(
                           width: double.maxFinite,
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                             horizontal: 20,
                             vertical: 10,
                           ),
@@ -107,7 +96,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
-                                      children: [
+                                      children: const [
                                         Text(
                                           'Fullbody Workout',
                                           style: TextStyle(
@@ -163,15 +152,15 @@ class WorkoutDetailScreen extends StatelessWidget {
                                                 'assets/icons/Calendar.svg',
                                                 color: Colors.grey),
                                             const SizedBox(width: 5),
-                                            Text(
+                                            const Text(
                                               'Schedule Workout',
                                               style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                            Spacer(),
-                                            Text(
+                                            const Spacer(),
+                                            const Text(
                                               '5/27,09:00 AM',
                                               style: TextStyle(
                                                 color: Colors.grey,
@@ -179,7 +168,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                               ),
                                             ),
                                             const SizedBox(width: 5),
-                                            Icon(
+                                            const Icon(
                                               Icons.arrow_forward_ios_sharp,
                                               color: Colors.grey,
                                               size: 15,
@@ -206,15 +195,15 @@ class WorkoutDetailScreen extends StatelessWidget {
                                                 'assets/icons/Swap.svg',
                                                 color: Colors.grey),
                                             const SizedBox(width: 5),
-                                            Text(
+                                            const Text(
                                               'Difficulity',
                                               style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                             ),
-                                            Spacer(),
-                                            Text(
+                                            const Spacer(),
+                                            const Text(
                                               'Beginer',
                                               style: TextStyle(
                                                 color: Colors.grey,
@@ -222,7 +211,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                               ),
                                             ),
                                             const SizedBox(width: 5),
-                                            Icon(
+                                            const Icon(
                                               Icons.arrow_forward_ios_sharp,
                                               color: Colors.grey,
                                               size: 15,
@@ -235,7 +224,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20),
                                 Row(
-                                  children: [
+                                  children: const [
                                     Text(
                                       'You \'ll Need',
                                       style: TextStyle(
@@ -282,7 +271,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 30),
                                 Row(
-                                  children: [
+                                  children: const [
                                     Text(
                                       'Exercises',
                                       style: TextStyle(
@@ -302,7 +291,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 20),
-                                Align(
+                                const Align(
                                   alignment: Alignment.centerLeft,
                                   child: Text(
                                     'Set 1',
@@ -335,13 +324,13 @@ class WorkoutDetailScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 40),
               AppBarWorkout(title: '', press: () {}),
-              Spacer(),
+              const Spacer(),
               InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ListWorkoutScreen(),
+                      builder: (context) => const ListWorkoutScreen(),
                     ),
                   );
                 },
@@ -360,12 +349,12 @@ class WorkoutDetailScreen extends StatelessWidget {
                       ),
                       BoxShadow(
                         color: Colors.black.withOpacity(0.05),
-                        offset: Offset(-2, -3),
+                        offset: const Offset(-2, -3),
                         blurRadius: 2,
                       )
                     ],
                   ),
-                  child: Text(
+                  child: const Text(
                     'Start Workout',
                     style: TextStyle(
                       color: Colors.white,
@@ -417,7 +406,8 @@ class ToolsCard extends StatelessWidget {
           ),
           Text(
             title,
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+            style: const TextStyle(
+                color: Colors.black, fontWeight: FontWeight.bold),
           )
         ],
       ),
