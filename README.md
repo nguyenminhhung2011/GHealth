@@ -1,8 +1,22 @@
 # GHealth
+![tag](https://img.shields.io/badge/-workout-F44336)
+![tag](https://img.shields.io/badge/-fitness-F44336)
+![os](https://img.shields.io/badge/-android-32DE84)
+![framework](https://img.shields.io/badge/-dart-2196F3)
+![framework](https://img.shields.io/badge/-flutter-2196F3)
 
-A new Flutter project.
+<br>
+
+<p align="center">
+ <img src="./assets/images/intro.png" alt="ViPT Logo" height = "200"></a>
+</p>
+
+<p align="center">
+ <b>GHEALTH</b>
+</p>
 
 ## Screen UI
+
 ### Splash and Intro UI
 <img width="200" src=".\UI\1.png"></a>
 <img width="200" src=".\UI\2.png"></a>
