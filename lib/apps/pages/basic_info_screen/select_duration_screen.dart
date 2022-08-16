@@ -6,17 +6,10 @@ import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart'
 import 'package:gold_health/apps/pages/basic_info_screen/widgets/select_duration_button.dart';
 
 import '../../controls/select_durationControls.dart';
+import '../../data/enums/app_enums.dart';
 import '../../global_widgets/buttonMain.dart';
 import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
-
-enum Times {
-  notmuch,
-  little,
-  medium,
-  many,
-  somany,
-}
 
 class SelectDurationScreen extends StatefulWidget {
   @override
