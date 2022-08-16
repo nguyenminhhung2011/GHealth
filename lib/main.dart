@@ -2,9 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:gold_health/apps/controls/AuthControls.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splashScreen.dart';
 import 'package:gold_health/apps/routes/appPages.dart';
+import 'package:gold_health/services/startServices.dart';
 
 import 'apps/routes/routeName.dart';
 import 'apps/template/misc/colors.dart';
@@ -14,7 +17,6 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   if (kIsWeb) {
     await Firebase.initializeApp(
       options: const FirebaseOptions(
@@ -27,9 +29,11 @@ void main() async {
         databaseURL:
             "https://gold-health-2246a-default-rtdb.asia-southeast1.firebasedatabase.app",
       ),
-    );
+    ).then((value) {
+      Get.put(AuthC());
+    });
   } else {
-    await Firebase.initializeApp();
+    StartService.instance.init();
   }
   runApp(const MyApp());
 }

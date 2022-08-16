@@ -18,7 +18,7 @@ class TextFieldWithIcon extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(
-        vertical: 10,
+        vertical: 5,
         horizontal: 10,
       ),
       decoration: BoxDecoration(

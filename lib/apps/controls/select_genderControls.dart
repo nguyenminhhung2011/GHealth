@@ -1,24 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/signUpControls.dart';
+
+import '../data/enums/app_enums.dart';
+import '../routes/routeName.dart';
 
 class SelectGenderC extends GetxController {
-  late TextEditingController emailC;
-  late TextEditingController passC;
-  late int select; // -1 female 0 none 1 male
-
+  late Rx<Gender> select = Gender.female.obs; // -1 female 0 none 1 male
+  final signUpC = Get.find<SignUpC>();
   @override
   void onInit() {
     super.onInit();
-    select = 0;
-    emailC = TextEditingController();
-    passC = TextEditingController();
   }
 
   @override
   void onClose() {
-    select = 0;
-    emailC.dispose();
-    passC.dispose();
+    select.value = Gender.female;
     super.onClose();
+  }
+
+  void nextBtnClick() {
+    if (select.value != null) {
+      signUpC.basicProfile!.value.gender = select.value;
+      print(select.value);
+      Get.toNamed(RouteName.getOld);
+    }
   }
 }
