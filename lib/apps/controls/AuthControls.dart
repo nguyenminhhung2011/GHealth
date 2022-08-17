@@ -11,6 +11,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../data/enums/app_enums.dart';
 import '../data/models/User.dart' as models;
+import '../routes/routeName.dart';
 
 class AuthC extends GetxController {
   static AuthC instance = Get.find();
@@ -28,9 +29,9 @@ class AuthC extends GetxController {
   _setIntialScreen(User? user) {
     //if user == null screen will go to Login screen else go to home screen
     if (user == null) {
-      Get.offAll(() => LogInScreen());
+      Get.toNamed(RouteName.logIn);
     } else {
-      Get.offAll(() => DashBoardScreen());
+      Get.toNamed(RouteName.dashboardScreen);
     }
   }
 

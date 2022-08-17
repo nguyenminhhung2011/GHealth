@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 
 import '../data/enums/app_enums.dart';
 import '../data/models/User.dart';
@@ -64,20 +65,29 @@ class SignUpC extends GetxController {
             Get.toNamed(RouteName.fillProfile);
           } else {
             //ignore: avoid_print
-            print('Repass is invalid');
+            Get.dialog(const ErrorDialog(
+              question: 'Error Create Account',
+              title1: 'RePass is invalid',
+            ));
           }
         } else {
-          // ignore: avoid_print
-          print('Your password is too short');
+          Get.dialog(const ErrorDialog(
+            question: 'Error Create Account',
+            title1: 'Your password is too short',
+          ));
         }
       } else {
-        // ignore: avoid_print
-        print('Email is not format');
+        Get.dialog(const ErrorDialog(
+          question: 'Error Create Account',
+          title1: 'Email is not format',
+        ));
         return;
       }
     } else {
-      //ignore: avoid_print
-      print('Field is not null');
+      Get.dialog(const ErrorDialog(
+        question: 'Error Create Account',
+        title1: 'Field is not null',
+      ));
       return;
     }
   }

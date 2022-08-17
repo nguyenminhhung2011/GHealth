@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/AuthControls.dart';
 import 'package:gold_health/apps/controls/signUpControls.dart';
-import 'package:gold_health/apps/global_widgets/yes_no_dialog.dart';
+import 'package:gold_health/apps/global_widgets/dialog/yes_no_dialog.dart';
+import 'package:gold_health/constains.dart';
 import 'package:intl/intl.dart';
 
 import '../data/enums/app_enums.dart';
@@ -27,7 +28,7 @@ class SelectDurationC extends GetxController {
       Get.dialog(
         YesNoDialog(
           press: () async {
-            String reseult = await AuthC().SignUp(
+            String result = await AuthC().SignUp(
               name: signUpC.basicProfile!.value.name,
               username: signUpC.basicProfile!.value.username,
               password: signUpC.basicProfile!.value.password,
@@ -40,7 +41,15 @@ class SelectDurationC extends GetxController {
               duration: signUpC.basicProfile!.value.duration,
               image: signUpC.image,
             );
-            print(reseult);
+            //ignore: avoid_print
+            print(result);
+            if (result == "Create account is success") {
+              await firebaseAuth.signInWithEmailAndPassword(
+                  email: signUpC.basicProfile!.value.username,
+                  password: signUpC.basicProfile!.value.password);
+
+              Get.find<AuthC>();
+            }
           },
           question: 'Confirm Information',
           title1:

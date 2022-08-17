@@ -2,7 +2,7 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../template/misc/colors.dart';
+import '../../template/misc/colors.dart';
 
 class YesNoDialog extends StatelessWidget {
   const YesNoDialog({
