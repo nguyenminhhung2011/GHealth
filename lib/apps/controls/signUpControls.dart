@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,6 +28,7 @@ class SignUpC extends GetxController {
       avtPath: '',
     ),
   );
+  late Uint8List image;
   @override
   void onInit() {
     super.onInit();

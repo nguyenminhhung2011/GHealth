@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gold_health/apps/controls/getOldController.dart';
 import '../../global_widgets/buttonMain.dart';
 import 'package:get/get.dart';
 import '../../routes/routeName.dart';
@@ -17,6 +18,8 @@ class _GetOldScreenState extends State<GetOldScreen> {
   DateTime timeTemp = DateTime.now();
 
   int age = 10;
+  final _getOldC = Get.find<GetOldC>();
+
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -94,7 +97,7 @@ class _GetOldScreenState extends State<GetOldScreen> {
                     child: CupertinoDatePicker(
                       mode: CupertinoDatePickerMode.date,
                       onDateTimeChanged: (value) {
-                        timeTemp = value;
+                        _getOldC.timePicker = value;
                       },
                       initialDateTime: DateTime.now(),
                     ),
@@ -106,10 +109,7 @@ class _GetOldScreenState extends State<GetOldScreen> {
               alignment: Alignment.bottomCenter,
               child: ButtonDesign(
                 title: 'Next',
-                press: () {
-                  //Variable 'age' use for get age
-                  Get.toNamed(RouteName.getWeight);
-                },
+                press: () => _getOldC.nextBtnClick(),
               ),
             ),
           ],

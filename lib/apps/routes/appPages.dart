@@ -1,6 +1,7 @@
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:gold_health/apps/binding/dailyNutrition_binding.dart';
 import 'package:gold_health/apps/binding/fillProfileBinding.dart';
+import 'package:gold_health/apps/binding/getOld_binding.dart';
 import 'package:gold_health/apps/binding/loginBinding.dart';
 import 'package:gold_health/apps/binding/select_durationBinding.dart';
 import 'package:gold_health/apps/binding/select_genderBinding.dart';
@@ -69,6 +70,7 @@ class AppPages {
     GetPage(
       name: RouteName.getOld,
       page: () => const GetOldScreen(),
+      binding: GetOldB(),
       transition: Transition.fade,
     ),
     GetPage(
