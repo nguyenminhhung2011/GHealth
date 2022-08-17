@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/signUpControls.dart';
 
@@ -9,9 +8,9 @@ class SelectGenderC extends GetxController {
   late Rx<Gender> select = Gender.female.obs; // -1 female 0 none 1 male
   final signUpC = Get.find<SignUpC>();
   @override
-  void onInit() {
-    super.onInit();
-  }
+  // void onInit() {
+  //   super.onInit();
+  // }
 
   @override
   void onClose() {
@@ -22,7 +21,6 @@ class SelectGenderC extends GetxController {
   void nextBtnClick() {
     if (select.value != null) {
       signUpC.basicProfile!.value.gender = select.value;
-      print(select.value);
       Get.toNamed(RouteName.getOld);
     }
   }

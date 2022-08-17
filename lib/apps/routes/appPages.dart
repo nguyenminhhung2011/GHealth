@@ -20,7 +20,6 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_s
 import 'package:gold_health/apps/routes/routeName.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
 import '../pages/dashboard/notification_screen.dart';
-// import '../binding/notification_binding.dart';
 
 import '../binding/dashboard_binding.dart';
 import '../binding/signUpBinding.dart';
@@ -60,7 +59,6 @@ class AppPages {
       name: RouteName.selectGender,
       page: () => SelectGenderScreen(),
       binding: SelectGenderB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.selectDuration,

@@ -16,6 +16,7 @@ class SplashC extends GetxController {
 
   Future<void> GotoNextScreen() async {
     if (AuthC.instance.user != null) {
+      Get.toNamed(RouteName.dashboardScreen);
     } else {
       Get.offAllNamed(RouteName.logIn);
     }

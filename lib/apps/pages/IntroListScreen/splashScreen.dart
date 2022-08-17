@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/pages/IntroListScreen/introScreen.dart';
-
 import '../../global_widgets/buttonMain.dart';
 import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
-import '../../pages/basic_info_screen/select_gender_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
