@@ -42,8 +42,8 @@ class User {
         'heightTarget': heightTarget,
         'weightTarget': weightTarget,
         'dateOfBirth': dateOfBirth,
-        'gender': gender,
-        'duration': duration,
+        'gender': listGenderString[gender],
+        'duration': listTimesString[duration],
         'avtPath': avtPath,
       };
 

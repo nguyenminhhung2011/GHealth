@@ -20,6 +20,8 @@ import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
+import '../binding/getHeight_binding.dart';
+import '../binding/getWeight_binding.dart';
 import '../pages/dashboard/notification_screen.dart';
 
 import '../binding/dashboard_binding.dart';
@@ -75,12 +77,14 @@ class AppPages {
     ),
     GetPage(
       name: RouteName.getWeight,
-      page: () => const GetWeightScreen(),
+      page: () => GetWeightScreen(),
+      binding: GetWeightB(),
       transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.getHeight,
-      page: () => const GetHeightScreen(),
+      page: () => GetHeightScreen(),
+      binding: GetHeightB(),
       transition: Transition.fade,
     ),
     GetPage(

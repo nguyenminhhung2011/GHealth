@@ -2,6 +2,8 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../template/misc/colors.dart';
+
 class YesNoDialog extends StatelessWidget {
   const YesNoDialog({
     Key? key,
@@ -44,7 +46,7 @@ class YesNoDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 30),
+              const SizedBox(height: 10),
               const Spacer(),
               Text(
                 question,
@@ -67,7 +69,7 @@ class YesNoDialog extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 50,
+                height: 70,
                 width: Get.mediaQuery.size.width * 0.7,
                 child: Text(
                   title2,
@@ -83,7 +85,9 @@ class YesNoDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: press,
+                      onPressed: () {
+                        Get.back();
+                      },
                       style: ElevatedButton.styleFrom(
                           primary: Colors.blueGrey[50],
                           shape: RoundedRectangleBorder(
@@ -92,7 +96,7 @@ class YesNoDialog extends StatelessWidget {
                           fixedSize: const Size(110, 50),
                           elevation: 0),
                       child: Text(
-                        'Yes',
+                        'No',
                         style: TextStyle(
                             color: Colors.blueGrey[600],
                             fontSize: 18,
@@ -100,11 +104,9 @@ class YesNoDialog extends StatelessWidget {
                       )),
                   const SizedBox(width: 15),
                   ElevatedButton(
-                      onPressed: () {
-                        Get.back();
-                      },
+                      onPressed: press,
                       style: ElevatedButton.styleFrom(
-                        primary: const Color.fromARGB(255, 92, 203, 107),
+                        primary: AppColors.primaryColor1,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)),
                         alignment: Alignment.center,
@@ -112,7 +114,7 @@ class YesNoDialog extends StatelessWidget {
                         elevation: 0,
                       ),
                       child: const Text(
-                        'No',
+                        'Yes',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,

@@ -58,9 +58,9 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
       // }
       // fillProC.signUpC.basicProfile!.value.avtPath = avtPath;
       fillProC.signUpC.image = _image!;
-      fillProC.signUpC.basicProfile!.value.username = fullName;
+      fillProC.signUpC.basicProfile!.value.name = fullName;
       //ignore: avoid_print
-      print('Oke');
+      print(fillProC.signUpC.basicProfile!.value.username);
       Get.toNamed(RouteName.selectGender);
     } else {
       // ignore: avoid_print

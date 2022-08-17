@@ -35,19 +35,6 @@ class AuthC extends GetxController {
   }
 
   // Dang ky tai khoan
-  Future<void> fieldProfile({
-    required String name,
-    required String username,
-    required String password,
-    required int height,
-    required int width,
-    required int heightTarget,
-    required int widthTarget,
-    required DateTime dateOfBirth,
-    required Gender gender,
-    required Times duration,
-    required Uint8List image,
-  }) async {}
   Future<String> SignUp({
     required String name,
     required String username,

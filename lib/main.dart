@@ -33,7 +33,9 @@ void main() async {
       Get.put(AuthC());
     });
   } else {
-    StartService.instance.init();
+    StartService.instance.init().then((value) {
+      Get.lazyPut<AuthC>(() => AuthC());
+    });
   }
   runApp(const MyApp());
 }

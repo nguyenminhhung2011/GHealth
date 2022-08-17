@@ -5,7 +5,7 @@ import 'package:gold_health/apps/controls/signUpControls.dart';
 import '../routes/routeName.dart';
 
 class GetOldC extends GetxController {
-  late DateTime timePicker;
+  late DateTime timePicker = DateTime.now();
   final signUpC = Get.find<SignUpC>();
   @override
   void OnInit() {
