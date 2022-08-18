@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
@@ -32,14 +29,24 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
-              children: [
-                _itemBuilderCircularIndicator(
-                    'assets/images/blood.png', '0h - 2h', 0.3),
-                _itemBuilderCircularIndicator(
-                    'assets/images/calories_icon_fasting.png', '250 kcal', 0.7),
-                _itemBuilderCircularIndicator(
-                    'assets/images/water-drop.png', '2.5 lit', 0.8),
-                _itemBuilderReel('assets/images/ask_question.png'),
+              children: const [
+                CustomItemCircularIndicator(
+                  imageAssets: 'assets/images/blood.png',
+                  title: '0h - 2h',
+                  percent: 0.3,
+                ),
+                CustomItemCircularIndicator(
+                  imageAssets: 'assets/images/calories_icon_fasting.png',
+                  title: '250 kcal',
+                  percent: 0.7,
+                ),
+                CustomItemCircularIndicator(
+                  imageAssets: 'assets/images/water-drop.png',
+                  title: '2.5 lit',
+                  percent: 0.8,
+                ),
+                CustomItemReelBuilder(
+                    reelAssets: 'assets/images/ask_question.png'),
               ],
             ),
           ),
@@ -305,16 +312,18 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Container(
-                      margin: const EdgeInsets.only(top: 6, right: 15),
-                      child:
-                          DotIndicator(color: Colors.blueGrey[600], size: 10)),
+                    margin: const EdgeInsets.only(top: 6, right: 15),
+                    child: DotIndicator(color: Colors.blueGrey[600], size: 10),
+                  ),
                   const Expanded(
-                    child: Text('Keep your mind off food.',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.blueGrey,
-                          fontWeight: FontWeight.w500,
-                        )),
+                    child: Text(
+                      'Keep your mind off food.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.blueGrey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
                   )
                 ],
               ),
@@ -381,8 +390,14 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
       ],
     );
   }
+}
 
-  _itemBuilderReel(String reelAssets) {
+class CustomItemReelBuilder extends StatelessWidget {
+  const CustomItemReelBuilder({Key? key, required this.reelAssets})
+      : super(key: key);
+  final String reelAssets;
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () {},
       borderRadius: BorderRadius.circular(20),
@@ -393,6 +408,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
             color: Colors.blue[50],
             borderRadius: BorderRadius.circular(20),
           ),
+          margin: const EdgeInsets.only(left: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -421,9 +437,20 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
           )),
     );
   }
+}
 
-  _itemBuilderCircularIndicator(
-      String imageAssets, String title, double percent) {
+class CustomItemCircularIndicator extends StatelessWidget {
+  const CustomItemCircularIndicator(
+      {Key? key,
+      required this.imageAssets,
+      required this.title,
+      required this.percent})
+      : super(key: key);
+  final String imageAssets;
+  final String title;
+  final double percent;
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: () {},
       borderRadius: BorderRadius.circular(20),

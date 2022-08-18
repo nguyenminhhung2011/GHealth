@@ -65,9 +65,9 @@ class DailyPlanController extends GetxController {
       case 3:
         return DailyWaterScreen();
       case 4:
-        return FastingPlanScreen();
+        return const FastingPlanScreen();
       case 5:
-        return SleepTrackerScreen();
+        return const SleepTrackerScreen();
       default:
         return MealPlannerScreen();
     }

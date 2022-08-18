@@ -28,7 +28,7 @@ class SelectDurationC extends GetxController {
       Get.dialog(
         YesNoDialog(
           press: () async {
-            String result = await AuthC().SignUp(
+            String result = await AuthC().signUp(
               name: signUpC.basicProfile!.value.name,
               username: signUpC.basicProfile!.value.username,
               password: signUpC.basicProfile!.value.password,

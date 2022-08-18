@@ -3,5 +3,6 @@
         "Cupertino",
         "Getx",
         "syncfusion"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "interactive"
 }
