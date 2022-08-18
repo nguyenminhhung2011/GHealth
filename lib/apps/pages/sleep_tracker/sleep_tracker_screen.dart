@@ -3,15 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/dailyPlanController/dailySleep_controller.dart';
-import 'package:gold_health/apps/global_widgets/ToggleButtonIos.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/daily_sleep_controller.dart';
+import 'package:gold_health/apps/global_widgets/toggle_button_ios.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/sleep_schedule_screen.dart';
 import 'package:intl/intl.dart';
 
 import '../../../main.dart';
-import '../../../services/notificationApi.dart';
-import '../../global_widgets/ButtonIconGradientColor.dart';
+import '../../../services/notification_api.dart';
+import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
 import '../dashboard/widgets/button_gradient.dart';
@@ -384,7 +384,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                   const SizedBox(height: 10),
                   Card(
                     elevation: 0,
-                    child: Container(
+                    child: SizedBox(
                       height: heightDevice * 0.3 + 80,
                       child: Column(
                         children: [
@@ -404,7 +404,6 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                 title: ' Week',
                                 icon: Icons.calendar_month,
                                 press: () {
-                                  print(1);
                                   // scheduleAlarm(DateTime.now(),
                                   //     isRepeating: true);
                                 },
