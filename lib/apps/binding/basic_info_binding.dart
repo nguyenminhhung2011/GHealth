@@ -12,11 +12,5 @@ class BasicInfoB implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut<BasicInfoC>(() => BasicInfoC());
-    Get.lazyPut<FillProfileC>(() => FillProfileC());
-    Get.lazyPut<GetHeightC>(() => GetHeightC());
-    Get.lazyPut<GetWeightC>(() => GetWeightC());
-    Get.lazyPut<SelectDurationC>(() => SelectDurationC());
-    Get.lazyPut<SelectGenderC>(() => SelectGenderC());
-    Get.lazyPut<GetOldC>(() => GetOldC());
   }
 }

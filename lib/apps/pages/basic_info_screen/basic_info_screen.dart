@@ -121,20 +121,25 @@ class BasicInfoScreen extends StatelessWidget {
       backgroundColor: AppColors.mainColor,
       body: ScreenTemplate(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Obx(
-              () => SizedBox(
-                height: heightDevice,
-                width: double.infinity,
-                child: PageView.builder(
-                  controller: basicInfC.pageController,
-                  onPageChanged: basicInfC.onPageChangeUpdate,
-                  itemBuilder: (contex, index) =>
-                      basicInfC.listPages.value[index],
-                  itemCount: basicInfC.listPages.value.length,
-                ),
-              ),
-            )),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child:
+              // Obx(
+              //   () => SizedBox(
+              //     height: heightDevice,
+              //     width: double.infinity,
+              //     child: PageView.builder(
+              //       controller: basicInfC.pageController,
+              //       onPageChanged: basicInfC.onPageChangeUpdate,
+              //       itemBuilder: (contex, index) =>
+              //           basicInfC.listPages.value[index],
+              //       itemCount: basicInfC.listPages.value.length,
+              //     ),
+              //   ),
+              // ),
+              Obx(
+            () => basicInfC.getCurrentTab(),
+          ),
+        ),
       ),
     );
   }

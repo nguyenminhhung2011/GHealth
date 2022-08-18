@@ -9,7 +9,7 @@ import '../../template/misc/colors.dart';
 
 class GetWeightScreen extends StatelessWidget {
   GetWeightScreen({Key? key}) : super(key: key);
-  final _getWeightC = Get.find<GetWeightC>();
+  final _getWeightC = Get.put(GetWeightC());
   @override
   // ignore: override_on_non_overriding_member
   Widget _buildItemList(BuildContext context, int index) {

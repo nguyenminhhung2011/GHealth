@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gold_health/apps/controls/auth_controller.dart';
 import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:gold_health/apps/global_widgets/gradient_icon..dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
@@ -335,7 +336,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ButtonSvgIcon(
                           title: 'Sign Out',
                           iconPath: 'assets/icons/Logout.svg',
-                          press: () {},
+                          press: () async {
+                            await AuthC().signOut();
+                          },
                         ),
                       ],
                     ),

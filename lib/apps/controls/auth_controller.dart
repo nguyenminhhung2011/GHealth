@@ -17,6 +17,7 @@ import '../routes/route_name.dart';
 class AuthC extends GetxController {
   static AuthC instance = Get.find();
   final _firStore = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
   late Rx<User?> _user;
   User get user => _user.value!;
   @override
@@ -88,6 +89,10 @@ class AuthC extends GetxController {
       print(err.toString());
       return err.toString();
     }
+  }
+
+  Future<void> signOut() async {
+    await firebaseAuth.signOut();
   }
 
   Future<UserCredential> signInWithGoogle() async {

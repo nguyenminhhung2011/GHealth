@@ -17,7 +17,7 @@ class _GetOldScreenState extends State<GetOldScreen> {
   DateTime timeTemp = DateTime.now();
 
   int age = 10;
-  final _getOldC = Get.find<GetOldC>();
+  final _getOldC = Get.put(GetOldC());
 
   @override
   Widget build(BuildContext context) {

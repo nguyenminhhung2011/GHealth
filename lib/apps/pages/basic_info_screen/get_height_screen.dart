@@ -9,7 +9,7 @@ import '../../template/misc/colors.dart';
 
 class GetHeightScreen extends StatelessWidget {
   GetHeightScreen({Key? key}) : super(key: key);
-  final _getHeightC = Get.find<GetHeightC>();
+  final _getHeightC = Get.put(GetHeightC());
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;

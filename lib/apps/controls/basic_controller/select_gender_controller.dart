@@ -4,11 +4,11 @@ import 'package:gold_health/apps/controls/sign_up_controller.dart';
 import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 
 import '../../data/enums/app_enums.dart';
-import '../../routes/route_name.dart';
+import 'basic_controller.dart';
 
-class SelectGenderC extends GetxController {
+class SelectGenderC extends GetxController with BasicController {
   late Rx<Gender> select = Gender.female.obs; // -1 female 0 none 1 male
-  final basicInfoC = Get.find<BasicInfoC>();
+  final signUpC = Get.find<SignUpC>();
   @override
   // void onInit() {
   //   super.onInit();
@@ -22,8 +22,8 @@ class SelectGenderC extends GetxController {
 
   void nextBtnClick() {
     if (select.value != null) {
-      basicInfoC.signUpC.basicProfile!.value.gender = select.value;
-      basicInfoC.pageChange(2);
+      signUpC.basicProfile!.value.gender = select.value;
+      changeTab(2);
     } else {
       Get.dialog(const ErrorDialog(
           question: 'Create Account', title1: 'Gender is not null'));

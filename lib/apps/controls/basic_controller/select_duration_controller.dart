@@ -11,7 +11,7 @@ import 'basic_info_controller.dart';
 
 class SelectDurationC extends GetxController {
   late Rx<Times> duration = Times.little.obs; // -1 female 0 none 1 male
-  final basicInfoC = Get.find<BasicInfoC>();
+  final signUpC = Get.find<SignUpC>();
   @override
   // void onInit() {
   //   super.onInit();
@@ -25,38 +25,38 @@ class SelectDurationC extends GetxController {
 
   void nextBtnClick() {
     if (duration.value != null) {
-      basicInfoC.signUpC.basicProfile!.value.duration = duration.value;
+      signUpC.basicProfile!.value.duration = duration.value;
       Get.dialog(
         YesNoDialog(
           press: () async {
             String result = await AuthC().signUp(
-              name: basicInfoC.signUpC.basicProfile!.value.name,
-              username: basicInfoC.signUpC.basicProfile!.value.username,
-              password: basicInfoC.signUpC.basicProfile!.value.password,
-              height: basicInfoC.signUpC.basicProfile!.value.height,
-              weight: basicInfoC.signUpC.basicProfile!.value.weight,
+              name: signUpC.basicProfile!.value.name,
+              username: signUpC.basicProfile!.value.username,
+              password: signUpC.basicProfile!.value.password,
+              height: signUpC.basicProfile!.value.height,
+              weight: signUpC.basicProfile!.value.weight,
               heightTarget: 22,
               weightTarget: 33,
-              dateOfBirth: basicInfoC.signUpC.basicProfile!.value.dateOfBirth,
-              gender: basicInfoC.signUpC.basicProfile!.value.gender,
-              duration: basicInfoC.signUpC.basicProfile!.value.duration,
-              image: basicInfoC.signUpC.image,
+              dateOfBirth: signUpC.basicProfile!.value.dateOfBirth,
+              gender: signUpC.basicProfile!.value.gender,
+              duration: signUpC.basicProfile!.value.duration,
+              image: signUpC.image,
             );
             //ignore: avoid_print
             print(result);
             if (result == "Create account is success") {
               await firebaseAuth.signInWithEmailAndPassword(
-                  email: basicInfoC.signUpC.basicProfile!.value.username,
-                  password: basicInfoC.signUpC.basicProfile!.value.password);
+                  email: signUpC.basicProfile!.value.username,
+                  password: signUpC.basicProfile!.value.password);
 
               Get.find<AuthC>();
             }
           },
           question: 'Confirm Information',
           title1:
-              'Name: ${basicInfoC.signUpC.basicProfile!.value.name}\nDate of birth: ${DateFormat.yMd().format(basicInfoC.signUpC.basicProfile!.value.dateOfBirth)} \n',
+              'Name: ${signUpC.basicProfile!.value.name}\nDate of birth: ${DateFormat.yMd().format(signUpC.basicProfile!.value.dateOfBirth)} \n',
           title2:
-              'Current Height: ${basicInfoC.signUpC.basicProfile!.value.height}\nCurrent Weight: ${basicInfoC.signUpC.basicProfile!.value.weight}\nDuration: ${listTimesString[basicInfoC.signUpC.basicProfile!.value.duration]}',
+              'Current Height: ${signUpC.basicProfile!.value.height}\nCurrent Weight: ${signUpC.basicProfile!.value.weight}\nDuration: ${listTimesString[signUpC.basicProfile!.value.duration]}',
         ),
       );
     }
