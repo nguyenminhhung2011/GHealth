@@ -4,13 +4,13 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/pages/list_plan_screen/dailyPlan_screen.dart';
-import '../../controls/dashboard_control.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/daily_plan_screen.dart';
+import '../../controls/dashboard_controller.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/home_screen.dart';
 import '../progress_tracker/progress_photo_screen.dart';
 import 'activity_trackerScreen.dart';
-import './profileScreen.dart';
+import 'profile_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);

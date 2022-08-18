@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/select_genderControls.dart';
+import 'package:gold_health/apps/controls/select_gender_controller.dart';
 
 import '../../data/enums/app_enums.dart';
-import '../../global_widgets/buttonMain.dart';
-import '../../routes/routeName.dart';
+import '../../global_widgets/button_custom/button_main.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 class SelectGenderScreen extends StatelessWidget {

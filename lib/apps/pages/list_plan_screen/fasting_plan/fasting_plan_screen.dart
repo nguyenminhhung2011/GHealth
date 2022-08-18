@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/fasting_plan/fasting_countdown_screen.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/fasting_plan/get_ready_screen.dart';
 

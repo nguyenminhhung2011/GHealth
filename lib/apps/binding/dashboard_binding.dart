@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/dailyPlanController/DailyPlanControls.dart';
-import 'package:gold_health/apps/controls/dailyPlanController/dailyNutritionController.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/daily_plan_controller.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/daily_nutrition_controller.dart';
 
-import '../controls/home_screen_control.dart';
-import '../controls/dashboard_control.dart';
+import '../controls/home_screen_controller.dart';
+import '../controls/dashboard_controller.dart';
 
 class DashBoardBinding implements Bindings {
   @override

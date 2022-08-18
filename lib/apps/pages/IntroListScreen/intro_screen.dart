@@ -131,6 +131,7 @@ class _IntroScreenState extends State<IntroScreen> {
                           height: 20,
                           child: Text(
                             'Skip',
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.w700,

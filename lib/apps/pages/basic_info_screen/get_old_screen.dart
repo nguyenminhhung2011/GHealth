@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gold_health/apps/controls/getOldController.dart';
-import '../../global_widgets/buttonMain.dart';
+import 'package:gold_health/apps/controls/get_old_controller.dart';
+import '../../global_widgets/button_custom/button_main.dart';
 import 'package:get/get.dart';
-import '../../routes/routeName.dart';
 import '../../template/misc/colors.dart';
 
 class GetOldScreen extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:intl/intl.dart';
 import 'package:timelines/timelines.dart';
 

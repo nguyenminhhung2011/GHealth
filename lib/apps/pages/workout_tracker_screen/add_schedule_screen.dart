@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-import '../../global_widgets/screenTemplate.dart';
+import '../../global_widgets/screen_template.dart';
 import '../dashboard/widgets/button_gradient.dart';
 import './onClick_schedule.dart' show Meeting;
 
