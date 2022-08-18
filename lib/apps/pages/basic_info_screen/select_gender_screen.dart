@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/select_gender_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/select_gender_controller.dart';
 
 import '../../data/enums/app_enums.dart';
 import '../../global_widgets/button_custom/button_main.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gold_health/apps/controls/get_old_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/get_old_controller.dart';
 import '../../global_widgets/button_custom/button_main.dart';
 import 'package:get/get.dart';
 import '../../template/misc/colors.dart';

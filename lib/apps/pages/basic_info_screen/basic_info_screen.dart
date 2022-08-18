@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/basic_info_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/basic_info_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_height_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_old_screen.dart';

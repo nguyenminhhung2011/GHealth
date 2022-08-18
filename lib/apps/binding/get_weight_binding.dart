@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/get_old_controller.dart';
-import 'package:gold_health/apps/controls/get_weight_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/get_old_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/get_weight_controller.dart';
 
-import '../controls/fill_profile_controller.dart';
+import '../controls/basic_controller/fill_profile_controller.dart';
 
 class GetWeightB implements Bindings {
   @override
