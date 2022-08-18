@@ -5,12 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
-import 'package:gold_health/apps/controls/AuthControls.dart';
-import 'package:gold_health/apps/pages/IntroListScreen/splashScreen.dart';
-import 'package:gold_health/apps/routes/appPages.dart';
-import 'package:gold_health/services/startServices.dart';
+import 'package:gold_health/apps/controls/auth_controller.dart';
+import 'package:gold_health/apps/pages/IntroListScreen/splash_screen.dart';
+import 'package:gold_health/apps/routes/app_pages.dart';
+import 'package:gold_health/services/start_services.dart';
 
-import 'apps/routes/routeName.dart';
+import 'apps/routes/route_name.dart';
 import 'apps/template/misc/colors.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 
-import 'dailyPlanController/DailyPlanControls.dart';
+import 'dailyPlanController/daily_plan_controller.dart';
 
 class MealPlanController extends GetxController with TrackerController {
   TextEditingController text = TextEditingController();

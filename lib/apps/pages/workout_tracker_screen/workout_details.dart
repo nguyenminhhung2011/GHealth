@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gold_health/apps/data/fakeData.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/listWorkoutScreen.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/ExerciseCard.dart';
+import 'package:gold_health/apps/data/fake_data.dart';
+import 'package:gold_health/apps/global_widgets/toggle_button_ios.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/list_workout_screen.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories_workout_card.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/up_coming_workout_containerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_workout_screen.dart';
 
+import '../../global_widgets/gradient_text.dart';
+import '../../global_widgets/row_text_see_more.dart';
 import '../../template/misc/colors.dart';
 
 class WorkoutDetailScreen extends StatelessWidget {
@@ -12,8 +17,8 @@ class WorkoutDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _heightDevice = MediaQuery.of(context).size.height;
-    var _widthDevice = MediaQuery.of(context).size.width;
+    var heightDevice = MediaQuery.of(context).size.height;
+    var widthDevice = MediaQuery.of(context).size.width;
     bool val = true;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
@@ -22,8 +27,8 @@ class WorkoutDetailScreen extends StatelessWidget {
       body: Stack(
         children: [
           Container(
-            width: _widthDevice,
-            height: _heightDevice,
+            width: widthDevice,
+            height: heightDevice,
             decoration: const BoxDecoration(
               color: AppColors.primaryColor1,
             ),
@@ -36,8 +41,8 @@ class WorkoutDetailScreen extends StatelessWidget {
                   right: 20,
                 ),
                 child: Image.asset(
-                  height: _widthDevice / 1.7,
-                  width: _widthDevice / 1.7,
+                  height: widthDevice / 1.7,
+                  width: widthDevice / 1.7,
                   'assets/images/yoga.png',
                 ),
               ),
@@ -57,12 +62,12 @@ class WorkoutDetailScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       SizedBox(
-                        height: _heightDevice * 0.35,
-                        width: _widthDevice,
+                        height: heightDevice * 0.35,
+                        width: widthDevice,
                       ),
                       ConstrainedBox(
                         constraints:
-                            BoxConstraints(minHeight: _heightDevice * 0.86),
+                            BoxConstraints(minHeight: heightDevice * 0.86),
                         child: Container(
                           width: double.maxFinite,
                           padding: const EdgeInsets.symmetric(
@@ -250,19 +255,19 @@ class WorkoutDetailScreen extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       ToolsCard(
-                                        widthDevice: _widthDevice,
+                                        widthDevice: widthDevice,
                                         imagePath:
                                             'assets/images/jump-rope.png',
                                         title: 'Jump Rope',
                                       ),
                                       ToolsCard(
-                                        widthDevice: _widthDevice,
+                                        widthDevice: widthDevice,
                                         imagePath:
                                             'assets/images/plastic-bottle.png',
                                         title: 'Plastic Bottle',
                                       ),
                                       ToolsCard(
-                                        widthDevice: _widthDevice,
+                                        widthDevice: widthDevice,
                                         imagePath: 'assets/images/barbel.png',
                                         title: 'Barbel',
                                       ),
@@ -304,7 +309,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                 Column(
                                   children: FakeData.list_set.map((e) {
                                     return ExerciseCard(
-                                      widthDevice: _widthDevice,
+                                      widthDevice: widthDevice,
                                       e: e,
                                     );
                                   }).toList(),
@@ -336,7 +341,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                 },
                 child: Container(
                   alignment: Alignment.center,
-                  width: _widthDevice * 0.6,
+                  width: widthDevice * 0.6,
                   padding: const EdgeInsets.symmetric(vertical: 15),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),

@@ -1,22 +1,17 @@
-import 'dart:ui';
-
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_plan_controller.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/CategoriesWorkoutCard.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/UpComingWorkoutContainerd.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories_workout_card.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/up_coming_workout_containerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
 
-import '../../global_widgets/ButtonIconGradientColor.dart';
-import '../../global_widgets/RowText_Seemore.dart';
-import '../../global_widgets/list_chart/lineChart1Line.dart';
-import '../../global_widgets/list_chart/linrChart2Line.dart';
-import '../../routes/routeName.dart';
+import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
+import '../../global_widgets/row_text_see_more.dart';
+import '../../global_widgets/list_chart/line_chart2_line.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
-import '../dashboard/activity_trackerScreen.dart';
 import '../dashboard/widgets/button_gradient.dart';
 
 class WorkoutTrackerScreen extends StatelessWidget {
@@ -24,7 +19,7 @@ class WorkoutTrackerScreen extends StatelessWidget {
   final controller = Get.put(WorkoutPlanController());
   @override
   Widget build(BuildContext context) {
-    var heightDevice = MediaQuery.of(context).size.height;
+    // var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     List<String> tabs = [
       'Nutrition',

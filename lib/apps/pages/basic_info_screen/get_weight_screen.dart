@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gold_health/apps/controls/getWeight_controller.dart';
+import 'package:gold_health/apps/controls/get_weight_controller.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
-import '../../global_widgets/boxData.dart';
-import '../../global_widgets/buttonMain.dart';
+import '../../global_widgets/box_data.dart';
+import '../../global_widgets/button_custom/button_main.dart';
 import 'package:get/get.dart';
-import '../../routes/routeName.dart';
 
 import '../../template/misc/colors.dart';
 
@@ -12,8 +11,9 @@ class GetWeightScreen extends StatelessWidget {
   GetWeightScreen({Key? key}) : super(key: key);
   final _getWeightC = Get.find<GetWeightC>();
   @override
+  // ignore: override_on_non_overriding_member
   Widget _buildItemList(BuildContext context, int index) {
-    return Container(
+    return SizedBox(
       width: 150,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,

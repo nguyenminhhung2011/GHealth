@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/dailyPlanController/DailyPlanControls.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/daily_plan_controller.dart';
 
 abstract class TrackerController {
   final _parentController = Get.find<DailyPlanController>();

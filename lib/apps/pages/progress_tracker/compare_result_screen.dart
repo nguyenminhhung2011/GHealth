@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
-import '../../global_widgets/list_chart/lineChart1Line.dart';
-import '../../global_widgets/list_chart/linrChart2Line.dart';
-import '../../global_widgets/screenTemplate.dart';
+import '../../global_widgets/list_chart/line_chart1_line.dart';
+import '../../global_widgets/list_chart/line_chart2_line.dart';
+import '../../global_widgets/screen_template.dart';
 import '../../template/misc/colors.dart';
 
 class CompareResultScreen extends StatefulWidget {

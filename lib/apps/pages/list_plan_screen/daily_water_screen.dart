@@ -1,15 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/dailyPlanController/dailyWaterController.dart';
-import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
-import 'package:gold_health/apps/pages/list_plan_screen/widgets/WaterConsumeCard.dart';
-import 'package:gold_health/apps/pages/list_plan_screen/widgets/showDialogEditWater.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/daily_waterController.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/widgets/water_consume_card.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/widgets/show_dialog_edit_water.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 
-import '../../global_widgets/ButtonIconGradientColor.dart';
-import '../../global_widgets/list_chart/ColumnChart2Column.dart';
-import '../../global_widgets/screenTemplate.dart';
+import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
+import '../../global_widgets/list_chart/colum_chart2_colum.dart';
+import '../../global_widgets/screen_template.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/activity_trackerScreen.dart';
 

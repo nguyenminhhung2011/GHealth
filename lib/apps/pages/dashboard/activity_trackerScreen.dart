@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:gold_health/apps/global_widgets/GradientText.dart';
-import 'package:gold_health/apps/global_widgets/lineChartWidget.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
-import 'package:gold_health/apps/pages/dashboard/latestActi_screen.dart';
-import 'package:gold_health/apps/pages/dashboard/profileScreen.dart';
+import 'package:gold_health/apps/global_widgets/gradient_text.dart';
+import 'package:gold_health/apps/global_widgets/list_chart/line_chart_weight.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
+import 'package:gold_health/apps/pages/dashboard/latest_acti_screen.dart';
+import 'package:gold_health/apps/pages/dashboard/profile_screen.dart';
 
-import '../../global_widgets/ButtonIconGradientColor.dart';
-import '../../global_widgets/actiCard.dart';
-import '../../global_widgets/list_chart/ColumnChart2Column.dart';
-import '../../global_widgets/list_chart/LineHeartChart.dart';
-import '../../global_widgets/list_chart/columnChart1Column.dart';
+import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
+import '../../global_widgets/acti_card.dart';
+import '../../global_widgets/list_chart/colum_chart2_colum.dart';
+import '../../global_widgets/list_chart/line_heart_chart.dart';
+import '../../global_widgets/list_chart/colum_chart1_colum.dart';
 import '../../template/misc/colors.dart';
 
 import 'package:gold_health/apps/data/sleep_tracker_data.dart';
@@ -42,7 +42,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProfileScreen(),
+                    builder: (context) => const ProfileScreen(),
                   ),
                 );
               },
@@ -181,7 +181,7 @@ class ActivityTrackerScreen extends StatelessWidget {
               ),
               BoxShadow(
                 color: Colors.black.withOpacity(0.05),
-                offset: Offset(-2, -3),
+                offset: const Offset(-2, -3),
                 blurRadius: 20,
               )
             ],
@@ -228,6 +228,7 @@ class ActivityTrackerScreen extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Column _FootStepsViewWeekField(BuildContext context) {
     return Column(
       children: [
@@ -240,7 +241,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                     fontSize: 17,
                   ),
             ),
-            Spacer(),
+            const Spacer(),
             ButtonIconGradientColor(
               title: 'Select Week',
               icon: Icons.calendar_month,
@@ -264,6 +265,7 @@ class ActivityTrackerScreen extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Column _WaterConsumedViewWeekField(
       BuildContext context, double heightDevice) {
     return Column(
@@ -277,7 +279,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                     fontSize: 17,
                   ),
             ),
-            Spacer(),
+            const Spacer(),
             ButtonIconGradientColor(
               title: 'Select Week',
               icon: Icons.calendar_month,
@@ -307,7 +309,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                     fontSize: 17,
                   ),
             ),
-            Spacer(),
+            const Spacer(),
             ButtonIconGradientColor(
               title: 'Select Week',
               icon: Icons.calendar_month,
@@ -331,6 +333,7 @@ class ActivityTrackerScreen extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   Column _AcitvityProgreenViewWeekField(BuildContext context) {
     return Column(
       children: [
@@ -342,7 +345,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                     fontSize: 17,
                   ),
             ),
-            Spacer(),
+            const Spacer(),
             ButtonIconGradientColor(
               title: 'Select Week',
               icon: Icons.calendar_month,
@@ -366,6 +369,7 @@ class ActivityTrackerScreen extends StatelessWidget {
     );
   }
 
+  // ignore: non_constant_identifier_names
   SizedBox _HeartRateViewWeekField(double heightDevice) {
     return SizedBox(
       height: heightDevice * 0.4,

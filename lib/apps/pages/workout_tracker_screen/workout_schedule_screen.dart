@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:readmore/readmore.dart';
 import 'package:video_player/video_player.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import '../../global_widgets/GradientText.dart';
+import '../../global_widgets/gradient_text.dart';
 import '../../template/misc/colors.dart';
 import 'onClick_schedule.dart';
 

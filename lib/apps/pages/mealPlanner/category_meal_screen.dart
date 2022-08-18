@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gold_health/apps/global_widgets/ButtonText.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
-import 'package:gold_health/apps/pages/mealPlanner/widgets/CategoryMealCard.dart';
-import 'package:gold_health/apps/pages/mealPlanner/widgets/FoodViewCard.dart';
-import 'package:gold_health/apps/pages/mealPlanner/widgets/PopularFoodCard.dart';
-import 'package:gold_health/apps/pages/mealPlanner/widgets/SearchContainer.dart';
+import 'package:gold_health/apps/global_widgets/button_custom/button_text.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
+import 'package:gold_health/apps/pages/mealPlanner/widgets/category_meal_card.dart';
+import 'package:gold_health/apps/pages/mealPlanner/widgets/food_view_card.dart';
+import 'package:gold_health/apps/pages/mealPlanner/widgets/popular_food_card.dart';
+import 'package:gold_health/apps/pages/mealPlanner/widgets/search_container.dart';
 
 import '../../template/misc/colors.dart';
-import 'mealPlannerScreen.dart';
+import 'meal_planner_screen.dart';
 import 'meal_detail_screen.dart';
 
 class CategoryMealScreen extends StatelessWidget {
@@ -18,21 +18,21 @@ class CategoryMealScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _heightDevice = MediaQuery.of(context).size.height;
-    var _widthDevice = MediaQuery.of(context).size.width;
+    // var heightDevice = MediaQuery.of(context).size.height;
+    var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: ScreenTemplate(
         child: Column(
           children: [
             const Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
               child: AppBarDesign(title: 'Beakfast'),
             ),
             const SizedBox(height: 40),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: SearchContainer(widthDevice: _widthDevice),
+              child: SearchContainer(widthDevice: widthDevice),
             ),
             const SizedBox(height: 30),
             Padding(
@@ -149,7 +149,7 @@ class CategoryMealScreen extends StatelessWidget {
               child: Column(
                 children: [
                   PopularFoodCard(
-                    widthDevice: _widthDevice,
+                    widthDevice: widthDevice,
                     title: 'Blubery Pancake',
                     time: 30,
                     imagePath: 'assets/images/lunch.png',

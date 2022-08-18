@@ -15,7 +15,7 @@ class BarChartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       child: Stack(
         children: [
           Container(
@@ -28,7 +28,7 @@ class BarChartItem extends StatelessWidget {
           ),
           Column(
             children: [
-              Spacer(),
+              const Spacer(),
               Container(
                 width: 30,
                 height: seconData / firstData * heightOfBar,

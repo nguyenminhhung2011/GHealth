@@ -3,15 +3,15 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/pages/mealPlanner/widgets/FoodScheduleCard.dart';
-import 'package:gold_health/apps/pages/mealPlanner/widgets/MealNutritionCard.dart';
+import 'package:gold_health/apps/pages/mealPlanner/widgets/food_schedule_card.dart';
+import 'package:gold_health/apps/pages/mealPlanner/widgets/meal_nutrition_card.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
-import '../../global_widgets/screenTemplate.dart';
+import '../../global_widgets/screen_template.dart';
 import '../../template/misc/colors.dart';
-import 'mealPlannerScreen.dart';
+import 'meal_planner_screen.dart';
 
 class MealScheduleScreen extends StatefulWidget {
   const MealScheduleScreen({Key? key}) : super(key: key);

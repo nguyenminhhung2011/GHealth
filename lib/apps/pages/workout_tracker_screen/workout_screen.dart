@@ -3,8 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_plan_controller.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
-import 'package:gold_health/apps/pages/list_plan_screen/selectAmountFood.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
+import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/time_custom.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -20,7 +20,6 @@ class WorkoutScreen extends StatefulWidget {
 class _WorkoutScreenState extends State<WorkoutScreen> {
   final _controller = Get.find<WorkoutPlanController>();
   late YoutubePlayerController _videoController;
-  Future<void>? _initializeVideoPlayerFuture;
   @override
   void initState() {
     super.initState();
@@ -34,6 +33,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
     );
   }
 
+  @override
   void dispose() {
     _videoController.dispose();
     super.dispose();
@@ -42,11 +42,10 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
-    double _sigmaX = 5.0; // from 0-10
-    double _sigmaY = 5.0; // from 0-10
-    double _opacity = 0.1; // from 0-1.0
+    double sigmaX = 5.0; // from 0-10
+    double sigmaY = 5.0; // from 0-10
+    double opacity = 0.1; // from 0-1.0
 
-    bool val = true;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       extendBody: true,
@@ -109,7 +108,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                         )),
                   ),
                   const SizedBox(width: 5),
-                  Icon(Icons.check_circle, color: AppColors.primaryColor1)
+                  const Icon(Icons.check_circle, color: AppColors.primaryColor1)
                 ],
               ),
               const SizedBox(height: 10),
@@ -154,9 +153,9 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                               child: ClipRect(
                                 child: BackdropFilter(
                                   filter: ImageFilter.blur(
-                                      sigmaX: _sigmaX, sigmaY: _sigmaY),
+                                      sigmaX: sigmaX, sigmaY: sigmaY),
                                   child: Container(
-                                    color: Colors.black.withOpacity(_opacity),
+                                    color: Colors.black.withOpacity(opacity),
                                     child: Center(
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(

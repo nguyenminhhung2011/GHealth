@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:gold_health/apps/global_widgets/GradientText.dart';
+import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../template/misc/colors.dart';
@@ -404,7 +404,7 @@ class MealDetailScreen extends StatelessWidget {
                                                   ],
                                                 ),
                                                 const SizedBox(width: 20),
-                                                Container(
+                                                SizedBox(
                                                   width: widthDevice - 115,
                                                   child: Column(
                                                     crossAxisAlignment:
@@ -413,14 +413,14 @@ class MealDetailScreen extends StatelessWidget {
                                                     children: [
                                                       Text(
                                                         'Step ${e['step']}',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 18,
                                                         ),
                                                       ),
                                                       Text(
                                                         '${e['s']}',
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           color: Colors.grey,
                                                         ),
                                                       )
@@ -470,7 +470,7 @@ class MealDetailScreen extends StatelessWidget {
                       ),
                       BoxShadow(
                         color: Colors.black.withOpacity(0.05),
-                        offset: Offset(-2, -3),
+                        offset: const Offset(-2, -3),
                         blurRadius: 2,
                       )
                     ],

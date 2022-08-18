@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/global_widgets/screenTemplate.dart';
+import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/button_gradient.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/add_alarm_screen.dart';
 import 'package:intl/intl.dart';

@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:gold_health/apps/pages/mealPlanner/mealPlannerScreen.dart';
+import 'package:gold_health/apps/pages/mealPlanner/meal_planner_screen.dart';
 import 'package:intl/intl.dart';
 
-import '../../global_widgets/screenTemplate.dart';
+import '../../global_widgets/screen_template.dart';
 import '../../template/misc/colors.dart';
 import 'compare_result_screen.dart';
 

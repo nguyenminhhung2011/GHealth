@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/global_widgets/ButtonText.dart';
+import 'package:gold_health/apps/global_widgets/button_custom/button_text.dart';
 import 'package:gold_health/apps/pages/progress_tracker/take_photo_screen.dart';
-import '../../global_widgets/screenTemplate.dart';
+import '../../global_widgets/screen_template.dart';
 import '../../template/misc/colors.dart';
 import 'comparision_sreen.dart';
 

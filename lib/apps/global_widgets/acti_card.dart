@@ -36,7 +36,7 @@ class ActiCard extends StatelessWidget {
             ),
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
-              offset: Offset(-2, -3),
+              offset: const Offset(-2, -3),
               blurRadius: 20,
             )
           ],
