@@ -13,6 +13,7 @@ import 'package:gold_health/apps/pages/IntroListScreen/intro_screen.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splash_screen.dart';
 import 'package:gold_health/apps/pages/LogInScreen/login_screen.dart';
 import 'package:gold_health/apps/pages/LogInScreen/sign_up_screen.dart';
+import 'package:gold_health/apps/pages/basic_info_screen/basic_info_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/dashboard_screen.dart';
@@ -20,6 +21,7 @@ import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
+import '../binding/basic_info_binding.dart';
 import '../binding/get_height_binding.dart';
 import '../binding/get_weight_binding.dart';
 import '../pages/dashboard/notification_screen.dart';
@@ -59,6 +61,12 @@ class AppPages {
       transition: Transition.fade,
     ),
     GetPage(
+      name: RouteName.basicInfoScreen,
+      page: () => BasicInfoScreen(),
+      binding: BasicInfoB(),
+      transition: Transition.fade,
+    ),
+    GetPage(
       name: RouteName.selectGender,
       page: () => SelectGenderScreen(),
       binding: SelectGenderB(),
@@ -66,31 +74,31 @@ class AppPages {
     GetPage(
       name: RouteName.selectDuration,
       page: () => SelectDurationScreen(),
-      binding: SelectDurationB(),
+      //binding: SelectDurationB(),
       transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.getOld,
       page: () => const GetOldScreen(),
-      binding: GetOldB(),
+      //binding: GetOldB(),
       transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.getWeight,
       page: () => GetWeightScreen(),
-      binding: GetWeightB(),
+      // binding: GetWeightB(),
       transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.getHeight,
       page: () => GetHeightScreen(),
-      binding: GetHeightB(),
+//binding: GetHeightB(),
       transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.fillProfile,
       page: () => const FillProfileScreen(),
-      binding: FillProfileB(),
+      // binding: FillProfileB(),
       transition: Transition.fade,
     ),
     GetPage(

@@ -85,7 +85,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   const Spacer(),
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: widthDevice / 3),
-                    child: Container(
+                    child: SizedBox(
                       height: 10,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,

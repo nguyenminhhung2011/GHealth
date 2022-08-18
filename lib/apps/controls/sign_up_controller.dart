@@ -62,7 +62,7 @@ class SignUpC extends GetxController {
             basicProfile!.value.password = passC.text;
             // ignore: avoid_print
             print('success');
-            Get.toNamed(RouteName.fillProfile);
+            Get.toNamed(RouteName.basicInfoScreen);
           } else {
             //ignore: avoid_print
             Get.dialog(const ErrorDialog(
