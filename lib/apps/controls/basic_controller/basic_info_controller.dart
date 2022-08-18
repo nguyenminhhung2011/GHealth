@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/fill_profile_controller.dart';
-import 'package:gold_health/apps/controls/select_duration_controller.dart';
-import 'package:gold_health/apps/controls/select_gender_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/fill_profile_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/select_duration_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/select_gender_controller.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/fill_profile.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_height_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_old_screen.dart';
@@ -13,7 +13,7 @@ import 'package:gold_health/apps/pages/basic_info_screen/select_gender_screen.da
 import 'get_height_controller.dart';
 import 'get_old_controller.dart';
 import 'get_weight_controller.dart';
-import 'sign_up_controller.dart';
+import '../sign_up_controller.dart';
 
 class BasicInfoC extends GetxController {
   // final fillProfileC = Get.find<FillProfileC>();

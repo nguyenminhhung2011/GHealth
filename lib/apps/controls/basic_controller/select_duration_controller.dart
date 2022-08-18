@@ -6,7 +6,7 @@ import 'package:gold_health/apps/global_widgets/dialog/yes_no_dialog.dart';
 import 'package:gold_health/constains.dart';
 import 'package:intl/intl.dart';
 
-import '../data/enums/app_enums.dart';
+import '../../data/enums/app_enums.dart';
 import 'basic_info_controller.dart';
 
 class SelectDurationC extends GetxController {

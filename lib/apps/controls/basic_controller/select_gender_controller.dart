@@ -1,10 +1,10 @@
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/basic_info_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/basic_info_controller.dart';
 import 'package:gold_health/apps/controls/sign_up_controller.dart';
 import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 
-import '../data/enums/app_enums.dart';
-import '../routes/route_name.dart';
+import '../../data/enums/app_enums.dart';
+import '../../routes/route_name.dart';
 
 class SelectGenderC extends GetxController {
   late Rx<Gender> select = Gender.female.obs; // -1 female 0 none 1 male
