@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import '../../../constains.dart';
 import '../../data/enums/app_enums.dart';
 import '../../global_widgets/dialog/yes_no_dialog.dart';
+import '../../template/misc/colors.dart';
 import '../auth_controller.dart';
 import 'basic_controller.dart';
 
@@ -19,7 +20,6 @@ class GetWeightTargetC extends GetxController with BasicController {
 
   void nextBtnClick() {
     signUpC.basicProfile!.value.weightTarget = weight.value;
-    print(signUpC.basicProfile!.value.weight);
     Get.dialog(
       YesNoDialog(
         press: () async {
@@ -42,7 +42,11 @@ class GetWeightTargetC extends GetxController with BasicController {
             await firebaseAuth.signInWithEmailAndPassword(
                 email: signUpC.basicProfile!.value.username,
                 password: signUpC.basicProfile!.value.password);
-
+            Get.snackbar(
+              'Create Account',
+              'Success',
+              backgroundColor: AppColors.primaryColor1,
+            );
             Get.find<AuthC>();
           }
         },

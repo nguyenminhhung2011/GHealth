@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gold_health/apps/controls/basic_controller/get_weight_controller.dart';
 import 'package:gold_health/apps/controls/basic_controller/get_weight_target_controller.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import '../../global_widgets/box_data.dart';

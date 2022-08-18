@@ -72,7 +72,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
     var widthDevice = MediaQuery.of(context).size.width;
 
     return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 120),
+      padding: const EdgeInsets.only(bottom: 120),
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
@@ -162,17 +162,11 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                         )
                       ],
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 80),
                     TextFieldWithIcon(
                       hintText: 'Full Name',
                       controller: fillProC.fullName,
                       icon: Icons.account_circle_rounded,
-                    ),
-                    const SizedBox(height: 20),
-                    TextFieldWithIcon(
-                      hintText: 'Nick Name',
-                      controller: fillProC.nickName,
-                      icon: Icons.account_box_outlined,
                     ),
                     const SizedBox(height: 20),
                     Row(
