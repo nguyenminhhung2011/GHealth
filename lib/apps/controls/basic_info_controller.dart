@@ -13,14 +13,17 @@ import 'package:gold_health/apps/pages/basic_info_screen/select_gender_screen.da
 import 'get_height_controller.dart';
 import 'get_old_controller.dart';
 import 'get_weight_controller.dart';
+import 'sign_up_controller.dart';
 
 class BasicInfoC extends GetxController {
-  final fillProfileC = Get.find<FillProfileC>();
-  final getHeightC = Get.find<GetHeightC>();
-  final getWeightC = Get.find<GetWeightC>();
-  final selectDurationC = Get.find<SelectDurationC>();
-  final selectGenderC = Get.find<SelectGenderC>();
-  final getOldC = Get.find<GetOldC>();
+  // final fillProfileC = Get.find<FillProfileC>();
+  // final getHeightC = Get.find<GetHeightC>();
+  // final getWeightC = Get.find<GetWeightC>();
+  // final selectDurationC = Get.find<SelectDurationC>();
+  // final selectGenderC = Get.find<SelectGenderC>();
+  // final getOldC = Get.find<GetOldC>();
+
+  final signUpC = Get.find<SignUpC>();
 
   late RxDouble animaInfo = 0.0.obs;
   late RxDouble aimaGoal = 0.0.obs;

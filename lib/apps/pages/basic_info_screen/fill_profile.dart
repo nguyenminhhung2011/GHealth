@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/fill_profile_controller.dart';
+import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/template/misc/untils.dart';
 import 'package:image_picker/image_picker.dart';
@@ -53,14 +54,15 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
       //       .UpLoadImageGroupToStorage('ProfilePic', _image!);
       // }
       // fillProC.signUpC.basicProfile!.value.avtPath = avtPath;
-      fillProC.signUpC.image = _image!;
-      fillProC.signUpC.basicProfile!.value.name = fullName;
+      fillProC.basicInfoC.signUpC.image = _image!;
+      fillProC.basicInfoC.signUpC.basicProfile!.value.name = fullName;
       //ignore: avoid_print
-      print(fillProC.signUpC.basicProfile!.value.username);
-      Get.toNamed(RouteName.selectGender);
+      print(fillProC.basicInfoC.signUpC.basicProfile!.value.username);
+      fillProC.basicInfoC.pageChange(1);
     } else {
       // ignore: avoid_print
-      print('Full name is not empty');
+      Get.dialog(const ErrorDialog(
+          question: 'Create Account', title1: 'Full Name is not empty'));
     }
   }
 
