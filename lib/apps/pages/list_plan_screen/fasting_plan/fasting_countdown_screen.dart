@@ -1,6 +1,3 @@
-import 'dart:ui';
-
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
