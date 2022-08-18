@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gold_health/apps/controls/getOldController.dart';
 import '../../global_widgets/buttonMain.dart';
 import 'package:get/get.dart';
 import '../../routes/routeName.dart';
@@ -14,7 +15,11 @@ class GetOldScreen extends StatefulWidget {
 
 class _GetOldScreenState extends State<GetOldScreen> {
   var list = [for (var i = 10; i <= 100; i++) i];
+  DateTime timeTemp = DateTime.now();
+
   int age = 10;
+  final _getOldC = Get.find<GetOldC>();
+
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -69,11 +74,15 @@ class _GetOldScreenState extends State<GetOldScreen> {
                     margin: const EdgeInsets.only(bottom: 10),
                     child: Text.rich(
                       TextSpan(
-                          style: Theme.of(context).textTheme.headline4,
+                          style:
+                              Theme.of(context).textTheme.headline4?.copyWith(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                           children: [
                             const TextSpan(
-                              text: 'Your age: ',
-                              style: TextStyle(fontWeight: FontWeight.w400),
+                              text: 'Date Born: ',
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             TextSpan(
                               text: age.toString(),
@@ -84,36 +93,13 @@ class _GetOldScreenState extends State<GetOldScreen> {
                     ),
                   ),
                   SizedBox(
-                    height: heightDevice * 0.25,
-                    width: widthDevice * 0.4,
-                    child: CupertinoPicker(
-                      selectionOverlay: Container(
-                        decoration: const BoxDecoration(
-                          border: Border.symmetric(
-                            horizontal: BorderSide(
-                              width: 2,
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                      itemExtent: 77,
-                      diameterRatio: 1.2,
-                      onSelectedItemChanged: (int value) => setState(() {
-                        age = value + 10;
-                      }),
-                      children: list
-                          .map(
-                            (e) => Text(
-                              e.toString(),
-                              style: const TextStyle(
-                                fontFamily: 'Sen',
-                                fontSize: 60,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          )
-                          .toList(),
+                    height: 250,
+                    child: CupertinoDatePicker(
+                      mode: CupertinoDatePickerMode.date,
+                      onDateTimeChanged: (value) {
+                        _getOldC.timePicker = value;
+                      },
+                      initialDateTime: DateTime.now(),
                     ),
                   ),
                 ],
@@ -123,10 +109,7 @@ class _GetOldScreenState extends State<GetOldScreen> {
               alignment: Alignment.bottomCenter,
               child: ButtonDesign(
                 title: 'Next',
-                press: () {
-                  //Variable 'age' use for get age
-                  Get.toNamed(RouteName.getWeight);
-                },
+                press: () => _getOldC.nextBtnClick(),
               ),
             ),
           ],

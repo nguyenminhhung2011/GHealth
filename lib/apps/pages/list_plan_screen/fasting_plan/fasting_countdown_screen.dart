@@ -9,7 +9,7 @@ import 'package:gold_health/apps/pages/list_plan_screen/fasting_plan/count_down_
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:timelines/timelines.dart';
 
-import '../../../global_widgets/YesNoDialog.dart';
+import '../../../global_widgets/yes_no_dialog.dart';
 
 class FastingCountdownScreen extends StatefulWidget {
   const FastingCountdownScreen({Key? key, required this.timeline})

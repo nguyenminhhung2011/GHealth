@@ -7,7 +7,6 @@ import 'package:gold_health/apps/controls/signUpControls.dart';
 import 'package:gold_health/apps/global_widgets/buttonIcon.dart';
 import 'package:gold_health/apps/global_widgets/passwordField.dart';
 
-import '../../global_widgets/buttonMain.dart';
 import '../../global_widgets/texField.dart';
 import '../../template/misc/colors.dart';
 import '../basic_info_screen/appBarHello.dart';
@@ -31,17 +30,18 @@ class SignUpScreen extends StatelessWidget {
               children: [
                 AppBarHello(widthDevice: widthDevice),
                 Hero(
+                  tag: 'Image auth',
                   child: Image.asset(
                     'assets/gift/Workout1.gif',
                     height: heightDevice / 2,
                     width: heightDevice / 2,
                   ),
-                  tag: 'Image auth',
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  children: const [
                     Hero(
+                      tag: 'create tag',
                       child: Text(
                         'Create your Account',
                         textAlign: TextAlign.start,
@@ -51,7 +51,6 @@ class SignUpScreen extends StatelessWidget {
                           fontSize: 15,
                         ),
                       ),
-                      tag: 'create tag',
                     ),
                     Text(
                       'Let\'s create account to using this app',
@@ -105,9 +104,9 @@ class SignUpScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       btnIcon(
                         color: AppColors.primaryColor,
-                        press: () {},
-                        icon: SizedBox(width: 20),
-                        title: Text(
+                        press: () => signUpC.ContinueBtnClick(),
+                        icon: const SizedBox(width: 20),
+                        title: const Text(
                           'Continue',
                           style: TextStyle(
                             color: Colors.white,

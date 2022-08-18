@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -5,7 +7,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/fillProfilControls.dart';
 import 'package:gold_health/apps/routes/routeName.dart';
+import 'package:gold_health/apps/template/misc/untils.dart';
+import 'package:image_picker/image_picker.dart';
 
+import '../../controls/storage_methods.dart.dart';
 import '../../global_widgets/boxData.dart';
 import '../../global_widgets/buttonMain.dart';
 import '../../global_widgets/textFieldWithIcon.dart';
@@ -23,8 +28,46 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
   final fillProC = Get.find<FillProfileC>();
   var list = [for (var i = 100; i <= 300; i++) i];
   final TextEditingController c = TextEditingController();
-  int height_cm = 100;
+  Uint8List? _image;
   @override
+  // ignore: override_on_non_overriding_member
+  void selectedImage() async {
+    Uint8List? file = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = file;
+    });
+  }
+
+  void nextBtnOnClick() async {
+    if (fillProC.fullName.text.isNotEmpty) {
+      String nickName = '';
+      fillProC.nickName.text.isNotEmpty
+          ? nickName = fillProC.nickName.text
+          : {
+              for (int i = 0; i < fillProC.fullName.text.length; i++)
+                {
+                  if (fillProC.fullName.text[i] != '')
+                    nickName += fillProC.fullName.text[i]
+                }
+            };
+      String fullName = fillProC.fullName.text;
+      // String avtPath = '';
+      // if (_image != null) {
+      //   avtPath = await StorageMethods()
+      //       .UpLoadImageGroupToStorage('ProfilePic', _image!);
+      // }
+      // fillProC.signUpC.basicProfile!.value.avtPath = avtPath;
+      fillProC.signUpC.image = _image!;
+      fillProC.signUpC.basicProfile!.value.name = fullName;
+      //ignore: avoid_print
+      print(fillProC.signUpC.basicProfile!.value.username);
+      Get.toNamed(RouteName.selectGender);
+    } else {
+      // ignore: avoid_print
+      print('Full name is not empty');
+    }
+  }
+
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
@@ -85,26 +128,38 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Container(
-                                width: widthDevice / 2.5,
-                                height: widthDevice / 2.5,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(15),
-                                  image: DecorationImage(
-                                    fit: BoxFit.cover,
-                                    image:
-                                        AssetImage('assets/images/avatar.png'),
-                                  ),
-                                ),
-                              ),
+                              (_image == null)
+                                  ? Container(
+                                      width: widthDevice / 2.5,
+                                      height: widthDevice / 2.5,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        image: const DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage(
+                                              'assets/images/avatar.png'),
+                                        ),
+                                      ),
+                                    )
+                                  : Container(
+                                      width: widthDevice / 2.5,
+                                      height: widthDevice / 2.5,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(15),
+                                        image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: MemoryImage(_image!),
+                                        ),
+                                      ),
+                                    ),
                             ],
                           ),
                           Positioned(
                             left: widthDevice / 2 + widthDevice / 10,
                             top: widthDevice / 2.5 - widthDevice / 8,
                             child: InkWell(
-                              onTap: () {
-                                print('Click');
+                              onTap: () async {
+                                selectedImage();
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(5),
@@ -163,10 +218,10 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                                     height: 50,
                                     width: 50,
                                   ),
-                                  Icon(
+                                  const Icon(
                                     Icons.arrow_drop_down,
                                     color: Colors.black,
-                                    size: 30,
+                                    size: 25,
                                   )
                                 ],
                               ),
@@ -182,7 +237,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      Text(
+                      const Text(
                         'Let\'s fill your profile',
                         style: TextStyle(
                           color: AppColors.primaryColor,
@@ -201,11 +256,13 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                   Expanded(child: ButtonDesign1(title: 'Skip', press: () {})),
                   const SizedBox(width: 20),
                   Expanded(
-                      child: ButtonDesign(
-                          title: 'Next',
-                          press: () {
-                            Get.toNamed(RouteName.selectGender);
-                          })),
+                    child: ButtonDesign(
+                      title: 'Next',
+                      press: () {
+                        nextBtnOnClick();
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),

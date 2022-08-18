@@ -14,6 +14,7 @@ class User {
   DateTime dateOfBirth;
   Gender gender;
   Times duration;
+  String avtPath;
   User({
     required this.uid,
     required this.name,
@@ -26,7 +27,10 @@ class User {
     required this.dateOfBirth,
     required this.gender,
     required this.duration,
+    required this.avtPath,
   });
+
+  set email(email) {}
 
   Map<String, dynamic> toJson() => {
         'uid': uid,
@@ -38,8 +42,9 @@ class User {
         'heightTarget': heightTarget,
         'weightTarget': weightTarget,
         'dateOfBirth': dateOfBirth,
-        'gender': gender,
-        'duration': duration,
+        'gender': listGenderString[gender],
+        'duration': listTimesString[duration],
+        'avtPath': avtPath,
       };
 
   static User fromSnap(DocumentSnapshot snap) {
@@ -56,6 +61,7 @@ class User {
       dateOfBirth: snapshot['dateOfBirth'],
       gender: snapshot['gender'],
       duration: snapshot['duration'],
+      avtPath: snapshot['avtPath'],
     );
   }
 }
