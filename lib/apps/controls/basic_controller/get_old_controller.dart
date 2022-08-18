@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:gold_health/apps/controls/basic_info_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/basic_info_controller.dart';
 import 'package:gold_health/apps/controls/sign_up_controller.dart';
 
-import '../routes/route_name.dart';
+import '../../routes/route_name.dart';
 
 class GetOldC extends GetxController {
   late DateTime timePicker = DateTime.now();

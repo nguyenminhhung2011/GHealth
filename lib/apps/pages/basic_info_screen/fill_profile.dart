@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/fill_profile_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/fill_profile_controller.dart';
 import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/template/misc/untils.dart';
