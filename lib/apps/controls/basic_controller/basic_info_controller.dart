@@ -5,15 +5,19 @@ import 'package:gold_health/apps/controls/basic_controller/select_duration_contr
 import 'package:gold_health/apps/controls/basic_controller/select_gender_controller.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/fill_profile.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_height_screen.dart';
+import 'package:gold_health/apps/pages/basic_info_screen/get_height_target_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_old_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/select_gender_screen.dart';
 
+import '../../pages/basic_info_screen/get_weight_target_screen.dart';
 import 'get_height_controller.dart';
+import 'get_height_target_controller.dart';
 import 'get_old_controller.dart';
 import 'get_weight_controller.dart';
 import '../sign_up_controller.dart';
+import 'get_weight_target_controller.dart';
 
 class BasicInfoC extends GetxController {
   final signUpC = Get.find<SignUpC>();
@@ -34,7 +38,7 @@ class BasicInfoC extends GetxController {
     int currentTab = currentIndex.value;
     (newTab < 6)
         ? animaInfo.value = (newTab + 1) / 6 * 60
-        : aimaGoal.value = (newTab - 5) / 6 * 60;
+        : aimaGoal.value = (newTab - 5) / 2 * 60;
     if (currentTab == newTab) return;
     switch (currentTab) {
       case 0:
@@ -54,6 +58,12 @@ class BasicInfoC extends GetxController {
         break;
       case 5:
         Get.delete<SelectDurationC>();
+        break;
+      case 6:
+        Get.delete<GetHeightTargetC>();
+        break;
+      case 7:
+        Get.delete<GetWeightTargetC>();
         break;
       default:
         break;
@@ -77,6 +87,10 @@ class BasicInfoC extends GetxController {
         return GetWeightScreen();
       case 5:
         return SelectDurationScreen();
+      case 6:
+        return GetHeightTargetScreen();
+      case 7:
+        return GetWeightTargetScreen();
       default:
         return const FillProfileScreen();
     }
