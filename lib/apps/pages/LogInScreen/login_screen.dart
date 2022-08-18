@@ -119,7 +119,7 @@ class _LogInScreenState extends State<LogInScreen> {
                                   print(user?.displayName);
                                   print(user?.email);
                                   print(user?.emailVerified);
-                                  Get.toNamed(RouteName.fillProfile);
+                                  Get.toNamed(RouteName.dashboardScreen);
                                 }
                               },
                               icon: const SizedBox(width: 20),
