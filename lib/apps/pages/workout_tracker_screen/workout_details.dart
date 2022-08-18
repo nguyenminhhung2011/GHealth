@@ -1,9 +1,4 @@
-import 'dart:ui';
-
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/data/fake_data.dart';
 import 'package:gold_health/apps/global_widgets/toggle_button_ios.dart';
@@ -16,7 +11,6 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_wor
 import '../../global_widgets/gradient_text.dart';
 import '../../global_widgets/row_text_see_more.dart';
 import '../../template/misc/colors.dart';
-import '../dashboard/widgets/button_gradient.dart';
 
 class WorkoutDetailScreen extends StatelessWidget {
   const WorkoutDetailScreen({Key? key}) : super(key: key);
@@ -335,13 +329,13 @@ class WorkoutDetailScreen extends StatelessWidget {
             children: [
               const SizedBox(height: 40),
               AppBarWorkout(title: '', press: () {}),
-              Spacer(),
+              const Spacer(),
               InkWell(
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => ListWorkoutScreen(),
+                      builder: (context) => const ListWorkoutScreen(),
                     ),
                   );
                 },
@@ -360,7 +354,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                       ),
                       BoxShadow(
                         color: Colors.black.withOpacity(0.05),
-                        offset: Offset(-2, -3),
+                        offset: const Offset(-2, -3),
                         blurRadius: 2,
                       )
                     ],

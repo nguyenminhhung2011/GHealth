@@ -7,6 +7,7 @@ import 'package:gold_health/apps/pages/list_plan_screen/fasting_plan/get_ready_s
 
 import '../../../controls/dailyPlanController/fasting_plan_controller.dart';
 import '../../../template/misc/colors.dart';
+import 'fasting_save_screen.dart';
 
 class FastingPlanScreen extends StatefulWidget {
   const FastingPlanScreen({Key? key}) : super(key: key);
@@ -165,7 +166,9 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
                   ),
                   const Spacer(),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      Get.to(() => const FastingSaveScreen());
+                    },
                     child: Container(
                       padding: const EdgeInsets.all(8),
                       decoration: BoxDecoration(
@@ -182,12 +185,14 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
               ),
             ),
             ...choicesWidget,
-            Obx(() => controller.isCountDown.value
-                ? FastingCountdownScreen(
-                    timeline:
-                        CustomTimeLine(fastingMode: controller.fastingMode),
-                  )
-                : const SizedBox()),
+            Obx(
+              () => controller.isCountDown.value
+                  ? FastingCountdownScreen(
+                      timeline:
+                          CustomTimeLine(fastingMode: controller.fastingMode),
+                    )
+                  : const SizedBox(),
+            ),
           ],
         ),
       ),
