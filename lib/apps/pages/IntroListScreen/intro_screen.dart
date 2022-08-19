@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/auth_controller.dart';
 import 'package:gold_health/apps/data/fake_data.dart';
 import 'package:gold_health/apps/global_widgets/button_custom/button_main.dart';
 
@@ -25,6 +26,7 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   int _currentIndex = 0;
+  final _authController = Get.find<AuthC>();
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +118,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             } else if (_currentIndex == 1) {
                               onButtonTape(2);
                             } else {
-                              Get.toNamed(RouteName.logIn);
+                              Get.toNamed(_authController.initialPage);
                             }
                           });
                         },
@@ -124,7 +126,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       const SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          Get.toNamed(RouteName.logIn);
+                          Get.toNamed(_authController.initialPage);
                         },
                         child: const SizedBox(
                           width: double.infinity,

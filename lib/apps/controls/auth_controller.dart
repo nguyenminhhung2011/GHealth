@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/storage_methods.dart.dart';
@@ -19,20 +20,21 @@ class AuthC extends GetxController {
   final _firStore = FirebaseFirestore.instance;
   late Rx<User?> _user;
   User get user => _user.value!;
+  late String initialPage;
   @override
   void onReady() {
     super.onReady();
     _user = Rx<User?>(firebaseAuth.currentUser);
     _user.bindStream(firebaseAuth.authStateChanges());
-    ever(_user, _setIntialScreen); // ghe moi khi co su thay doi
+    ever(_user, _setInitialScreen); // ghe moi khi co su thay doi
   }
 
-  _setIntialScreen(User? user) {
+  _setInitialScreen(User? user) {
     //if user == null screen will go to Login screen else go to home screen
     if (user == null) {
-      Get.toNamed(RouteName.logIn);
+      initialPage = RouteName.logIn;
     } else {
-      Get.toNamed(RouteName.dashboardScreen);
+      initialPage = RouteName.dashboardScreen;
     }
   }
 
