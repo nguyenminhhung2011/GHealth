@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class HomeScreenControl extends GetxController {
-  late TextEditingController userName;
+  late TextEditingController userName = TextEditingController();
   var notifications = {
     DateTime.now().subtract(const Duration(minutes: 5)): {
       'icon': CircleAvatar(
@@ -70,8 +70,16 @@ class HomeScreenControl extends GetxController {
   }
 
   @override
+  void onInit() {
+    super.onInit();
+    userName = TextEditingController();
+  }
+
+  @override
   void onClose() {
-    userName.dispose();
+    // if (userName != null) {
+    //   userName.dispose();
+    // }
     super.onClose();
   }
 }

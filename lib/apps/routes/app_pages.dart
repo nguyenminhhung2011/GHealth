@@ -39,9 +39,8 @@ class AppPages {
   static final pages = [
     GetPage(
       name: RouteName.splash,
-      page: () => const SplashScreen(),
+      page: () => SplashScreen(),
       binding: SplashB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.intro,

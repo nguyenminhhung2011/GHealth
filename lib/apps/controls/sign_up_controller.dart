@@ -13,6 +13,8 @@ class SignUpC extends GetxController {
   late TextEditingController emailC;
   late TextEditingController passC;
   late TextEditingController repassC;
+  RxString gifString = 'assets/gift/download.gif'.obs;
+
   Rx<User>? basicProfile = Rx<User>(
     User(
       uid: '',

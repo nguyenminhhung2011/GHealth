@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 class LogInC extends GetxController {
   late TextEditingController emailC;
   late TextEditingController passC;
-
+  RxString gifString = 'assets/gift/download.gif'.obs;
   @override
   void onInit() {
     super.onInit();

@@ -26,7 +26,6 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   int _currentIndex = 0;
-  final _authController = Get.find<AuthC>();
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +117,7 @@ class _IntroScreenState extends State<IntroScreen> {
                             } else if (_currentIndex == 1) {
                               onButtonTape(2);
                             } else {
-                              Get.toNamed(_authController.initialPage);
+                              Get.toNamed(RouteName.logIn);
                             }
                           });
                         },
@@ -126,7 +125,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       const SizedBox(height: 10),
                       InkWell(
                         onTap: () {
-                          Get.toNamed(_authController.initialPage);
+                          Get.toNamed(RouteName.logIn);
                         },
                         child: const SizedBox(
                           width: double.infinity,

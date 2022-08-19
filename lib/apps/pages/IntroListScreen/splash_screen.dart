@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/splash_controller.dart';
 import '../../global_widgets/button_custom/button_main.dart';
 import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
-
+  SplashScreen({Key? key}) : super(key: key);
+  final _controller = Get.find<SplashC>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,12 +19,15 @@ class SplashScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
-              Hero(
-                tag: 'Splash image',
-                child: Image.asset(
-                  'assets/images/intro.png',
-                  height: 200,
-                  width: 200,
+              Container(
+                height: 200,
+                width: 200,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                      image: AssetImage(
+                    'assets/gift/download.gif',
+                  )),
                 ),
               ),
               Text.rich(
@@ -53,13 +57,14 @@ class SplashScreen extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              ButtonDesign(
-                title: 'Get started',
-                press: () {
-                  Get.toNamed(RouteName.intro);
-                },
-              ),
-              const SizedBox(height: 20),
+              // const Spacer(),
+              // ButtonDesign(
+              //   title: 'Get started',
+              //   press: () {
+              //     Get.toNamed(RouteName.intro);
+              //   },
+              // ),
+              // const SizedBox(height: 20),
             ],
           ),
         ),

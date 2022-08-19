@@ -1,23 +1,20 @@
 import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/storage_methods.dart.dart';
 import 'package:gold_health/apps/data/list_error_string.dart';
 import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
-import 'package:gold_health/constains.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 import '../data/enums/app_enums.dart';
 import '../data/models/User.dart' as models;
 import '../routes/route_name.dart';
 
 class AuthC extends GetxController {
-  static AuthC instance = Get.find();
+  static AuthC instance = Get.find<AuthC>();
   final _firStore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
   late Rx<User?> _user;
@@ -34,9 +31,9 @@ class AuthC extends GetxController {
   _setInitialScreen(User? user) {
     //if user == null screen will go to Login screen else go to home screen
     if (user == null) {
-      initialPage = RouteName.logIn;
+      Get.toNamed(RouteName.logIn);
     } else {
-      initialPage = RouteName.dashboardScreen;
+      Get.toNamed(RouteName.dashboardScreen);
     }
   }
 
@@ -97,6 +94,7 @@ class AuthC extends GetxController {
 
   Future<void> signOut() async {
     await firebaseAuth.signOut();
+    Get.offAllNamed(RouteName.logIn);
   }
 
   Future<UserCredential> signInWithGoogle() async {

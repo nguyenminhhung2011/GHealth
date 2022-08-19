@@ -18,26 +18,27 @@ final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  if (kIsWeb) {
-    await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: 'AIzaSyB-Vpk9jAOQdpGCdFNHnypbKfLKAohmmb8',
-        appId: '1:919952547196:web:01fe16a0e89098efb198f9',
-        messagingSenderId: '919952547196',
-        projectId: 'gold-health-2246a',
-        storageBucket: 'gold-health-2246a.appspot.com',
-        authDomain: "gold-health-2246a.firebaseapp.com",
-        databaseURL:
-            "https://gold-health-2246a-default-rtdb.asia-southeast1.firebasedatabase.app",
-      ),
-    ).then((value) {
-      Get.put(AuthC());
-    });
-  } else {
-    StartService.instance.init().then((value) {
-      Get.lazyPut<AuthC>(() => AuthC());
-    });
-  }
+  // if (kIsWeb) {
+  //   await Firebase.initializeApp(
+  //     options: const FirebaseOptions(
+  //       apiKey: 'AIzaSyB-Vpk9jAOQdpGCdFNHnypbKfLKAohmmb8',
+  //       appId: '1:919952547196:web:01fe16a0e89098efb198f9',
+  //       messagingSenderId: '919952547196',
+  //       projectId: 'gold-health-2246a',
+  //       storageBucket: 'gold-health-2246a.appspot.com',
+  //       authDomain: "gold-health-2246a.firebaseapp.com",
+  //       databaseURL:
+  //           "https://gold-health-2246a-default-rtdb.asia-southeast1.firebasedatabase.app",
+  //     ),
+  //   ).then((value) {
+  //     Get.put(AuthC());
+  //   });
+  // } else {
+  //   StartService.instance.init().then((value) {
+  //     Get.lazyPut<AuthC>(() => AuthC());
+  //   });
+  // }
+  StartService.instance.init();
   runApp(const MyApp());
 }
 
@@ -107,7 +108,7 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: RouteName.splash,
       getPages: AppPages.pages,
-      home: const SplashScreen(),
+      defaultTransition: Transition.cupertino,
     );
   }
 }

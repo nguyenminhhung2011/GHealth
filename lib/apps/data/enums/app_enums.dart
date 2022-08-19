@@ -8,6 +8,8 @@ enum Times {
   somany,
 }
 
+enum SignInType { withGoogle, withFacebook, withEmail, none }
+
 Map<Times, String> listTimesString = {
   Times.notmuch: 'Not Much',
   Times.little: 'Little',
