@@ -56,59 +56,90 @@ class _IntroScreenState extends State<IntroScreen> {
     ];
     return Scaffold(
       backgroundColor: AppColors.mainColor,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 15),
-        child: Column(
-          children: [
-            Expanded(
-              flex: (heightDevice / 11).round(),
-              child: AppBarHello(widthDevice: widthDevice),
+      body: Column(
+        children: [
+          Expanded(
+            flex: (heightDevice / 11).round(),
+            child: AppBarHello(widthDevice: widthDevice),
+          ),
+          Expanded(
+            flex: (heightDevice / 11 * 8).round(),
+            child: PageView.builder(
+              controller: pageController,
+              onPageChanged: (value) {
+                setState(() {
+                  _currentIndex = value;
+                });
+              },
+              itemBuilder: (context, index) {
+                return listViewIntro[index];
+              },
+              itemCount: listViewIntro.length,
             ),
-            Expanded(
-              flex: (heightDevice / 11 * 8).round(),
-              child: PageView.builder(
-                controller: pageController,
-                onPageChanged: (value) {
-                  setState(() {
-                    _currentIndex = value;
-                  });
-                },
-                itemBuilder: (context, index) {
-                  return listViewIntro[index];
-                },
-                itemCount: listViewIntro.length,
-              ),
-            ),
-            Expanded(
-              flex: (heightDevice / 11 * 0.5).round(),
-              child: Column(
-                children: [
-                  const Spacer(),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: widthDevice / 3),
-                    child: SizedBox(
-                      height: 10,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => buildIndicator(
-                            _currentIndex == index,
-                            MediaQuery.of(context).size),
-                        itemCount: listViewIntro.length,
-                      ),
+          ),
+          Expanded(
+            flex: (heightDevice / 11 * 0.5).round(),
+            child: Column(
+              children: [
+                const Spacer(),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: widthDevice / 3),
+                  child: SizedBox(
+                    height: 10,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context, index) => buildIndicator(
+                          _currentIndex == index, MediaQuery.of(context).size),
+                      itemCount: listViewIntro.length,
                     ),
                   ),
-                  const SizedBox(height: 10),
-                ],
-              ),
+                ),
+                const SizedBox(height: 10),
+              ],
             ),
-            Expanded(
-              flex: (heightDevice / 11 * 1).round(),
-              child: SizedBox(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    children: [
-                      ButtonDesign(
+          ),
+          Expanded(
+            flex: (heightDevice / 11 * 0.6).round(),
+            child: SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    Expanded(
+                        child: InkWell(
+                      onTap: () => Get.toNamed(RouteName.logIn),
+                      child: Container(
+                        alignment: Alignment.center,
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              offset: const Offset(2, 3),
+                              blurRadius: 2,
+                            ),
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              offset: Offset(-2, -3),
+                              blurRadius: 2,
+                            )
+                          ],
+                        ),
+                        child: const Text(
+                          'Skip',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                    )),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: ButtonDesign(
                         title: 'Next',
                         press: () {
                           setState(() {
@@ -122,32 +153,14 @@ class _IntroScreenState extends State<IntroScreen> {
                           });
                         },
                       ),
-                      const SizedBox(height: 10),
-                      InkWell(
-                        onTap: () {
-                          Get.toNamed(RouteName.logIn);
-                        },
-                        child: const SizedBox(
-                          width: double.infinity,
-                          height: 20,
-                          child: Text(
-                            'Skip',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 10),
+        ],
       ),
     );
   }

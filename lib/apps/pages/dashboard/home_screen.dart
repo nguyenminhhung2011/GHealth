@@ -72,10 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         backgroundColor: AppColors.mainColor,
         body: Obx(() {
-          if (homeScreenController.user == null) {
-            return const CircularProgressIndicator(
-                color: AppColors.primaryColor1);
-          }
+          // if (homeScreenController.user == null) {
+          //   return const CircularProgressIndicator(
+          //       color: AppColors.primaryColor1);
+          // }
           return Stack(
             children: [
               Container(
