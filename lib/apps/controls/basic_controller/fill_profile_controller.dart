@@ -20,9 +20,9 @@ class FillProfileC extends GetxController with BasicController {
 
   @override
   void onClose() {
-    fullName.dispose();
-    nickName.dispose();
-    phoneNo.dispose();
+    // fullName.dispose();
+    // nickName.dispose();
+    // phoneNo.dispose();
     super.onClose();
   }
 }

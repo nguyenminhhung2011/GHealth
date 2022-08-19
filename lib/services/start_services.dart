@@ -7,8 +7,6 @@ class StartService {
   StartService._privateConstructor();
   static final StartService instance = StartService._privateConstructor();
   init() async {
-    await Firebase.initializeApp().then((value) {
-      Get.lazyPut<AuthC>(() => AuthC());
-    });
+    await Firebase.initializeApp();
   }
 }

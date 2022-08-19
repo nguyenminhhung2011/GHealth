@@ -45,10 +45,6 @@ class SignUpC extends GetxController {
 
   @override
   void onClose() {
-    emailC.dispose();
-    passC.dispose();
-    repassC.dispose();
-
     super.onClose();
   }
 

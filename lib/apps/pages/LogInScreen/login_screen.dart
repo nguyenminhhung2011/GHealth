@@ -31,6 +31,7 @@ class _LogInScreenState extends State<LogInScreen> {
       });
       final response = await _authController.signInWithEmailAndPassword(
           username: logInC.emailC.text, password: logInC.passC.text);
+
       setState(() {
         isLoading = false;
       });

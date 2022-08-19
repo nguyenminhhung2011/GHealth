@@ -59,8 +59,8 @@ class User {
       heightTarget: snapshot['heightTarget'],
       weightTarget: snapshot['weightTarget'],
       dateOfBirth: snapshot['dateOfBirth'],
-      gender: snapshot['gender'],
-      duration: snapshot['duration'],
+      gender: getGender(snapshot['gender']),
+      duration: getTimes(snapshot['duration']),
       avtPath: snapshot['avtPath'],
     );
   }
