@@ -2,14 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/basic_controller/get_height_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/get_height_target_controller.dart';
 
 import '../../global_widgets/box_data.dart';
 import '../../global_widgets/button_custom/button_main.dart';
 import '../../template/misc/colors.dart';
 
-class GetHeightScreen extends StatelessWidget {
-  GetHeightScreen({Key? key}) : super(key: key);
-  final _getHeightC = Get.put(GetHeightC());
+class GetHeightTargetScreen extends StatelessWidget {
+  GetHeightTargetScreen({Key? key}) : super(key: key);
+  final _getHeightTargetC = Get.put(GetHeightTargetC());
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -32,7 +33,7 @@ class GetHeightScreen extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      'How tall are you?',
+                      'What is your target height??',
                       style: Theme.of(context)
                           .textTheme
                           .headline4!
@@ -69,9 +70,10 @@ class GetHeightScreen extends StatelessWidget {
                       itemExtent: 77,
                       diameterRatio: 1.2,
                       onSelectedItemChanged: (int value) {
-                        _getHeightC.height.value = _getHeightC.list[value];
+                        _getHeightTargetC.height.value =
+                            _getHeightTargetC.list[value];
                       },
-                      children: _getHeightC.list
+                      children: _getHeightTargetC.list
                           .map(
                             (e) => Row(
                               children: [
@@ -100,12 +102,12 @@ class GetHeightScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       BoxData(
-                          text: '${_getHeightC.height.value}cm',
+                          text: '${_getHeightTargetC.height.value}cm',
                           widthDevice: widthDevice,
                           heightDevice: heightDevice),
                       BoxData(
                         text:
-                            '${(_getHeightC.height.value * 0.032808399).toStringAsFixed(2)}ft',
+                            '${(_getHeightTargetC.height.value * 0.032808399).toStringAsFixed(2)}ft',
                         widthDevice: widthDevice,
                         heightDevice: heightDevice,
                       ),
@@ -118,7 +120,7 @@ class GetHeightScreen extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: ButtonDesign(
                 title: 'Next',
-                press: () => _getHeightC.nextBtnClick(),
+                press: () => _getHeightTargetC.nextBtnClick(),
               ),
             ),
           ],

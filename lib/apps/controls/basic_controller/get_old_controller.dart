@@ -4,19 +4,26 @@ import 'package:gold_health/apps/controls/basic_controller/basic_info_controller
 import 'package:gold_health/apps/controls/sign_up_controller.dart';
 
 import '../../routes/route_name.dart';
+import 'basic_controller.dart';
 
-class GetOldC extends GetxController {
+class GetOldC extends GetxController with BasicController {
   late DateTime timePicker = DateTime.now();
-  final basicInfoC = Get.find<BasicInfoC>();
+  final signUpC = Get.find<SignUpC>();
   @override
   void OnInit() {
     super.onInit();
     timePicker = DateTime.now();
   }
 
+  @override
+  void onClose() {
+    timePicker = DateTime.now();
+    super.onClose();
+  }
+
   void nextBtnClick() {
-    basicInfoC.signUpC.basicProfile!.value.dateOfBirth = timePicker;
-    print(basicInfoC.signUpC.basicProfile!.value.dateOfBirth.toString());
-    basicInfoC.pageChange(3);
+    signUpC.basicProfile!.value.dateOfBirth = timePicker;
+    print(signUpC.basicProfile!.value.dateOfBirth.toString());
+    changeTab(3);
   }
 }

@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:gold_health/apps/controls/sign_up_controller.dart';
 
 import '../../routes/route_name.dart';
+import 'basic_controller.dart';
 import 'basic_info_controller.dart';
 
-class GetWeightC extends GetxController {
+class GetWeightC extends GetxController with BasicController {
   RxInt weight = 1.obs;
-  final basicInfoC = Get.find<BasicInfoC>();
+  final signUpC = Get.find<SignUpC>();
   var list = [for (var i = 1; i <= 200; i++) i];
   @override
   // void OnInit() {
@@ -15,8 +16,8 @@ class GetWeightC extends GetxController {
   // }
 
   void nextBtnClick() {
-    basicInfoC.signUpC.basicProfile!.value.weight = weight.value;
-    print(basicInfoC.signUpC.basicProfile!.value.weight);
-    basicInfoC.pageChange(4);
+    signUpC.basicProfile!.value.weight = weight.value;
+    print(signUpC.basicProfile!.value.weight);
+    changeTab(5);
   }
 }

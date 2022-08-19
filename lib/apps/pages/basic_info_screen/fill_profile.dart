@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/basic_controller/basic_info_controller.dart';
 import 'package:gold_health/apps/controls/basic_controller/fill_profile_controller.dart';
 import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
@@ -22,7 +23,7 @@ class FillProfileScreen extends StatefulWidget {
 }
 
 class _FillProfileScreenState extends State<FillProfileScreen> {
-  final fillProC = Get.find<FillProfileC>();
+  final fillProC = Get.put(FillProfileC());
   var list = [for (var i = 100; i <= 300; i++) i];
   final TextEditingController c = TextEditingController();
   Uint8List? _image;
@@ -54,11 +55,11 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
       //       .UpLoadImageGroupToStorage('ProfilePic', _image!);
       // }
       // fillProC.signUpC.basicProfile!.value.avtPath = avtPath;
-      fillProC.basicInfoC.signUpC.image = _image!;
-      fillProC.basicInfoC.signUpC.basicProfile!.value.name = fullName;
+      fillProC.signUpC.image = _image!;
+      fillProC.signUpC.basicProfile!.value.name = fullName;
       //ignore: avoid_print
-      print(fillProC.basicInfoC.signUpC.basicProfile!.value.username);
-      fillProC.basicInfoC.pageChange(1);
+      print(fillProC.signUpC.basicProfile!.value.username);
+      fillProC.changeTab(1);
     } else {
       // ignore: avoid_print
       Get.dialog(const ErrorDialog(
@@ -71,7 +72,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
     var widthDevice = MediaQuery.of(context).size.width;
 
     return Container(
-      padding: const EdgeInsets.only(left: 10, right: 10, bottom: 120),
+      padding: const EdgeInsets.only(bottom: 120),
       decoration: const BoxDecoration(
         color: Colors.white,
       ),
@@ -161,17 +162,11 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                         )
                       ],
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 80),
                     TextFieldWithIcon(
                       hintText: 'Full Name',
                       controller: fillProC.fullName,
                       icon: Icons.account_circle_rounded,
-                    ),
-                    const SizedBox(height: 20),
-                    TextFieldWithIcon(
-                      hintText: 'Nick Name',
-                      controller: fillProC.nickName,
-                      icon: Icons.account_box_outlined,
                     ),
                     const SizedBox(height: 20),
                     Row(

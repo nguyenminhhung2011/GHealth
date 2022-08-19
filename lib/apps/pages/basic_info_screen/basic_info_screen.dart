@@ -25,10 +25,6 @@ class BasicInfoScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // leading: InkWell(
-        //   onTap: () => Get.back(),
-        //   child: const Icon(Icons.arrow_back_ios, color: Colors.black),
-        // ),
         title: SizedBox(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,7 +103,9 @@ class BasicInfoScreen extends StatelessWidget {
                     ),
                     Icon(
                       Icons.check_circle,
-                      color: Colors.grey.withOpacity(0.3),
+                      color: (basicInfC.aimaGoal.value >= 60)
+                          ? AppColors.primaryColor1
+                          : Colors.grey.withOpacity(0.3),
                       size: 24,
                     ),
                   ],
@@ -121,20 +119,23 @@ class BasicInfoScreen extends StatelessWidget {
       backgroundColor: AppColors.mainColor,
       body: ScreenTemplate(
         child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Obx(
-              () => SizedBox(
-                height: heightDevice,
-                width: double.infinity,
-                child: PageView.builder(
-                  controller: basicInfC.pageController,
-                  onPageChanged: basicInfC.onPageChangeUpdate,
-                  itemBuilder: (contex, index) =>
-                      basicInfC.listPages.value[index],
-                  itemCount: basicInfC.listPages.value.length,
-                ),
-              ),
-            )),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child:
+              // Obx(
+              //   () => SizedBox(
+              //     height: heightDevice,
+              //     width: double.infinity,
+              //     child: PageView.builder(
+              //       controller: basicInfC.pageController,
+              //       onPageChanged: basicInfC.onPageChangeUpdate,
+              //       itemBuilder: (contex, index) =>
+              //           basicInfC.listPages.value[index],
+              //       itemCount: basicInfC.listPages.value.length,
+              //     ),
+              //   ),
+              // ),
+              Obx(() => basicInfC.getCurrentTab()),
+        ),
       ),
     );
   }

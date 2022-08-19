@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gold_health/apps/controls/basic_controller/get_weight_controller.dart';
+import 'package:gold_health/apps/controls/basic_controller/get_weight_target_controller.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import '../../global_widgets/box_data.dart';
 import '../../global_widgets/button_custom/button_main.dart';
@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 
 import '../../template/misc/colors.dart';
 
-class GetWeightScreen extends StatelessWidget {
-  GetWeightScreen({Key? key}) : super(key: key);
-  final _getWeightC = Get.put(GetWeightC());
+class GetWeightTargetScreen extends StatelessWidget {
+  GetWeightTargetScreen({Key? key}) : super(key: key);
+  final _getWeightTargetC = Get.put(GetWeightTargetC());
   @override
   // ignore: override_on_non_overriding_member
   Widget _buildItemList(BuildContext context, int index) {
@@ -22,7 +22,7 @@ class GetWeightScreen extends StatelessWidget {
             width: 150,
             height: 200,
             decoration: BoxDecoration(
-              color: (index + 1 == _getWeightC.weight.value)
+              color: (index + 1 == _getWeightTargetC.weight.value)
                   ? AppColors.mailColor
                   : Colors.white,
               borderRadius: BorderRadius.circular(20),
@@ -33,7 +33,7 @@ class GetWeightScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    '${_getWeightC.list[index]}',
+                    '${_getWeightTargetC.list[index]}',
                     style: const TextStyle(
                       fontSize: 50.0,
                       color: Colors.black,
@@ -78,7 +78,7 @@ class GetWeightScreen extends StatelessWidget {
                   child: Container(
                     alignment: Alignment.center,
                     child: Text(
-                      'What is your weight?',
+                      'What is your target weight?',
                       style: Theme.of(context)
                           .textTheme
                           .headline4!
@@ -103,9 +103,9 @@ class GetWeightScreen extends StatelessWidget {
                       itemBuilder: _buildItemList,
                       itemSize: 150,
                       dynamicItemSize: true,
-                      itemCount: _getWeightC.list.length,
+                      itemCount: _getWeightTargetC.list.length,
                       onItemFocus: (int) {
-                        _getWeightC.weight.value = int + 1;
+                        _getWeightTargetC.weight.value = int + 1;
                       },
                     ),
                   ),
@@ -113,12 +113,12 @@ class GetWeightScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       BoxData(
-                          text: '${_getWeightC.weight.value}kg',
+                          text: '${_getWeightTargetC.weight.value}kg',
                           widthDevice: widthDevice,
                           heightDevice: heightDevice),
                       BoxData(
                         text:
-                            '${(_getWeightC.weight.value * 2.20462262).round()}lbs',
+                            '${(_getWeightTargetC.weight.value * 2.20462262).round()}lbs',
                         widthDevice: widthDevice,
                         heightDevice: heightDevice,
                       ),
@@ -132,7 +132,7 @@ class GetWeightScreen extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: ButtonDesign(
                 title: 'Next',
-                press: () => _getWeightC.nextBtnClick(),
+                press: () => _getWeightTargetC.nextBtnClick(),
               ),
             ),
           ],

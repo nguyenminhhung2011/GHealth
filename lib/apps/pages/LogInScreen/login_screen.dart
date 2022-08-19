@@ -5,6 +5,7 @@ import 'package:gold_health/apps/controls/login_controller.dart';
 import 'package:gold_health/apps/global_widgets/text_field_custom/password_field.dart';
 
 import '../../global_widgets/button_custom/button_icon.dart';
+import '../../global_widgets/dialog/error_dialog.dart';
 import '../../global_widgets/text_field_custom/text_field.dart';
 import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
@@ -22,6 +23,24 @@ class _LogInScreenState extends State<LogInScreen> {
   final logInC = Get.find<LogInC>();
   final _authController = Get.find<AuthC>();
   bool isLoading = false;
+  @override
+  void logIn() async {
+    if (logInC.emailC.text.isNotEmpty && logInC.passC.text.isNotEmpty) {
+      setState(() {
+        isLoading = true;
+      });
+      final response = await _authController.signInWithEmailAndPassword(
+          username: logInC.emailC.text, password: logInC.passC.text);
+
+      setState(() {
+        isLoading = false;
+      });
+    } else {
+      Get.dialog(
+        const ErrorDialog(question: 'Log In', title1: 'Field is not null'),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,32 +125,44 @@ class _LogInScreenState extends State<LogInScreen> {
                               control: logInC.passC,
                             ),
                             const SizedBox(height: 10),
-                            btnIcon(
-                              color: AppColors.primaryColor,
-                              press: () async {
-                                if (logInC.emailC.text.isNotEmpty &&
-                                    logInC.passC.text.isNotEmpty) {
-                                  final response = await _authController
-                                      .signInWithEmailAndPassword(
-                                          username: logInC.emailC.text,
-                                          password: logInC.passC.text);
-                                  final user = response?.user;
-                                  print(user?.displayName);
-                                  print(user?.email);
-                                  print(user?.emailVerified);
-                                  Get.toNamed(RouteName.dashboardScreen);
-                                }
-                              },
-                              icon: const SizedBox(width: 20),
-                              title: const Text(
-                                'Continue',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ),
+                            (!isLoading)
+                                ? btnIcon(
+                                    color: AppColors.primaryColor,
+                                    press: () => logIn(),
+                                    icon: const SizedBox(width: 20),
+                                    title: const Text(
+                                      'Continue',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 10),
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primaryColor,
+                                      borderRadius: BorderRadius.circular(10),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          offset: const Offset(2, 3),
+                                          blurRadius: 2,
+                                        ),
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.1),
+                                          offset: const Offset(-2, -3),
+                                          blurRadius: 2,
+                                        )
+                                      ],
+                                    ),
+                                    child: const Center(
+                                        child: CircularProgressIndicator(
+                                            color: Colors.white)),
+                                  ),
                             const SizedBox(height: 10),
                             const Text(
                               'Except',
@@ -151,7 +182,6 @@ class _LogInScreenState extends State<LogInScreen> {
                                 print(user?.displayName);
                                 print(user?.email);
                                 print(user?.emailVerified);
-                                Get.toNamed(RouteName.dashboardScreen);
                               },
                               icon: Image.asset(
                                 'assets/images/google.png',
@@ -188,18 +218,24 @@ class _LogInScreenState extends State<LogInScreen> {
                               ),
                             ),
                             const SizedBox(height: 10),
-                            InkWell(
-                              onTap: () {
-                                Get.toNamed(RouteName.signUp);
-                              },
-                              child: const Hero(
-                                tag: 'Create tag',
-                                child: Text(
-                                  'Create your account',
-                                  style: TextStyle(
-                                    decoration: TextDecoration.underline,
-                                    color: Colors.grey,
-                                    fontSize: 10,
+                            SizedBox(
+                              height: 20,
+                              width: double.infinity,
+                              child: Center(
+                                child: InkWell(
+                                  onTap: () {
+                                    Get.toNamed(RouteName.signUp);
+                                  },
+                                  child: const Hero(
+                                    tag: 'Create tag',
+                                    child: Text(
+                                      'Create your account',
+                                      style: TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        color: Colors.grey,
+                                        fontSize: 14,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),

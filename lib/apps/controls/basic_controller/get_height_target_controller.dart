@@ -1,12 +1,9 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 import 'package:gold_health/apps/controls/sign_up_controller.dart';
 
-import '../../routes/route_name.dart';
 import 'basic_controller.dart';
-import 'basic_info_controller.dart';
 
-class GetHeightC extends GetxController with BasicController {
+class GetHeightTargetC extends GetxController with BasicController {
   RxInt height = 100.obs;
   final signUpC = Get.find<SignUpC>();
   var list = [for (var i = 100; i <= 300; i++) i];
@@ -16,9 +13,9 @@ class GetHeightC extends GetxController with BasicController {
   // }
 
   void nextBtnClick() {
-    signUpC.basicProfile!.value.height = height.value;
+    signUpC.basicProfile!.value.heightTarget = height.value;
     print(signUpC.basicProfile!.value.height);
-    changeTab(4);
+    changeTab(7);
     // Get.toNamed(RouteName.getHeight);
   }
 }

@@ -13,7 +13,7 @@ import '../../template/misc/colors.dart';
 
 class SelectDurationScreen extends StatelessWidget {
   SelectDurationScreen({Key? key}) : super(key: key);
-  final _selectDuration = Get.find<SelectDurationC>();
+  final _selectDuration = Get.put(SelectDurationC());
 
   @override
   Widget build(BuildContext context) {

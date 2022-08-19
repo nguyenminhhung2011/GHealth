@@ -8,7 +8,7 @@ import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 class SelectGenderScreen extends StatelessWidget {
-  final _selectGenderC = Get.find<SelectGenderC>();
+  final _selectGenderC = Get.put(SelectGenderC());
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/storage_methods.dart.dart';
 import 'package:gold_health/apps/data/list_error_string.dart';
+import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 import 'package:gold_health/constains.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,6 +19,7 @@ import '../routes/route_name.dart';
 class AuthC extends GetxController {
   static AuthC instance = Get.find();
   final _firStore = FirebaseFirestore.instance;
+  final firebaseAuth = FirebaseAuth.instance;
   late Rx<User?> _user;
   User get user => _user.value!;
   late String initialPage;
@@ -58,7 +60,7 @@ class AuthC extends GetxController {
         UserCredential cred = await firebaseAuth.createUserWithEmailAndPassword(
             email: username, password: password);
         String avtPath = await StorageMethods().UpLoadImageGroupToStorage(
-          'ProfilePic',
+          cred.user!.uid,
           image,
         );
         models.User user = models.User(
@@ -83,13 +85,18 @@ class AuthC extends GetxController {
         return resultString;
       } else {
         resultString = fieldNull;
+        Get.dialog(ErrorDialog(question: 'Log In', title1: resultString));
         return resultString;
       }
     } on FirebaseAuthException catch (err) {
       // ignore: avoid_print
-      print(err.toString());
+      Get.dialog(ErrorDialog(question: 'Log In', title1: err.toString()));
       return err.toString();
     }
+  }
+
+  Future<void> signOut() async {
+    await firebaseAuth.signOut();
   }
 
   Future<UserCredential> signInWithGoogle() async {
@@ -131,9 +138,12 @@ class AuthC extends GetxController {
       return credential;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        print('No user found for that email.');
+        Get.dialog(const ErrorDialog(
+            question: 'Log In', title1: 'No user found for that eamil'));
       } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
+        Get.dialog(const ErrorDialog(
+            question: 'Log In',
+            title1: 'Wrong password provided for that user'));
       }
       return null;
     }
