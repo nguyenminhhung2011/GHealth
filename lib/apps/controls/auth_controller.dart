@@ -12,6 +12,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../data/enums/app_enums.dart';
 import '../data/models/User.dart' as models;
 import '../routes/route_name.dart';
+import '../template/misc/colors.dart';
 
 class AuthC extends GetxController {
   static AuthC instance = Get.find<AuthC>();
@@ -38,7 +39,7 @@ class AuthC extends GetxController {
   }
 
   // Dang ky tai khoan
-  Future<String> signUp({
+  Future<void> signUp({
     required String name,
     required String username,
     required String password,
@@ -79,16 +80,23 @@ class AuthC extends GetxController {
             .doc(cred.user!.uid)
             .set(user.toJson());
         resultString = "Create account is success";
-        return resultString;
+        FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: username, password: password);
+        Get.snackbar(
+          'Create Account',
+          'Success',
+          backgroundColor: AppColors.primaryColor1,
+        );
+        return;
       } else {
         resultString = fieldNull;
         Get.dialog(ErrorDialog(question: 'Log In', title1: resultString));
-        return resultString;
+        return;
       }
     } on FirebaseAuthException catch (err) {
       // ignore: avoid_print
       Get.dialog(ErrorDialog(question: 'Log In', title1: err.toString()));
-      return err.toString();
+      return;
     }
   }
 

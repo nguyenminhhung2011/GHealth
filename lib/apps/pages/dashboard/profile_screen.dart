@@ -175,18 +175,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        ButtonSvgIcon(
-                          title: 'Target Data',
-                          iconPath: 'assets/icons/Profile.svg',
-                          press: () async {
-                            await showDialog(
-                              useRootNavigator: false,
-                              barrierColor: Colors.black54,
-                              context: context,
-                              builder: (context) => TargetDataDialog(),
-                            );
-                          },
-                        ),
+                        // ButtonSvgIcon(
+                        //   title: 'Target Data',
+                        //   iconPath: 'assets/icons/Profile.svg',
+                        //   press: () async {
+                        //     await showDialog(
+                        //       useRootNavigator: false,
+                        //       barrierColor: Colors.black54,
+                        //       context: context,
+                        //       builder: (context) => TargetDataDialog(),
+                        //     );
+                        //   },
+                        // ),
                         const SizedBox(height: 10),
                         ButtonSvgIcon(
                           title: 'Activity History',

@@ -75,15 +75,15 @@ class HomeScreenControl extends GetxController {
 
   @override
   void onInit() {
-    super.onInit();
     getUser();
+    //ignore: avoid_print
+    print(_user.value['name']);
+    super.onInit();
   }
 
   @override
+  // ignore: unnecessary_overrides
   void onClose() {
-    // if (userName != null) {
-    //   userName.dispose();
-    // }
     super.onClose();
   }
 
@@ -94,8 +94,10 @@ class HomeScreenControl extends GetxController {
   }
 
   getUser() async {
+    //ignore: avoid_print
     print(firebaseAuth.currentUser!.uid);
 
     _user.value = await getDataUser(firebaseAuth.currentUser!.uid);
+    update();
   }
 }

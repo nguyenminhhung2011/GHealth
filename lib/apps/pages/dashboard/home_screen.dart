@@ -64,146 +64,148 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final stopwatch = Stopwatch()..start();
+
   @override
+  void initState() {
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     final double heightOfWaterChart = 100 * (timeProgress.length - 1);
     return Scaffold(
-        backgroundColor: AppColors.mainColor,
-        body: Obx(() {
-          // if (homeScreenController.user == null) {
-          //   return const CircularProgressIndicator(
-          //       color: AppColors.primaryColor1);
-          // }
-          return Stack(
-            children: [
-              Container(
-                width: widthDevice,
-                height: heightDevice,
-                decoration: BoxDecoration(
-                  color: AppColors.mainColor,
-                ),
-                padding: const EdgeInsets.only(
-                  //top: 20,
-                  bottom: 10,
-                  left: 20,
-                  right: 20,
-                ),
-                // height: _heightDevice,
-                // width: _widthDevice,
-                child: ListView(
-                  physics: const BouncingScrollPhysics(
-                    parent: AlwaysScrollableScrollPhysics(),
-                  ),
+      backgroundColor: AppColors.mainColor,
+      body: Stack(
+        children: [
+          Container(
+            width: widthDevice,
+            height: heightDevice,
+            decoration: BoxDecoration(
+              color: AppColors.mainColor,
+            ),
+            padding: const EdgeInsets.only(
+              //top: 20,
+              bottom: 10,
+              left: 20,
+              right: 20,
+            ),
+            // height: _heightDevice,
+            // width: _widthDevice,
+            child: ListView(
+              physics: const BouncingScrollPhysics(
+                parent: AlwaysScrollableScrollPhysics(),
+              ),
+              children: [
+                Column(
                   children: [
-                    Column(
-                      children: [
-                        ConstrainedBox(
-                          constraints:
-                              BoxConstraints(minHeight: heightDevice * 0.86),
-                          child: SingleChildScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const SizedBox(height: 20),
-                                ListTile(
-                                  isThreeLine: true,
-                                  title: Text(
-                                    'Welcome back',
-                                    style:
-                                        Theme.of(context).textTheme.headline5,
-                                  ),
-                                  trailing: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          Get.toNamed(
-                                              RouteName.notificationScreen);
-                                        },
-                                        icon: Obx(
-                                          () => SvgPicture.asset(
-                                            homeScreenController.isNotify
-                                                ? 'assets/icons/Notification-Icon_RedDot.svg'
-                                                : 'assets/icons/Notification-Icon.svg',
-                                          ),
-                                        ),
+                    ConstrainedBox(
+                      constraints:
+                          BoxConstraints(minHeight: heightDevice * 0.86),
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const SizedBox(height: 20),
+                            ListTile(
+                              isThreeLine: true,
+                              title: Text(
+                                'Welcome back',
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
+                              trailing: Stack(
+                                alignment: Alignment.center,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      Get.toNamed(RouteName.notificationScreen);
+                                    },
+                                    icon: Obx(
+                                      () => SvgPicture.asset(
+                                        homeScreenController.isNotify
+                                            ? 'assets/icons/Notification-Icon_RedDot.svg'
+                                            : 'assets/icons/Notification-Icon.svg',
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                  subtitle: Text(
-                                    homeScreenController.user['name'] ?? " ",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4!
-                                        .copyWith(fontSize: 24),
-                                  ),
-                                ),
-                                _BMIField(widthDevice),
-                                _ProcessField(context, widthDevice),
-                                SizedBox(
-                                  height: heightOfWaterChart + 80,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Today Target',
-                                        overflow: TextOverflow.clip,
+                                ],
+                              ),
+                              subtitle: Obx(
+                                () => (homeScreenController.user != null)
+                                    ? Text(
+                                        homeScreenController.user['name'] ??
+                                            " ",
                                         style: Theme.of(context)
                                             .textTheme
                                             .headline4!
-                                            .copyWith(
-                                              fontSize: 20,
-                                            ),
-                                      ),
-                                      const SizedBox(height: 25),
-                                      SizedBox(
-                                        height: heightOfWaterChart + 4,
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: _WaterViewField(
-                                                  heightOfWaterChart, context),
-                                            ),
-                                            const SizedBox(width: 10),
-                                            Expanded(
-                                              child: Column(
-                                                children: [
-                                                  Expanded(
-                                                    child: _ActivityViewField(
-                                                        context,
-                                                        heightOfWaterChart),
-                                                  ),
-                                                  const SizedBox(height: 5),
-                                                  Expanded(
-                                                    child: _CaloriesViewField(
-                                                        context,
-                                                        heightOfWaterChart),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                            .copyWith(fontSize: 24),
                                       )
-                                    ],
-                                  ),
-                                ),
-                              ],
+                                    : Container(),
+                              ),
                             ),
-                          ),
+                            _BMIField(widthDevice),
+                            _ProcessField(context, widthDevice),
+                            SizedBox(
+                              height: heightOfWaterChart + 80,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Today Target',
+                                    overflow: TextOverflow.clip,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4!
+                                        .copyWith(
+                                          fontSize: 20,
+                                        ),
+                                  ),
+                                  const SizedBox(height: 25),
+                                  SizedBox(
+                                    height: heightOfWaterChart + 4,
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: _WaterViewField(
+                                              heightOfWaterChart, context),
+                                        ),
+                                        const SizedBox(width: 10),
+                                        Expanded(
+                                          child: Column(
+                                            children: [
+                                              Expanded(
+                                                child: _ActivityViewField(
+                                                    context,
+                                                    heightOfWaterChart),
+                                              ),
+                                              const SizedBox(height: 5),
+                                              Expanded(
+                                                child: _CaloriesViewField(
+                                                    context,
+                                                    heightOfWaterChart),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          );
-        }));
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   // ignore: non_constant_identifier_names

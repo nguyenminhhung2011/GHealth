@@ -29,7 +29,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     const HomeScreen(),
     DailyPlanScreen(),
     const ProgressPhotoScreen(),
-    const ActivityTrackerScreen(),
+    ActivityTrackerScreen(),
   ];
 
   final List<IconData> _iconList = [

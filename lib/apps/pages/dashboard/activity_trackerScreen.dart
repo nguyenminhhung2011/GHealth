@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/activity_tracker_controller.dart';
 import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:gold_health/apps/global_widgets/list_chart/line_chart_weight.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
@@ -10,14 +12,15 @@ import '../../global_widgets/acti_card.dart';
 import '../../global_widgets/list_chart/colum_chart2_colum.dart';
 import '../../global_widgets/list_chart/line_heart_chart.dart';
 import '../../global_widgets/list_chart/colum_chart1_colum.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 import 'package:gold_health/apps/data/sleep_tracker_data.dart';
 import 'package:time_chart/time_chart.dart';
 
 class ActivityTrackerScreen extends StatelessWidget {
-  const ActivityTrackerScreen({Key? key}) : super(key: key);
-
+  ActivityTrackerScreen({Key? key}) : super(key: key);
+  final activityC = Get.find<ActivityTrackerC>();
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -38,14 +41,7 @@ class ActivityTrackerScreen extends StatelessWidget {
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ProfileScreen(),
-                  ),
-                );
-              },
+              onPressed: () => Get.toNamed(RouteName.profileScreen),
               icon: const Icon(Icons.settings, color: Colors.black))
         ],
       ),
