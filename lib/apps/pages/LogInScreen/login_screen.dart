@@ -31,6 +31,9 @@ class _LogInScreenState extends State<LogInScreen> {
       });
       final response = await _authController.signInWithEmailAndPassword(
           username: logInC.emailC.text, password: logInC.passC.text);
+      if (response!.user != null) {
+        Get.offAllNamed(RouteName.dashboardScreen);
+      }
       setState(() {
         isLoading = false;
       });
@@ -155,8 +158,9 @@ class _LogInScreenState extends State<LogInScreen> {
                                 ],
                               ),
                               child: const Center(
-                                  child: CircularProgressIndicator(
-                                      color: Colors.white)),
+                                child: CircularProgressIndicator(
+                                    color: Colors.white),
+                              ),
                             ),
                       const SizedBox(height: 10),
                       const Text(

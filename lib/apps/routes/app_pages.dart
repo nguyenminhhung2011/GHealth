@@ -57,7 +57,7 @@ class AppPages {
     ),
     GetPage(
       name: RouteName.profileScreen,
-      page: () => const ProfileScreen(),
+      page: () => ProfileScreen(),
       binding: ProfileB(),
       transition: Transition.fade,
     ),

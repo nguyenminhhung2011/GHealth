@@ -10,7 +10,7 @@ class DashBoardBinding implements Bindings {
   @override
   void dependencies() {
     Get.lazyPut<DashBoardControl>(() => DashBoardControl());
-    Get.lazyPut<HomeScreenControl>(() => HomeScreenControl());
+    // Get.put(HomeScreenControl());
     Get.lazyPut<DailyPlanController>(() => DailyPlanController());
     Get.lazyPut<ActivityTrackerC>(() => ActivityTrackerC());
   }

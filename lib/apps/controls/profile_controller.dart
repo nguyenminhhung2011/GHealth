@@ -5,6 +5,8 @@ import 'package:gold_health/apps/controls/auth_controller.dart';
 import 'package:gold_health/constains.dart';
 import 'package:age/age.dart';
 
+import '../../services/auth_service.dart';
+
 class ProfileC extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get user => _user.value;
@@ -42,9 +44,9 @@ class ProfileC extends GetxController {
 
   getUser() async {
     //ignore: avoid_print
-    print(firebaseAuth.currentUser!.uid);
+    print(AuthService.instance.currentUser!.uid);
 
-    _user.value = await getDataUser(firebaseAuth.currentUser!.uid);
+    _user.value = await getDataUser(AuthService.instance.currentUser!.uid);
     update();
   }
 }

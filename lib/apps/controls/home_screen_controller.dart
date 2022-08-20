@@ -9,7 +9,7 @@ import '../../services/auth_service.dart';
 class HomeScreenControl extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get user => _user.value;
-
+  final Rx<String> _uid = "".obs;
   var notifications = {
     DateTime.now().subtract(const Duration(minutes: 5)): {
       'icon': CircleAvatar(
@@ -77,10 +77,10 @@ class HomeScreenControl extends GetxController {
 
   @override
   void onInit() {
-    getUser();
+    super.onInit();
+    updateUser(AuthService.instance.currentUser!.uid);
     //ignore: avoid_print
     print(_user.value['uid']);
-    super.onInit();
   }
 
   @override
@@ -89,15 +89,17 @@ class HomeScreenControl extends GetxController {
     super.onClose();
   }
 
-  Future<Map<String, dynamic>> getDataUser(String uid) async {
-    var userDoc = await firestore.collection('users').doc(uid).get();
-    Map<String, dynamic> result = (userDoc.data() as Map<String, dynamic>);
-    return result;
+  // Get user from firestore
+  updateUser(String id) {
+    _uid.value = id;
+    getDataUser(_uid.value);
   }
 
-  getUser() async {
-    print(AuthService.instance.currentUser!.uid);
-    _user.value = await getDataUser(AuthService.instance.currentUser!.uid);
+  getDataUser(String uid) async {
+    var userDoc = await firestore.collection('users').doc(uid).get();
+    Map<String, dynamic> result = (userDoc.data() as Map<String, dynamic>);
+    _user.value = result;
+    //print(result['name'] + ' and ' + _user.value['name']);
     update();
   }
 }

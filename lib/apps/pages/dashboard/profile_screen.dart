@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/auth_controller.dart';
+import 'package:gold_health/apps/controls/profile_controller.dart';
 import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:gold_health/apps/global_widgets/gradient_icon..dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
@@ -18,8 +20,9 @@ import '../../global_widgets/toggle_button_ios.dart';
 import '../../template/misc/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  ProfileScreen({Key? key}) : super(key: key);
 
+  final _controller = Get.find<ProfileC>();
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
 }

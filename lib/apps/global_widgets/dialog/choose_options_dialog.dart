@@ -4,16 +4,18 @@ import 'package:get/get.dart';
 
 import '../../template/misc/colors.dart';
 
-class YesNoDialog extends StatelessWidget {
-  const YesNoDialog({
+class ChooseOptionsDialog extends StatelessWidget {
+  const ChooseOptionsDialog({
     Key? key,
-    required this.press,
+    required this.press1,
     required this.question,
     required this.title1,
     required this.title2,
+    required this.press2,
   }) : super(key: key);
 
-  final Function() press;
+  final Function() press1;
+  final Function() press2;
   final String question;
   final String title1;
   final String title2;
@@ -48,35 +50,14 @@ class YesNoDialog extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               const Spacer(),
-              Text(
-                question,
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: 50,
-                width: Get.mediaQuery.size.width * 0.7,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  title1,
+                  question,
+                  textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Colors.blueGrey,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 70,
-                width: Get.mediaQuery.size.width * 0.7,
-                child: Text(
-                  title2,
-                  style: const TextStyle(
-                    color: Colors.blueGrey,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 18,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
@@ -85,26 +66,24 @@ class YesNoDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () {
-                        Get.back(result: false);
-                      },
+                      onPressed: press1,
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.blueGrey[50],
+                          primary: AppColors.primaryColor1,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10)),
                           alignment: Alignment.center,
                           fixedSize: const Size(110, 50),
                           elevation: 0),
                       child: Text(
-                        'No',
-                        style: TextStyle(
-                            color: Colors.blueGrey[600],
+                        title1,
+                        style: const TextStyle(
+                            color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),
                       )),
                   const SizedBox(width: 15),
                   ElevatedButton(
-                      onPressed: press,
+                      onPressed: press2,
                       style: ElevatedButton.styleFrom(
                         primary: AppColors.primaryColor1,
                         shape: RoundedRectangleBorder(
@@ -113,9 +92,9 @@ class YesNoDialog extends StatelessWidget {
                         fixedSize: const Size(110, 50),
                         elevation: 0,
                       ),
-                      child: const Text(
-                        'Yes',
-                        style: TextStyle(
+                      child: Text(
+                        title2,
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 18,
                             fontWeight: FontWeight.bold),

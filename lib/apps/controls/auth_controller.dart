@@ -31,14 +31,16 @@ class AuthC extends GetxController {
   _setInitialScreen(User? user) {
     //if user == null screen will go to Login screen else go to home screen
     if (user == null) {
-      Get.toNamed(RouteName.logIn);
+      //   Get.toNamed(RouteName.logIn);
+      initialPage = RouteName.logIn;
     } else {
-      Get.toNamed(RouteName.dashboardScreen);
+//      Get.toNamed(RouteName.dashboardScreen);
+      initialPage = RouteName.dashboardScreen;
     }
   }
 
   // Dang ky tai khoan
-  Future<void> signUp({
+  Future<String> signUp({
     required String name,
     required String username,
     required String password,
@@ -79,23 +81,43 @@ class AuthC extends GetxController {
             .doc(cred.user!.uid)
             .set(user.toJson());
         resultString = "Create account is success";
-        await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: username, password: password);
         // Get.snackbar(
         //   'Create Account',
         //   'Success',
         //   backgroundColor: AppColors.primaryColor1,
         // );
-        return;
+
+        return resultString;
       } else {
         resultString = fieldNull;
         Get.dialog(ErrorDialog(question: 'Log In', title1: resultString));
-        return;
+        return resultString;
       }
     } on FirebaseAuthException catch (err) {
       // ignore: avoid_print
       Get.dialog(ErrorDialog(question: 'Log In', title1: err.toString()));
-      return;
+      return err.toString();
+    }
+  }
+
+  Future<UserCredential?> signInWithEmailAndPassword({
+    required String username,
+    required String password,
+  }) async {
+    try {
+      final credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: username, password: password);
+      return credential;
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        Get.dialog(const ErrorDialog(
+            question: 'Log In', title1: 'No user found for that email'));
+      } else if (e.code == 'wrong-password') {
+        Get.dialog(const ErrorDialog(
+            question: 'Log In',
+            title1: 'Wrong password provided for that user'));
+      }
+      return null;
     }
   }
 
@@ -129,27 +151,6 @@ class AuthC extends GetxController {
 
       return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
     } catch (e) {
-      return null;
-    }
-  }
-
-  Future<UserCredential?> signInWithEmailAndPassword({
-    required String username,
-    required String password,
-  }) async {
-    try {
-      final credential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: username, password: password);
-      return credential;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        Get.dialog(const ErrorDialog(
-            question: 'Log In', title1: 'No user found for that email'));
-      } else if (e.code == 'wrong-password') {
-        Get.dialog(const ErrorDialog(
-            question: 'Log In',
-            title1: 'Wrong password provided for that user'));
-      }
       return null;
     }
   }
