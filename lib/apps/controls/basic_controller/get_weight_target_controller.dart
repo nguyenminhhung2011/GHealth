@@ -12,6 +12,7 @@ import 'basic_controller.dart';
 class GetWeightTargetC extends GetxController with BasicController {
   RxInt weight = 1.obs;
   final signUpC = Get.find<SignUpC>();
+  final authC = Get.find<AuthC>();
   var list = [for (var i = 1; i <= 200; i++) i];
   @override
   // void OnInit() {
@@ -23,7 +24,7 @@ class GetWeightTargetC extends GetxController with BasicController {
     Get.dialog(
       YesNoDialog(
         press: () async {
-          String result = await AuthC().signUp(
+          await authC.signUp(
             name: signUpC.basicProfile!.value.name,
             username: signUpC.basicProfile!.value.username,
             password: signUpC.basicProfile!.value.password,
@@ -37,18 +38,17 @@ class GetWeightTargetC extends GetxController with BasicController {
             image: signUpC.image,
           );
           //ignore: avoid_print
-          print(result);
-          if (result == "Create account is success") {
-            await firebaseAuth.signInWithEmailAndPassword(
-                email: signUpC.basicProfile!.value.username,
-                password: signUpC.basicProfile!.value.password);
-            Get.snackbar(
-              'Create Account',
-              'Success',
-              backgroundColor: AppColors.primaryColor1,
-            );
-            Get.find<AuthC>();
-          }
+          // print(result);
+          // if (result == "Create account is success") {
+          //   await firebaseAuth.signInWithEmailAndPassword(
+          //       email: signUpC.basicProfile!.value.username,
+          //       password: signUpC.basicProfile!.value.password);
+          //   Get.snackbar(
+          //     'Create Account',
+          //     'Success',
+          //     backgroundColor: AppColors.primaryColor1,
+          //   );
+          // }
         },
         question: 'Confirm Information',
         title1:

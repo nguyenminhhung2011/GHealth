@@ -3,6 +3,7 @@ import 'package:gold_health/apps/binding/daily_nutrition_binding.dart';
 import 'package:gold_health/apps/binding/fill_profile_binding.dart';
 import 'package:gold_health/apps/binding/get_old_binding.dart';
 import 'package:gold_health/apps/binding/login_binding.dart';
+import 'package:gold_health/apps/binding/profile_bindinig.dart';
 import 'package:gold_health/apps/binding/select_duration_binding.dart';
 import 'package:gold_health/apps/binding/select_gender_binding.dart';
 import 'package:gold_health/apps/binding/splash_binding.dart';
@@ -18,6 +19,7 @@ import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart'
 import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/dashboard_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
+import 'package:gold_health/apps/pages/dashboard/profile_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
@@ -51,6 +53,12 @@ class AppPages {
       name: RouteName.logIn,
       page: () => LogInScreen(),
       binding: LogInB(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: RouteName.profileScreen,
+      page: () => const ProfileScreen(),
+      binding: ProfileB(),
       transition: Transition.fade,
     ),
     GetPage(
@@ -114,7 +122,7 @@ class AppPages {
     ),
     GetPage(
       name: RouteName.activityTrackerScreen,
-      page: () => const ActivityTrackerScreen(),
+      page: () => ActivityTrackerScreen(),
       transition: Transition.fade,
     ),
     GetPage(

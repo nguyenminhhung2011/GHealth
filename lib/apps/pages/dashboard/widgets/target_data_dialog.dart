@@ -5,8 +5,17 @@ import '../profile_screen.dart';
 import 'load_height_weight.dart';
 
 class TargetDataDialog extends StatelessWidget {
-  const TargetDataDialog({Key? key}) : super(key: key);
-
+  const TargetDataDialog(
+      {Key? key,
+      required this.currentHeight,
+      required this.currentWeight,
+      required this.heightTarget,
+      required this.weightTarget})
+      : super(key: key);
+  final double currentHeight;
+  final double currentWeight;
+  final double heightTarget;
+  final double weightTarget;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -38,10 +47,10 @@ class TargetDataDialog extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           Row(
-            children: const [
-              InforCard(title: 'Height', data: '180cm'),
-              Spacer(),
-              InforCard(title: 'Weight', data: '70Kg'),
+            children: [
+              InforCard(title: 'Height', data: '${currentHeight}cm'),
+              const Spacer(),
+              InforCard(title: 'Weight', data: '${currentWeight}Kg'),
             ],
           ),
           const SizedBox(height: 10),
