@@ -110,7 +110,7 @@ class AppPages {
     ),
     GetPage(
       name: RouteName.homeScreen,
-      page: () => const HomeScreen(),
+      page: () => HomeScreen(),
       binding: HomeScreenBinding(),
       transition: Transition.fade,
     ),

@@ -26,7 +26,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   bool isLoading = false;
 
   final List<Widget> listPage = [
-    const HomeScreen(),
+    HomeScreen(),
     DailyPlanScreen(),
     const ProgressPhotoScreen(),
     ActivityTrackerScreen(),

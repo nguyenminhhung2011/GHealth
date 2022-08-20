@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/auth_controller.dart';
 import 'package:gold_health/constains.dart';
 
+import '../../services/auth_service.dart';
+
 class HomeScreenControl extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get user => _user.value;
@@ -77,7 +79,7 @@ class HomeScreenControl extends GetxController {
   void onInit() {
     getUser();
     //ignore: avoid_print
-    print(_user.value['name']);
+    print(_user.value['uid']);
     super.onInit();
   }
 
@@ -94,10 +96,8 @@ class HomeScreenControl extends GetxController {
   }
 
   getUser() async {
-    //ignore: avoid_print
-    print(firebaseAuth.currentUser!.uid);
-
-    _user.value = await getDataUser(firebaseAuth.currentUser!.uid);
+    print(AuthService.instance.currentUser!.uid);
+    _user.value = await getDataUser(AuthService.instance.currentUser!.uid);
     update();
   }
 }

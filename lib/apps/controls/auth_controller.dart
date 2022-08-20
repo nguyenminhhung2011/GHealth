@@ -12,7 +12,6 @@ import 'package:google_sign_in/google_sign_in.dart';
 import '../data/enums/app_enums.dart';
 import '../data/models/User.dart' as models;
 import '../routes/route_name.dart';
-import '../template/misc/colors.dart';
 
 class AuthC extends GetxController {
   static AuthC instance = Get.find<AuthC>();
@@ -80,13 +79,13 @@ class AuthC extends GetxController {
             .doc(cred.user!.uid)
             .set(user.toJson());
         resultString = "Create account is success";
-        FirebaseAuth.instance
+        await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: username, password: password);
-        Get.snackbar(
-          'Create Account',
-          'Success',
-          backgroundColor: AppColors.primaryColor1,
-        );
+        // Get.snackbar(
+        //   'Create Account',
+        //   'Success',
+        //   backgroundColor: AppColors.primaryColor1,
+        // );
         return;
       } else {
         resultString = fieldNull;
