@@ -13,7 +13,7 @@ import '../../../main.dart';
 import '../../../services/notification_api.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../template/misc/colors.dart';
-import '../dashboard/activity_trackerScreen.dart';
+import '../dashboard/activity_tracker_screen.dart';
 import '../dashboard/widgets/button_gradient.dart';
 import 'package:timezone/timezone.dart' as tz;
 

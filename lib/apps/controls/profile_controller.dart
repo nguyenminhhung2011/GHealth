@@ -10,29 +10,11 @@ import '../../services/auth_service.dart';
 class ProfileC extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get user => _user.value;
-
-  @override
-  void onInit() {
-    //ignore: avoid_print
-    getUser();
-    print(_user.value['name']);
-    super.onInit();
-  }
-
-  @override
-  // ignore: unnecessary_overrides
-  void onClose() {
-    super.onClose();
-  }
-
-  Future<Map<String, dynamic>> getDataUser(String uid) async {
-    var userDoc = await firestore.collection('users').doc(uid).get();
-    Map<String, dynamic> result = (userDoc.data() as Map<String, dynamic>);
-    return result;
-  }
+  final Rx<String> _uid = "".obs;
 
   AgeDuration get getAge {
-    DateTime birthday = DateTime.now();
+    DateTime birthday = DateTime.fromMillisecondsSinceEpoch(
+        _user.value['dateOfBirth'].seconds * 1000);
     DateTime today = DateTime.now();
     AgeDuration age;
 
@@ -42,11 +24,31 @@ class ProfileC extends GetxController {
     return age;
   }
 
-  getUser() async {
+  @override
+  void onInit() {
+    super.onInit();
+    updateUser(AuthService.instance.currentUser!.uid);
     //ignore: avoid_print
-    print(AuthService.instance.currentUser!.uid);
+    print(_user.value['uid']);
+  }
 
-    _user.value = await getDataUser(AuthService.instance.currentUser!.uid);
+  @override
+  // ignore: unnecessary_overrides
+  void onClose() {
+    super.onClose();
+  }
+
+  // Get user from firestore
+  updateUser(String id) {
+    _uid.value = id;
+    getDataUser(_uid.value);
+  }
+
+  getDataUser(String uid) async {
+    var userDoc = await firestore.collection('users').doc(uid).get();
+    Map<String, dynamic> result = (userDoc.data() as Map<String, dynamic>);
+    _user.value = result;
+    //print(result['name'] + ' and ' + _user.value['name']);
     update();
   }
 }

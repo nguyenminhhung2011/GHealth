@@ -11,7 +11,7 @@ import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/list_chart/colum_chart2_colum.dart';
 import '../../global_widgets/screen_template.dart';
 import '../../template/misc/colors.dart';
-import '../dashboard/activity_trackerScreen.dart';
+import '../dashboard/activity_tracker_screen.dart';
 
 class DailyWaterScreen extends StatelessWidget {
   DailyWaterScreen({Key? key}) : super(key: key);

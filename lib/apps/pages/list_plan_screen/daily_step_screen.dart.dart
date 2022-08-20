@@ -16,7 +16,7 @@ import '../../../services/notification_api.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/list_chart/colum_chart1_colum.dart';
 import '../../template/misc/colors.dart';
-import '../dashboard/activity_trackerScreen.dart';
+import '../dashboard/activity_tracker_screen.dart';
 
 class DailyStepScreen extends StatefulWidget {
   DailyStepScreen({Key? key}) : super(key: key);

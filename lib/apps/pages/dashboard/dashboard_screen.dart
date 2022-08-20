@@ -9,7 +9,7 @@ import '../../controls/dashboard_controller.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/home_screen.dart';
 import '../progress_tracker/progress_photo_screen.dart';
-import 'activity_trackerScreen.dart';
+import 'activity_tracker_screen.dart';
 import 'profile_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {

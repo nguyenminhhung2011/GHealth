@@ -31,8 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   double value = 0;
   final List<int> _list = [for (int i = 1; i <= 140; i++) i];
-//  final homeScreenController = Get.find<HomeScreenControl>();
-  final homeScreenController = Get.put(HomeScreenControl());
+  final homeScreenController = Get.find<HomeScreenControl>();
+  // final homeScreenController = Get.put(HomeScreenControl());
 
   final List<String> timeProgress = [
     '6am - 8am',

@@ -31,7 +31,7 @@ class _LogInScreenState extends State<LogInScreen> {
       });
       final response = await _authController.signInWithEmailAndPassword(
           username: logInC.emailC.text, password: logInC.passC.text);
-      if (response!.user != null) {
+      if (response != null) {
         Get.offAllNamed(RouteName.dashboardScreen);
       }
       setState(() {

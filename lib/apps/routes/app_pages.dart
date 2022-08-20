@@ -22,7 +22,7 @@ import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/profile_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
-import 'package:gold_health/apps/pages/dashboard/activity_trackerScreen.dart';
+import 'package:gold_health/apps/pages/dashboard/activity_tracker_screen.dart';
 import '../binding/basic_info_binding.dart';
 import '../binding/get_height_binding.dart';
 import '../binding/get_weight_binding.dart';
