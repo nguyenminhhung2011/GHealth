@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="facebook_app_id">628950948549971</string>
-    <string name="facebook_client_token">574220c56da251f546be065deb919196</string>
+    <string name="app_name">GHealth</string>
+    <string name="facebook_app_id">580267470501834</string>
+    <string name="fb_login_protocol_scheme">fb580267470501834</string>
+    <string name="facebook_client_token">360ada4b0d8dd5558f5e68f56f037d02</string>
 </resources>
