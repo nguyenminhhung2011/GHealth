@@ -114,7 +114,7 @@ class AuthC extends GetxController {
     }
   }
 
-  Future<UserCredential> signInWithFacebook() async {
+  Future<UserCredential?> signInWithFacebook() async {
     try {
       final LoginResult loginResult = await FacebookAuth.instance.login();
       final OAuthCredential facebookAuthCredential =
@@ -122,7 +122,7 @@ class AuthC extends GetxController {
 
       return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
     } catch (e) {
-      rethrow;
+      return null;
     }
   }
 
@@ -137,7 +137,7 @@ class AuthC extends GetxController {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Get.dialog(const ErrorDialog(
-            question: 'Log In', title1: 'No user found for that eamil'));
+            question: 'Log In', title1: 'No user found for that email'));
       } else if (e.code == 'wrong-password') {
         Get.dialog(const ErrorDialog(
             question: 'Log In',
