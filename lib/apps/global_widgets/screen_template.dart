@@ -17,12 +17,9 @@ class _ScreenTemplateState extends State<ScreenTemplate> {
     var widthDevice = MediaQuery.of(context).size.width;
     return Stack(
       children: [
-        Container(
+        SizedBox(
           width: widthDevice,
           height: heightDevice,
-          decoration: BoxDecoration(
-            color: AppColors.mainColor,
-          ),
           child: const Align(
             alignment: Alignment.topCenter,
           ),
@@ -47,9 +44,6 @@ class _ScreenTemplateState extends State<ScreenTemplate> {
                         width: double.maxFinite,
                         padding: const EdgeInsets.symmetric(
                           vertical: 10,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor,
                         ),
                         child: SingleChildScrollView(
                             physics: const NeverScrollableScrollPhysics(),
