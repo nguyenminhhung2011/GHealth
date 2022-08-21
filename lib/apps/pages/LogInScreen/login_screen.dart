@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/login_controller.dart';
@@ -13,7 +12,7 @@ import '../basic_info_screen/app_bar_hero.dart';
 import '../../controls/auth_controller.dart';
 
 class LogInScreen extends StatefulWidget {
-  LogInScreen({Key? key}) : super(key: key);
+  const LogInScreen({Key? key}) : super(key: key);
 
   @override
   State<LogInScreen> createState() => _LogInScreenState();
@@ -56,7 +55,6 @@ class _LogInScreenState extends State<LogInScreen> {
           child: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppBarHello(widthDevice: widthDevice),
                 Hero(
@@ -110,7 +108,7 @@ class _LogInScreenState extends State<LogInScreen> {
                   ),
                   child: Column(
                     children: [
-                      TextFormFieldDesgin(
+                      TextFormFieldDesign(
                         hintText: 'Enter your username',
                         labelText: 'Username',
                         control: logInC.emailC,

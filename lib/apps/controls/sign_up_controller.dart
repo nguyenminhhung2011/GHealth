@@ -7,7 +7,6 @@ import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 import '../data/enums/app_enums.dart';
 import '../data/models/User.dart';
 import '../routes/route_name.dart';
-import 'auth_controller.dart';
 
 class SignUpC extends GetxController {
   late TextEditingController emailC;
@@ -43,12 +42,7 @@ class SignUpC extends GetxController {
     repassC.text = '1234567';
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void ContinueBtnClick() {
+  void continueBtnClick() {
     if (emailC.text.isNotEmpty && passC.text.isNotEmpty) {
       bool emailValid = RegExp(
               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")

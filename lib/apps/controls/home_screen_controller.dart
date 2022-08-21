@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/auth_controller.dart';
-import 'package:gold_health/constains.dart';
+import 'package:gold_health/constrains.dart';
 
 import '../../services/auth_service.dart';
 
@@ -13,51 +11,39 @@ class HomeScreenControl extends GetxController {
   var notifications = {
     DateTime.now().subtract(const Duration(minutes: 5)): {
       'icon': CircleAvatar(
-        child: SvgPicture.asset(
-          'assets/icons/cake_2.svg',
+        child: Image.asset(
+          'assets/icons/Ellipse.png',
         ),
       ),
       'title': 'Hey, it\'s time for lunch',
     },
     DateTime.now().subtract(const Duration(hours: 2)): {
-      'icon': CircleAvatar(
-        backgroundColor: const Color.fromARGB(255, 230, 211, 233),
-        child: SvgPicture.asset(
-          'assets/icons/woman_workout.svg',
-        ),
+      'icon': Image.asset(
+        'assets/icons/Ellipse (3).png',
       ),
       'title': 'Don\'t miss your abs workout',
     },
     DateTime.now().subtract(const Duration(hours: 6)): {
-      'icon': CircleAvatar(
-        child: SvgPicture.asset(
-          'assets/icons/cake.svg',
-        ),
+      'icon': Image.asset(
+        'assets/icons/Ellipse (2).png',
       ),
       'title': 'Hey, let\'t add some meal for your body',
     },
     DateTime.now().subtract(const Duration(days: 10)): {
-      'icon': CircleAvatar(
-        child: SvgPicture.asset(
-          'assets/icons/man_workout.svg',
-        ),
+      'icon': Image.asset(
+        'assets/icons/Ellipse (3).png',
       ),
       'title': 'Congratulation, you have finished your workout',
     },
     DateTime.now().subtract(const Duration(days: 50)): {
-      'icon': CircleAvatar(
-        child: SvgPicture.asset(
-          'assets/icons/cake.svg',
-        ),
+      'icon': Image.asset(
+        'assets/icons/Ellipse (2).png',
       ),
       'title': 'Hey, it\'s time for lunch',
     },
     DateTime.now().subtract(const Duration(days: 100)): {
-      'icon': CircleAvatar(
-        backgroundColor: const Color.fromARGB(255, 230, 211, 233),
-        child: SvgPicture.asset(
-          'assets/icons/cake.svg',
-        ),
+      'icon': Image.asset(
+        'assets/icons/Ellipse.png',
       ),
       'title': 'Ups, You have missed your lowerbody workout',
     },
@@ -81,12 +67,6 @@ class HomeScreenControl extends GetxController {
     updateUser(AuthService.instance.currentUser!.uid);
     //ignore: avoid_print
     print(_user.value['uid']);
-  }
-
-  @override
-  // ignore: unnecessary_overrides
-  void onClose() {
-    super.onClose();
   }
 
   // Get user from firestore

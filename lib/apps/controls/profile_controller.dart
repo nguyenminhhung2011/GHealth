@@ -1,9 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/auth_controller.dart';
-import 'package:gold_health/constains.dart';
-import 'package:age/age.dart';
+import 'package:gold_health/constrains.dart';
+// import 'package:age/age.dart';
 
 import '../../services/auth_service.dart';
 
@@ -12,17 +9,17 @@ class ProfileC extends GetxController {
   Map<String, dynamic> get user => _user.value;
   final Rx<String> _uid = "".obs;
 
-  AgeDuration get getAge {
-    DateTime birthday = DateTime.fromMillisecondsSinceEpoch(
-        _user.value['dateOfBirth'].seconds * 1000);
-    DateTime today = DateTime.now();
-    AgeDuration age;
+  // AgeDuration get getAge {
+  //   DateTime birthday = DateTime.fromMillisecondsSinceEpoch(
+  //       _user.value['dateOfBirth'].seconds * 1000);
+  //   DateTime today = DateTime.now();
+  //   AgeDuration age;
 
-    // Find out your age
-    age = Age.dateDifference(
-        fromDate: birthday, toDate: today, includeToDate: false);
-    return age;
-  }
+  //   // Find out your age
+  //   age = Age.dateDifference(
+  //       fromDate: birthday, toDate: today, includeToDate: false);
+  //   return age;
+  // }
 
   @override
   void onInit() {

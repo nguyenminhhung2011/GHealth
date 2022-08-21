@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import '../../template/misc/colors.dart';
 
-class TextFormFieldDesgin extends StatelessWidget {
+class TextFormFieldDesign extends StatelessWidget {
   final String hintText;
   final String labelText;
   final TextEditingController control;
   final IconData icon;
-  const TextFormFieldDesgin({
+  const TextFormFieldDesign({
     Key? key,
     required this.hintText,
     required this.labelText,
