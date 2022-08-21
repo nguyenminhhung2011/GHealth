@@ -43,7 +43,10 @@ class LoadHeightWeight extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              width: _widthDevice * 0.55 * (fData / sData) - 20,
+              width: (fData < sData)
+                  ? _widthDevice * 0.55 * (fData / sData) - 20
+                  : _widthDevice * 0.55 * ((sData - fData + sData) / sData) -
+                      20,
               height: 10,
               decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(

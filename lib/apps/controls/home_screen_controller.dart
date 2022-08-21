@@ -102,4 +102,11 @@ class HomeScreenControl extends GetxController {
     //print(result['name'] + ' and ' + _user.value['name']);
     update();
   }
+
+  double bmi() {
+    return (_user.value != null)
+        ? (_user.value['weight'] /
+            ((_user.value['height'] / 100) * (_user.value['height'] / 100)))
+        : 38.0;
+  }
 }

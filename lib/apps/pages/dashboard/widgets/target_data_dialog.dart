@@ -48,9 +48,9 @@ class TargetDataDialog extends StatelessWidget {
           const SizedBox(height: 10),
           Row(
             children: [
-              InforCard(title: 'Height', data: '${currentHeight}cm'),
+              InforCard(title: 'Height', data: '${heightTarget.toInt()}cm'),
               const Spacer(),
-              InforCard(title: 'Weight', data: '${currentWeight}Kg'),
+              InforCard(title: 'Weight', data: '${weightTarget.toInt()}Kg'),
             ],
           ),
           const SizedBox(height: 10),
@@ -67,17 +67,17 @@ class TargetDataDialog extends StatelessWidget {
             ],
           ),
           Row(
-            children: const [
+            children: [
               Text(
-                '160cm',
-                style: TextStyle(
+                '${currentHeight.toInt()}cm',
+                style: const TextStyle(
                     color: AppColors.primaryColor1,
                     fontWeight: FontWeight.w600),
               ),
-              Spacer(),
+              const Spacer(),
               Text(
-                '180cm',
-                style: TextStyle(
+                '${heightTarget.toInt()}cm',
+                style: const TextStyle(
                     color: AppColors.primaryColor1,
                     fontWeight: FontWeight.w600),
               ),
@@ -97,17 +97,17 @@ class TargetDataDialog extends StatelessWidget {
             ],
           ),
           Row(
-            children: const [
+            children: [
               Text(
-                '60kg',
-                style: TextStyle(
+                '${currentWeight.toInt()}kg',
+                style: const TextStyle(
                     color: AppColors.primaryColor2,
                     fontWeight: FontWeight.w600),
               ),
-              Spacer(),
+              const Spacer(),
               Text(
-                '80kg',
-                style: TextStyle(
+                '${weightTarget.toInt()}kg',
+                style: const TextStyle(
                     color: AppColors.primaryColor2,
                     fontWeight: FontWeight.w600),
               ),

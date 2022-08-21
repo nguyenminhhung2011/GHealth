@@ -7,6 +7,7 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:timelines/timelines.dart';
 
 import '../../../global_widgets/dialog/yes_no_dialog.dart';
+import '../../../template/misc/colors.dart';
 
 class FastingCountdownScreen extends StatefulWidget {
   const FastingCountdownScreen({Key? key, required this.timeline})
@@ -62,6 +63,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
           onTap: () {
             Get.to(
               () => Scaffold(
+                backgroundColor: AppColors.mainColor,
                 body: ScreenTemplate(
                     child: Padding(
                   padding: const EdgeInsets.all(20.0),

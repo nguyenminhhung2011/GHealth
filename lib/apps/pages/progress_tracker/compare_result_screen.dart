@@ -49,6 +49,7 @@ class _CompareResultScreenState extends State<CompareResultScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: AppColors.mainColor,
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: AppBar(
