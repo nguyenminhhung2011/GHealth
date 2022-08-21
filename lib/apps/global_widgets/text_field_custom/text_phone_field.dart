@@ -34,6 +34,7 @@ class TextPhoneField extends StatelessWidget {
             blurRadius: 10,
           )
         ],
+        border: Border.all(width: 2, color: AppColors.primaryColor),
       ),
       child: Row(
         children: [

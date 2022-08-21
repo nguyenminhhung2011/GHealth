@@ -98,6 +98,7 @@ class _IntroScreenState extends State<IntroScreen> {
               ],
             ),
           ),
+          const SizedBox(height: 10),
           Expanded(
             flex: (heightDevice / 11 * 0.6).round(),
             child: SizedBox(

@@ -24,6 +24,7 @@ class TextFieldWithIcon extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.mainColor,
         borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 2, color: AppColors.primaryColor),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
