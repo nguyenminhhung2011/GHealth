@@ -75,7 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     final double heightOfWaterChart = 100 * (timeProgress.length - 1);
-    return Obx(() => (homeScreenController.user == null)
+    return Obx(() => (homeScreenController.user['name'] == null)
         ? const Center(
             child: CircularProgressIndicator(color: AppColors.primaryColor1))
         : Scaffold(
@@ -766,238 +766,261 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(20),
         gradient: AppColors.colorGradient1,
       ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'BMI (Body Mass Index)',
-                    style: TextStyle(
-                      fontFamily: 'Sen',
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Text(
-                    'You have a normal weight',
-                    style: TextStyle(
-                      fontFamily: 'Sen',
-                      fontSize: 15,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ButtonGradient(
-                    width: 120,
-                    height: 44,
-                    linearGradient: LinearGradient(
-                      colors: [Colors.purple[100]!, Colors.purple[200]!],
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        height_bmi_container =
-                            (height_bmi_container - 200).abs();
-                      });
-                    },
-                    title: const Text(
-                      'View More',
+      child: Obx(
+        () =>
+            // (homeScreenController.user['name'] == null)
+            //     ? const Center(
+            //         child:
+            //             CircularProgressIndicator(color: AppColors.primaryColor1))
+            //     :
+            Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'BMI (Body Mass Index)',
                       style: TextStyle(
                         fontFamily: 'Sen',
-                        fontSize: 12.5,
-                        color: Colors.white,
+                        fontSize: 17,
                         fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: SizedBox(
-                  width: 80,
-                  height: 80,
-                  child: PieChart(
-                    PieChartData(
-                      pieTouchData: PieTouchData(
-                        touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                          setState(() {
-                            if (!event.isInterestedForInteractions ||
-                                pieTouchResponse == null ||
-                                pieTouchResponse.touchedSection == null) {
-                              touchedIndex = -1;
-                              return;
-                            }
-                            touchedIndex = pieTouchResponse
-                                .touchedSection!.touchedSectionIndex;
-                          });
-                        },
+                    const Text(
+                      'You have a normal weight',
+                      style: TextStyle(
+                        fontFamily: 'Sen',
+                        fontSize: 15,
+                        color: Colors.white,
                       ),
-                      startDegreeOffset: 180,
-                      borderData: FlBorderData(
-                        show: false,
-                      ),
-                      sectionsSpace: 1,
-                      centerSpaceRadius: 0,
-                      sections: FakeData.data
-                          .asMap()
-                          .map<int, PieChartSectionData>((index, data) {
-                            final isTouched = index == touchedIndex;
-
-                            return MapEntry(
-                              index,
-                              PieChartSectionData(
-                                color: data.color,
-                                value: data.percents,
-                                title: (data.name == 'now')
-                                    ? '${data.percents}'
-                                    : '',
-                                radius: isTouched ? 80 : 60,
-                                titleStyle: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                                titlePositionPercentageOffset: 0.55,
-                                badgeWidget: Badge(
-                                  data.imagePath,
-                                  size: isTouched ? 40.0 : 30.0,
-                                  borderColor: data.color,
-                                ),
-                                badgePositionPercentageOffset: .98,
-                              ),
-                            );
-                          })
-                          .values
-                          .toList(),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 30),
-          AnimatedContainer(
-            curve: Curves.fastOutSlowIn,
-            height: height_bmi_container,
-            width: double.infinity,
-            duration: const Duration(milliseconds: 600),
-            decoration: BoxDecoration(
-              color: AppColors.mainColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 15,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: const [
-                        Badge(
-                          'assets/images/medal.png',
-                          size: 30,
-                          borderColor: AppColors.primaryColor1,
-                        ),
-                        SizedBox(width: 10),
-                        Text(
-                          'BMI: 38.0',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        const Text(
-                          'Height:  ',
-                          style: TextStyle(
-                            color: AppColors.primaryColor1,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        LoadHeightWeight(
-                          widthDevice: widthDevice,
-                          imgePath: 'assets/images/height.png',
-                          fData: 120,
-                          sData: 177,
-                          color: AppColors.primaryColor1,
-                          press: () {},
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: const [
-                        SizedBox(width: 60),
-                        Text(
-                          '160cm',
-                          style: TextStyle(
-                              color: AppColors.primaryColor1,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Spacer(),
-                        Text(
-                          '180cm',
-                          style: TextStyle(
-                              color: AppColors.primaryColor1,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
                     ),
                     const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        const Text(
-                          'Weight: ',
-                          style: TextStyle(
-                            color: AppColors.primaryColor2,
-                            fontWeight: FontWeight.w600,
-                          ),
+                    ButtonGradient(
+                      width: 120,
+                      height: 44,
+                      linearGradient: LinearGradient(
+                        colors: [Colors.purple[100]!, Colors.purple[200]!],
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          height_bmi_container =
+                              (height_bmi_container - 200).abs();
+                        });
+                      },
+                      title: const Text(
+                        'View More',
+                        style: TextStyle(
+                          fontFamily: 'Sen',
+                          fontSize: 12.5,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
                         ),
-                        LoadHeightWeight(
-                          widthDevice: widthDevice,
-                          imgePath: 'assets/images/weight.png',
-                          fData: 30,
-                          sData: 70,
-                          color: AppColors.primaryColor2,
-                          press: () {},
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: const [
-                        SizedBox(width: 60),
-                        Text(
-                          '60kg',
-                          style: TextStyle(
-                              color: AppColors.primaryColor2,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        Spacer(),
-                        Text(
-                          '80kg',
-                          style: TextStyle(
-                              color: AppColors.primaryColor2,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ],
+                      ),
                     ),
                   ],
                 ),
+                Expanded(
+                  child: SizedBox(
+                    width: 80,
+                    height: 80,
+                    child: PieChart(
+                      PieChartData(
+                        pieTouchData: PieTouchData(
+                          touchCallback:
+                              (FlTouchEvent event, pieTouchResponse) {
+                            setState(() {
+                              if (!event.isInterestedForInteractions ||
+                                  pieTouchResponse == null ||
+                                  pieTouchResponse.touchedSection == null) {
+                                touchedIndex = -1;
+                                return;
+                              }
+                              touchedIndex = pieTouchResponse
+                                  .touchedSection!.touchedSectionIndex;
+                            });
+                          },
+                        ),
+                        startDegreeOffset: 180,
+                        borderData: FlBorderData(
+                          show: false,
+                        ),
+                        sectionsSpace: 1,
+                        centerSpaceRadius: 0,
+                        sections: FakeData.data
+                            .asMap()
+                            .map<int, PieChartSectionData>((index, data) {
+                              final isTouched = index == touchedIndex;
+
+                              return MapEntry(
+                                index,
+                                PieChartSectionData(
+                                  color: data.color,
+                                  value: data.percents,
+                                  title: (data.name == 'now')
+                                      ? homeScreenController
+                                          .bmi()
+                                          .toStringAsFixed(1)
+                                      : '',
+                                  radius: isTouched ? 80 : 60,
+                                  titleStyle: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                  titlePositionPercentageOffset: 0.55,
+                                  badgeWidget: Badge(
+                                    data.imagePath,
+                                    size: isTouched ? 40.0 : 30.0,
+                                    borderColor: data.color,
+                                  ),
+                                  badgePositionPercentageOffset: .98,
+                                ),
+                              );
+                            })
+                            .values
+                            .toList(),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 30),
+            AnimatedContainer(
+              curve: Curves.fastOutSlowIn,
+              height: height_bmi_container,
+              width: double.infinity,
+              duration: const Duration(milliseconds: 600),
+              decoration: BoxDecoration(
+                color: AppColors.mainColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Badge(
+                            'assets/images/medal.png',
+                            size: 30,
+                            borderColor: AppColors.primaryColor1,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'BMI: ${homeScreenController.bmi().toStringAsFixed(1)}',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          const Text(
+                            'Height:  ',
+                            style: TextStyle(
+                              color: AppColors.primaryColor1,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          Obx(
+                            () => LoadHeightWeight(
+                              widthDevice: widthDevice,
+                              imgePath: 'assets/images/height.png',
+                              fData: homeScreenController.user['height']
+                                  .toDouble(),
+                              sData: homeScreenController.user['heightTarget']
+                                  .toDouble(),
+                              color: AppColors.primaryColor1,
+                              press: () {},
+                            ),
+                          ),
+                        ],
+                      ),
+                      Obx(
+                        () => Row(
+                          children: [
+                            const SizedBox(width: 60),
+                            Text(
+                              '${homeScreenController.user['height']}cm',
+                              style: const TextStyle(
+                                  color: AppColors.primaryColor1,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const Spacer(),
+                            Text(
+                              '${homeScreenController.user['heightTarget']}cm',
+                              style: const TextStyle(
+                                  color: AppColors.primaryColor1,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Obx(
+                        () => Row(
+                          children: [
+                            const Text(
+                              'Weight: ',
+                              style: TextStyle(
+                                color: AppColors.primaryColor2,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            LoadHeightWeight(
+                              widthDevice: widthDevice,
+                              imgePath: 'assets/images/weight.png',
+                              fData: homeScreenController.user['weight']
+                                  .toDouble(),
+                              sData: homeScreenController.user['weightTarget']
+                                  .toDouble(),
+                              color: AppColors.primaryColor2,
+                              press: () {},
+                            ),
+                          ],
+                        ),
+                      ),
+                      Obx(
+                        () => Row(
+                          children: [
+                            const SizedBox(width: 60),
+                            Text(
+                              '${homeScreenController.user['weight']}kg',
+                              style: const TextStyle(
+                                  color: AppColors.primaryColor2,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const Spacer(),
+                            Text(
+                              '${homeScreenController.user['weightTarget']}kg',
+                              style: const TextStyle(
+                                  color: AppColors.primaryColor2,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

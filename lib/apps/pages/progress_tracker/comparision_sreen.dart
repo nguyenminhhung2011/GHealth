@@ -25,6 +25,7 @@ class _ComparisionScreenState extends State<ComparisionScreen> {
     var widthDevice = MediaQuery.of(context).size.width;
     var heightDevice = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: AppColors.mainColor,
       body: ScreenTemplate(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),

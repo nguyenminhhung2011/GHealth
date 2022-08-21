@@ -7,6 +7,8 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
+import '../../template/misc/colors.dart';
+
 // ignore: must_be_immutable
 class SleepScheduleScreen extends StatefulWidget {
   SleepScheduleScreen(
@@ -82,6 +84,7 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: AppColors.mainColor,
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push<void>(

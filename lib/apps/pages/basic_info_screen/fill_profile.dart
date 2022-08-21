@@ -121,9 +121,9 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                                 ? Container(
                                     width: widthDevice / 2.5,
                                     height: widthDevice / 2.5,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
-                                      image: const DecorationImage(
+                                    decoration: const BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image: AssetImage(
                                             'assets/images/avatar.png'),
@@ -134,7 +134,7 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                                     width: widthDevice / 2.5,
                                     height: widthDevice / 2.5,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15),
+                                      shape: BoxShape.circle,
                                       image: DecorationImage(
                                         fit: BoxFit.cover,
                                         image: MemoryImage(_image!),
@@ -156,7 +156,8 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                                 color: AppColors.primaryColor,
                                 borderRadius: BorderRadius.circular(5),
                               ),
-                              child: Icon(Icons.edit, color: Colors.white),
+                              child: const Icon(Icons.camera_alt,
+                                  color: Colors.white),
                             ),
                           ),
                         )
@@ -171,45 +172,45 @@ class _FillProfileScreenState extends State<FillProfileScreen> {
                     const SizedBox(height: 20),
                     Row(
                       children: [
-                        InkWell(
-                          onTap: () {
-                            print('Click');
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 10),
-                            decoration: BoxDecoration(
-                              color: AppColors.mainColor,
-                              borderRadius: BorderRadius.circular(10),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  offset: const Offset(2, 3),
-                                  blurRadius: 10,
-                                ),
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.05),
-                                  offset: Offset(-2, -3),
-                                  blurRadius: 10,
-                                )
-                              ],
-                            ),
-                            child: Row(
-                              children: [
-                                Image.asset(
-                                  'assets/images/vietnam.png',
-                                  height: 50,
-                                  width: 50,
-                                ),
-                                const Icon(
-                                  Icons.arrow_drop_down,
-                                  color: Colors.black,
-                                  size: 25,
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
+                        // InkWell(
+                        //   onTap: () {},
+                        //   child: Container(
+                        //     padding: const EdgeInsets.symmetric(
+                        //         horizontal: 5, vertical: 10),
+                        //     decoration: BoxDecoration(
+                        //       color: AppColors.mainColor,
+                        //       borderRadius: BorderRadius.circular(10),
+                        //       border: Border.all(
+                        //           width: 2, color: AppColors.primaryColor),
+                        //       boxShadow: [
+                        //         BoxShadow(
+                        //           color: Colors.black.withOpacity(0.05),
+                        //           offset: const Offset(2, 3),
+                        //           blurRadius: 10,
+                        //         ),
+                        //         BoxShadow(
+                        //           color: Colors.black.withOpacity(0.05),
+                        //           offset: Offset(-2, -3),
+                        //           blurRadius: 10,
+                        //         )
+                        //       ],
+                        //     ),
+                        //     child: Row(
+                        //       children: [
+                        //         Image.asset(
+                        //           'assets/images/vietnam.png',
+                        //           height: 50,
+                        //           width: 50,
+                        //         ),
+                        //         const Icon(
+                        //           Icons.arrow_drop_down,
+                        //           color: Colors.black,
+                        //           size: 25,
+                        //         )
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
                         const SizedBox(width: 5),
                         Expanded(
                           child: TextPhoneField(

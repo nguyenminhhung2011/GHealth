@@ -81,6 +81,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: AppColors.mainColor,
       body: ScreenTemplate(
         child: SafeArea(
           child: SizedBox(
