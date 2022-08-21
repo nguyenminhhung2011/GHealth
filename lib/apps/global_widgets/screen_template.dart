@@ -46,8 +46,9 @@ class _ScreenTemplateState extends State<ScreenTemplate> {
                           vertical: 10,
                         ),
                         child: SingleChildScrollView(
-                            physics: const NeverScrollableScrollPhysics(),
-                            child: widget.child),
+                          physics: const NeverScrollableScrollPhysics(),
+                          child: widget.child,
+                        ),
                       ),
                     ),
                   ],
