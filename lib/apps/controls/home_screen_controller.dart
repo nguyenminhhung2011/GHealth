@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/auth_controller.dart';
-import 'package:gold_health/constains.dart';
+import 'package:gold_health/constrains.dart';
 
 import '../../services/auth_service.dart';
 
@@ -68,11 +67,6 @@ class HomeScreenControl extends GetxController {
     updateUser(AuthService.instance.currentUser!.uid);
     //ignore: avoid_print
     print(_user.value['uid']);
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   // Get user from firestore

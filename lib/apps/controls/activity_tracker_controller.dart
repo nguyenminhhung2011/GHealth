@@ -1,8 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/auth_controller.dart';
-import 'package:gold_health/constains.dart';
+import 'package:gold_health/constrains.dart';
 
 class ActivityTrackerC extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});

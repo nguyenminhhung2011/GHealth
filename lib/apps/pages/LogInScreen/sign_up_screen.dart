@@ -10,6 +10,8 @@ import '../basic_info_screen/app_bar_hero.dart';
 
 class SignUpScreen extends StatelessWidget {
   final signUpC = Get.find<SignUpC>();
+
+  SignUpScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -72,7 +74,7 @@ class SignUpScreen extends StatelessWidget {
                       ),
                       BoxShadow(
                         color: Colors.black.withOpacity(0.05),
-                        offset: Offset(-2, -3),
+                        offset: const Offset(-2, -3),
                         blurRadius: 2,
                       ),
                     ],
@@ -80,7 +82,7 @@ class SignUpScreen extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      TextFormFieldDesgin(
+                      TextFormFieldDesign(
                         hintText: 'Enter your username',
                         labelText: 'Username',
                         control: signUpC.emailC,
@@ -101,7 +103,7 @@ class SignUpScreen extends StatelessWidget {
                       const SizedBox(height: 20),
                       btnIcon(
                         color: AppColors.primaryColor,
-                        press: () => signUpC.ContinueBtnClick(),
+                        press: () => signUpC.continueBtnClick(),
                         icon: const SizedBox(width: 20),
                         title: const Text(
                           'Continue',
