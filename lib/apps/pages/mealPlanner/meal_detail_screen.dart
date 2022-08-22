@@ -65,7 +65,7 @@ class MealDetailScreen extends StatelessWidget {
                           '${controller.meal['asset']}',
                           fit: BoxFit.fill,
                           height: widthDevice / 1.5,
-                          width: widthDevice / 1.2,
+                          width: widthDevice / 1.5,
                         ),
                       ),
                     ),
@@ -214,7 +214,7 @@ class MealDetailScreen extends StatelessWidget {
                                               NutritionCard(
                                                 imagePath:
                                                     'assets/images/strach.png',
-                                                type: 'g',
+                                                type: 'g Carbs',
                                                 data: controller.meal['carbs'],
                                               ),
                                             ],
@@ -347,8 +347,8 @@ class MealDetailScreen extends StatelessWidget {
                                                     height: (e['step'] !=
                                                             controller.listSteps
                                                                 .length)
-                                                        ? 140
-                                                        : 140,
+                                                        ? 180
+                                                        : 180,
                                                     child: Row(
                                                       children: [
                                                         Column(
@@ -412,7 +412,7 @@ class MealDetailScreen extends StatelessWidget {
                                                                     children: [
                                                                       for (int i =
                                                                               0;
-                                                                          i < 18;
+                                                                          i < 25;
                                                                           i++)
                                                                         Row(
                                                                           children: [

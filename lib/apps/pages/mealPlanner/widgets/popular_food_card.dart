@@ -30,6 +30,7 @@ class PopularFoodCard extends StatelessWidget {
         vertical: 10,
         horizontal: 20,
       ),
+      margin: const EdgeInsets.symmetric(vertical: 7),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
@@ -41,14 +42,14 @@ class PopularFoodCard extends StatelessWidget {
           ),
           BoxShadow(
             color: Colors.black.withOpacity(0.03),
-            offset: Offset(-2, -3),
+            offset: const Offset(-2, -3),
             blurRadius: 20,
           )
         ],
       ),
       child: Row(
         children: [
-          Image.asset(imagePath, width: 65, height: 65),
+          Image.network(imagePath, width: 65, height: 65),
           const SizedBox(width: 20),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +64,7 @@ class PopularFoodCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                '${level} | ${time}mins | ${kCal}kCal',
+                '$level | ${time}mins | ${kCal}kCal',
                 style: const TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,

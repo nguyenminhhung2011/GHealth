@@ -21,4 +21,5 @@ abstract class RouteName {
   static const basicInfoScreen = '/basic_info_screen';
   static const profileScreen = "/profile_screen";
   static const mealDetail = "/meal_detail";
+  static const categoryMeal = "/category_meal";
 }

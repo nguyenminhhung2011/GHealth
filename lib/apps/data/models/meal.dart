@@ -40,10 +40,10 @@ class Meal {
         'carbs': carbs,
       };
 
-  static Meal fromSnap(DocumentSnapshot snap) {
+  factory Meal.fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Meal(
-      id: snapshot['id'],
+      id: snap.data().toString().contains('id') ? snap.get('id') : '',
       name: snapshot['name'] ?? '',
       asset: snapshot['asset'] ?? '',
       time: snapshot['time'] ?? 1,

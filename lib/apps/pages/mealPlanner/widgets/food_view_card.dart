@@ -34,7 +34,7 @@ class FoodViewCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          Image.asset(
+          Image.network(
             imagePath,
             width: 130,
             height: 130,

@@ -8,16 +8,18 @@ import 'dailyPlanController/daily_plan_controller.dart';
 
 class MealPlanController extends GetxController with TrackerController {
   final Rx<List<Meal>> _listMealToday = Rx<List<Meal>>([]);
+  final Rx<List<Meal>> _listMealBreakFast = Rx<List<Meal>>([]);
   List<Meal> get listMealToday => _listMealToday.value;
+  List<Meal> get listMealBreakFast => _listMealBreakFast.value;
   @override
   void onInit() {
     super.onInit();
     getAllMeal();
+    getListMealBreakFast();
   }
 
   TextEditingController text = TextEditingController();
   RxList<Map<String, dynamic>> todayListMeal = <Map<String, dynamic>>[].obs;
-  RxList<Map<String, dynamic>> listMealBreakFast = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> listMealLuch = <Map<String, dynamic>>[].obs;
   RxList<Map<String, dynamic>> listMealDinner = <Map<String, dynamic>>[].obs;
 
@@ -26,13 +28,14 @@ class MealPlanController extends GetxController with TrackerController {
       firestore.collection('meal').snapshots().map(
         (event) {
           List<Meal> result = [];
+          int count = 0;
           for (var item in event.docs) {
             //print(1);
+            if (count == 3) break;
             Map<String, dynamic> temp = item.data() as Map<String, dynamic>;
-            print(item['name']);
+            count++;
             result.add(Meal.fromSnap(item));
           }
-          print(result.length);
           return result;
         },
       ),
@@ -40,6 +43,24 @@ class MealPlanController extends GetxController with TrackerController {
     update();
   }
 
+  getListMealBreakFast() async {
+    _listMealBreakFast.bindStream(
+      firestore.collection('meal').snapshots().map(
+        (event) {
+          List<Meal> result = [];
+          for (var item in event.docs) {
+            //print(1);
+            Map<String, dynamic> temp = item.data() as Map<String, dynamic>;
+            if (temp['time'] == 1) {
+              result.add(Meal.fromSnap(item));
+            }
+          }
+          return result;
+        },
+      ),
+    );
+    update();
+  }
   //@override
   // fetchTracksByDate(DateTime date) {
   //   // TODO: implement fetchTracksByDate

@@ -51,7 +51,7 @@ class TodayMealCard extends StatelessWidget {
           children: [
             Container(
               width: 80,
-              height: 65,
+              height: 80,
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.fill,
