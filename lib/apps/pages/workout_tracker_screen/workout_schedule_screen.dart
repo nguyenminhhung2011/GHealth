@@ -1,15 +1,14 @@
-import 'package:dotted_line/dotted_line.dart';
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/global_widgets/screen_template.dart';
-import 'package:readmore/readmore.dart';
-import 'package:video_player/video_player.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-import '../../global_widgets/gradient_text.dart';
+import 'package:scroll_snap_list/scroll_snap_list.dart';
+import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../template/misc/colors.dart';
-import 'onClick_schedule.dart';
+import 'package:intl/intl.dart';
+import './add_schedule_screen.dart';
+
+import '../dashboard/widgets/button_gradient.dart';
 
 class WorkoutScheduleScreen extends StatefulWidget {
   const WorkoutScheduleScreen({Key? key}) : super(key: key);
@@ -18,205 +17,267 @@ class WorkoutScheduleScreen extends StatefulWidget {
   State<WorkoutScheduleScreen> createState() => _WorkoutScheduleScreenState();
 }
 
-//test url: https://www.youtube.com/watch?v=OsP2oNXOL1E
-
 class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
-  late YoutubePlayerController _controller;
-  // late Future<void> _initializeVideoPlayerFuture;
-  late String exerciseName;
-  late String level;
-  late String caloriesBurn;
-  late String description;
-  late Map<String, String> instructions;
-  List<Row> listInstructions = [];
-  late Map<String, String> repetitions;
-  List<Row> listRepetitionsChoice = [];
-
-  @override
-  void initState() {
-    super.initState();
-    exerciseName = 'Barca 4 - 0 Real';
-    level = 'Easy';
-    caloriesBurn = '390 Calories Burn';
-    description =
-        'A jumping jack, also known as a star jump and called a side-straddle hop in the US military, is a physical jumping exercise performed by jumping to a position with the legs spread wide Read More...';
-    instructions = {
-      'Spread Your Arms':
-          'To make the gestures feel more relaxed, stretch your arms as you start this movement. No bending of hands.',
-      'Rest at The Toe':
-          'The basis of this movement is jumping. Now, what needs to be considered is that you have to use the tips of your feet',
-      'Adjust Foot Movement':
-          'Jumping Jack is not just an ordinary jump. But, you also have to pay close attention to leg movements.',
-      'Clapping Both Hands':
-          'This cannot be taken lightly. You see, without realizing it, the clapping of your hands helps you to keep your rhythm while doing the Jumping Jack',
-    };
-    repetitions = {
-      '30': '450',
-      '35': '480',
-      '40': '500',
-      '45': '520',
-      '50': '500',
-    };
-
-    _controller = YoutubePlayerController(
-      initialVideoId: 'OsP2oNXOL1E',
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-      ),
-    );
-
-    // _initializeVideoPlayerFuture = _controller.initialize();
-    // _controller.setLooping(true);
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    repetitions.forEach((key, value) {
-      listRepetitionsChoice.add(
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(width: 15, child: Image.asset('assets/images/fire.png')),
-            const SizedBox(width: 10),
-            Text(
-              '${repetitions[key] as String} Calories Burn',
-              style: Theme.of(context)
-                  .textTheme
-                  .headline5!
-                  .copyWith(fontWeight: FontWeight.w400),
-            ),
-            const SizedBox(width: 10),
-            RichText(
-              text: TextSpan(
-                text: key,
-                style: const TextStyle(
-                  fontFamily: 'Sen',
-                  fontSize: 25,
-                  color: Colors.black54,
-                  fontWeight: FontWeight.w600,
-                ),
-                children: [
-                  TextSpan(
-                    text: '  times',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline5!
-                        .copyWith(fontWeight: FontWeight.w400, fontSize: 20),
-                  ),
+  var now = DateTime.now().obs;
+  Timer? timer;
+  final List<DateTime> listDateTime = [
+    for (int i = 1; i <= 30; i++)
+      DateTime(2022, 8, 1).subtract(Duration(days: i)),
+    for (int i = 0; i <= 30; i++) DateTime(2022, 8, 1).add(Duration(days: i))
+  ];
+  GlobalKey<ScrollSnapListState> sslKey = GlobalKey();
+  late int onFocus = listDateTime.indexWhere((element) =>
+      DateFormat().add_yMd().format(element) ==
+      DateFormat().add_yMd().format(DateTime.now()));
+  final CalendarController _calendarController = CalendarController();
+  List<Meeting> meetings = [
+    Meeting(
+        from: DateTime.now().subtract(const Duration(hours: 3)),
+        to: DateTime.now().subtract(const Duration(hours: 1)),
+        eventName: 'Meeting',
+        isAllDay: false,
+        background: Colors.black),
+    Meeting(
+        from: DateTime.now().subtract(const Duration(hours: 3)),
+        to: DateTime.now().add(const Duration(hours: 1)),
+        eventName: 'Meeting',
+        isAllDay: false,
+        background: Colors.black),
+    Meeting(
+        from: DateTime.now().subtract(const Duration(hours: 1)),
+        to: DateTime.now().add(const Duration(hours: 1)),
+        eventName: 'Meeting 2',
+        isAllDay: false,
+        background: Colors.black),
+  ];
+  Widget _itemBuilder(BuildContext context, int index) {
+    return Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(10),
+      width: 80,
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        gradient: onFocus == index
+            ? LinearGradient(colors: [
+                Colors.blue[200]!,
+                Colors.blue[300]!,
+                Colors.blue[400]!
+              ])
+            : const LinearGradient(
+                colors: [
+                  Colors.white10,
+                  Colors.white10,
                 ],
+              ),
+      ),
+      child: SizedBox(
+        height: 80,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              DateFormat().add_E().format(listDateTime[index]),
+              style: TextStyle(
+                color: onFocus == index ? Colors.white : Colors.black,
+              ),
+            ),
+            Text(
+              DateFormat().add_d().format(listDateTime[index]),
+              style: TextStyle(
+                color: onFocus == index ? Colors.white : Colors.black,
               ),
             ),
           ],
         ),
-      );
-    });
+      ),
+    );
+  }
 
-    instructions.forEach((key, value) {
-      listInstructions.add(Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: 30,
-            child: Text(
-              listInstructions.length + 1 < 10
-                  ? '0${listInstructions.length + 1}'
-                  : '${listInstructions.length + 1}',
-              style: const TextStyle(
-                  fontFamily: 'Sen',
-                  fontSize: 16.5,
-                  fontWeight: FontWeight.w600),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(4),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 213, 170, 220),
-                    width: 1,
-                  ),
-                  shape: BoxShape.circle,
-                ),
-                child: Container(
-                  height: 12,
-                  width: 12,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.purple[100]!,
-                        const Color.fromARGB(255, 215, 185, 221),
-                        const Color.fromARGB(255, 213, 170, 220),
+  Widget _scheduleBuilder(
+      BuildContext context, CalendarAppointmentDetails details) {
+    final Meeting meeting = details.appointments.first;
+    return Obx(
+      () => InkWell(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => Dialog(
+              elevation: 5,
+              child: Container(
+                padding: const EdgeInsets.only(
+                    right: 15, top: 15, bottom: 15, left: 20),
+                height: Get.mediaQuery.size.height * 0.3,
+                width: Get.mediaQuery.size.width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          icon: const Icon(
+                            Icons.close,
+                            size: 20,
+                          ),
+                        ),
+                        const Text(
+                          'Workout Schedule',
+                          style: TextStyle(
+                            overflow: TextOverflow.ellipsis,
+                            fontFamily: 'Sen',
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: const Icon(Icons.more_horiz),
+                        )
                       ],
                     ),
-                  ),
-                ),
-              ),
-              DottedLine(
-                lineThickness: 1.5,
-                lineLength: 100,
-                direction: Axis.vertical,
-                dashLength: 4.5,
-                dashGradient: listInstructions.length != instructions.length - 1
-                    ? [
-                        Colors.purple[100]!,
-                        const Color.fromARGB(255, 209, 159, 218)
-                      ]
-                    : [Colors.white, Colors.white],
-              ),
-            ],
-          ),
-          const SizedBox(width: 5),
-          SizedBox(
-            height: (instructions[key]!.split('').length / 10) * 8 + 20,
-            width: Get.mediaQuery.size.width * 0.75,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  key,
-                  style: const TextStyle(
-                      fontFamily: 'Sen',
-                      fontSize: 16.5,
-                      fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 5),
-                Expanded(
-                  child: Text(
-                    '${instructions[key]}',
-                    style: Theme.of(context).textTheme.headline5!.copyWith(
-                          fontWeight: FontWeight.w400,
+                    const SizedBox(height: 20),
+                    Text(
+                      meeting.eventName,
+                      style: const TextStyle(
+                        fontFamily: 'Sen',
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Icon(Icons.access_time_outlined),
+                        const SizedBox(width: 10),
+                        Text(
+                          '${DateFormat().add_E().format(meeting.from)} | ${DateFormat('kk:mm').format(meeting.from)}',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
                         ),
-                  ),
+                      ],
+                    ),
+                    const SizedBox(height: 15),
+                    Expanded(
+                      child: Center(
+                        child: ButtonGradient(
+                          height: 50,
+                          width: 250,
+                          linearGradient: LinearGradient(colors: [
+                            Colors.blue[200]!,
+                            Colors.blue[300]!,
+                            Colors.blue[400]!
+                          ]),
+                          onPressed: () {},
+                          title: const Text(
+                            'Mark as Done',
+                            style: TextStyle(
+                                fontFamily: 'Sen',
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
-          ),
-        ],
-      ));
+          );
+        },
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            RotatedBox(
+              quarterTurns: 1,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(35),
+                child: LinearProgressIndicator(
+                  color: Colors.blue[300],
+                  backgroundColor: Colors.grey.withOpacity(0.5),
+                  value: (meeting.to.isBefore(now.value)
+                      ? 1.0
+                      : meeting.from.isAfter(now.value)
+                          ? 0
+                          : (now.value
+                                  .difference(meeting.from)
+                                  .inSeconds
+                                  .toDouble()) /
+                              meeting.to.difference(meeting.from).inSeconds),
+                ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Text(
+                meeting.eventName,
+                style: const TextStyle(
+                  color: Colors.blueGrey,
+                  fontFamily: 'Sen',
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      now.value = DateTime.now();
     });
-    super.didChangeDependencies();
+  }
+
+  void addMeeting(Meeting value) {
+    setState(() {
+      meetings.add(value);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
-
     return Scaffold(
-      backgroundColor: AppColors.mainColor,
-      body: ScreenTemplate(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.to(() => AddScheduleScreen(dateTime: listDateTime[onFocus]),
+              arguments: addMeeting);
+        },
+        child: Container(
+          height: 60,
+          width: 60,
+          decoration: const BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                Color.fromARGB(255, 226, 145, 201),
+                Color.fromARGB(255, 199, 152, 231),
+              ],
+            ),
+          ),
+          child: const Icon(
+            Icons.add_outlined,
+            color: Colors.white,
+            size: 20,
+          ),
+        ),
+      ),
+      body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            //padding: const EdgeInsets.all(20),
-            crossAxisAlignment: CrossAxisAlignment.start,
+          padding: const EdgeInsets.all(20),
+          child: ListView(
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -246,10 +307,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.of(context).push<void>(MaterialPageRoute<void>(
-                        builder: (BuildContext context) =>
-                            const OnClickScheduleScreen(),
-                      ));
+                      Navigator.pop(context);
                     },
                     child: Container(
                       padding: const EdgeInsets.all(5),
@@ -265,94 +323,79 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              Container(
-                padding: const EdgeInsets.all(15),
-                height: heightDevice * 0.2,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
-                  child: YoutubePlayer(
-                    controller: _controller,
-                    showVideoProgressIndicator: true,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                exerciseName,
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontSize: 18),
-              ),
-              Text(
-                '$level | $caloriesBurn',
-                style: Theme.of(context).textTheme.headline5,
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'Description',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontSize: 18),
-              ),
-              const SizedBox(height: 10),
-              ReadMoreText(
-                description,
-                trimLines: 3,
-                colorClickableText: Colors.pink,
-                trimMode: TrimMode.Line,
-                trimCollapsedText: 'Read more',
-                trimExpandedText: 'Show less',
-                moreStyle: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor1,
-                ),
-                lessStyle: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryColor1,
-                ),
-              ),
-              const SizedBox(height: 20),
-              Text(
-                'How To Do It',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontSize: 18),
-              ),
-              const SizedBox(height: 10),
-              ...listInstructions,
-              const SizedBox(height: 10),
-              Text(
-                'Custom Repetitions',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline4!
-                    .copyWith(fontSize: 18),
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: heightDevice * 0.2,
-                child: CupertinoPicker(
-                  looping: true,
-                  diameterRatio: 1,
-                  itemExtent: 64,
-                  onSelectedItemChanged: (int value) {},
-                  selectionOverlay: Container(
-                    decoration: BoxDecoration(
-                      border: Border.symmetric(
-                        horizontal: BorderSide(
-                          width: 1,
-                          color: Colors.grey[300]!,
-                        ),
-                      ),
+              const SizedBox(height: 15),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        onFocus--;
+                        sslKey.currentState!.focusToItem(onFocus);
+                        _calendarController.displayDate = listDateTime[onFocus];
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                      size: 18,
+                      color: Colors.grey[400],
                     ),
                   ),
-                  children: listRepetitionsChoice,
+                  const SizedBox(width: 8),
+                  Text(
+                    '${DateFormat().add_MMM().format(listDateTime[onFocus])} ${listDateTime[onFocus].year}',
+                    style: Theme.of(context).textTheme.headline5,
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        onFocus++;
+                        sslKey.currentState!.focusToItem(onFocus);
+                        _calendarController.displayDate = listDateTime[onFocus];
+                      });
+                    },
+                    icon: Icon(
+                      Icons.arrow_forward_ios_outlined,
+                      size: 18,
+                      color: Colors.grey[400],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.17,
+                child: ScrollSnapList(
+                  key: sslKey,
+                  itemBuilder: _itemBuilder,
+                  background: Colors.blue[200],
+                  itemCount: listDateTime.length,
+                  itemSize: 100,
+                  dispatchScrollNotifications: true,
+                  initialIndex: onFocus.toDouble(),
+                  scrollPhysics: const ScrollPhysics(),
+                  duration: 1000,
+                  onItemFocus: (int index) {
+                    setState(() {
+                      onFocus = index;
+                      _calendarController.displayDate = listDateTime[onFocus];
+                    });
+                  },
+                ),
+              ),
+              SizedBox(
+                height: heightDevice + 100,
+                child: SfCalendar(
+                  initialDisplayDate: listDateTime[onFocus],
+                  controller: _calendarController,
+                  viewNavigationMode: ViewNavigationMode.none,
+                  allowAppointmentResize: true,
+                  view: CalendarView.day,
+                  headerHeight: 0,
+                  viewHeaderHeight: 0,
+                  dataSource: MeetingDataSource(meetings),
+                  appointmentBuilder: _scheduleBuilder,
                 ),
               ),
             ],
@@ -364,7 +407,55 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
 
   @override
   void dispose() {
-    _controller.dispose();
+    // TODO: implement dispose
     super.dispose();
+    _calendarController.dispose();
+    timer!.cancel();
   }
+}
+
+class MeetingDataSource extends CalendarDataSource {
+  MeetingDataSource(List<Meeting> source) {
+    appointments = source;
+  }
+
+  @override
+  DateTime getStartTime(int index) {
+    return appointments![index].from;
+  }
+
+  @override
+  DateTime getEndTime(int index) {
+    return appointments![index].to;
+  }
+
+  @override
+  String getSubject(int index) {
+    return appointments![index].eventName;
+  }
+
+  @override
+  Color getColor(int index) {
+    return appointments![index].background;
+  }
+
+  @override
+  bool isAllDay(int index) {
+    return appointments![index].isAllDay;
+  }
+}
+
+class Meeting {
+  Meeting(
+      {required this.eventName,
+      required this.from,
+      required this.to,
+      required this.background,
+      required this.isAllDay});
+
+  String eventName;
+  DateTime from;
+  DateTime to;
+  Color background;
+  bool isAllDay;
 }
