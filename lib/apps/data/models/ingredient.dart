@@ -32,12 +32,12 @@ class Ingredient {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Ingredient(
       id: snapshot['id'],
-      name: snapshot['name'],
-      kCal: snapshot['kCal'],
-      fats: snapshot['fats'],
-      proteins: snapshot['proteins'],
-      carbs: snapshot['carbs'],
-      assets: snapshot['assets'],
+      name: snapshot['name'] ?? '',
+      kCal: snapshot['kCal'] ?? 0,
+      fats: snapshot['fats'] ?? 0,
+      proteins: snapshot['proteins'] ?? 0,
+      carbs: snapshot['carbs'] ?? 0,
+      assets: snapshot['assets'] ?? '',
     );
   }
 }
