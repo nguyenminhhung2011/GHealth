@@ -46,7 +46,7 @@ class DailyNutriScreen extends StatelessWidget {
         onTap: () {
           Get.bottomSheet(
             isScrollControlled: true,
-            enterBottomSheetDuration: const Duration(milliseconds: 100),
+            enterBottomSheetDuration: const Duration(milliseconds: 200),
             Container(
               margin: const EdgeInsets.only(top: 50),
               // ignore: prefer_const_constructors
