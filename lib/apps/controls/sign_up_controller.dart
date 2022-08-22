@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 
 import '../data/enums/app_enums.dart';
-import '../data/models/User.dart';
+import '../data/models/user.dart';
 import '../routes/route_name.dart';
 
 class SignUpC extends GetxController {

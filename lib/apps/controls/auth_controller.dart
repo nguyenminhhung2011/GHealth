@@ -10,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../data/enums/app_enums.dart';
-import '../data/models/User.dart' as models;
+import '../data/models/user.dart' as models;
 import '../routes/route_name.dart';
 
 class AuthC extends GetxController {
