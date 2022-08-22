@@ -6,7 +6,7 @@ import 'package:intl/intl.dart';
 
 import '../../global_widgets/screen_template.dart';
 import '../dashboard/widgets/button_gradient.dart';
-import './onClick_schedule.dart' show Meeting;
+import 'workout_schedule_screen.dart' show Meeting;
 
 class AddScheduleScreen extends StatefulWidget {
   final DateTime dateTime;

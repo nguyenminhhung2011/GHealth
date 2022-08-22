@@ -20,6 +20,7 @@ import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.
 import 'package:gold_health/apps/pages/dashboard/dashboard_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/profile_screen.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_detail2_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_tracker_screen.dart';
@@ -134,6 +135,11 @@ class AppPages {
     GetPage(
       name: RouteName.workoutScheduleScreen,
       page: () => const WorkoutScheduleScreen(),
+      transition: Transition.fade,
+    ),
+    GetPage(
+      name: RouteName.workoutDetail2Screen,
+      page: () => const WorkoutDetail2Screen(),
       transition: Transition.fade,
     ),
     GetPage(
