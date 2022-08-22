@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:gold_health/apps/data/fake_data.dart';
 import 'package:gold_health/apps/global_widgets/toggle_button_ios.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/list_workout_screen.dart';
@@ -10,6 +11,7 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_wor
 
 import '../../global_widgets/gradient_text.dart';
 import '../../global_widgets/row_text_see_more.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 class WorkoutDetailScreen extends StatelessWidget {

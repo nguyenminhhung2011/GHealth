@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/workout_screen.dart';
 
 import '../../data/fake_data.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 class ListWorkoutScreen extends StatelessWidget {
@@ -234,8 +233,7 @@ class ListWorkoutScreen extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => WorkoutScreen()));
+                  Get.toNamed(RouteName.workoutDetail2Screen);
                 },
                 child: Container(
                   alignment: Alignment.center,
