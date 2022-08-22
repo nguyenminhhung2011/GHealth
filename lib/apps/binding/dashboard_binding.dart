@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/daily_plan_controller.dart';
-import 'package:gold_health/apps/controls/dailyPlanController/daily_nutrition_controller.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
 
 import '../controls/activity_tracker_controller.dart';
 import '../controls/home_screen_controller.dart';

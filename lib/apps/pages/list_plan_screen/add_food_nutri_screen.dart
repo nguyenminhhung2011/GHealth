@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
 
-import '../../controls/dailyPlanController/daily_nutrition_controller.dart';
+import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
 import '../../template/misc/colors.dart';
 
 class AddFoodScreen extends StatefulWidget {

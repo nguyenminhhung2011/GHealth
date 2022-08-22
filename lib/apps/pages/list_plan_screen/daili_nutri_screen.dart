@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 // import 'package:gold_health/apps/pages/mealPlanner/widgets/SearchContainer.dart';
 import 'package:intl/intl.dart';
 
-import '../../controls/dailyPlanController/daily_nutrition_controller.dart';
+import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
 import '../../template/misc/colors.dart';
 import 'add_food_nutri_screen.dart';
 

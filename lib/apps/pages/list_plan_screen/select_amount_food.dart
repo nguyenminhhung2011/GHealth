@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../controls/dailyPlanController/daily_nutrition_controller.dart';
+import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
 import '../../template/misc/colors.dart';
 
 // ignore: must_be_immutable

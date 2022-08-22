@@ -10,8 +10,8 @@ class Meal {
   final int fats;
   final int proteins;
   final int carbs;
-  final List<String> steps;
-  final List<String> listIngredient;
+  final List steps;
+  final List listIngredient;
   Meal({
     required this.id,
     required this.name,
@@ -42,6 +42,22 @@ class Meal {
 
   static Meal fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
+    return Meal(
+      id: snapshot['id'],
+      name: snapshot['name'] ?? '',
+      asset: snapshot['asset'] ?? '',
+      time: snapshot['time'] ?? 1,
+      description: snapshot['description'] ?? 'No description',
+      listIngredient: snapshot['listIngredient'] ?? [],
+      steps: snapshot['steps'] ?? [],
+      kCal: snapshot['kCal'] ?? 0,
+      fats: snapshot['fats'] ?? 0,
+      proteins: snapshot['proteins'] ?? 0,
+      carbs: snapshot['carbs'] ?? 0,
+    );
+  }
+
+  static Meal fromMap(Map<String, dynamic> snapshot) {
     return Meal(
       id: snapshot['id'],
       name: snapshot['name'] ?? '',
