@@ -183,17 +183,33 @@ class CategoryMealScreen extends StatelessWidget {
                               Padding(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0),
-                                child: Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    'Popular',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headline4!
-                                        .copyWith(
-                                          fontSize: 18,
-                                        ),
-                                  ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Popular',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headline4!
+                                          .copyWith(
+                                            fontSize: 18,
+                                          ),
+                                    ),
+                                    InkWell(
+                                      onTap: () => Get.toNamed(
+                                        RouteName.viewMeal,
+                                        arguments: controller.listMeal,
+                                      ),
+                                      child: Text(
+                                        'See More',
+                                        style: TextStyle(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               const SizedBox(height: 10),
