@@ -49,44 +49,49 @@ class PopularFoodCard extends StatelessWidget {
         children: [
           Image.network(imagePath, width: 65, height: 65),
           const SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  overflow: TextOverflow.visible,
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '${time < 21 ? 'Easy' : time < 40 ? 'Medium' : 'Hard'} | ${time}mins | ${kCal}kCal',
-                style: const TextStyle(
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w500,
+                const SizedBox(height: 10),
+                Text(
+                  '${time < 21 ? 'Easy' : time < 40 ? 'Medium' : 'Hard'} | ${time}mins | ${kCal}kCal',
+                  style: const TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const Spacer(),
-          InkWell(
-            borderRadius: BorderRadius.circular(13),
-            onTap: press,
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(width: 1, color: AppColors.primaryColor1),
-              ),
-              child: const Icon(
-                Icons.arrow_forward_ios,
-                color: AppColors.primaryColor1,
-                size: 17,
-              ),
+              ],
             ),
           ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: InkWell(
+              borderRadius: BorderRadius.circular(13),
+              onTap: press,
+              child: Container(
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(width: 1, color: AppColors.primaryColor1),
+                ),
+                child: const Icon(
+                  Icons.arrow_forward_ios,
+                  color: AppColors.primaryColor1,
+                  size: 17,
+                ),
+              ),
+            ),
+          )
         ],
       ),
     );
