@@ -10,14 +10,12 @@ class PopularFoodCard extends StatelessWidget {
     required this.time,
     required this.imagePath,
     required this.press,
-    required this.level,
     required this.kCal,
   })  : _widthDevice = widthDevice,
         super(key: key);
 
   final double _widthDevice;
   final String title;
-  final String level;
   final int time;
   final int kCal;
   final String imagePath;
@@ -64,7 +62,7 @@ class PopularFoodCard extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               Text(
-                '$level | ${time}mins | ${kCal}kCal',
+                '${time < 21 ? 'Easy' : time < 40 ? 'Medium' : 'Hard'} | ${time}mins | ${kCal}kCal',
                 style: const TextStyle(
                   color: Colors.grey,
                   fontWeight: FontWeight.w500,

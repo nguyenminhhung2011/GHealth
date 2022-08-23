@@ -64,7 +64,6 @@ class CategoryMealScreen extends StatelessWidget {
                                             RouteName.mealDetail,
                                             arguments: e.toJson(),
                                           ),
-                                          level: 'Medium',
                                           kCal: e.kCal,
                                         ),
                                       )
@@ -167,7 +166,6 @@ class CategoryMealScreen extends StatelessWidget {
                                               controller.listMeal[i].name,
                                           imagePath:
                                               controller.listMeal[i].asset,
-                                          level: 'Easy',
                                           kCal: controller.listMeal[i].kCal,
                                           press: () => Get.toNamed(
                                             RouteName.mealDetail,
@@ -175,43 +173,9 @@ class CategoryMealScreen extends StatelessWidget {
                                                 controller.listMeal[i].toJson(),
                                           ),
                                           checkCOlor: i % 2,
-                                          time: 30,
+                                          time: controller.listMeal[i].timeCook,
                                         )
                                     ],
-                                    // FoodViewCard(
-                                    //   nameFoods: 'Honey Pancak',
-                                    //   imagePath: 'assets/images/lunch.png',
-                                    //   level: "Easy",
-                                    //   time: 30,
-                                    //   kCal: 180,
-                                    //   press: () {
-                                    //     Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //         builder: (context) => MealDetailScreen(),
-                                    //       ),
-                                    //     );
-                                    //   },
-                                    //   checkCOlor: 0,
-                                    // ),
-                                    // FoodViewCard(
-                                    //   nameFoods: 'Canai Breach',
-                                    //   imagePath: 'assets/images/dinner.png',
-                                    //   level: "Easy",
-                                    //   time: 20,
-                                    //   kCal: 230,
-                                    //   press: () {},
-                                    //   checkCOlor: 1,
-                                    // ),
-                                    // FoodViewCard(
-                                    //   nameFoods: 'Honey Pancak',
-                                    //   imagePath: 'assets/images/lunch.png',
-                                    //   level: "Easy",
-                                    //   time: 30,
-                                    //   kCal: 180,
-                                    //   press: () {},
-                                    //   checkCOlor: 0,
-                                    // ),
                                   ),
                                 ),
                               ),
@@ -244,26 +208,16 @@ class CategoryMealScreen extends StatelessWidget {
                                       PopularFoodCard(
                                         widthDevice: widthDevice,
                                         title: controller.listMeal[i].name,
-                                        time: 30,
+                                        time: controller.listMeal[i].timeCook,
                                         imagePath: controller.listMeal[i].asset,
                                         press: () => Get.toNamed(
                                           RouteName.mealDetail,
                                           arguments:
                                               controller.listMeal[i].toJson(),
                                         ),
-                                        level: 'Medium',
                                         kCal: controller.listMeal[i].kCal,
                                       ),
                                   ],
-                                  // PopularFoodCard(
-                                  //   widthDevice: widthDevice,
-                                  //   title: 'Blubery Pancake',
-                                  //   time: 30,
-                                  //   imagePath: 'assets/images/lunch.png',
-                                  //   press: () {},
-                                  //   level: 'Medium',
-                                  //   kCal: 230,
-                                  // )
                                 ),
                               ),
                             ],

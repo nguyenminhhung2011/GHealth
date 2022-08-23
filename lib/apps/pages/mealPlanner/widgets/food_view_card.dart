@@ -7,7 +7,6 @@ class FoodViewCard extends StatelessWidget {
   const FoodViewCard({
     Key? key,
     required this.nameFoods,
-    required this.level,
     required this.time,
     required this.kCal,
     required this.press,
@@ -16,7 +15,6 @@ class FoodViewCard extends StatelessWidget {
   }) : super(key: key);
   final String nameFoods;
   final String imagePath;
-  final String level;
   final int time;
   final int kCal;
   final Function() press;
@@ -48,7 +46,7 @@ class FoodViewCard extends StatelessWidget {
             ),
           ),
           Text(
-            '$level | ${time}mins | ${kCal}kCal',
+            '${time < 21 ? 'Easy' : time < 40 ? 'Medium' : 'Hard'} | ${time}mins | ${kCal}kCal',
             style: const TextStyle(
               color: Colors.grey,
               fontWeight: FontWeight.w500,
