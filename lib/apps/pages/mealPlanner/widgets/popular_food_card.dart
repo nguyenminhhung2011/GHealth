@@ -83,6 +83,7 @@ class PopularFoodCard extends StatelessWidget {
               child: const Icon(
                 Icons.arrow_forward_ios,
                 color: AppColors.primaryColor1,
+                size: 17,
               ),
             ),
           ),

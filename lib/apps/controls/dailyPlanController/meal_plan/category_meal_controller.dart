@@ -3,11 +3,39 @@ import 'package:get/get.dart';
 import 'package:gold_health/constrains.dart';
 
 import '../../../data/models/Meal.dart';
+import '../../../routes/route_name.dart';
 
 class CategoryMealC extends GetxController {
   final Rx<List<Meal>> _listMeal = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealSearch = Rx<List<Meal>>([]);
-  final Rx<int> _time = 1.obs;
+
+  List<Map<String, dynamic>> listCategory = [
+    {
+      'name': 'Salad',
+      'asset': 'assets/images/eating.png',
+    },
+    {
+      'name': 'Cake',
+      'asset': 'assets/images/break.png',
+    },
+    {
+      'name': 'Smooth',
+      'asset': 'assets/images/smoothing.png',
+    },
+    {
+      'name': 'Soups',
+      'asset': 'assets/images/soup.png',
+    },
+    {
+      'name': 'Fried',
+      'asset': 'assets/images/lunch.png',
+    },
+    {
+      'name': 'Rice',
+      'asset': 'assets/images/sushi.png',
+    }
+  ];
+
   TextEditingController searchController = TextEditingController();
   List<Meal> get listMeal => _listMeal.value;
   List<Meal> get listMealSearch => _listMealSearch.value;
@@ -22,6 +50,16 @@ class CategoryMealC extends GetxController {
   getListMeal() {
     _listMeal.value = Get.arguments as List<Meal>;
     update();
+  }
+
+  onClickCategoryCard(String cate) {
+    List<Meal> arguments = [];
+    for (var item in _listMeal.value) {
+      if (item.category.contains(cate)) {
+        arguments.add(item);
+      }
+    }
+    Get.toNamed(RouteName.viewMeal, arguments: arguments);
   }
 
   searchMeal(String text) async {

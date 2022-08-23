@@ -109,29 +109,16 @@ class CategoryMealScreen extends StatelessWidget {
                               SingleChildScrollView(
                                 scrollDirection: Axis.horizontal,
                                 child: Row(
-                                  children: [
-                                    CategoryMealCard(
-                                      imagePath: 'assets/images/break.png',
-                                      name: "Salad",
-                                      press: () {},
-                                    ),
-                                    CategoryMealCard(
-                                      imagePath: 'assets/images/lunch.png',
-                                      name: "Cake",
-                                      press: () {},
-                                    ),
-                                    CategoryMealCard(
-                                      imagePath: 'assets/images/dinner.png',
-                                      name: "Pie",
-                                      press: () {},
-                                    ),
-                                    CategoryMealCard(
-                                      imagePath: 'assets/images/break.png',
-                                      name: "Smoothing",
-                                      press: () {},
-                                    ),
-                                  ],
-                                ),
+                                    children: controller.listCategory
+                                        .map(
+                                          (e) => CategoryMealCard(
+                                            imagePath: e['asset'],
+                                            name: e['name'],
+                                            press: () => controller
+                                                .onClickCategoryCard(e['name']),
+                                          ),
+                                        )
+                                        .toList()),
                               ),
                               const SizedBox(height: 20),
                               Padding(

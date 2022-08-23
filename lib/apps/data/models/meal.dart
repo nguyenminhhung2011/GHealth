@@ -13,6 +13,7 @@ class Meal {
   final int carbs;
   final List steps;
   final List listIngredient;
+  final List category;
   Meal({
     required this.id,
     required this.name,
@@ -26,6 +27,7 @@ class Meal {
     required this.proteins,
     required this.carbs,
     required this.listIngredient,
+    required this.category,
   });
 
   Map<String, dynamic> toJson() => {
@@ -41,6 +43,7 @@ class Meal {
         'fats': fats,
         'proteins': proteins,
         'carbs': carbs,
+        'category': category,
       };
 
   factory Meal.fromSnap(DocumentSnapshot snap) {
@@ -58,6 +61,7 @@ class Meal {
       fats: snapshot['fats'] ?? 0,
       proteins: snapshot['proteins'] ?? 0,
       carbs: snapshot['carbs'] ?? 0,
+      category: snapshot['category'] ?? [],
     );
   }
 
@@ -75,6 +79,7 @@ class Meal {
       fats: snapshot['fats'] ?? 0,
       proteins: snapshot['proteins'] ?? 0,
       carbs: snapshot['carbs'] ?? 0,
+      category: snapshot['category'] ?? '',
     );
   }
 }
