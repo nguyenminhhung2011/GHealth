@@ -12,8 +12,6 @@ import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/button_custom/button_text.dart';
 import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
-import '../dashboard/activity_tracker_screen.dart';
-import 'category_meal_screen.dart';
 import 'meal_schedule_screen.dart';
 
 class MealPlannerScreen extends StatelessWidget {
@@ -299,7 +297,12 @@ class MealPlannerScreen extends StatelessWidget {
                               color_btn: AppColors.primaryColor2,
                               collect: 'Lunch',
                               noFoods: 130,
-                              press: () {},
+                              press: () {
+                                Get.toNamed(
+                                  RouteName.categoryMeal,
+                                  arguments: controller.listMealLunch,
+                                );
+                              },
                             ),
                             const SizedBox(width: 15),
                             MealSelect(
