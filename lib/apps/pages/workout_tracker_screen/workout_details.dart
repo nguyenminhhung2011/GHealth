@@ -203,7 +203,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                                 color: Colors.grey),
                                             const SizedBox(width: 5),
                                             const Text(
-                                              'Difficulity',
+                                              'Difficulty',
                                               style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.w500,
@@ -211,7 +211,7 @@ class WorkoutDetailScreen extends StatelessWidget {
                                             ),
                                             const Spacer(),
                                             const Text(
-                                              'Beginer',
+                                              'Beginner',
                                               style: TextStyle(
                                                 color: Colors.grey,
                                                 fontWeight: FontWeight.w500,
