@@ -4,18 +4,21 @@ class Meal {
   final String id;
   final String name;
   final String asset;
-  final int time; // 1: breakfast 2: lunch 3: dinner
   final String description;
+  final int time; // 1: breakfast 2: lunch 3: dinner
+  final int timeCook;
   final int kCal;
   final int fats;
   final int proteins;
   final int carbs;
   final List steps;
   final List listIngredient;
+  final List category;
   Meal({
     required this.id,
     required this.name,
     required this.asset,
+    required this.timeCook,
     required this.time,
     required this.description,
     required this.steps,
@@ -24,6 +27,7 @@ class Meal {
     required this.proteins,
     required this.carbs,
     required this.listIngredient,
+    required this.category,
   });
 
   Map<String, dynamic> toJson() => {
@@ -31,6 +35,7 @@ class Meal {
         'name': name,
         'asset': asset,
         'time': time,
+        'timeCook': timeCook,
         'description': description,
         'listIngredient': listIngredient,
         'steps': steps,
@@ -38,15 +43,17 @@ class Meal {
         'fats': fats,
         'proteins': proteins,
         'carbs': carbs,
+        'category': category,
       };
 
-  static Meal fromSnap(DocumentSnapshot snap) {
+  factory Meal.fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Meal(
-      id: snapshot['id'],
+      id: snap.data().toString().contains('id') ? snap.get('id') : '',
       name: snapshot['name'] ?? '',
       asset: snapshot['asset'] ?? '',
       time: snapshot['time'] ?? 1,
+      timeCook: snapshot['timeCook'] ?? 1,
       description: snapshot['description'] ?? 'No description',
       listIngredient: snapshot['listIngredient'] ?? [],
       steps: snapshot['steps'] ?? [],
@@ -54,6 +61,7 @@ class Meal {
       fats: snapshot['fats'] ?? 0,
       proteins: snapshot['proteins'] ?? 0,
       carbs: snapshot['carbs'] ?? 0,
+      category: snapshot['category'] ?? [],
     );
   }
 
@@ -63,6 +71,7 @@ class Meal {
       name: snapshot['name'] ?? '',
       asset: snapshot['asset'] ?? '',
       time: snapshot['time'] ?? 1,
+      timeCook: snapshot['timeCook'] ?? 1,
       description: snapshot['description'] ?? 'No description',
       listIngredient: snapshot['listIngredient'] ?? [],
       steps: snapshot['steps'] ?? [],
@@ -70,6 +79,7 @@ class Meal {
       fats: snapshot['fats'] ?? 0,
       proteins: snapshot['proteins'] ?? 0,
       carbs: snapshot['carbs'] ?? 0,
+      category: snapshot['category'] ?? '',
     );
   }
 }

@@ -17,26 +17,7 @@ class MealDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
-    // ignore: unused_local_variable
-    const List<Map<String, dynamic>> listSteps = [
-      {
-        'step': 1,
-        's': 'Prepare all of the ingredients that needed',
-      },
-      {
-        'step': 2,
-        's': 'Mix flour, sugar, salt, and baking powder',
-      },
-      {
-        'step': 3,
-        's': 'In a seperate place, mix the eggs and liquid milk until blended',
-      },
-      {
-        'step': 4,
-        's': 'Let\'s cut salad end cooking pacakes',
-      },
-      {'step': 5, 's': 'Trinh bay thuc an ra dia va trang tri'},
-    ];
+
     return Obx(
       () => controller.meal == null
           ? const Center(
@@ -65,7 +46,7 @@ class MealDetailScreen extends StatelessWidget {
                           '${controller.meal['asset']}',
                           fit: BoxFit.fill,
                           height: widthDevice / 1.5,
-                          width: widthDevice / 1.2,
+                          width: widthDevice / 1.5,
                         ),
                       ),
                     ),
@@ -214,7 +195,7 @@ class MealDetailScreen extends StatelessWidget {
                                               NutritionCard(
                                                 imagePath:
                                                     'assets/images/strach.png',
-                                                type: 'g',
+                                                type: 'g Carbs',
                                                 data: controller.meal['carbs'],
                                               ),
                                             ],
@@ -253,7 +234,25 @@ class MealDetailScreen extends StatelessWidget {
                                         ),
                                         const SizedBox(height: 20),
                                         // ignore: sized_box_for_whitespace
-                                        Container(
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                                'assets/images/duration.png',
+                                                height: 40,
+                                                width: 40),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              '${controller.meal['timeCook']} mins to Cook',
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(height: 10),
+                                        SizedBox(
                                           width: double.infinity,
                                           child: Row(
                                             children: const [
@@ -332,7 +331,7 @@ class MealDetailScreen extends StatelessWidget {
                                           ),
                                         ),
                                         const SizedBox(height: 20),
-                                        Container(
+                                        SizedBox(
                                           width: widthDevice,
                                           child: Row(
                                             children: [
@@ -347,8 +346,8 @@ class MealDetailScreen extends StatelessWidget {
                                                     height: (e['step'] !=
                                                             controller.listSteps
                                                                 .length)
-                                                        ? 140
-                                                        : 140,
+                                                        ? 180
+                                                        : 180,
                                                     child: Row(
                                                       children: [
                                                         Column(
@@ -359,49 +358,40 @@ class MealDetailScreen extends StatelessWidget {
                                                             Row(
                                                               children: [
                                                                 Text(
-                                                                  '0${e['step']}',
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        18,
-                                                                    color: AppColors
-                                                                        .primaryColor1,
-                                                                  ),
-                                                                ),
+                                                                    '0${e['step']}',
+                                                                    style: const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600,
+                                                                        fontSize:
+                                                                            18,
+                                                                        color: AppColors
+                                                                            .primaryColor1)),
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 Container(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .all(5),
-                                                                  decoration:
-                                                                      BoxDecoration(
-                                                                    shape: BoxShape
-                                                                        .circle,
-                                                                    color: Colors
-                                                                        .white,
-                                                                    border: Border.all(
-                                                                        width:
-                                                                            1,
-                                                                        color: AppColors
-                                                                            .primaryColor1),
-                                                                  ),
-                                                                  child:
-                                                                      Container(
-                                                                    width: 15,
-                                                                    height: 15,
-                                                                    decoration:
-                                                                        const BoxDecoration(
-                                                                      shape: BoxShape
-                                                                          .circle,
-                                                                      color: AppColors
-                                                                          .primaryColor1,
-                                                                    ),
-                                                                  ),
-                                                                ),
+                                                                    padding:
+                                                                        const EdgeInsets.all(
+                                                                            5),
+                                                                    decoration: BoxDecoration(
+                                                                        shape: BoxShape
+                                                                            .circle,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        border: Border.all(
+                                                                            width:
+                                                                                1,
+                                                                            color:
+                                                                                AppColors.primaryColor1)),
+                                                                    child: Container(
+                                                                        width: 15,
+                                                                        height: 15,
+                                                                        decoration: const BoxDecoration(
+                                                                          shape:
+                                                                              BoxShape.circle,
+                                                                          color:
+                                                                              AppColors.primaryColor1,
+                                                                        ))),
                                                               ],
                                                             ),
                                                             (e['step'] <
@@ -412,7 +402,7 @@ class MealDetailScreen extends StatelessWidget {
                                                                     children: [
                                                                       for (int i =
                                                                               0;
-                                                                          i < 18;
+                                                                          i < 25;
                                                                           i++)
                                                                         Row(
                                                                           children: [

@@ -7,10 +7,14 @@ class SearchContainer extends StatelessWidget {
   const SearchContainer({
     Key? key,
     required double widthDevice,
+    required this.controller,
+    required this.onTextChange,
   })  : _widthDevice = widthDevice,
         super(key: key);
 
   final double _widthDevice;
+  final TextEditingController controller;
+  final Function(String) onTextChange;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +48,8 @@ class SearchContainer extends StatelessWidget {
             width: _widthDevice - 150,
             //color: Colors.red,
             child: TextFormField(
+              controller: controller,
+              onChanged: onTextChange,
               decoration: const InputDecoration(
                 hintText: 'Search Pancake',
                 hintStyle: TextStyle(color: Colors.grey),

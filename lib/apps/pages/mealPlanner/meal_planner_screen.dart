@@ -261,27 +261,7 @@ class MealPlannerScreen extends StatelessWidget {
                                       },
                                     ),
                                   )
-                                  .toList()
-                              // [
-                              //   TodayMealCard(
-                              //     widthDevice: widthDevice,
-                              //     title: 'Salmin Nigiri',
-                              //     time: 'Today | 7am',
-                              //     press: () {},
-                              //     imagePath:
-                              //         'https://raw.githubusercontent.com/minhunsocute/Data-GHealth/main/ingredient_image/Protein_Oat.png',
-                              //   ),
-                              //   const SizedBox(height: 10),
-                              //   TodayMealCard(
-                              //     widthDevice: widthDevice,
-                              //     title: 'Lowfat Mild',
-                              //     time: 'Today | 8am',
-                              //     press: () {},
-                              //     imagePath:
-                              //         'https://raw.githubusercontent.com/minhunsocute/Data-GHealth/main/ingredient_image/egg_sandwich.png',
-                              //   ),
-                              // ],
-                              ),
+                                  .toList()),
                       const SizedBox(height: 20),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -304,13 +284,11 @@ class MealPlannerScreen extends StatelessWidget {
                               color: AppColors.primaryColor1.withOpacity(0.2),
                               color_btn: AppColors.primaryColor1,
                               collect: 'Breakfast',
-                              noFoods: 120,
+                              noFoods: controller.listMealBreakFast.length,
                               press: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => CategoryMealScreen(),
-                                  ),
+                                Get.toNamed(
+                                  RouteName.categoryMeal,
+                                  arguments: controller.listMealBreakFast,
                                 );
                               },
                             ),
