@@ -8,19 +8,18 @@ class DailyNutritionController extends GetxController {
 
   final Rx<List<Map<String, dynamic>>> _listFoodToday =
       Rx<List<Map<String, dynamic>>>([]);
-  List<Map<String, dynamic>> get listFoodToday =>
-      _listFoodToday.value; //  {'id': 'meal 1', 'amount' : 2, 'time':, 'date':}
-
   final Rx<List<Map<String, dynamic>>> _foodTemp =
       Rx<List<Map<String, dynamic>>>([]);
-  List<Map<String, dynamic>> get foodTemp =>
-      _foodTemp.value; //  {'id': 'meal 1', 'amount' : 2, 'time':, 'date':}
-
   final Rx<List<Meal>> _allMeal = Rx<List<Meal>>([]);
-  List<Meal> get allMeal => _allMeal.value;
-
   final Rx<List<Map<String, dynamic>>> _foodSelect =
       Rx<List<Map<String, dynamic>>>([]);
+  final RxInt index = 0.obs;
+
+  List<Map<String, dynamic>> get listFoodToday =>
+      _listFoodToday.value; //  {'id': 'meal 1', 'amount' : 2, 'time':, 'date':}
+  List<Map<String, dynamic>> get foodTemp =>
+      _foodTemp.value; //  {'id': 'meal 1', 'amount' : 2, 'time':, 'date':}
+  List<Meal> get allMeal => _allMeal.value;
   List<Map<String, dynamic>> get foodSelect =>
       _foodSelect.value; //  {'id': 1, 'select':}
 
@@ -85,5 +84,31 @@ class DailyNutritionController extends GetxController {
         },
       );
     }
+  }
+
+  selectFalseandRemoveFoodTemp(int index) {
+    _foodSelect.value[index]['select'] = false;
+    _foodTemp.value.removeWhere(
+        (element) => element['id'] == _foodSelect.value[index]['id']);
+
+    update();
+  }
+
+  selectTrueAndAddFoodTemp(int index, double slideValue) {
+    _foodSelect.value[index]['select'] = true;
+    _foodTemp.value.add(
+      {
+        'id': index,
+        'amount': slideValue.round(),
+        'time': '${DateTime.now().hour}:${DateTime.now().minute}',
+        'date':
+            '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+      },
+    );
+    update();
+  }
+
+  void udate() {
+    update();
   }
 }

@@ -78,6 +78,13 @@ class MealPlanController extends GetxController with TrackerController {
     );
     update();
   }
+
+  remove() {
+    _listMealToday.value
+        .removeWhere((element) => element.name == 'Protein Oat');
+    update();
+  }
+
   //@override
   // fetchTracksByDate(DateTime date) {
   //   // TODO: implement fetchTracksByDate

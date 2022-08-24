@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:gold_health/apps/binding/add_food_nutri_binding.dart';
 import 'package:gold_health/apps/binding/category_meal_binding.dart';
@@ -155,6 +156,7 @@ class AppPages {
       name: RouteName.dailyNutritionScreen,
       page: () => DailyNutriScreen(),
       binding: DailyNutritionB(),
+      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.mealDetail,
@@ -177,7 +179,8 @@ class AppPages {
     GetPage(
       name: RouteName.addFoodNutri,
       page: () => AddFoodScreen(),
-      binding: AddFoddNutriB(),
+      //    binding: AddFoddNutriB(),
+      transition: Transition.fade,
     ),
   ];
 }
