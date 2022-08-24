@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
+import '../../data/models/Meal.dart';
 import '../../template/misc/colors.dart';
 
 // ignore: must_be_immutable
@@ -9,8 +10,10 @@ class SelectAmountFood extends StatefulWidget {
   SelectAmountFood({
     Key? key,
     required this.foodItem,
+    required this.selectItem,
   }) : super(key: key);
-  RxMap<String, dynamic> foodItem;
+  final Meal foodItem;
+  final Map<String, dynamic> selectItem;
   @override
   State<SelectAmountFood> createState() => _SelectAmountFoodState();
 }
@@ -36,7 +39,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
         actions: [
           IconButton(
             onPressed: () {
-              widget.foodItem['select'] = true;
+              widget.selectItem['select'] = true;
               // _controller.foodTemp.add(
               //   {
               //     'image': widget.foodItem['image'],
@@ -76,7 +79,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           Align(
             alignment: Alignment.center,
             child: Text(
-              widget.foodItem['name'],
+              widget.foodItem.name,
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -87,8 +90,8 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           const SizedBox(height: 20),
           Align(
             alignment: Alignment.center,
-            child: Image.asset(
-              'assets/images/banhxeo.png',
+            child: Image.network(
+              widget.foodItem.asset,
               height: widthDevice / 2,
               width: widthDevice / 2,
             ),
@@ -97,12 +100,9 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               RichTextCustom(
-                size: 23,
-                title: 'Calories: ',
-                data: ((widget.foodItem['kCal'] / widget.foodItem['gam']) *
-                        slideValue)
-                    .round(),
-              ),
+                  size: 23,
+                  title: 'Calories: ',
+                  data: widget.foodItem.kCal * slideValue.round()),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -110,9 +110,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Carbs: ',
-                    data: ((widget.foodItem['Carbs'] / widget.foodItem['gam']) *
-                            slideValue)
-                        .round(),
+                    data: widget.foodItem.carbs * slideValue.round(),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -123,10 +121,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Protein: ',
-                    data:
-                        ((widget.foodItem['Protein'] / widget.foodItem['gam']) *
-                                slideValue)
-                            .round(),
+                    data: widget.foodItem.proteins * slideValue.round(),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -137,9 +132,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Fats: ',
-                    data: ((widget.foodItem['Fat'] / widget.foodItem['gam']) *
-                            slideValue)
-                        .round(),
+                    data: widget.foodItem.fats * slideValue.round(),
                   ),
                 ],
               ),

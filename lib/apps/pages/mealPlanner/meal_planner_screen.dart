@@ -245,7 +245,9 @@ class MealPlannerScreen extends StatelessWidget {
                               child: CircularProgressIndicator(
                                   color: AppColors.primaryColor))
                           : Column(children: [
-                              for (int i = 0; i < 3; i++)
+                              for (int i = 0;
+                                  i < controller.listMealToday.length - 10;
+                                  i++)
                                 TodayMealCard(
                                   widthDevice: widthDevice,
                                   title: controller.listMealToday[i].name,

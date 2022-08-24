@@ -166,7 +166,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     topLeft: Radius.circular(10.0),
                     topRight: Radius.circular(10.0),
                   ),
-                  //  child: SelectAmountFood(foodItem: e),
+                  child: SelectAmountFood(
+                      foodItem: foodItem, selectItem: selectItem),
                 ),
               ),
             );
