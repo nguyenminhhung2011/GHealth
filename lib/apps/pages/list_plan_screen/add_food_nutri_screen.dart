@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/meal_plan/add_food_nutri_controller.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
 
 import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
+import '../../data/models/Meal.dart';
 import '../../template/misc/colors.dart';
 
 class AddFoodScreen extends StatefulWidget {
@@ -14,7 +16,7 @@ class AddFoodScreen extends StatefulWidget {
 }
 
 class _AddFoodScreenState extends State<AddFoodScreen> {
-  final _controller = Get.find<DailyNutritionController>();
+  final _controller = Get.put(AddFoddNutriC());
 
   // List<Map<String, dynamic>> foodTemp = [
   //   {'temp': 0}
@@ -33,7 +35,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.black),
           onPressed: () {
-            _controller.clearFoodTemp();
+            _controller.dailyNutriC.clearFoodTemp();
             Navigator.pop(context);
           },
         ),
@@ -46,10 +48,10 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              for (var item in _controller.foodTemp) {
-                _controller.listFoodToday.add(item);
+              for (var item in _controller.dailyNutriC.allMeal) {
+                //   _controller.dailyNutriC.listFoodToday.add(item);
               }
-              _controller.clearFoodTemp();
+              _controller.dailyNutriC.clearFoodTemp();
               Navigator.pop(context);
             },
             icon: const Icon(Icons.check, color: AppColors.primaryColor1),
@@ -102,7 +104,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         ),
                       ),
                       TextSpan(
-                        text: (_controller.foodTemp.length).toString(),
+                        text: (_controller.dailyNutriC.foodTemp.length)
+                            .toString(),
                         style: const TextStyle(
                           color: AppColors.primaryColor1,
                         ),
@@ -120,15 +123,24 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               // height: heightDevice,
               // width: widthDevice,
               child: ListView(
-                physics: const BouncingScrollPhysics(
-                  parent: AlwaysScrollableScrollPhysics(),
-                ),
-                children: _controller.allFood
-                    .map(
-                      (e) => _foodSelectCard(e),
-                    )
-                    .toList(),
-              ),
+                  physics: const BouncingScrollPhysics(
+                    parent: AlwaysScrollableScrollPhysics(),
+                  ),
+                  children: [
+                    for (int i = 0;
+                        i < _controller.dailyNutriC.allMeal.length;
+                        i++)
+                      _foodSelectCard(
+                        _controller.dailyNutriC.foodSelect[i],
+                        _controller.dailyNutriC.allMeal[i],
+                      )
+                  ]
+                  // _controller.dailyNutriC.allMeal
+                  //     .map(
+                  //       (e) => _foodSelectCard(e),
+                  //     )
+                  //     .toList(),
+                  ),
             ),
           )
         ],
@@ -136,14 +148,14 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     );
   }
 
-  Padding _foodSelectCard(RxMap<String, dynamic> e) {
+  Padding _foodSelectCard(Map<String, dynamic> selectItem, Meal foodItem) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       child: InkWell(
         onTap: () async {
           // e['select'] = !e['select'];
 
-          if (!e['select']) {
+          if (!selectItem['select']) {
             await Get.bottomSheet(
               isScrollControlled: true,
               enterBottomSheetDuration: const Duration(milliseconds: 100),
@@ -154,15 +166,15 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     topLeft: Radius.circular(10.0),
                     topRight: Radius.circular(10.0),
                   ),
-                  child: SelectAmountFood(foodItem: e),
+                  //  child: SelectAmountFood(foodItem: e),
                 ),
               ),
             );
           } else {
             setState(() {
-              e['select'] = false;
-              _controller.foodTemp
-                  .removeWhere((element) => element['name'] == e['name']);
+              selectItem['select'] = false;
+              _controller.dailyNutriC.foodTemp
+                  .removeWhere((element) => element['id'] == selectItem['id']);
             });
           }
         },
@@ -172,8 +184,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
             color: Colors.white,
             border: Border.all(
               width: 2,
-              color:
-                  (e['select']) ? AppColors.primaryColor1 : Colors.transparent,
+              color: (selectItem['select'])
+                  ? AppColors.primaryColor1
+                  : Colors.transparent,
             ),
             boxShadow: [
               BoxShadow(
@@ -191,11 +204,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    image: DecorationImage(
-                      image: AssetImage(
-                        e['image'],
-                      ),
-                    ),
+                    image: DecorationImage(image: NetworkImage(foodItem.asset)),
                   ),
                 ),
                 const SizedBox(width: 5),
@@ -203,7 +212,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      e['name'],
+                      foodItem.name,
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -211,7 +220,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                       ),
                     ),
                     Text(
-                      '${e['kCal']}kCal/${e['gam']}gam',
+                      '${foodItem.kCal} kCal / 1 amount',
                       style: const TextStyle(
                         color: Colors.grey,
                         fontSize: 15,
@@ -228,7 +237,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     shape: BoxShape.circle,
                     border: Border.all(
                       width: 2,
-                      color: !(e['select'])
+                      color: !(selectItem['select'])
                           ? Colors.grey.withOpacity(0.3)
                           : AppColors.primaryColor1,
                     ),
@@ -236,7 +245,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: (e['select'])
+                      color: (selectItem['select'])
                           ? AppColors.primaryColor1
                           : Colors.transparent,
                     ),

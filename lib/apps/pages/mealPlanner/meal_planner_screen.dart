@@ -212,7 +212,8 @@ class MealPlannerScreen extends StatelessWidget {
                             const Spacer(),
                             ButtonText(
                               press: () {
-                                Get.toNamed(RouteName.dailyNutritionScreen);
+                                Get.toNamed(RouteName.dailyNutritionScreen,
+                                    arguments: controller.listMealToday);
                               },
                               title: 'Check',
                               color: AppColors.primaryColor1,
@@ -243,23 +244,40 @@ class MealPlannerScreen extends StatelessWidget {
                           ? const Center(
                               child: CircularProgressIndicator(
                                   color: AppColors.primaryColor))
-                          : Column(
-                              children: controller.listMealToday
-                                  .map(
-                                    (e) => TodayMealCard(
-                                      widthDevice: widthDevice,
-                                      title: e.name,
-                                      time: 'Today | 3am',
-                                      imagePath: e.asset,
-                                      press: () {
-                                        Get.toNamed(
-                                          RouteName.mealDetail,
-                                          arguments: e.toJson(),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                  .toList()),
+                          : Column(children: [
+                              for (int i = 0; i < 3; i++)
+                                TodayMealCard(
+                                  widthDevice: widthDevice,
+                                  title: controller.listMealToday[i].name,
+                                  time: 'Today | 3am',
+                                  imagePath: controller.listMealToday[i].asset,
+                                  press: () {
+                                    Get.toNamed(
+                                      RouteName.mealDetail,
+                                      arguments:
+                                          controller.listMealToday[i].toJson(),
+                                    );
+                                  },
+                                ),
+                            ]
+                              // controller.listMealToday
+                              //     .map(
+                              //       (e) =>
+                              // TodayMealCard(
+                              //         widthDevice: widthDevice,
+                              //         title: e.name,
+                              //         time: 'Today | 3am',
+                              //         imagePath: e.asset,
+                              //         press: () {
+                              //           Get.toNamed(
+                              //             RouteName.mealDetail,
+                              //             arguments: e.toJson(),
+                              //           );
+                              //         },
+                              //       ),
+                              //     )
+                              //     .toList(),
+                              ),
                       const SizedBox(height: 20),
                       Align(
                         alignment: Alignment.centerLeft,
@@ -296,7 +314,7 @@ class MealPlannerScreen extends StatelessWidget {
                               color: AppColors.primaryColor2.withOpacity(0.2),
                               color_btn: AppColors.primaryColor2,
                               collect: 'Lunch',
-                              noFoods: 130,
+                              noFoods: controller.listMealLunch.length,
                               press: () {
                                 Get.toNamed(
                                   RouteName.categoryMeal,

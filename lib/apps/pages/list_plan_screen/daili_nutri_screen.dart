@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
+import '../../data/models/Meal.dart';
 import '../../template/misc/colors.dart';
 import 'add_food_nutri_screen.dart';
 
@@ -25,20 +26,6 @@ class DailyNutriScreen extends StatelessWidget {
       "Fasting",
     ];
 
-    List<Map<String, dynamic>> listNutri = [
-      {
-        'data': 0,
-        'name': 'Carbs',
-      },
-      {
-        'data': 0,
-        'name': 'Protein',
-      },
-      {
-        'data': 0,
-        'name': 'Fat',
-      },
-    ];
     DateTime time = DateTime.now();
     return Scaffold(
       floatingActionButton: InkWell(
@@ -126,10 +113,14 @@ class DailyNutriScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              _controller.listFoodToday.fold<int>(0,
-                                  (sum, element) {
-                                return sum + element['kCal'] as int;
-                              }).toString(),
+                              (_controller.listFoodToday.isEmpty)
+                                  ? 0.toString()
+                                  : _controller.listFoodToday.fold<int>(0,
+                                      (sum, e) {
+                                      return sum +
+                                          _controller.allMeal[e['id']].kCal *
+                                              e["amount"] as int;
+                                    }).toString(),
                               style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
@@ -154,44 +145,161 @@ class DailyNutriScreen extends StatelessWidget {
                       () => SizedBox(
                         width: widthDevice,
                         child: Row(
-                          children: listNutri
-                              .map(
-                                (e) => Expanded(
-                                  child: Container(
-                                      padding: const EdgeInsets.all(20),
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 5),
-                                      decoration: BoxDecoration(
-                                        color: AppColors.primaryColor1,
-                                        borderRadius: BorderRadius.circular(20),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            _controller.listFoodToday
-                                                .fold<int>(0, (sum, element) {
-                                              return sum + element[e['name']]
-                                                  as int;
-                                            }).toString(),
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 15,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 5),
-                                          Text(
-                                            e['name'],
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold,
-                                            ),
-                                          )
-                                        ],
-                                      )),
+                          children:
+                              //  _controller.listNutri.value
+                              //     .map(
+                              //       (e) =>
+                              // Expanded(
+                              //         child: Container(
+                              //             padding: const EdgeInsets.all(20),
+                              //             margin: const EdgeInsets.symmetric(
+                              //                 horizontal: 5),
+                              //             decoration: BoxDecoration(
+                              //               color: AppColors.primaryColor1,
+                              //               borderRadius: BorderRadius.circular(20),
+                              //             ),
+                              //             child: Column(
+                              //               children: [
+                              //                 Text(
+                              //                   _controller.sumKcal.toString(),
+                              //                   style: const TextStyle(
+                              //                     color: Colors.white,
+                              //                     fontWeight: FontWeight.bold,
+                              //                     fontSize: 15,
+                              //                   ),
+                              //                 ),
+                              //                 const SizedBox(height: 5),
+                              //                 Text(
+                              //                   e['name'],
+                              //                   style: const TextStyle(
+                              //                     color: Colors.white,
+                              //                     fontWeight: FontWeight.bold,
+                              //                   ),
+                              //                 )
+                              //               ],
+                              //             )),
+                              //       ),
+                              //     )
+                              //     .toList(),
+                              [
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor1,
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                              )
-                              .toList(),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      (_controller.listFoodToday.isEmpty)
+                                          ? 0.toString()
+                                          : _controller.listFoodToday
+                                              .fold<int>(0, (sum, e) {
+                                              return sum +
+                                                  _controller.allMeal[e['id']]
+                                                          .carbs *
+                                                      e["amount"] as int;
+                                            }).toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const Text(
+                                      'Carbs',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor1,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      (_controller.listFoodToday.isEmpty)
+                                          ? 0.toString()
+                                          : _controller.listFoodToday
+                                              .fold<int>(0, (sum, e) {
+                                              return sum +
+                                                  _controller.allMeal[e['id']]
+                                                          .proteins *
+                                                      e["amount"] as int;
+                                            }).toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const Text(
+                                      'Proteins',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.all(20),
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryColor1,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      (_controller.listFoodToday.isEmpty)
+                                          ? 0.toString()
+                                          : _controller.listFoodToday
+                                              .fold<int>(0, (sum, e) {
+                                              return sum +
+                                                  _controller.allMeal[e['id']]
+                                                          .fats *
+                                                      e["amount"] as int;
+                                            }).toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const Text(
+                                      'Fats',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -239,7 +347,10 @@ class DailyNutriScreen extends StatelessWidget {
                 () => Column(
                   children: _controller.listFoodToday
                       .map(
-                        (e) => FoodAbsorbed(data: e),
+                        (e) => FoodAbsorbed(
+                          meal: _controller.allMeal[e['id']],
+                          data: e,
+                        ),
                       )
                       .toList(),
                 ),
@@ -253,7 +364,9 @@ class DailyNutriScreen extends StatelessWidget {
 }
 
 class FoodAbsorbed extends StatelessWidget {
-  const FoodAbsorbed({Key? key, required this.data}) : super(key: key);
+  const FoodAbsorbed({Key? key, required this.meal, required this.data})
+      : super(key: key);
+  final Meal meal;
   final Map<String, dynamic> data;
   @override
   Widget build(BuildContext context) {
@@ -280,9 +393,7 @@ class FoodAbsorbed extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                    image: AssetImage(
-                      data['image'],
-                    ),
+                    image: NetworkImage(meal.asset),
                   ),
                 ),
               ),
@@ -293,7 +404,7 @@ class FoodAbsorbed extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          data['name'],
+                          meal.name,
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -315,7 +426,7 @@ class FoodAbsorbed extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          data['kCal'].toString() + 'kCal',
+                          '${meal.kCal * data['amount'] as int} kCal',
                           style: const TextStyle(
                             color: AppColors.primaryColor1,
                             fontWeight: FontWeight.bold,

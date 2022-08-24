@@ -62,43 +62,47 @@ class TodayMealCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 17,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                Text(
-                  time,
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w500,
+                  const SizedBox(height: 10),
+                  Text(
+                    time,
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            InkWell(
-              borderRadius: BorderRadius.circular(13),
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(13),
-                  color: AppColors.primaryColor1.withOpacity(0.2),
-                ),
-                child: SvgPicture.asset(
-                  'assets/icons/Notification.svg',
-                  color: AppColors.primaryColor1,
-                ),
+                ],
               ),
             ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(13),
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(13),
+                    color: AppColors.primaryColor1.withOpacity(0.2),
+                  ),
+                  child: SvgPicture.asset(
+                    'assets/icons/Notification.svg',
+                    color: AppColors.primaryColor1,
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

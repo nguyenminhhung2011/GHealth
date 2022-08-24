@@ -37,29 +37,29 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           IconButton(
             onPressed: () {
               widget.foodItem['select'] = true;
-              _controller.foodTemp.add(
-                {
-                  'image': widget.foodItem['image'],
-                  'name': widget.foodItem['name'],
-                  'kCal': ((widget.foodItem['kCal'] / widget.foodItem['gam']) *
-                          slideValue)
-                      .round(),
-                  'Carbs':
-                      ((widget.foodItem['Carbs'] / widget.foodItem['gam']) *
-                              slideValue)
-                          .round(),
-                  'Protein':
-                      ((widget.foodItem['Protein'] / widget.foodItem['gam']) *
-                              slideValue)
-                          .round(),
-                  'Fat': ((widget.foodItem['Fat'] / widget.foodItem['gam']) *
-                          slideValue)
-                      .round(),
-                  'time': '${DateTime.now().hour}:${DateTime.now().minute}',
-                  'date':
-                      '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-                },
-              );
+              // _controller.foodTemp.add(
+              //   {
+              //     'image': widget.foodItem['image'],
+              //     'name': widget.foodItem['name'],
+              //     'kCal': ((widget.foodItem['kCal'] / widget.foodItem['gam']) *
+              //             slideValue)
+              //         .round(),
+              //     'Carbs':
+              //         ((widget.foodItem['Carbs'] / widget.foodItem['gam']) *
+              //                 slideValue)
+              //             .round(),
+              //     'Protein':
+              //         ((widget.foodItem['Protein'] / widget.foodItem['gam']) *
+              //                 slideValue)
+              //             .round(),
+              //     'Fat': ((widget.foodItem['Fat'] / widget.foodItem['gam']) *
+              //             slideValue)
+              //         .round(),
+              //     'time': '${DateTime.now().hour}:${DateTime.now().minute}',
+              //     'date':
+              //         '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
+              //   },
+              // );
 
               Navigator.pop(context);
             },
@@ -149,7 +149,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                 child: Row(
                   children: [
                     Text(
-                      '${slideValue.toInt().toString()} g',
+                      '${slideValue.toInt().toString()} amount  ',
                       style: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -162,7 +162,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
               Slider(
                 value: slideValue,
                 min: 0,
-                max: 1000,
+                max: 10,
                 divisions: 95,
                 activeColor: AppColors.primaryColor1,
                 inactiveColor: Colors.grey.withOpacity(0.2),

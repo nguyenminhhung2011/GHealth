@@ -30,12 +30,8 @@ class MealPlanController extends GetxController with TrackerController {
       firestore.collection('meal').snapshots().map(
         (event) {
           List<Meal> result = [];
-          int count = 0;
           for (var item in event.docs) {
             //print(1);
-            if (count == 3) break;
-            Map<String, dynamic> temp = item.data() as Map<String, dynamic>;
-            count++;
             result.add(Meal.fromSnap(item));
           }
           return result;

@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:gold_health/apps/binding/add_food_nutri_binding.dart';
 import 'package:gold_health/apps/binding/category_meal_binding.dart';
 import 'package:gold_health/apps/binding/daily_nutrition_binding.dart';
 import 'package:gold_health/apps/binding/fill_profile_binding.dart';
@@ -42,6 +43,7 @@ import '../pages/basic_info_screen/get_height_screen.dart';
 import '../pages/basic_info_screen/get_old_screen.dart';
 import '../pages/basic_info_screen/select_gender_screen.dart';
 import '../pages/dashboard/home_screen.dart';
+import '../pages/list_plan_screen/add_food_nutri_screen.dart';
 import '../pages/list_plan_screen/daili_nutri_screen.dart';
 import '../pages/mealPlanner/view_meal_screen.dart';
 
@@ -171,6 +173,11 @@ class AppPages {
       page: () => ViewMealScreen(),
       binding: ViewMealB(),
       transition: Transition.fade,
+    ),
+    GetPage(
+      name: RouteName.addFoodNutri,
+      page: () => AddFoodScreen(),
+      binding: AddFoddNutriB(),
     ),
   ];
 }
