@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/data/models/nutrition.dart';
+import 'package:gold_health/services/auth_service.dart';
 
 import '../../../../constrains.dart';
 import '../../../data/models/Meal.dart';
@@ -86,6 +88,33 @@ class DailyNutritionController extends GetxController {
         },
       );
     }
+    getAllListFoodToday();
+  }
+
+  getAllListFoodToday() async {
+    _listFoodToday.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('Nutrition')
+        .snapshots()
+        .map((event) {
+      List<Map<String, dynamic>> result = [];
+      DateTime date = DateTime.now();
+      for (var item in event.docs) {
+        DateTime dateTemp = DateTime.fromMillisecondsSinceEpoch(
+            item.data()['dateTime'].seconds * 1000);
+        if (dateTemp.year == date.year &&
+            dateTemp.month == date.month &&
+            dateTemp.day == date.day) {
+          result.add({
+            'id': item.data()['id'],
+            'amount': item.data()['amount'],
+            'dateTime': dateTemp,
+          });
+        }
+      }
+      return result;
+    }));
   }
 
   selectFalseandRemoveFoodTemp(int index) {
@@ -96,18 +125,44 @@ class DailyNutritionController extends GetxController {
     update();
   }
 
-  selectTrueAndAddFoodTemp(int index, double slideValue) {
-    _foodSelect.value[index]['select'] = true;
-    _foodTemp.value.add(
-      {
-        'id': index,
-        'amount': slideValue.round(),
-        'time': '${DateTime.now().hour}:${DateTime.now().minute}',
-        'date':
-            '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-      },
-    );
+  selectTrueAndAddFoodTemp(int index, double slideValue) async {
+    DateTime date = DateTime.now();
+    String result = await addNutriToFirebase(index, slideValue, date);
+    if (result == "Success") {
+      _foodSelect.value[index]['select'] = true;
+      _foodTemp.value.add(
+        {
+          'id': index,
+          'amount': slideValue.round(),
+          'dateTime': date,
+        },
+      );
+    }
     update();
+  }
+
+  Future<String> addNutriToFirebase(
+      int index, double slideValue, DateTime date) async {
+    String result = "Some errors";
+    try {
+      Nutrition nutri = Nutrition(
+        id: index,
+        amount: slideValue.round(),
+        dateTime: date,
+      );
+      await firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('Nutrition')
+          .add(nutri.toJson());
+      result = "Success";
+      return result;
+    } catch (err) {
+      // ignore: avoid_print
+      print(err.toString());
+      result = err.toString();
+      return result;
+    }
   }
 
   searchMeal(String text) async {

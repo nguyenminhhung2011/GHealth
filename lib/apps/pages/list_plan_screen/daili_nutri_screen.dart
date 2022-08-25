@@ -322,7 +322,7 @@ class DailyNutriScreen extends StatelessWidget {
                                   const Spacer(),
                                   InkWell(
                                     onTap: () {
-                                      print(controller.listFoodToday);
+                                      //print(controller.listFoodToday);
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.all(2),
@@ -421,7 +421,7 @@ class FoodAbsorbed extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          data['date'],
+                          '${data['dateTime'].day}/${data['dateTime'].month}/${data['dateTime'].year}',
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -448,7 +448,7 @@ class FoodAbsorbed extends StatelessWidget {
                           size: 18,
                         ),
                         Text(
-                          data['time'],
+                          '${data['dateTime'].hour}:${data['dateTime'].minute}',
                           style: const TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.w500,
