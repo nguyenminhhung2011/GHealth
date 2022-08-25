@@ -95,49 +95,40 @@ class DailyNutriScreen extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
                           children: [
-                            Obx(
-                              () => Container(
-                                width: 150,
-                                height: 150,
-                                padding: const EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: AppColors.mainColor,
-                                  border: Border.all(
-                                      color: AppColors.primaryColor1, width: 2),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      (controller.listFoodToday.isEmpty)
-                                          ? 0.toString()
-                                          : controller.listFoodToday
-                                              .fold<int>(0, (sum, e) {
-                                              return sum +
-                                                  controller.allMeal[e['id']]
-                                                          .kCal *
-                                                      e["amount"] as int;
-                                            }).toString(),
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 25),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    const Text(
-                                      'Calories absorbed',
-                                      style: TextStyle(
+                            Container(
+                              width: 150,
+                              height: 150,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: AppColors.mainColor,
+                                border: Border.all(
+                                    color: AppColors.primaryColor1, width: 2),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    (controller.sumKcal).toString(),
+                                    style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                      ),
-                                    )
-                                  ],
-                                ),
+                                        fontSize: 25),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  const Text(
+                                    'Calories absorbed',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
+
                             const SizedBox(height: 20),
                             // ignore: sized_box_for_whitespace
                             SizedBox(
@@ -156,17 +147,7 @@ class DailyNutriScreen extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            (controller.listFoodToday.isEmpty)
-                                                ? 0.toString()
-                                                : controller.listFoodToday
-                                                    .fold<int>(0, (sum, e) {
-                                                    return sum +
-                                                        controller
-                                                                .allMeal[
-                                                                    e['id']]
-                                                                .carbs *
-                                                            e["amount"] as int;
-                                                  }).toString(),
+                                            (controller.sumCarbs).toString(),
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -197,17 +178,7 @@ class DailyNutriScreen extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            (controller.listFoodToday.isEmpty)
-                                                ? 0.toString()
-                                                : controller.listFoodToday
-                                                    .fold<int>(0, (sum, e) {
-                                                    return sum +
-                                                        controller
-                                                                .allMeal[
-                                                                    e['id']]
-                                                                .proteins *
-                                                            e["amount"] as int;
-                                                  }).toString(),
+                                            (controller.sumProtein).toString(),
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -238,17 +209,7 @@ class DailyNutriScreen extends StatelessWidget {
                                       child: Column(
                                         children: [
                                           Text(
-                                            (controller.listFoodToday.isEmpty)
-                                                ? 0.toString()
-                                                : controller.listFoodToday
-                                                    .fold<int>(0, (sum, e) {
-                                                    return sum +
-                                                        controller
-                                                                .allMeal[
-                                                                    e['id']]
-                                                                .fats *
-                                                            e["amount"] as int;
-                                                  }).toString(),
+                                            (controller.sumFats).toString(),
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
