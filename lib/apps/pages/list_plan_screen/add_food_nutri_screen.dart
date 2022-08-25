@@ -37,6 +37,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 icon: const Icon(Icons.close, color: Colors.black),
                 onPressed: () {
                   controller.clearFoodTemp();
+                  controller.searchText = TextEditingController();
                   Navigator.pop(context);
                 },
               ),
@@ -59,6 +60,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     }
                     controller.clearFoodTemp();
                     controller.update();
+                    controller.searchText = TextEditingController();
                     Get.back();
                   },
                   icon: const Icon(Icons.check, color: AppColors.primaryColor1),

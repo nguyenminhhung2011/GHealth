@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 // import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -142,43 +143,7 @@ class DailyNutriScreen extends StatelessWidget {
                             SizedBox(
                               width: widthDevice,
                               child: Row(
-                                children:
-                                    //  controller.listNutri.value
-                                    //     .map(
-                                    //       (e) =>
-                                    // Expanded(
-                                    //         child: Container(
-                                    //             padding: const EdgeInsets.all(20),
-                                    //             margin: const EdgeInsets.symmetric(
-                                    //                 horizontal: 5),
-                                    //             decoration: BoxDecoration(
-                                    //               color: AppColors.primaryColor1,
-                                    //               borderRadius: BorderRadius.circular(20),
-                                    //             ),
-                                    //             child: Column(
-                                    //               children: [
-                                    //                 Text(
-                                    //                   controller.sumKcal.toString(),
-                                    //                   style: const TextStyle(
-                                    //                     color: Colors.white,
-                                    //                     fontWeight: FontWeight.bold,
-                                    //                     fontSize: 15,
-                                    //                   ),
-                                    //                 ),
-                                    //                 const SizedBox(height: 5),
-                                    //                 Text(
-                                    //                   e['name'],
-                                    //                   style: const TextStyle(
-                                    //                     color: Colors.white,
-                                    //                     fontWeight: FontWeight.bold,
-                                    //                   ),
-                                    //                 )
-                                    //               ],
-                                    //             )),
-                                    //       ),
-                                    //     )
-                                    //     .toList(),
-                                    [
+                                children: [
                                   Expanded(
                                     child: Container(
                                       padding: const EdgeInsets.all(20),
@@ -323,6 +288,7 @@ class DailyNutriScreen extends StatelessWidget {
                                   InkWell(
                                     onTap: () {
                                       //print(controller.listFoodToday);
+                                      _showBottomSheet(context, controller);
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.all(2),
@@ -331,7 +297,8 @@ class DailyNutriScreen extends StatelessWidget {
                                           Text(
                                             DateFormat()
                                                 .add_yMMMMd()
-                                                .format(time)
+                                                .format(
+                                                    controller.dateSelect.value)
                                                 .toString(),
                                           ),
                                           const Icon(
@@ -368,6 +335,70 @@ class DailyNutriScreen extends StatelessWidget {
             ),
           );
         });
+  }
+
+  Future<dynamic> _showBottomSheet(
+      BuildContext context, DailyNutritionController controller) {
+    DateTime timeTemp = DateTime.now();
+    return showModalBottomSheet(
+      backgroundColor: Colors.transparent,
+      context: context,
+      builder: (context) => Container(
+        height: 260,
+        decoration: BoxDecoration(
+          color: AppColors.mainColor,
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        ),
+        child: Column(
+          children: [
+            // ignore: avoid_unnecessary_containers
+            SizedBox(
+              height: 180,
+              child: CupertinoDatePicker(
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (value) {
+                  timeTemp = value;
+                },
+                initialDateTime: DateTime.now(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        controller.selectListFoodByCalender(timeTemp);
+                        Get.back();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: AppColors.primaryColor1),
+                        child: const Text(
+                          'Done',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
   }
 }
 

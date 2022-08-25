@@ -8,6 +8,7 @@ import '../../../data/models/Meal.dart';
 
 class DailyNutritionController extends GetxController {
   TextEditingController searchText = TextEditingController();
+  Rx<DateTime> dateSelect = DateTime.now().obs;
   final Rx<List<Map<String, dynamic>>> _listFoodToday =
       Rx<List<Map<String, dynamic>>>([]);
   final Rx<List<Map<String, dynamic>>> _foodTemp =
@@ -182,6 +183,33 @@ class DailyNutritionController extends GetxController {
         },
       ),
     );
+    update();
+  }
+
+  selectListFoodByCalender(DateTime timeTemp) {
+    dateSelect.value = timeTemp;
+    _listFoodToday.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('Nutrition')
+        .snapshots()
+        .map((event) {
+      List<Map<String, dynamic>> result = [];
+      for (var item in event.docs) {
+        DateTime dateTemp = DateTime.fromMillisecondsSinceEpoch(
+            item.data()['dateTime'].seconds * 1000);
+        if (dateTemp.year == dateSelect.value.year &&
+            dateTemp.month == dateSelect.value.month &&
+            dateTemp.day == dateSelect.value.day) {
+          result.add({
+            'id': item.data()['id'],
+            'amount': item.data()['amount'],
+            'dateTime': dateTemp,
+          });
+        }
+      }
+      return result;
+    }));
     update();
   }
 

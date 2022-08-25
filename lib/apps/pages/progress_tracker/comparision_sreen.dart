@@ -58,33 +58,30 @@ class _ComparisionScreenState extends State<ComparisionScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: InkWell(
-                        borderRadius: BorderRadius.circular(20),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const CompareResultScreen(),
-                            ),
-                          );
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          width: widthDevice,
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: AppColors.primaryColor1,
+                    InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const CompareResultScreen(),
                           ),
-                          child: const Text(
-                            'Compare',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
+                        );
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        width: widthDevice,
+                        padding: const EdgeInsets.symmetric(vertical: 20),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: AppColors.primaryColor1,
+                        ),
+                        child: const Text(
+                          'Compare',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
                         ),
                       ),
@@ -104,9 +101,16 @@ class _ComparisionScreenState extends State<ComparisionScreen> {
     DateTime timeTemp = DateTime.now();
     showModalBottomSheet(
       context: context,
+      backgroundColor: Colors.transparent,
       builder: (context) => Container(
-        height: 250,
-        color: AppColors.mainColor,
+        height: 260,
+        decoration: BoxDecoration(
+          color: AppColors.mainColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
         child: Column(
           children: [
             // ignore: avoid_unnecessary_containers
@@ -153,6 +157,7 @@ class _ComparisionScreenState extends State<ComparisionScreen> {
                 ],
               ),
             ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
