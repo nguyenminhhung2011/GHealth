@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../constrains.dart';
 import '../../../data/models/Meal.dart';
 
 class DailyNutritionController extends GetxController {
   TextEditingController searchText = TextEditingController();
-
   final Rx<List<Map<String, dynamic>>> _listFoodToday =
       Rx<List<Map<String, dynamic>>>([]);
   final Rx<List<Map<String, dynamic>>> _foodTemp =
@@ -13,7 +13,7 @@ class DailyNutritionController extends GetxController {
   final Rx<List<Meal>> _allMeal = Rx<List<Meal>>([]);
   final Rx<List<Map<String, dynamic>>> _foodSelect =
       Rx<List<Map<String, dynamic>>>([]);
-  final RxInt index = 0.obs;
+  final Rx<List<Meal>> _listMealSearch = Rx<List<Meal>>([]);
 
   List<Map<String, dynamic>> get listFoodToday =>
       _listFoodToday.value; //  {'id': 'meal 1', 'amount' : 2, 'time':, 'date':}
@@ -22,6 +22,8 @@ class DailyNutritionController extends GetxController {
   List<Meal> get allMeal => _allMeal.value;
   List<Map<String, dynamic>> get foodSelect =>
       _foodSelect.value; //  {'id': 1, 'select':}
+
+  List<Meal> get listMealSearch => _listMealSearch.value;
 
   // RxList<Map<String, dynamic>> listNutri = [
   //   {
@@ -104,6 +106,27 @@ class DailyNutritionController extends GetxController {
         'date':
             '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
       },
+    );
+    update();
+  }
+
+  searchMeal(String text) async {
+    _listMealSearch.value.clear();
+    _listMealSearch.bindStream(
+      firestore
+          .collection('meal')
+          .where('name', isGreaterThanOrEqualTo: searchText.text)
+          .snapshots()
+          .map(
+        (event) {
+          List<Meal> result = [];
+          for (var item in event.docs) {
+            Meal temp = Meal.fromSnap(item);
+            result.add(temp);
+          }
+          return result;
+        },
+      ),
     );
     update();
   }

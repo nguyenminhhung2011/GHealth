@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
-import '../../data/models/Meal.dart';
 import '../../template/misc/colors.dart';
 
 // ignore: must_be_immutable
@@ -37,28 +35,6 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           IconButton(
             onPressed: () {
               _controller.selectTrueAndAddFoodTemp(widget.index, slideValue);
-              // _controller.foodTemp.add(
-              //   {
-              //     'image': widget.foodItem['image'],
-              //     'name': widget.foodItem['name'],
-              //     'kCal': ((widget.foodItem['kCal'] / widget.foodItem['gam']) *
-              //             slideValue)
-              //         .round(),
-              //     'Carbs':
-              //         ((widget.foodItem['Carbs'] / widget.foodItem['gam']) *
-              //                 slideValue)
-              //             .round(),
-              //     'Protein':
-              //         ((widget.foodItem['Protein'] / widget.foodItem['gam']) *
-              //                 slideValue)
-              //             .round(),
-              //     'Fat': ((widget.foodItem['Fat'] / widget.foodItem['gam']) *
-              //             slideValue)
-              //         .round(),
-
-              //   },
-              // );
-
               Get.back();
             },
             icon: const Icon(Icons.check, color: AppColors.primaryColor1),

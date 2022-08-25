@@ -58,8 +58,6 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     controller.clearFoodTemp();
                     controller.update();
                     Get.back();
-                    print(controller.foodSelect);
-                    print(controller.foodTemp);
                   },
                   icon: const Icon(Icons.check, color: AppColors.primaryColor1),
                 )
@@ -82,6 +80,11 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         const SizedBox(width: 10),
                         Expanded(
                           child: TextFormField(
+                            controller: controller.searchText,
+                            onChanged: (value) {
+                              print(controller.searchText.text);
+                              controller.searchMeal(controller.searchText.text);
+                            },
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: "Search",
@@ -125,26 +128,61 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 ),
                 const SizedBox(height: 20),
                 // ignore: avoid_unnecessary_containers
-                Expanded(
-                  // height: heightDevice,
-                  // width: widthDevice,
-                  child: ListView(
-                      physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics(),
+                (controller.searchText.text != '')
+                    ? controller.listMealSearch.isNotEmpty
+                        ? Expanded(
+                            child: ListView(
+                                physics: const BouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics(),
+                                ),
+                                children: [
+                                  for (int index = 0;
+                                      index < controller.listMealSearch.length;
+                                      index++)
+                                    _foodSelectCard(index),
+                                ]
+                                // controller.allMeal
+                                //     .map(
+                                //       (e) => _foodSelectCard(e),
+                                //     )
+                                //     .toList(),
+                                ),
+                          )
+                        : Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/images/notfound.png',
+                                    height: 60, width: 60),
+                                const Text(
+                                  'Meal isn\'t found',
+                                  style: TextStyle(
+                                    color: AppColors.primaryColor1,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                    : Expanded(
+                        child: ListView(
+                            physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics(),
+                            ),
+                            children: [
+                              for (int index = 0;
+                                  index < controller.allMeal.length;
+                                  index++)
+                                _foodSelectCard(index),
+                            ]
+                            // controller.allMeal
+                            //     .map(
+                            //       (e) => _foodSelectCard(e),
+                            //     )
+                            //     .toList(),
+                            ),
                       ),
-                      children: [
-                        for (int index = 0;
-                            index < controller.allMeal.length;
-                            index++)
-                          _foodSelectCard(index),
-                      ]
-                      // controller.allMeal
-                      //     .map(
-                      //       (e) => _foodSelectCard(e),
-                      //     )
-                      //     .toList(),
-                      ),
-                ),
               ],
             ),
           ),
