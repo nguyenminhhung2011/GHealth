@@ -42,11 +42,11 @@ class MealPlannerScreen extends StatelessWidget {
                       child: CircularProgressIndicator(
                           color: AppColors.primaryColor1),
                     )
-                  : Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        children: [
-                          Row(
+                  : Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
                             children: [
                               InkWell(
                                 onTap: () async {
@@ -102,8 +102,11 @@ class MealPlannerScreen extends StatelessWidget {
                               ),
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          Row(
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
                             children: [
                               Text(
                                 'Meal Nutritions',
@@ -122,8 +125,11 @@ class MealPlannerScreen extends StatelessWidget {
                               )
                             ],
                           ),
-                          const SizedBox(height: 20),
-                          SizedBox(
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: SizedBox(
                             width: widthDevice,
                             height: 200,
                             // ignore: avoid_unnecessary_containers
@@ -131,25 +137,25 @@ class MealPlannerScreen extends StatelessWidget {
                               child: const LineChartOneLine(),
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              children: const [
-                                ControlMealCard(
-                                    header: 'Calories', percent: 0.82),
-                                SizedBox(width: 20),
-                                ControlMealCard(header: 'Sugar', percent: 0.39),
-                                SizedBox(width: 20),
-                                ControlMealCard(header: 'Fibre', percent: 0.88),
-                                SizedBox(width: 20),
-                                ControlMealCard(header: 'fats', percent: 0.42),
-                                SizedBox(width: 20),
-                              ],
-                            ),
+                        ),
+                        const SizedBox(height: 20),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: const [
+                              ControlMealCard(
+                                  header: 'Calories', percent: 0.82),
+                              ControlMealCard(header: 'Sugar', percent: 0.39),
+                              ControlMealCard(header: 'Fibre', percent: 0.88),
+                              ControlMealCard(header: 'fats', percent: 0.42),
+                              SizedBox(width: 20),
+                            ],
                           ),
-                          const SizedBox(height: 20),
-                          Container(
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Container(
                             width: widthDevice,
                             padding: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 20),
@@ -191,8 +197,11 @@ class MealPlannerScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          Container(
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Container(
                             width: widthDevice,
                             padding: const EdgeInsets.symmetric(
                                 vertical: 20, horizontal: 20),
@@ -229,8 +238,11 @@ class MealPlannerScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 20),
-                          Row(
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
                             children: [
                               Obx(
                                 () => Text(
@@ -251,8 +263,11 @@ class MealPlannerScreen extends StatelessWidget {
                               )
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          controller.listMealToday == null
+                        ),
+                        const SizedBox(height: 10),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: controller.listMealToday.isEmpty
                               ? const Center(
                                   child: CircularProgressIndicator(
                                       color: AppColors.primaryColor))
@@ -293,8 +308,11 @@ class MealPlannerScreen extends StatelessWidget {
                                   //     )
                                   //     .toList(),
                                   ),
-                          const SizedBox(height: 20),
-                          Align(
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Align(
                             alignment: Alignment.centerLeft,
                             child: Text(
                               'Find Something to Eat',
@@ -306,61 +324,59 @@ class MealPlannerScreen extends StatelessWidget {
                                   ),
                             ),
                           ),
-                          const SizedBox(height: 10),
-                          SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                MealSelect(
-                                  imagePath: 'assets/images/break.png',
-                                  color:
-                                      AppColors.primaryColor1.withOpacity(0.2),
-                                  color_btn: AppColors.primaryColor1,
-                                  collect: 'Breakfast',
-                                  noFoods: controller.listMealBreakFast.length,
-                                  press: () {
-                                    Get.toNamed(
-                                      RouteName.categoryMeal,
-                                      arguments: controller.listMealBreakFast,
-                                    );
-                                  },
-                                ),
-                                const SizedBox(width: 10),
-                                MealSelect(
-                                  imagePath: 'assets/images/lunch.png',
-                                  color:
-                                      AppColors.primaryColor2.withOpacity(0.2),
-                                  color_btn: AppColors.primaryColor2,
-                                  collect: 'Lunch',
-                                  noFoods: controller.listMealLunch.length,
-                                  press: () {
-                                    Get.toNamed(
-                                      RouteName.categoryMeal,
-                                      arguments: controller.listMealLunch,
-                                    );
-                                  },
-                                ),
-                                const SizedBox(width: 15),
-                                MealSelect(
-                                  imagePath: 'assets/images/dinner.png',
-                                  color:
-                                      AppColors.primaryColor.withOpacity(0.2),
-                                  color_btn: AppColors.primaryColor,
-                                  collect: 'Dinner',
-                                  noFoods: 140,
-                                  press: () {
-                                    controller.remove();
-                                    for (var item in controller.listMealToday) {
-                                      print(item.name);
-                                    }
-                                  },
-                                ),
-                              ],
-                            ),
+                        ),
+                        const SizedBox(height: 10),
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              MealSelect(
+                                imagePath: 'assets/images/break.png',
+                                color: AppColors.primaryColor1.withOpacity(0.2),
+                                color_btn: AppColors.primaryColor1,
+                                collect: 'Breakfast',
+                                noFoods: controller.listMealBreakFast.length,
+                                press: () {
+                                  Get.toNamed(
+                                    RouteName.categoryMeal,
+                                    arguments: controller.listMealBreakFast,
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 10),
+                              MealSelect(
+                                imagePath: 'assets/images/lunch.png',
+                                color: AppColors.primaryColor2.withOpacity(0.2),
+                                color_btn: AppColors.primaryColor2,
+                                collect: 'Lunch',
+                                noFoods: controller.listMealLunch.length,
+                                press: () {
+                                  Get.toNamed(
+                                    RouteName.categoryMeal,
+                                    arguments: controller.listMealLunch,
+                                  );
+                                },
+                              ),
+                              const SizedBox(width: 15),
+                              MealSelect(
+                                imagePath: 'assets/images/dinner.png',
+                                color: AppColors.primaryColor.withOpacity(0.2),
+                                color_btn: AppColors.primaryColor,
+                                collect: 'Dinner',
+                                noFoods: 140,
+                                press: () {
+                                  controller.remove();
+                                  for (var item in controller.listMealToday) {
+                                    print(item.name);
+                                  }
+                                },
+                              ),
+                              const SizedBox(width: 20),
+                            ],
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
             );
           },

@@ -16,6 +16,7 @@ class ControlMealCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      margin: const EdgeInsets.only(left: 20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
         color: AppColors.primaryColor1.withOpacity(0.2),
