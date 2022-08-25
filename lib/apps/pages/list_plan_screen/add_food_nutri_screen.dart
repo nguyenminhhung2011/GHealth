@@ -53,7 +53,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                   onPressed: () {
                     for (var item in controller.foodTemp) {
                       //   controller.listFoodToday.add(item);
-                      controller.listFoodToday.add(item);
+                      // controller.listFoodToday.add(item);
+                      controller.addNutriToFirebase(
+                          item['id'], item['amount'], item['dateTime']);
                     }
                     controller.clearFoodTemp();
                     controller.update();

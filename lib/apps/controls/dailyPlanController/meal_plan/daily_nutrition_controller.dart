@@ -127,27 +127,26 @@ class DailyNutritionController extends GetxController {
 
   selectTrueAndAddFoodTemp(int index, double slideValue) async {
     DateTime date = DateTime.now();
-    String result = await addNutriToFirebase(index, slideValue, date);
-    if (result == "Success") {
-      _foodSelect.value[index]['select'] = true;
-      _foodTemp.value.add(
-        {
-          'id': index,
-          'amount': slideValue.round(),
-          'dateTime': date,
-        },
-      );
-    }
+
+    _foodSelect.value[index]['select'] = true;
+    _foodTemp.value.add(
+      {
+        'id': index,
+        'amount': slideValue.round(),
+        'dateTime': date,
+      },
+    );
+
     update();
   }
 
-  Future<String> addNutriToFirebase(
-      int index, double slideValue, DateTime date) async {
+  Future<void> addNutriToFirebase(
+      int index, int slideValue, DateTime date) async {
     String result = "Some errors";
     try {
       Nutrition nutri = Nutrition(
         id: index,
-        amount: slideValue.round(),
+        amount: slideValue,
         dateTime: date,
       );
       await firestore
@@ -156,12 +155,12 @@ class DailyNutritionController extends GetxController {
           .collection('Nutrition')
           .add(nutri.toJson());
       result = "Success";
-      return result;
+      return;
     } catch (err) {
       // ignore: avoid_print
       print(err.toString());
       result = err.toString();
-      return result;
+      return;
     }
   }
 
