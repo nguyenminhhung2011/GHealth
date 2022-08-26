@@ -3,4 +3,7 @@ enum WorkoutCategory {
   loweBody,
   upperbody,
   abs,
+  cardio,
+  hiit,
+  custom,
 }
