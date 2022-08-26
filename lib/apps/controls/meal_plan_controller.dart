@@ -20,6 +20,7 @@ class MealPlanController extends GetxController with TrackerController {
     getAllMeal();
     getListMealBreakFast();
     getListMealLunch();
+    getStartDateAndFinishDate();
     dateController = DateRangePickerController();
   }
 
@@ -93,6 +94,22 @@ class MealPlanController extends GetxController with TrackerController {
       return date.add(Duration(days: index));
     });
     return items;
+  }
+
+  void getStartDateAndFinishDate() {
+    DateTime now = DateTime.now().add(const Duration(days: -4));
+    int weekDay = now.weekday == 7 ? 0 : now.weekday;
+    startDate.value = DateTime.now().add(const Duration(days: -4));
+    finishDate.value = DateTime.now().add(const Duration(days: -4));
+    for (int i = 0; i < weekDay; i++) {
+      startDate.value = startDate.value.add(const Duration(days: -1));
+    }
+    for (int i = 0; i < 6 - weekDay; i++) {
+      finishDate.value = finishDate.value.add(const Duration(days: 1));
+    }
+    allDateBetWeen.value = List<DateTime>.generate(
+        7, (index) => startDate.value.add(Duration(days: index)));
+    update();
   }
 
   //-------------------------------------------------------------------

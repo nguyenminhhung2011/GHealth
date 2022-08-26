@@ -9,7 +9,6 @@ import 'package:gold_health/apps/pages/mealPlanner/widgets/meal_select.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/today_meal_card.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/button_custom/button_text.dart';
 import '../../routes/route_name.dart';
@@ -307,7 +306,9 @@ class MealPlannerScreen extends StatelessWidget {
                                       controller.getListDateBetWeenRange();
                                   for (var item
                                       in controller.allDateBetWeen.value) {
-                                    print(item.weekday);
+                                    print(item.toString() +
+                                        ' ' +
+                                        item.weekday.toString());
                                   }
                                 },
                               )
