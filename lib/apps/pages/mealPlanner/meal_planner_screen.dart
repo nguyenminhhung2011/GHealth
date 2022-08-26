@@ -7,6 +7,7 @@ import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/control_meal_card.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/meal_select.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/today_meal_card.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/button_custom/button_text.dart';
@@ -121,7 +122,9 @@ class MealPlannerScreen extends StatelessWidget {
                               ButtonIconGradientColor(
                                 title: ' Week',
                                 icon: Icons.calendar_month,
-                                press: () {},
+                                press: () async {
+                                  await _showDatePicker(context: context);
+                                },
                               )
                             ],
                           ),
@@ -145,8 +148,9 @@ class MealPlannerScreen extends StatelessWidget {
                             children: const [
                               ControlMealCard(
                                   header: 'Calories', percent: 0.82),
-                              ControlMealCard(header: 'Sugar', percent: 0.39),
-                              ControlMealCard(header: 'Fibre', percent: 0.88),
+                              ControlMealCard(header: 'Carbs', percent: 0.39),
+                              ControlMealCard(
+                                  header: 'Proteins', percent: 0.88),
                               ControlMealCard(header: 'fats', percent: 0.42),
                               SizedBox(width: 20),
                             ],
@@ -380,6 +384,86 @@ class MealPlannerScreen extends StatelessWidget {
                     ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  _showDatePicker({required BuildContext context}) async {
+    await showDialog(
+      useRootNavigator: false,
+      barrierColor: Colors.black54,
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          height: 430,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: AppColors.mainColor,
+          ),
+          child: Column(
+            children: [
+              Card(
+                elevation: 2,
+                child: SfDateRangePicker(
+                  selectionTextStyle:
+                      const TextStyle(fontWeight: FontWeight.bold),
+                  rangeTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  headerStyle: const DateRangePickerHeaderStyle(
+                    backgroundColor: AppColors.primaryColor1,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  monthCellStyle: const DateRangePickerMonthCellStyle(
+                    textStyle: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  selectionColor: AppColors.primaryColor1,
+                  rangeSelectionColor: AppColors.primaryColor1,
+                  todayHighlightColor: AppColors.primaryColor1,
+                  controller: controller.dateController,
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.range,
+                  onSelectionChanged: controller.selectionChanged,
+                  monthViewSettings: const DateRangePickerMonthViewSettings(
+                      enableSwipeSelection: false),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: AppColors.primaryColor1,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      primary: Colors.transparent,
+                      shadowColor: Colors.transparent),
+                  child: const Text(
+                    'Done',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

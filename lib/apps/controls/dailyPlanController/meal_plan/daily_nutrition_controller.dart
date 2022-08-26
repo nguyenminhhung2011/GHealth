@@ -143,7 +143,7 @@ class DailyNutritionController extends GetxController {
 
   Future<void> addNutriToFirebase(
       int index, int slideValue, DateTime date) async {
-    String result = "Some errors";
+    // String result = "Some errors";
     try {
       Nutrition nutri = Nutrition(
         id: index,
@@ -155,12 +155,12 @@ class DailyNutritionController extends GetxController {
           .doc(AuthService.instance.currentUser!.uid)
           .collection('Nutrition')
           .add(nutri.toJson());
-      result = "Success";
+      // result = "Success";
       return;
     } catch (err) {
       // ignore: avoid_print
       print(err.toString());
-      result = err.toString();
+      // result = err.toString();
       return;
     }
   }
