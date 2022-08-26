@@ -299,7 +299,16 @@ class MealPlannerScreen extends StatelessWidget {
                               ButtonIconGradientColor(
                                 title: ' Breakfast',
                                 icon: Icons.keyboard_arrow_down_sharp,
-                                press: () {},
+                                press: () {
+                                  // for(var item in controller.dateController.selectedDates!){
+
+                                  // }
+                                  if (controller.dateController != null) {
+                                    // print(controller.dateController.)
+                                  } else {
+                                    print("0");
+                                  }
+                                },
                               )
                             ],
                           ),
