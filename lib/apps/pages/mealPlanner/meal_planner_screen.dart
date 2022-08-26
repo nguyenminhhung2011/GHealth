@@ -7,6 +7,7 @@ import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/control_meal_card.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/meal_select.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/today_meal_card.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
@@ -132,6 +133,41 @@ class MealPlannerScreen extends StatelessWidget {
                         const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            children: [
+                              Text(
+                                DateFormat()
+                                    .add_yMMMMd()
+                                    .format(controller.dateSelect1.value)
+                                    .toString(),
+                                style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17),
+                              ),
+                              const Text(
+                                ' - ',
+                                style: TextStyle(
+                                    color: AppColors.primaryColor1,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17),
+                              ),
+                              Text(
+                                DateFormat()
+                                    .add_yMMMMd()
+                                    .format(controller.dateSelect2.value)
+                                    .toString(),
+                                style: const TextStyle(
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: SizedBox(
                             width: widthDevice,
                             height: 200,
@@ -191,7 +227,7 @@ class MealPlannerScreen extends StatelessWidget {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) =>
-                                            MealScheduleScreen(),
+                                            const MealScheduleScreen(),
                                       ),
                                     );
                                   },
@@ -275,43 +311,30 @@ class MealPlannerScreen extends StatelessWidget {
                               ? const Center(
                                   child: CircularProgressIndicator(
                                       color: AppColors.primaryColor))
-                              : Column(children: [
-                                  for (int i = 0;
-                                      i < controller.listMealToday.length - 14;
-                                      i++)
-                                    TodayMealCard(
-                                      widthDevice: widthDevice,
-                                      title: controller.listMealToday[i].name,
-                                      time: 'Today | 3am',
-                                      imagePath:
-                                          controller.listMealToday[i].asset,
-                                      press: () {
-                                        Get.toNamed(
-                                          RouteName.mealDetail,
-                                          arguments: controller.listMealToday[i]
-                                              .toJson(),
-                                        );
-                                      },
-                                    ),
-                                ]
-                                  // controller.listMealToday
-                                  //     .map(
-                                  //       (e) =>
-                                  // TodayMealCard(
-                                  //         widthDevice: widthDevice,
-                                  //         title: e.name,
-                                  //         time: 'Today | 3am',
-                                  //         imagePath: e.asset,
-                                  //         press: () {
-                                  //           Get.toNamed(
-                                  //             RouteName.mealDetail,
-                                  //             arguments: e.toJson(),
-                                  //           );
-                                  //         },
-                                  //       ),
-                                  //     )
-                                  //     .toList(),
-                                  ),
+                              : Column(
+                                  children: [
+                                    for (int i = 0;
+                                        i <
+                                            controller.listMealToday.length -
+                                                14;
+                                        i++)
+                                      TodayMealCard(
+                                        widthDevice: widthDevice,
+                                        title: controller.listMealToday[i].name,
+                                        time: 'Today | 3am',
+                                        imagePath:
+                                            controller.listMealToday[i].asset,
+                                        press: () {
+                                          Get.toNamed(
+                                            RouteName.mealDetail,
+                                            arguments: controller
+                                                .listMealToday[i]
+                                                .toJson(),
+                                          );
+                                        },
+                                      ),
+                                  ],
+                                ),
                         ),
                         const SizedBox(height: 20),
                         Padding(
@@ -445,7 +468,10 @@ class MealPlannerScreen extends StatelessWidget {
                   color: AppColors.primaryColor1,
                 ),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.selectDateDoneClick();
+                    Get.back();
+                  },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),

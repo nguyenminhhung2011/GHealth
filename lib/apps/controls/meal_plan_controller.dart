@@ -1,11 +1,11 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 import 'package:gold_health/constrains.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
 import '../data/models/Meal.dart';
-import 'dailyPlanController/daily_plan_controller.dart';
 
 class MealPlanController extends GetxController with TrackerController {
   final Rx<List<Meal>> _listMealToday = Rx<List<Meal>>([]);
@@ -28,7 +28,11 @@ class MealPlanController extends GetxController with TrackerController {
   RxList<Map<String, dynamic>> listMealDinner = <Map<String, dynamic>>[].obs;
 
   //date controller
+  DateTime selectDateTemp1 = DateTime.now();
+  DateTime selectDateTemp2 = DateTime.now();
 
+  Rx<DateTime> dateSelect1 = DateTime.now().obs;
+  Rx<DateTime> dateSelect2 = DateTime.now().obs;
   DateRangePickerController dateController = DateRangePickerController();
 
   bool isSameDate(DateTime date1, DateTime date2) {
@@ -64,9 +68,18 @@ class MealPlanController extends GetxController with TrackerController {
     if (!isSameDate(dat1, ranges.startDate!) ||
         !isSameDate(dat2, ranges.endDate!)) {
       dateController.selectedRange = PickerDateRange(dat1, dat2);
+      selectDateTemp1 = dat1;
+      selectDateTemp2 = dat2;
     }
   }
 
+  selectDateDoneClick() {
+    dateSelect1.value = selectDateTemp1;
+    dateSelect2.value = selectDateTemp2;
+    update();
+  }
+
+  //-------------------------------------------------------------------
   getAllMeal() async {
     _listMealToday.bindStream(
       firestore.collection('meal').snapshots().map(
