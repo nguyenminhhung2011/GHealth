@@ -402,12 +402,12 @@ class MealPlannerScreen extends StatelessWidget {
                                 color: AppColors.primaryColor.withOpacity(0.2),
                                 color_btn: AppColors.primaryColor,
                                 collect: 'Dinner',
-                                noFoods: 140,
+                                noFoods: controller.listMealDinner.length,
                                 press: () {
-                                  controller.remove();
-                                  for (var item in controller.listMealToday) {
-                                    print(item.name);
-                                  }
+                                  Get.toNamed(
+                                    RouteName.categoryMeal,
+                                    arguments: controller.listMealDinner,
+                                  );
                                 },
                               ),
                               const SizedBox(width: 20),

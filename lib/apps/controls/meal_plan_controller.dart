@@ -11,22 +11,24 @@ class MealPlanController extends GetxController with TrackerController {
   final Rx<List<Meal>> _listMealToday = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealBreakFast = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealLunch = Rx<List<Meal>>([]);
+  final Rx<List<Meal>> _listMealDinner = Rx<List<Meal>>([]);
   List<Meal> get listMealLunch => _listMealLunch.value;
   List<Meal> get listMealToday => _listMealToday.value;
   List<Meal> get listMealBreakFast => _listMealBreakFast.value;
+  List<Meal> get listMealDinner => _listMealDinner.value;
   @override
   void onInit() {
     super.onInit();
     getAllMeal();
     getListMealBreakFast();
     getListMealLunch();
+    getListMealDinner();
     getStartDateAndFinishDate();
     dateController = DateRangePickerController();
   }
 
   TextEditingController text = TextEditingController();
   RxList<Map<String, dynamic>> todayListMeal = <Map<String, dynamic>>[].obs;
-  RxList<Map<String, dynamic>> listMealDinner = <Map<String, dynamic>>[].obs;
 
   //date controller
   DateTime selectDateTemp1 = DateTime.now();
@@ -157,6 +159,25 @@ class MealPlanController extends GetxController with TrackerController {
             //print(1);
             Map<String, dynamic> temp = item.data();
             if (temp['time'] == 2) {
+              result.add(Meal.fromSnap(item));
+            }
+          }
+          return result;
+        },
+      ),
+    );
+    update();
+  }
+
+  getListMealDinner() async {
+    _listMealDinner.bindStream(
+      firestore.collection('meal').snapshots().map(
+        (event) {
+          List<Meal> result = [];
+          for (var item in event.docs) {
+            //print(1);
+            Map<String, dynamic> temp = item.data();
+            if (temp['time'] == 3) {
               result.add(Meal.fromSnap(item));
             }
           }

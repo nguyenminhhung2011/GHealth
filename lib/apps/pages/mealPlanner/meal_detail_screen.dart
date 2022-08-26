@@ -357,16 +357,25 @@ class MealDetailScreen extends StatelessWidget {
                                                           children: [
                                                             Row(
                                                               children: [
-                                                                Text(
-                                                                    '0${e['step']}',
-                                                                    style: const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight
+                                                                e['step'] > 9
+                                                                    ? Text(
+                                                                        '${e['step']}',
+                                                                        style: const TextStyle(
+                                                                            fontWeight: FontWeight
                                                                                 .w600,
-                                                                        fontSize:
-                                                                            18,
-                                                                        color: AppColors
-                                                                            .primaryColor1)),
+                                                                            fontSize:
+                                                                                18,
+                                                                            color: AppColors
+                                                                                .primaryColor1))
+                                                                    : Text(
+                                                                        '0${e['step']}',
+                                                                        style: const TextStyle(
+                                                                            fontWeight: FontWeight
+                                                                                .w600,
+                                                                            fontSize:
+                                                                                18,
+                                                                            color:
+                                                                                AppColors.primaryColor1)),
                                                                 const SizedBox(
                                                                     width: 5),
                                                                 Container(
