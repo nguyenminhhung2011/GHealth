@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 
 import 'dailyPlanController/daily_plan_controller.dart';
+import '../data/models/workout_model.dart';
+import 'package:gold_health/constrains.dart';
 
 class WorkoutPlanController extends GetxController with TrackerController {
   TextEditingController text = TextEditingController();
@@ -23,4 +25,27 @@ class WorkoutPlanController extends GetxController with TrackerController {
       'calo': 400,
     }
   ].obs;
+
+  var exercise = Rx<List<Exercise>>([]);
+  var workouts = Rx<List<Workout>>([]);
+
+  Future fetchExerciseList() async {
+    try {
+      exercise.bindStream(
+        firestore.collection('exercise').snapshots().map(
+          (event) {
+            List<Exercise> result = [];
+            for (var item in event.docs) {
+              print('${item.id} ----');
+              result.add(Exercise.fromSnap(item.id, item));
+            }
+            return result;
+          },
+        ),
+      );
+      update();
+    } catch (e) {
+      rethrow;
+    }
+  }
 }
