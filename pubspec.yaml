@@ -69,6 +69,8 @@ dependencies:
   google_sign_in: ^5.4.1
   flutter_facebook_auth: ^4.4.1
   age: ^0.0.1
+  flutter_gifimage: ^1.0.0
+
       
 
   

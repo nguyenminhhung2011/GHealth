@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import '../enums/workout_enums.dart';
 
 class Workout {
@@ -43,6 +45,57 @@ class Exercise {
   final String description;
   final Map<String, String> instructions; //<title,detail>
   final Map<String, String> repetitions; //<times,calories>
-  final Map<String, String> equipRequest;
+  final Map<String, String>? equipRequest;
   bool isFavorite = false;
+
+  Map<String, dynamic> toJson() => {
+        'name': exerciseName,
+        'exerciseUrl': exerciseUrl,
+        'duration': duration,
+        'caloriesBurn': caloriesBurn,
+        'description': description,
+        'level': level,
+        'instructions': instructions,
+        'repetitions': repetitions,
+        'equipRequest': equipRequest,
+        'isFavorite': isFavorite,
+      };
+
+  factory Exercise.fromSnap(String id, DocumentSnapshot snap) {
+    var snapshot = snap.data() as Map<String, dynamic>;
+
+    Map<String, String> instructions = {};
+    List<dynamic> list = snapshot['instructions'];
+    for (var element in list) {
+      final extractData = element as Map<String, dynamic>;
+      Map<String, String> result = {};
+      extractData.forEach((key, value) {
+        result.addAll({key: value as String});
+      });
+      instructions.addAll(result);
+    }
+
+    Map<String, String> repetitions = {};
+    (snapshot['repetitions'] as Map<String, dynamic>).forEach((key, value) {
+      repetitions.addAll({
+        key: value as String,
+      });
+    });
+
+    // Map<String, String>? equipRequest;
+    // final equipRequestData = snapshot['equipRequest'] as Map<String, dynamic>;
+
+    return Exercise(
+      equipRequest: null,
+      exerciseUrl: snapshot['exerciseUrl'],
+      idExercise: id,
+      exerciseName: snapshot['exerciseName'],
+      duration: Duration(minutes: snapshot['duration']),
+      level: snapshot['level'].toString(),
+      caloriesBurn: snapshot['caloriesBurn'],
+      description: snapshot['description'],
+      instructions: instructions,
+      repetitions: repetitions,
+    );
+  }
 }
