@@ -31,9 +31,11 @@ class MealPlanController extends GetxController with TrackerController {
   DateTime selectDateTemp1 = DateTime.now();
   DateTime selectDateTemp2 = DateTime.now();
 
-  Rx<DateTime> dateSelect1 = DateTime.now().obs;
-  Rx<DateTime> dateSelect2 = DateTime.now().obs;
+  Rx<DateTime> startDate = DateTime.now().obs;
+  Rx<DateTime> finishDate = DateTime.now().obs;
   DateRangePickerController dateController = DateRangePickerController();
+
+  RxList<DateTime> allDateBetWeen = <DateTime>[].obs;
 
   bool isSameDate(DateTime date1, DateTime date2) {
     if (date2 == date1) {
@@ -74,9 +76,23 @@ class MealPlanController extends GetxController with TrackerController {
   }
 
   selectDateDoneClick() {
-    dateSelect1.value = selectDateTemp1;
-    dateSelect2.value = selectDateTemp2;
+    startDate.value = selectDateTemp1;
+    finishDate.value = selectDateTemp2;
     update();
+  }
+
+  getDayInBetWeen() {
+    final int difference = finishDate.value.difference(startDate.value).inDays;
+    print(difference);
+    return difference;
+  }
+
+  List<DateTime> getListDateBetWeenRange() {
+    final items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+      DateTime date = startDate.value;
+      return date.add(Duration(days: index));
+    });
+    return items;
   }
 
   //-------------------------------------------------------------------

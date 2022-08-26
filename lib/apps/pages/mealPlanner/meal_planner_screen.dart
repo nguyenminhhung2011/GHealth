@@ -138,7 +138,7 @@ class MealPlannerScreen extends StatelessWidget {
                               Text(
                                 DateFormat()
                                     .add_yMMMMd()
-                                    .format(controller.dateSelect1.value)
+                                    .format(controller.startDate.value)
                                     .toString(),
                                 style: const TextStyle(
                                     color: Colors.grey,
@@ -155,7 +155,7 @@ class MealPlannerScreen extends StatelessWidget {
                               Text(
                                 DateFormat()
                                     .add_yMMMMd()
-                                    .format(controller.dateSelect2.value)
+                                    .format(controller.finishDate.value)
                                     .toString(),
                                 style: const TextStyle(
                                     color: Colors.grey,
@@ -303,10 +303,11 @@ class MealPlannerScreen extends StatelessWidget {
                                   // for(var item in controller.dateController.selectedDates!){
 
                                   // }
-                                  if (controller.dateController != null) {
-                                    // print(controller.dateController.)
-                                  } else {
-                                    print("0");
+                                  controller.allDateBetWeen.value =
+                                      controller.getListDateBetWeenRange();
+                                  for (var item
+                                      in controller.allDateBetWeen.value) {
+                                    print(item.weekday);
                                   }
                                 },
                               )
