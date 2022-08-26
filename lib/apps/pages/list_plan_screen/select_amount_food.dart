@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
 import '../../template/misc/colors.dart';
 
@@ -8,9 +7,9 @@ import '../../template/misc/colors.dart';
 class SelectAmountFood extends StatefulWidget {
   SelectAmountFood({
     Key? key,
-    required this.foodItem,
+    required this.index,
   }) : super(key: key);
-  RxMap<String, dynamic> foodItem;
+  final int index;
   @override
   State<SelectAmountFood> createState() => _SelectAmountFoodState();
 }
@@ -20,7 +19,6 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
   final _controller = Get.find<DailyNutritionController>();
   @override
   Widget build(BuildContext context) {
-    var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
@@ -30,38 +28,14 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.close, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Get.back(),
         ),
         centerTitle: true,
         actions: [
           IconButton(
             onPressed: () {
-              widget.foodItem['select'] = true;
-              _controller.foodTemp.add(
-                {
-                  'image': widget.foodItem['image'],
-                  'name': widget.foodItem['name'],
-                  'kCal': ((widget.foodItem['kCal'] / widget.foodItem['gam']) *
-                          slideValue)
-                      .round(),
-                  'Carbs':
-                      ((widget.foodItem['Carbs'] / widget.foodItem['gam']) *
-                              slideValue)
-                          .round(),
-                  'Protein':
-                      ((widget.foodItem['Protein'] / widget.foodItem['gam']) *
-                              slideValue)
-                          .round(),
-                  'Fat': ((widget.foodItem['Fat'] / widget.foodItem['gam']) *
-                          slideValue)
-                      .round(),
-                  'time': '${DateTime.now().hour}:${DateTime.now().minute}',
-                  'date':
-                      '${DateTime.now().day}/${DateTime.now().month}/${DateTime.now().year}',
-                },
-              );
-
-              Navigator.pop(context);
+              _controller.selectTrueAndAddFoodTemp(widget.index, slideValue);
+              Get.back();
             },
             icon: const Icon(Icons.check, color: AppColors.primaryColor1),
           )
@@ -76,7 +50,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           Align(
             alignment: Alignment.center,
             child: Text(
-              widget.foodItem['name'],
+              _controller.allMeal[widget.index].name,
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -87,8 +61,8 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           const SizedBox(height: 20),
           Align(
             alignment: Alignment.center,
-            child: Image.asset(
-              'assets/images/banhxeo.png',
+            child: Image.network(
+              _controller.allMeal[widget.index].asset,
               height: widthDevice / 2,
               width: widthDevice / 2,
             ),
@@ -97,12 +71,10 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               RichTextCustom(
-                size: 23,
-                title: 'Calories: ',
-                data: ((widget.foodItem['kCal'] / widget.foodItem['gam']) *
-                        slideValue)
-                    .round(),
-              ),
+                  size: 23,
+                  title: 'Calories: ',
+                  data: _controller.allMeal[widget.index].kCal *
+                      slideValue.round()),
               const SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -110,9 +82,8 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Carbs: ',
-                    data: ((widget.foodItem['Carbs'] / widget.foodItem['gam']) *
-                            slideValue)
-                        .round(),
+                    data: _controller.allMeal[widget.index].carbs *
+                        slideValue.round(),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -123,10 +94,8 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Protein: ',
-                    data:
-                        ((widget.foodItem['Protein'] / widget.foodItem['gam']) *
-                                slideValue)
-                            .round(),
+                    data: _controller.allMeal[widget.index].proteins *
+                        slideValue.round(),
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 10),
@@ -137,9 +106,8 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Fats: ',
-                    data: ((widget.foodItem['Fat'] / widget.foodItem['gam']) *
-                            slideValue)
-                        .round(),
+                    data: _controller.allMeal[widget.index].fats *
+                        slideValue.round(),
                   ),
                 ],
               ),
@@ -149,7 +117,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                 child: Row(
                   children: [
                     Text(
-                      '${slideValue.toInt().toString()} g',
+                      '${slideValue.toInt().toString()} amount  ',
                       style: const TextStyle(
                         color: Colors.grey,
                         fontWeight: FontWeight.bold,
@@ -162,7 +130,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
               Slider(
                 value: slideValue,
                 min: 0,
-                max: 1000,
+                max: 10,
                 divisions: 95,
                 activeColor: AppColors.primaryColor1,
                 inactiveColor: Colors.grey.withOpacity(0.2),

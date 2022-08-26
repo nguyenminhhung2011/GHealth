@@ -23,4 +23,5 @@ abstract class RouteName {
   static const mealDetail = "/meal_detail";
   static const categoryMeal = "/category_meal";
   static const viewMeal = "/view_meal";
+  static const addFoodNutri = "/add_food_nutri";
 }

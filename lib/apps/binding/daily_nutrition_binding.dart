@@ -4,6 +4,6 @@ import 'package:gold_health/apps/controls/dailyPlanController/meal_plan/daily_nu
 class DailyNutritionB implements Bindings {
   @override
   void dependencies() {
-    Get.lazyPut(() => DailyNutritionController());
+    Get.lazyPut<DailyNutritionController>(() => DailyNutritionController());
   }
 }
