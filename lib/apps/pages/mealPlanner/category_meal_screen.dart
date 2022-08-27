@@ -20,7 +20,11 @@ class CategoryMealScreen extends StatelessWidget {
     return Obx(
       () => (controller.listMeal.isEmpty)
           ? const Center(
-              child: CircularProgressIndicator(color: AppColors.primaryColor1))
+              child: CircularProgressIndicator(
+                color: AppColors.primaryColor1,
+                backgroundColor: Colors.white,
+              ),
+            )
           : Scaffold(
               backgroundColor: AppColors.mainColor,
               body: ScreenTemplate(
@@ -32,8 +36,8 @@ class CategoryMealScreen extends StatelessWidget {
                         title: controller.listMeal[0].time == 1
                             ? 'Breakfast'
                             : controller.listMeal[0].time == 2
-                                ? 'Lunch'
-                                : 'Dinner',
+                                ? 'Lunch/Dinner'
+                                : 'Snack/Smooth',
                       ),
                     ),
                     const SizedBox(height: 40),

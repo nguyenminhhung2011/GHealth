@@ -104,56 +104,65 @@ class MealDetailScreen extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  controller.meal['name'],
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 18,
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    controller.meal['name'],
+                                                    style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 18,
+                                                    ),
                                                   ),
-                                                ),
-                                                RichText(
-                                                  text: const TextSpan(
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        fontSize: 15),
-                                                    children: [
-                                                      TextSpan(
-                                                        text: 'by ',
-                                                        style: TextStyle(
-                                                            color: Colors.grey),
-                                                      ),
-                                                      TextSpan(
+                                                  RichText(
+                                                    text: const TextSpan(
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontSize: 15),
+                                                      children: [
+                                                        TextSpan(
+                                                          text: 'by ',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.grey),
+                                                        ),
+                                                        TextSpan(
                                                           text:
                                                               "Arash Ranjbaran Qadikolaei",
                                                           style: TextStyle(
                                                             color: AppColors
                                                                 .primaryColor1,
-                                                          )),
-                                                    ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
+                                                ],
+                                              ),
+                                            ),
+                                            Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(5),
+                                                decoration: BoxDecoration(
+                                                  color: AppColors.primaryColor1
+                                                      .withOpacity(0.2),
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
                                                 ),
-                                              ],
-                                            ),
-                                            Container(
-                                              padding: const EdgeInsets.all(5),
-                                              decoration: BoxDecoration(
-                                                color: AppColors.primaryColor1
-                                                    .withOpacity(0.2),
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
+                                                child: Icon(
+                                                  Icons.favorite,
+                                                  color: Colors.red
+                                                      .withOpacity(0.5),
+                                                ),
                                               ),
-                                              child: Icon(
-                                                Icons.favorite,
-                                                color:
-                                                    Colors.red.withOpacity(0.5),
-                                              ),
-                                            ),
+                                            )
                                           ],
                                         ),
                                         const SizedBox(height: 20),
@@ -311,8 +320,8 @@ class MealDetailScreen extends StatelessWidget {
                                         Container(
                                           width: double.infinity,
                                           child: Row(
-                                            children: const [
-                                              Text(
+                                            children: [
+                                              const Text(
                                                 'Step by Step',
                                                 style: TextStyle(
                                                   color: Colors.black,
@@ -320,9 +329,9 @@ class MealDetailScreen extends StatelessWidget {
                                                   fontSize: 18,
                                                 ),
                                               ),
-                                              Spacer(),
+                                              const Spacer(),
                                               Text(
-                                                '8 Steps',
+                                                '${controller.listSteps.length} Steps',
                                                 style: TextStyle(
                                                     color: Colors.grey,
                                                     fontSize: 15),

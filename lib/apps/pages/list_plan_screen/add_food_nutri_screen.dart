@@ -263,49 +263,53 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                           ),
                         ),
                         const SizedBox(width: 5),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              controller.allMeal[index].name,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 17,
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                controller.allMeal[index].name,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 17,
+                                ),
                               ),
-                            ),
-                            Text(
-                              '${controller.allMeal[index].kCal} kCal / 1 amount',
-                              style: const TextStyle(
-                                color: Colors.grey,
-                                fontSize: 15,
-                              ),
-                            )
-                          ],
-                        ),
-                        const Spacer(),
-                        Container(
-                          width: 20,
-                          height: 20,
-                          padding: const EdgeInsets.all(3),
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              width: 2,
-                              color: !(controller.foodSelect[index]['select'])
-                                  ? Colors.grey.withOpacity(0.3)
-                                  : AppColors.primaryColor1,
-                            ),
+                              Text(
+                                '${controller.allMeal[index].kCal} kCal / 1 amount',
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                  fontSize: 15,
+                                ),
+                              )
+                            ],
                           ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerRight,
                           child: Container(
+                            width: 20,
+                            height: 20,
+                            padding: const EdgeInsets.all(3),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: (controller.foodSelect[index]['select'])
-                                  ? AppColors.primaryColor1
-                                  : Colors.transparent,
+                              border: Border.all(
+                                width: 2,
+                                color: !(controller.foodSelect[index]['select'])
+                                    ? Colors.grey.withOpacity(0.3)
+                                    : AppColors.primaryColor1,
+                              ),
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: (controller.foodSelect[index]['select'])
+                                    ? AppColors.primaryColor1
+                                    : Colors.transparent,
+                              ),
                             ),
                           ),
-                        ),
+                        )
                       ],
                     ),
                   ),

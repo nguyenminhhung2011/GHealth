@@ -87,7 +87,9 @@ class MealPlannerScreen extends StatelessWidget {
                               ),
                               const Spacer(),
                               InkWell(
-                                onTap: () {},
+                                onTap: () {
+                                  controller.Ok();
+                                },
                                 child: Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
@@ -327,7 +329,7 @@ class MealPlannerScreen extends StatelessWidget {
                                     for (int i = 0;
                                         i <
                                             controller.listMealToday.length -
-                                                14;
+                                                30;
                                         i++)
                                       TodayMealCard(
                                         widthDevice: widthDevice,
@@ -387,7 +389,7 @@ class MealPlannerScreen extends StatelessWidget {
                                 imagePath: 'assets/images/lunch.png',
                                 color: AppColors.primaryColor2.withOpacity(0.2),
                                 color_btn: AppColors.primaryColor2,
-                                collect: 'Lunch',
+                                collect: 'Lunch/Dinner',
                                 noFoods: controller.listMealLunch.length,
                                 press: () {
                                   Get.toNamed(
@@ -398,10 +400,10 @@ class MealPlannerScreen extends StatelessWidget {
                               ),
                               const SizedBox(width: 15),
                               MealSelect(
-                                imagePath: 'assets/images/dinner.png',
+                                imagePath: 'assets/images/snack.png',
                                 color: AppColors.primaryColor.withOpacity(0.2),
                                 color_btn: AppColors.primaryColor,
-                                collect: 'Dinner',
+                                collect: 'Snack/Smooth',
                                 noFoods: controller.listMealDinner.length,
                                 press: () {
                                   Get.toNamed(

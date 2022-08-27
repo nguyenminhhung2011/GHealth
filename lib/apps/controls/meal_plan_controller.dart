@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
+import 'package:gold_health/apps/data/fake_data.dart';
 import 'package:gold_health/constrains.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../data/models/Meal.dart';
@@ -194,9 +195,18 @@ class MealPlanController extends GetxController with TrackerController {
     update();
   }
 
+  Ok() async {
+    for (int i = 0; i < FakeData.list11.length; i++) {
+      await firestore
+          .collection('PlanMeal')
+          .doc(FakeData.dayList[i])
+          .set(FakeData.list11[i]);
+    }
+  }
   //@override
   // fetchTracksByDate(DateTime date) {
   //   // TODO: implement fetchTracksByDate
   //   throw UnimplementedError();
   // }
+
 }
