@@ -227,15 +227,13 @@ class MealPlannerScreen extends StatelessWidget {
                                 ),
                                 const Spacer(),
                                 ButtonText(
-                                  press: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            const MealScheduleScreen(),
-                                      ),
-                                    );
-                                  },
+                                  press: () => Get.toNamed(
+                                    RouteName.mealSchedule,
+                                    arguments: {
+                                      'mealPlan': controller.listMealPlan,
+                                      'allMeal': controller.allMeal,
+                                    },
+                                  ),
                                   title: 'Check',
                                   color: AppColors.primaryColor1,
                                 ),

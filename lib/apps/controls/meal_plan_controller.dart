@@ -119,6 +119,7 @@ class MealPlanController extends GetxController with TrackerController {
   //-------------------------------------------------------------------
 
   Rx<Map<String, dynamic>> mealToday = Rx<Map<String, dynamic>>({});
+  List<Map<String, dynamic>> listMealPlan = [];
   // {
   //   'break': [Meal],
   //   'lunch': [Meal],
@@ -154,6 +155,8 @@ class MealPlanController extends GetxController with TrackerController {
   getMealToDay() async {
     final listPlan = await firestore.collection('PlanMeal').get();
     final list = listPlan.docs;
+    listMealPlan = List<Map<String, dynamic>>.generate(
+        list.length, (index) => list[index].data());
     int weekDay = DateTime.now().weekday;
     final getListMealIdQuery = list.firstWhere(
       (element) => element.data()['id'] == weekDay,

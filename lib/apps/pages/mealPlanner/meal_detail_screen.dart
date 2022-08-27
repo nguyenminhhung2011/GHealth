@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/meal_plan/meal_detail_controller.dart';
-import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:readmore/readmore.dart';
 
 import '../../template/misc/colors.dart';
