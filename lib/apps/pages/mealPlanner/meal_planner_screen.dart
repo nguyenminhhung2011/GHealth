@@ -88,7 +88,11 @@ class MealPlannerScreen extends StatelessWidget {
                               const Spacer(),
                               InkWell(
                                 onTap: () {
-                                  controller.Ok();
+                                  // controller.Ok();
+                                  for (var item
+                                      in controller.mealToday.value['break']) {
+                                    print(item.name);
+                                  }
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(8),
@@ -271,7 +275,7 @@ class MealPlannerScreen extends StatelessWidget {
                                 ButtonText(
                                   press: () {
                                     Get.toNamed(RouteName.dailyNutritionScreen,
-                                        arguments: controller.listMealToday);
+                                        arguments: controller.allMeal);
                                   },
                                   title: 'Check',
                                   color: AppColors.primaryColor1,
@@ -285,69 +289,59 @@ class MealPlannerScreen extends StatelessWidget {
                           padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Row(
                             children: [
-                              Obx(
-                                () => Text(
-                                  'Today Meals ${controller.listMealToday.length}',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(
-                                        fontSize: 17,
-                                      ),
-                                ),
+                              Text(
+                                'Today Meals',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .headline4!
+                                    .copyWith(
+                                      fontSize: 17,
+                                    ),
                               ),
                               const Spacer(),
                               ButtonIconGradientColor(
                                 title: ' Breakfast',
                                 icon: Icons.keyboard_arrow_down_sharp,
-                                press: () {
-                                  // for(var item in controller.dateController.selectedDates!){
-
-                                  // }
-                                  controller.allDateBetWeen.value =
-                                      controller.getListDateBetWeenRange();
-                                  for (var item
-                                      in controller.allDateBetWeen.value) {
-                                    print(item.toString() +
-                                        ' ' +
-                                        item.weekday.toString());
-                                  }
-                                },
+                                press: () {},
                               )
                             ],
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: controller.listMealToday.isEmpty
-                              ? const Center(
-                                  child: CircularProgressIndicator(
-                                      color: AppColors.primaryColor))
-                              : Column(
-                                  children: [
-                                    for (int i = 0;
-                                        i <
-                                            controller.listMealToday.length -
-                                                30;
-                                        i++)
-                                      TodayMealCard(
-                                        widthDevice: widthDevice,
-                                        title: controller.listMealToday[i].name,
-                                        time: 'Today | 3am',
-                                        imagePath:
-                                            controller.listMealToday[i].asset,
-                                        press: () {
-                                          Get.toNamed(
-                                            RouteName.mealDetail,
-                                            arguments: controller
-                                                .listMealToday[i]
-                                                .toJson(),
-                                          );
-                                        },
-                                      ),
-                                  ],
-                                ),
+                        Obx(
+                          () => Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            // ignore: unnecessary_null_comparison
+                            child: controller.mealToday.value['break'] == null
+                                ? const Center(
+                                    child: CircularProgressIndicator(
+                                        color: AppColors.primaryColor1))
+                                : Column(
+                                    children: [
+                                      for (int i = 0;
+                                          i <
+                                              controller.mealToday
+                                                  .value['break'].length;
+                                          i++)
+                                        TodayMealCard(
+                                          widthDevice: widthDevice,
+                                          title: controller
+                                              .mealToday.value['break'][i].name,
+                                          time: 'Today | 3am',
+                                          imagePath: controller.mealToday
+                                              .value['break'][i].asset,
+                                          press: () {
+                                            Get.toNamed(
+                                              RouteName.mealDetail,
+                                              arguments: controller.allMeal[i]
+                                                  .toJson(),
+                                            );
+                                          },
+                                        ),
+                                    ],
+                                  ),
+                          ),
                         ),
                         const SizedBox(height: 20),
                         Padding(

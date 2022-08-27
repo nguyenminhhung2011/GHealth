@@ -18,7 +18,8 @@ class ButtonIconGradientColor extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          gradient: AppColors.colorGradient,
+          // gradient: AppColors.colorGradient,
+          color: AppColors.primaryColor1,
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(

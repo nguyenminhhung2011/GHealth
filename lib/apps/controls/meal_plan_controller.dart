@@ -9,12 +9,12 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../data/models/Meal.dart';
 
 class MealPlanController extends GetxController with TrackerController {
-  final Rx<List<Meal>> _listMealToday = Rx<List<Meal>>([]);
+  final Rx<List<Meal>> _allMeal = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealBreakFast = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealLunch = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealDinner = Rx<List<Meal>>([]);
   List<Meal> get listMealLunch => _listMealLunch.value;
-  List<Meal> get listMealToday => _listMealToday.value;
+  List<Meal> get allMeal => _allMeal.value;
   List<Meal> get listMealBreakFast => _listMealBreakFast.value;
   List<Meal> get listMealDinner => _listMealDinner.value;
   @override
@@ -25,6 +25,7 @@ class MealPlanController extends GetxController with TrackerController {
     getListMealLunch();
     getListMealDinner();
     getStartDateAndFinishDate();
+    getMealToDay();
     dateController = DateRangePickerController();
   }
 
@@ -116,8 +117,16 @@ class MealPlanController extends GetxController with TrackerController {
   }
 
   //-------------------------------------------------------------------
-  getAllMeal() async {
-    _listMealToday.bindStream(
+
+  Rx<Map<String, dynamic>> mealToday = Rx<Map<String, dynamic>>({});
+  // {
+  //   'break': [Meal],
+  //   'lunch': [Meal],
+  //   'snack': [Meal],
+  //   'dinner': [Meal],
+  // }
+  getAllMeal() {
+    _allMeal.bindStream(
       firestore.collection('meal').snapshots().map(
         (event) {
           List<Meal> result = [];
@@ -130,6 +139,58 @@ class MealPlanController extends GetxController with TrackerController {
       ),
     );
     update();
+  }
+
+  Meal getMealId(String id, List<Meal> l) {
+    final meal = l.firstWhere(
+      (element) => element.id == id,
+      orElse: () {
+        return l[0];
+      },
+    );
+    return meal;
+  }
+
+  getMealToDay() async {
+    final listPlan = await firestore.collection('PlanMeal').get();
+    final list = listPlan.docs;
+    int weekDay = DateTime.now().weekday;
+    final getListMealIdQuery = list.firstWhere(
+      (element) => element.data()['id'] == weekDay,
+    );
+    final listMealId = getListMealIdQuery.data();
+    List<Meal> lbreak = [];
+    List<Meal> llunch = [];
+    List<Meal> lsnack = [];
+    List<Meal> ldinner = [];
+    final allMeal1 = await firestore.collection('meal').get();
+    final listMeal = allMeal1.docs;
+    List<Meal> allMealData = [];
+    for (var item in listMeal) {
+      allMealData.add(Meal.fromSnap(item));
+    }
+    for (var item in listMealId['listMealBreak']) {
+      lbreak.add(getMealId(item, allMealData));
+    }
+    for (var item in listMealId['listMealLunch']) {
+      llunch.add(getMealId(item, allMealData));
+    }
+    for (var item in listMealId['listSnack']) {
+      lsnack.add(getMealId(item, allMealData));
+    }
+    for (var item in listMealId['listMealDinner']) {
+      ldinner.add(getMealId(item, allMealData));
+    }
+    mealToday.value = {
+      'break': lbreak,
+      'lunch': llunch,
+      'snack': lsnack,
+      'dinner': ldinner,
+    };
+    update();
+    for (var item in mealToday.value['break']) {
+      print(item.name);
+    }
   }
 
   getListMealBreakFast() async {
@@ -190,19 +251,18 @@ class MealPlanController extends GetxController with TrackerController {
   }
 
   remove() {
-    _listMealToday.value
-        .removeWhere((element) => element.name == 'Protein Oat');
+    _allMeal.value.removeWhere((element) => element.name == 'Protein Oat');
     update();
   }
 
-  Ok() async {
-    for (int i = 0; i < FakeData.list11.length; i++) {
-      await firestore
-          .collection('PlanMeal')
-          .doc(FakeData.dayList[i])
-          .set(FakeData.list11[i]);
-    }
-  }
+  // Ok() async {
+  //   for (int i = 0; i < FakeData.list11.length; i++) {
+  //     await firestore
+  //         .collection('PlanMeal')
+  //         .doc(FakeData.dayList[i])
+  //         .set(FakeData.list11[i]);
+  //   }
+  // }
   //@override
   // fetchTracksByDate(DateTime date) {
   //   // TODO: implement fetchTracksByDate
