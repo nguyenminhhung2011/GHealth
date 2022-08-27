@@ -299,11 +299,46 @@ class MealPlannerScreen extends StatelessWidget {
                                     ),
                               ),
                               const Spacer(),
-                              ButtonIconGradientColor(
-                                title: ' Breakfast',
-                                icon: Icons.keyboard_arrow_down_sharp,
-                                press: () {},
-                              )
+                              // ButtonIconGradientColor(
+                              //   title: ' Breakfast',
+                              //   icon: Icons.keyboard_arrow_down_sharp,
+                              //   press: () {},
+                              // )
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                  color: AppColors.primaryColor1,
+                                ),
+                                child: SizedBox(
+                                  height: 30,
+                                  child: DropdownButton<String>(
+                                    dropdownColor: AppColors.primaryColor1,
+                                    borderRadius: BorderRadius.circular(15),
+                                    value: controller.selectPlan.value,
+                                    elevation: 5,
+                                    icon: const Icon(Icons.keyboard_arrow_down,
+                                        color: Colors.white),
+                                    items: controller.mealPlan
+                                        .map(
+                                          (e) => DropdownMenuItem<String>(
+                                            value: e,
+                                            child: Text(
+                                              e,
+                                              style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
+                                    onChanged: controller.selectPlan,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -313,7 +348,9 @@ class MealPlannerScreen extends StatelessWidget {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 20.0),
                             // ignore: unnecessary_null_comparison
-                            child: controller.mealToday.value['break'] == null
+                            child: controller.mealToday
+                                        .value[controller.selectPlan.value] ==
+                                    null
                                 ? const Center(
                                     child: CircularProgressIndicator(
                                         color: AppColors.primaryColor1))
@@ -321,20 +358,32 @@ class MealPlannerScreen extends StatelessWidget {
                                     children: [
                                       for (int i = 0;
                                           i <
-                                              controller.mealToday
-                                                  .value['break'].length;
+                                              controller
+                                                  .mealToday
+                                                  .value[controller
+                                                      .selectPlan.value]
+                                                  .length;
                                           i++)
                                         TodayMealCard(
                                           widthDevice: widthDevice,
                                           title: controller
-                                              .mealToday.value['break'][i].name,
+                                              .mealToday
+                                              .value[controller
+                                                  .selectPlan.value][i]
+                                              .name,
                                           time: 'Today | 3am',
-                                          imagePath: controller.mealToday
-                                              .value['break'][i].asset,
+                                          imagePath: controller
+                                              .mealToday
+                                              .value[controller
+                                                  .selectPlan.value][i]
+                                              .asset,
                                           press: () {
                                             Get.toNamed(
                                               RouteName.mealDetail,
-                                              arguments: controller.allMeal[i]
+                                              arguments: controller
+                                                  .mealToday
+                                                  .value[controller
+                                                      .selectPlan.value][i]
                                                   .toJson(),
                                             );
                                           },

@@ -49,18 +49,7 @@ class TodayMealCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: NetworkImage(
-                    imagePath,
-                  ),
-                ),
-              ),
-            ),
+            Image.network(imagePath, width: 65, height: 65),
             const SizedBox(width: 20),
             Expanded(
               child: Column(

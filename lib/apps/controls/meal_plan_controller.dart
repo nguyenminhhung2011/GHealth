@@ -182,17 +182,29 @@ class MealPlanController extends GetxController with TrackerController {
       ldinner.add(getMealId(item, allMealData));
     }
     mealToday.value = {
-      'break': lbreak,
-      'lunch': llunch,
-      'snack': lsnack,
-      'dinner': ldinner,
+      'BreakFast': lbreak,
+      'Lunch': llunch,
+      'Snack': lsnack,
+      'Dinner': ldinner,
     };
     update();
-    for (var item in mealToday.value['break']) {
-      print(item.name);
-    }
   }
 
+  List<String> mealPlan = [
+    'BreakFast',
+    'Lunch',
+    'Snack',
+    'Dinner',
+  ];
+
+  Rx<String> selectPlan = 'BreakFast'.obs;
+
+  selectMealPlan(String value) {
+    selectPlan.value = value;
+    update();
+  }
+
+  //-------------------------------------------------
   getListMealBreakFast() async {
     _listMealBreakFast.bindStream(
       firestore.collection('meal').snapshots().map(

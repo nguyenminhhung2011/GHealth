@@ -44,7 +44,6 @@ class MealDetailScreen extends StatelessWidget {
                         ),
                         child: Image.network(
                           '${controller.meal['asset']}',
-                          fit: BoxFit.fill,
                           height: widthDevice / 1.5,
                           width: widthDevice / 1.5,
                         ),
