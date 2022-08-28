@@ -74,9 +74,11 @@ class MealNutritionCard extends StatelessWidget {
             height: 15,
             child: LinearPercentIndicator(
               lineHeight: 40,
-              percent: percent,
+              percent: percent > 1 ? 1 : percent,
               progressColor: (percent > 0.5)
-                  ? AppColors.primaryColor1
+                  ? (percent > 1)
+                      ? AppColors.primaryColor1
+                      : Colors.green.withOpacity(0.4)
                   : AppColors.primaryColor2,
               backgroundColor: Colors.grey.withOpacity(0.2),
               animation: true,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/constrains.dart';
+import 'package:gold_health/services/auth_service.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../../data/models/Meal.dart';
@@ -18,8 +20,18 @@ class MealScheduleC extends GetxController {
   Rx<int> proteins = 0.obs;
   Rx<int> fats = 0.obs;
   Rx<int> carbo = 0.obs;
+  initNutri() {
+    calories.value = 0;
+    proteins.value = 0;
+    fats.value = 0;
+    carbo.value = 0;
+    update();
+  }
 
   RxList<int> listCalories = [0, 0, 0, 0].obs;
+  RxList<int> listNutritionConsume = [0, 0, 0, 0].obs;
+  // --> kcal, proteins, fats, carbo
+
   final List<DateTime> listDateTime = [
     for (int i = 1; i <= 30; i++)
       DateTime(2022, 8, 1).subtract(Duration(days: i)),
@@ -29,7 +41,8 @@ class MealScheduleC extends GetxController {
   void onInit() {
     super.onInit();
     _calendarController.value = CalendarController();
-    getMealDate(DateTime.now().weekday);
+    getMealDate(DateTime.now());
+    getNutriData(DateTime.now());
     update();
   }
 
@@ -38,28 +51,31 @@ class MealScheduleC extends GetxController {
   focusDegree(DateTime time) {
     _onFocus.value--;
     _calendarController.value.displayDate = time;
-    getMealDate(time.weekday);
+    getMealDate(time);
+    getNutriData(time);
     update();
   }
 
   focusePluss(DateTime time) {
     _onFocus.value++;
     _calendarController.value.displayDate = time;
-    getMealDate(time.weekday);
+    getMealDate(time);
+    getNutriData(time);
     update();
   }
 
   setFocus(int index, DateTime time) {
     _onFocus.value = index;
     _calendarController.value.displayDate = time;
-    getMealDate(time.weekday);
-
+    getMealDate(time);
+    getNutriData(listDateTime[index]);
     update();
   }
 
   setFocus1(int index) {
     _onFocus.value = index;
-    getMealDate(listDateTime[index].weekday);
+    getMealDate(listDateTime[index]);
+    getNutriData(listDateTime[index]);
     update();
   }
 
@@ -72,8 +88,36 @@ class MealScheduleC extends GetxController {
     );
     return meal;
   }
+  // --> kcal, proteins, fats, carbo
 
-  getMealDate(int weekDay) async {
+  getNutriData(DateTime date) async {
+    listNutritionConsume.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('Nutrition')
+        .snapshots()
+        .map((event) {
+      List<int> result = [0, 0, 0, 0];
+      for (var item in event.docs) {
+        DateTime dateTemp = DateTime.fromMillisecondsSinceEpoch(
+            item.data()['dateTime'].seconds * 1000);
+        if (dateTemp.year == date.year &&
+            dateTemp.month == date.month &&
+            dateTemp.day == date.day) {
+          Meal m = getMealId(item.data()['id'], allMeal);
+          result[0] += m.kCal;
+          result[1] += m.proteins;
+          result[2] += m.fats;
+          result[3] += m.carbs;
+        }
+      }
+      return result;
+    }));
+    update();
+  }
+
+  getMealDate(DateTime date) async {
+    int weekDay = date.weekday;
     final listMealId = mealPlan.firstWhere(
       (element) => element['id'] == weekDay,
     );
@@ -81,6 +125,7 @@ class MealScheduleC extends GetxController {
     List<Meal> llunch = [];
     List<Meal> lsnack = [];
     List<Meal> ldinner = [];
+    initNutri();
     listCalories.value = [0, 0, 0, 0].obs;
     for (var item in listMealId['listMealBreak']) {
       Meal temp = getMealId(item, allMeal);

@@ -362,38 +362,48 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    Column(
-                      children: [
-                        MealNutritionCard(
-                          widthDevice: widthDevice,
-                          imagePath: 'assets/images/calories.png',
-                          title: 'Calories',
-                          data: '${controller.calories.value} kCal',
-                          percent: 0.72,
-                        ),
-                        MealNutritionCard(
-                          widthDevice: widthDevice,
-                          imagePath: 'assets/images/protein.png',
-                          title: 'Proteins',
-                          data: '${controller.proteins.value}g',
-                          percent: 0.43,
-                        ),
-                        MealNutritionCard(
-                          widthDevice: widthDevice,
-                          imagePath: 'assets/images/trans-fat.png',
-                          title: '${controller.fats.value}Fats',
-                          data: '320g',
-                          percent: 0.6,
-                        ),
-                        MealNutritionCard(
-                          widthDevice: widthDevice,
-                          imagePath: 'assets/images/strach.png',
-                          title: 'Carbo',
-                          data: '${controller.carbo.value} g',
-                          percent: 0.2,
-                        ),
-                      ],
-                    ),
+                    Obx(
+                      () => Column(
+                        children: [
+                          MealNutritionCard(
+                            widthDevice: widthDevice,
+                            imagePath: 'assets/images/calories.png',
+                            title: 'Calories',
+                            data:
+                                '${controller.listNutritionConsume.value[0]}/${controller.calories.value} kCal',
+                            percent: controller.listNutritionConsume.value[0] /
+                                controller.calories.value,
+                          ),
+                          MealNutritionCard(
+                            widthDevice: widthDevice,
+                            imagePath: 'assets/images/protein.png',
+                            title: 'Proteins',
+                            data:
+                                '${controller.listNutritionConsume.value[1]}/${controller.proteins.value}g',
+                            percent: controller.listNutritionConsume.value[1] /
+                                controller.proteins.value,
+                          ),
+                          MealNutritionCard(
+                            widthDevice: widthDevice,
+                            imagePath: 'assets/images/trans-fat.png',
+                            title: 'Fats',
+                            data:
+                                '${controller.listNutritionConsume.value[2]}/${controller.fats.value}g',
+                            percent: controller.listNutritionConsume.value[2] /
+                                controller.fats.value,
+                          ),
+                          MealNutritionCard(
+                            widthDevice: widthDevice,
+                            imagePath: 'assets/images/strach.png',
+                            title: 'Carbo',
+                            data:
+                                '${controller.listNutritionConsume.value[3]}/${controller.carbo.value} g',
+                            percent: controller.listNutritionConsume.value[3] /
+                                controller.carbo.value,
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),
