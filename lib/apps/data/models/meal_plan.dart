@@ -6,6 +6,7 @@ class MealPlan {
   List listMealLunch;
   List listSnack;
   List listMealDinner;
+
   MealPlan({
     required this.id,
     required this.listMealBreak,
