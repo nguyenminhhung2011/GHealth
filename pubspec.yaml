@@ -70,9 +70,7 @@ dependencies:
   flutter_facebook_auth: ^4.4.1
   age: ^0.0.1
   syncfusion_flutter_datepicker: ^20.2.45
-  flutter_gifimage: ^1.0.0
-
- 
+  video_thumbnail: ^0.5.2
 
   
 

@@ -8,6 +8,7 @@ class Workout {
     required this.workoutCategory,
     required this.durationWorkout,
     required this.calories,
+    required this.level,
     required this.equipmentRequest,
     required this.exercises,
     required this.isFavorite,
@@ -17,6 +18,8 @@ class Workout {
   final WorkoutCategory workoutCategory;
   final Duration durationWorkout;
   final int calories;
+  final String level;
+
   final List<Map<String, String>> equipmentRequest; // <nameEquip,imageEquip>
   final List<String> exercises;
   bool isFavorite = false;
@@ -61,7 +64,7 @@ class Exercise {
         'isFavorite': isFavorite,
       };
 
-  factory Exercise.fromSnap(String id, DocumentSnapshot snap) {
+  factory Exercise.fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     Map<String, String> instructions = {};
@@ -88,11 +91,11 @@ class Exercise {
     return Exercise(
       equipRequest: null,
       exerciseUrl: snapshot['exerciseUrl'],
-      idExercise: id,
+      idExercise: snap.id,
       exerciseName: snapshot['exerciseName'],
-      duration: Duration(minutes: snapshot['duration']),
-      level: snapshot['level'].toString(),
-      caloriesBurn: snapshot['caloriesBurn'],
+      duration: Duration(seconds: int.parse(snapshot['duration'])),
+      level: snapshot['level'],
+      caloriesBurn: double.parse(snapshot['caloriesBurn']).toInt(),
       description: snapshot['description'],
       instructions: instructions,
       repetitions: repetitions,
