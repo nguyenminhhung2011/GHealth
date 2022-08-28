@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
@@ -26,25 +27,32 @@ class WorkoutPlanController extends GetxController with TrackerController {
     }
   ].obs;
 
-  var exercise = Rx<List<Exercise>>([]);
+  var exercises = Rx<Map<String, Exercise>>({});
   var workouts = Rx<List<Workout>>([]);
 
   Future fetchExerciseList() async {
     try {
-      exercise.bindStream(
-        firestore.collection('exercise').snapshots().map(
-          (event) {
-            List<Exercise> result = [];
-            for (var item in event.docs) {
-              print('${item.id} ----');
-              result.add(Exercise.fromSnap(item.id, item));
-            }
-            return result;
-          },
-        ),
-      );
+      CollectionReference<Map<String, dynamic>> listExercise =
+          FirebaseFirestore.instance.collection('exercise');
+      final data = await listExercise.get();
+      print(data.size);
+      for (var doc in data.docs) {
+        exercises.value.putIfAbsent(doc.id, () => Exercise.fromSnap(doc));
+      }
+      // exercises.bindStream(
+      //   firestore.collection('exercise').snapshots().map(
+      //     (event) {
+      //       List<Exercise> result = [];
+      //       for (var item in event.docs) {
+      //         result.add(Exercise.fromSnap(item));
+      //       }
+      //       return result;
+      //     },
+      //   ),
+      // );
       update();
     } catch (e) {
+      print('fetchExerciseList ------ ${e.toString()}');
       rethrow;
     }
   }

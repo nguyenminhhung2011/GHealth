@@ -1,6 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:async';
+import 'dart:typed_data';
 
-class ExerciseCard extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
+
+import '../../../routes/route_name.dart';
+
+class ExerciseCard extends StatefulWidget {
   const ExerciseCard({
     Key? key,
     required double widthDevice,
@@ -12,63 +19,109 @@ class ExerciseCard extends StatelessWidget {
   final Map<String, dynamic> e;
 
   @override
+  State<ExerciseCard> createState() => _ExerciseCardState();
+}
+
+class _ExerciseCardState extends State<ExerciseCard> {
+  Future<Uint8List?> getThumbnailImage() async {
+    try {
+      final bytes = await VideoThumbnail.thumbnailData(
+        video: widget.e['url'],
+        imageFormat: ImageFormat.PNG,
+        maxHeight: 100,
+        quality: 75,
+      );
+      return bytes;
+    } catch (e) {
+      print('getThumbnailImage: $e');
+      rethrow;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 5),
-        child: Row(
-          children: [
-            Container(
-              height: _widthDevice / 6,
-              width: _widthDevice / 6,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(
-                    e["image"],
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(width: 5),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  e["name"],
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                  ),
-                ),
-                Text(
-                  '00:${e["time"]}s',
-                  style: const TextStyle(
-                    color: Colors.grey,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16,
-                  ),
-                ),
-              ],
-            ),
-            const Spacer(),
-            InkWell(
-              onTap: () {},
-              child: Container(
-                padding: const EdgeInsets.all(5),
+    return InkWell(
+      onTap: () {
+        Get.toNamed(RouteName.workoutDetail2Screen, arguments: widget.e['id']);
+      },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(horizontal: 5),
+          child: Row(
+            children: [
+              Container(
+                height: widget._widthDevice / 6,
+                width: widget._widthDevice / 6,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(15),
                 ),
-                child: const Icon(Icons.arrow_forward_ios,
-                    color: Colors.grey, size: 17),
+                child: FutureBuilder(
+                  future: getThumbnailImage(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      if (snapshot.hasData) {
+                        if (snapshot.data != null) {
+                          Uint8List bytes = snapshot.data as Uint8List;
+                          return Hero(
+                            transitionOnUserGestures: true,
+                            tag: widget.e['id'],
+                            child: FadeInImage(
+                              image: MemoryImage(bytes),
+                              placeholder: const AssetImage(
+                                  'assets/images/place_holder.png'),
+                              fit: BoxFit.cover,
+                              fadeOutDuration:
+                                  const Duration(milliseconds: 500),
+                              fadeInDuration: const Duration(milliseconds: 500),
+                              placeholderFit: BoxFit.cover,
+                            ),
+                          );
+                        }
+                      }
+                    }
+                    return Image.asset('assets/images/place_holder.png');
+                  },
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: 5),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.e["name"],
+                    style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    '00:${widget.e['time']}s',
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              InkWell(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(width: 1, color: Colors.grey),
+                  ),
+                  child: const Icon(Icons.arrow_forward_ios,
+                      color: Colors.grey, size: 17),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
