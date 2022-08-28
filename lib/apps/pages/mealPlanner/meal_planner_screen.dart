@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -38,6 +39,7 @@ class MealPlannerScreen extends StatelessWidget {
           init: MealPlanController(),
           builder: (controller) {
             return Obx(
+              // ignore: unnecessary_null_comparison
               () => (controller == null)
                   ? const Center(
                       child: CircularProgressIndicator(
@@ -178,7 +180,17 @@ class MealPlannerScreen extends StatelessWidget {
                             height: 200,
                             // ignore: avoid_unnecessary_containers
                             child: Container(
-                              child: const LineChartOneLine(),
+                              child: LineChartOneLine(
+                                listData: const [
+                                  FlSpot(1, 1),
+                                  FlSpot(2, 1.5),
+                                  FlSpot(3, 1.4),
+                                  FlSpot(4, 6),
+                                  FlSpot(5, 2),
+                                  FlSpot(6, 2.2),
+                                  FlSpot(7, 1.8),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -433,6 +445,10 @@ class MealPlannerScreen extends StatelessWidget {
                                     RouteName.categoryMeal,
                                     arguments: controller.listMealBreakFast,
                                   );
+                                  // for (var item in controller.allDateBetWeen) {
+                                  //   print(item.weekday);
+                                  //   print(item);
+                                  // }
                                 },
                               ),
                               const SizedBox(width: 10),

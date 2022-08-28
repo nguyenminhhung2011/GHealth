@@ -1,9 +1,9 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
-import 'package:gold_health/apps/data/fake_data.dart';
 import 'package:gold_health/constrains.dart';
 import 'package:gold_health/services/auth_service.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -14,10 +14,25 @@ class MealPlanController extends GetxController with TrackerController {
   final Rx<List<Meal>> _listMealBreakFast = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealLunch = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealSnack = Rx<List<Meal>>([]);
+  final Rx<List<FlSpot>> _listDataChart = Rx<List<FlSpot>>([]);
+  final Rx<List<Map<String, dynamic>>> _listWeekNutriton =
+      Rx<List<Map<String, dynamic>>>([]);
+  // [
+  //   {
+  //   'id': 1,
+  //   'kCal': 2000,
+  //   'carbs': 1000,
+  //   'pro': 1000,
+  //   'fats': 000
+  //  }
+  // ]
+
   List<Meal> get listMealLunch => _listMealLunch.value;
   List<Meal> get allMeal => _allMeal.value;
   List<Meal> get listMealBreakFast => _listMealBreakFast.value;
   List<Meal> get listMealSnack => _listMealSnack.value;
+  List<FlSpot> get listDataChart => _listDataChart.value;
+  List<Map<String, dynamic>> get listWeekNutrition => _listWeekNutriton.value;
 
   RxList<DateTime> timeEat = <DateTime>[
     DateTime.now(),
@@ -93,12 +108,12 @@ class MealPlanController extends GetxController with TrackerController {
   selectDateDoneClick() {
     startDate.value = selectDateTemp1;
     finishDate.value = selectDateTemp2;
+    allDateBetWeen.value = getListDateBetWeenRange();
     update();
   }
 
   getDayInBetWeen() {
     final int difference = finishDate.value.difference(startDate.value).inDays;
-    print(difference);
     return difference;
   }
 
@@ -111,10 +126,10 @@ class MealPlanController extends GetxController with TrackerController {
   }
 
   void getStartDateAndFinishDate() {
-    DateTime now = DateTime.now().add(const Duration(days: -4));
+    DateTime now = DateTime.now();
     int weekDay = now.weekday == 7 ? 0 : now.weekday;
-    startDate.value = DateTime.now().add(const Duration(days: -4));
-    finishDate.value = DateTime.now().add(const Duration(days: -4));
+    startDate.value = DateTime.now();
+    finishDate.value = DateTime.now();
     for (int i = 0; i < weekDay; i++) {
       startDate.value = startDate.value.add(const Duration(days: -1));
     }

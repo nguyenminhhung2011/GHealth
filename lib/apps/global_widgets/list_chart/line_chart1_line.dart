@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import '../../template/misc/colors.dart';
 
 class LineChartOneLine extends StatelessWidget {
-  const LineChartOneLine({Key? key}) : super(key: key);
-
+  LineChartOneLine({Key? key, required this.listData}) : super(key: key);
+  final List<FlSpot> listData;
   @override
   Widget build(BuildContext context) {
     return LineChart(
@@ -99,25 +99,25 @@ class LineChartOneLine extends StatelessWidget {
     Widget text;
     switch (value.toInt()) {
       case 1:
-        text = const Text('Sun', style: style);
-        break;
-      case 2:
         text = const Text('Mon', style: style);
         break;
-      case 3:
+      case 2:
         text = const Text('Tue', style: style);
         break;
-      case 4:
+      case 3:
         text = const Text('Wed', style: style);
         break;
-      case 5:
+      case 4:
         text = const Text('Thu', style: style);
         break;
-      case 6:
+      case 5:
         text = const Text('Fri', style: style);
         break;
-      case 7:
+      case 6:
         text = const Text('Sat', style: style);
+        break;
+      case 7:
+        text = const Text('Sun', style: style);
         break;
       default:
         text = const Text('');
@@ -164,22 +164,13 @@ class LineChartOneLine extends StatelessWidget {
       );
 
   LineChartBarData get lineChartBarData1_1 => LineChartBarData(
-        isCurved: true,
-        color: AppColors.primaryColor1,
-        barWidth: 3,
-        isStrokeCapRound: true,
-        dotData: FlDotData(
-          show: true,
-        ),
-        belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(2, 1.5),
-          FlSpot(3, 1.4),
-          FlSpot(4, 5.5),
-          FlSpot(5, 2),
-          FlSpot(6, 2.2),
-          FlSpot(7, 1.8),
-        ],
-      );
+      isCurved: true,
+      color: AppColors.primaryColor1,
+      barWidth: 3,
+      isStrokeCapRound: true,
+      dotData: FlDotData(
+        show: true,
+      ),
+      belowBarData: BarAreaData(show: false),
+      spots: listData);
 }
