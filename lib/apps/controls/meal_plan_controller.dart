@@ -4,6 +4,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
+import 'package:gold_health/apps/data/models/nutrition.dart';
 import 'package:gold_health/constrains.dart';
 import 'package:gold_health/services/auth_service.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -15,6 +16,7 @@ class MealPlanController extends GetxController with TrackerController {
   final Rx<List<Meal>> _listMealLunch = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealSnack = Rx<List<Meal>>([]);
   final Rx<List<FlSpot>> _listDataChart = Rx<List<FlSpot>>([]);
+  final Rx<List<Nutrition>> _listNutrition = Rx<List<Nutrition>>([]);
   final Rx<List<Map<String, dynamic>>> _listWeekNutriton =
       Rx<List<Map<String, dynamic>>>([]);
   // [
@@ -33,6 +35,7 @@ class MealPlanController extends GetxController with TrackerController {
   List<Meal> get listMealSnack => _listMealSnack.value;
   List<FlSpot> get listDataChart => _listDataChart.value;
   List<Map<String, dynamic>> get listWeekNutrition => _listWeekNutriton.value;
+  List<Nutrition> get listNutrition => _listNutrition.value;
 
   RxList<DateTime> timeEat = <DateTime>[
     DateTime.now(),
@@ -48,8 +51,10 @@ class MealPlanController extends GetxController with TrackerController {
     getListMealBreakFast();
     getListMealLunch();
     getListMealDinner();
+    getAllNutrtion();
     getStartDateAndFinishDate();
     getMealToDay();
+    getDataChart();
     getTimeEat();
     dateController = DateRangePickerController();
   }
@@ -109,6 +114,7 @@ class MealPlanController extends GetxController with TrackerController {
     startDate.value = selectDateTemp1;
     finishDate.value = selectDateTemp2;
     allDateBetWeen.value = getListDateBetWeenRange();
+    getDataChart();
     update();
   }
 
@@ -167,6 +173,73 @@ class MealPlanController extends GetxController with TrackerController {
     update();
   }
 
+  //-----------------------Chart-----------------
+  getAllNutrtion() async {
+    _listNutrition.bindStream(
+      firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('Nutrition')
+          .snapshots()
+          .map(
+        (event) {
+          List<Nutrition> result = [];
+          for (var item in event.docs) {
+            result.add(Nutrition.fromSnap(item));
+          }
+          return result;
+        },
+      ),
+    );
+    update();
+  }
+
+  // [
+  //   {
+  //   'id': 1,
+  //   'kCal': 2000,
+  //   'carbs': 1000,
+  //   'pro': 1000,
+  //   'fats': 000
+  //  }
+  // ]
+  Map<String, dynamic> getNutritionDateTime(DateTime date) {
+    Map<String, dynamic> result = {
+      'id': date.weekday,
+      'kCal': 0,
+      'carbs': 0,
+      'pro': 0,
+      'fats': 0,
+    };
+    for (var item in _listNutrition.value) {
+      if (item.dateTime.day == date.day &&
+          item.dateTime.month == date.month &&
+          item.dateTime.year == date.year) {
+        result['kCal'] += item.amount * getMealId(item.id, allMeal).kCal;
+        result['carbs'] += item.amount * getMealId(item.id, allMeal).carbs;
+        result['pro'] += item.amount * getMealId(item.id, allMeal).proteins;
+        result['fats'] += item.amount * getMealId(item.id, allMeal).fats;
+      }
+    }
+    return result;
+  }
+
+  getDataChart() {
+    _listWeekNutriton.value = [];
+    _listDataChart.value = [];
+    for (var item in allDateBetWeen.value) {
+      print(item);
+      _listWeekNutriton.value.add(getNutritionDateTime(item));
+    }
+    for (var item in _listWeekNutriton.value) {
+      print('${item['id']} - ${item['kCal']}');
+      _listDataChart.value
+          .add(FlSpot(item['id'] * 1.0, item['kCal'] / 2000 * 6));
+    }
+    update();
+  }
+
+  //--------------------------------------------
   Meal getMealId(String id, List<Meal> l) {
     final meal = l.firstWhere(
       (element) => element.id == id,

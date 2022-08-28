@@ -173,23 +173,17 @@ class MealPlannerScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: SizedBox(
-                            width: widthDevice,
-                            height: 200,
-                            // ignore: avoid_unnecessary_containers
-                            child: Container(
-                              child: LineChartOneLine(
-                                listData: const [
-                                  FlSpot(1, 1),
-                                  FlSpot(2, 1.5),
-                                  FlSpot(3, 1.4),
-                                  FlSpot(4, 6),
-                                  FlSpot(5, 2),
-                                  FlSpot(6, 2.2),
-                                  FlSpot(7, 1.8),
-                                ],
+                        Obx(
+                          () => Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            child: SizedBox(
+                              width: widthDevice,
+                              height: 200,
+                              // ignore: avoid_unnecessary_containers
+                              child: Container(
+                                child: LineChartOneLine(
+                                    listData: controller.listDataChart),
                               ),
                             ),
                           ),
@@ -441,13 +435,16 @@ class MealPlannerScreen extends StatelessWidget {
                                 collect: 'Breakfast',
                                 noFoods: controller.listMealBreakFast.length,
                                 press: () {
-                                  Get.toNamed(
-                                    RouteName.categoryMeal,
-                                    arguments: controller.listMealBreakFast,
-                                  );
+                                  // Get.toNamed(
+                                  //   RouteName.categoryMeal,
+                                  //   arguments: controller.listMealBreakFast,
+                                  // );
                                   // for (var item in controller.allDateBetWeen) {
                                   //   print(item.weekday);
                                   //   print(item);
+                                  // }
+                                  // for (var item in controller.listNutrition) {
+                                  //   print(item.amount.toString() + item.id);
                                   // }
                                 },
                               ),
