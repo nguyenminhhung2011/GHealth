@@ -272,8 +272,16 @@ class MealPlannerScreen extends StatelessWidget {
                                 const Spacer(),
                                 ButtonText(
                                   press: () {
-                                    Get.toNamed(RouteName.dailyNutritionScreen,
-                                        arguments: controller.allMeal);
+                                    Get.toNamed(
+                                      RouteName.dailyNutritionScreen,
+                                      arguments: {
+                                        'allMeal': controller.allMeal,
+                                        'break': controller.listMealBreakFast,
+                                        'lunch': controller.listMealLunch,
+                                        'snack': controller.listMealSnack,
+                                        'dinner': controller.listMealLunch,
+                                      },
+                                    );
                                   },
                                   title: 'Check',
                                   color: AppColors.primaryColor1,
@@ -445,11 +453,11 @@ class MealPlannerScreen extends StatelessWidget {
                                 color: AppColors.primaryColor.withOpacity(0.2),
                                 color_btn: AppColors.primaryColor,
                                 collect: 'Snack/Smooth',
-                                noFoods: controller.listMealDinner.length,
+                                noFoods: controller.listMealSnack.length,
                                 press: () {
                                   Get.toNamed(
                                     RouteName.categoryMeal,
-                                    arguments: controller.listMealDinner,
+                                    arguments: controller.listMealSnack,
                                   );
                                 },
                               ),

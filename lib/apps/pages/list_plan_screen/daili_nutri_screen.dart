@@ -282,7 +282,8 @@ class DailyNutriScreen extends StatelessWidget {
                           children: controller.listFoodToday
                               .map(
                                 (e) => FoodAbsorbed(
-                                  meal: controller.allMeal[e['id']],
+                                  meal: controller.getMealFromId(
+                                      e['id'], controller.allMeal),
                                   data: e,
                                 ),
                               )

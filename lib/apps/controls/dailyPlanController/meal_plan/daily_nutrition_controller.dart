@@ -17,6 +17,7 @@ class DailyNutritionController extends GetxController {
   final Rx<List<Map<String, dynamic>>> _foodSelect =
       Rx<List<Map<String, dynamic>>>([]);
   final Rx<List<Meal>> _listMealSearch = Rx<List<Meal>>([]);
+  Rx<Map<String, dynamic>> mealFindCate = Rx<Map<String, dynamic>>({});
 
   List<Map<String, dynamic>> get listFoodToday =>
       _listFoodToday.value; //  {'id': 'meal 1', 'amount' : 2, 'time':, 'date':}
@@ -24,7 +25,7 @@ class DailyNutritionController extends GetxController {
       _foodTemp.value; //  {'id': 'meal 1', 'amount' : 2, 'time':, 'date':}
   List<Meal> get allMeal => _allMeal.value;
   List<Map<String, dynamic>> get foodSelect =>
-      _foodSelect.value; //  {'id': 1, 'select':}
+      _foodSelect.value; //  {'id': 'meal 1', 'select':}
 
   List<Meal> get listMealSearch => _listMealSearch.value;
 
@@ -42,6 +43,23 @@ class DailyNutritionController extends GetxController {
   //     'name': 'Fat',
   //   },
   // ].obs;
+  Meal getMealFromId(String id, List<Meal> l) {
+    final meal = l.firstWhere(
+      (element) => element.id == id,
+      orElse: () {
+        return l[0];
+      },
+    );
+    return meal;
+  }
+
+  Map<String, dynamic> getFoodSelectFromId(String id) {
+    final meal = _foodSelect.value.firstWhere((element) => element['id'] == id,
+        orElse: () {
+      return _foodSelect.value[0];
+    });
+    return meal;
+  }
 
   RxList<Map<String, dynamic>> foodSearch = <Map<String, dynamic>>[].obs;
 
@@ -49,24 +67,28 @@ class DailyNutritionController extends GetxController {
   int get sumKcal => (_listFoodToday.value.isEmpty)
       ? 0
       : _listFoodToday.value.fold<int>(0, (sum, e) {
-          return sum + _allMeal.value[e['id']].kCal * e["amount"] as int;
+          return sum + getMealFromId(e['id'], allMeal).kCal * e["amount"]
+              as int;
         });
   int get sumCarbs => (_listFoodToday.value.isEmpty)
       ? 0
       : _listFoodToday.value.fold<int>(0, (sum, e) {
-          return sum + _allMeal.value[e['id']].carbs * e["amount"] as int;
+          return sum + getMealFromId(e['id'], allMeal).carbs * e["amount"]
+              as int;
         });
 
   int get sumProtein => (_listFoodToday.value.isEmpty)
       ? 0
       : _listFoodToday.value.fold<int>(0, (sum, e) {
-          return sum + _allMeal.value[e['id']].proteins * e["amount"] as int;
+          return sum + getMealFromId(e['id'], allMeal).proteins * e["amount"]
+              as int;
         });
 
   int get sumFats => (_listFoodToday.value.isEmpty)
       ? 0
       : _listFoodToday.value.fold<int>(0, (sum, e) {
-          return sum + _allMeal.value[e['id']].fats * e["amount"] as int;
+          return sum + getMealFromId(e['id'], allMeal).fats * e["amount"]
+              as int;
         });
 
   clearFoodTemp() {
@@ -77,14 +99,28 @@ class DailyNutritionController extends GetxController {
     update();
   }
 
+  List<String> mealPlan = [
+    'BreakFast',
+    'Lunch',
+    'Dinner',
+    'Snack',
+  ];
+
   @override
   void onInit() {
     super.onInit();
-    _allMeal.value = Get.arguments as List<Meal>;
+    _allMeal.value = Get.arguments['allMeal'] as List<Meal>;
+    mealFindCate.value = {
+      'BreakFast': Get.arguments['break'] as List<Meal>,
+      'Lunch': Get.arguments['lunch'] as List<Meal>,
+      'Snack': Get.arguments['snack'] as List<Meal>,
+      'Dinner': Get.arguments['dinner'] as List<Meal>,
+    };
+
     for (int i = 0; i < _allMeal.value.length; i++) {
       _foodSelect.value.add(
         {
-          'id': i,
+          'id': _allMeal.value[i].id,
           'select': false,
         },
       );
@@ -118,21 +154,22 @@ class DailyNutritionController extends GetxController {
     }));
   }
 
-  selectFalseandRemoveFoodTemp(int index) {
-    _foodSelect.value[index]['select'] = false;
-    _foodTemp.value.removeWhere(
-        (element) => element['id'] == _foodSelect.value[index]['id']);
-
+  selectFalseandRemoveFoodTemp(String id) {
+    final meal = getFoodSelectFromId(id);
+    _foodSelect.value[_foodSelect.value
+        .indexWhere((element) => element['id'] == id)]['select'] = false;
+    _foodTemp.value.removeWhere((element) => element['id'] == meal['id']);
     update();
   }
 
-  selectTrueAndAddFoodTemp(int index, double slideValue) async {
+  selectTrueAndAddFoodTemp(String id, double slideValue) async {
     DateTime date = DateTime.now();
 
-    _foodSelect.value[index]['select'] = true;
+    _foodSelect.value[_foodSelect.value
+        .indexWhere((element) => element['id'] == id)]['select'] = true;
     _foodTemp.value.add(
       {
-        'id': index,
+        'id': id,
         'amount': slideValue.round(),
         'dateTime': date,
       },
@@ -142,11 +179,11 @@ class DailyNutritionController extends GetxController {
   }
 
   Future<void> addNutriToFirebase(
-      int index, int slideValue, DateTime date) async {
+      String id, int slideValue, DateTime date) async {
     // String result = "Some errors";
     try {
       Nutrition nutri = Nutrition(
-        id: index,
+        id: id,
         amount: slideValue,
         dateTime: date,
       );
@@ -212,6 +249,8 @@ class DailyNutritionController extends GetxController {
     }));
     update();
   }
+
+  Rx<String> selectPlan = 'BreakFast'.obs;
 
   void udate() {
     update();

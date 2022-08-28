@@ -7,9 +7,9 @@ import '../../template/misc/colors.dart';
 class SelectAmountFood extends StatefulWidget {
   SelectAmountFood({
     Key? key,
-    required this.index,
+    required this.id,
   }) : super(key: key);
-  final int index;
+  final String id;
   @override
   State<SelectAmountFood> createState() => _SelectAmountFoodState();
 }
@@ -34,7 +34,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
         actions: [
           IconButton(
             onPressed: () {
-              _controller.selectTrueAndAddFoodTemp(widget.index, slideValue);
+              _controller.selectTrueAndAddFoodTemp(widget.id, slideValue);
               Get.back();
             },
             icon: const Icon(Icons.check, color: AppColors.primaryColor1),
@@ -50,7 +50,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           Align(
             alignment: Alignment.center,
             child: Text(
-              _controller.allMeal[widget.index].name,
+              _controller.getMealFromId(widget.id, _controller.allMeal).name,
               style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
@@ -62,7 +62,7 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
           Align(
             alignment: Alignment.center,
             child: Image.network(
-              _controller.allMeal[widget.index].asset,
+              _controller.getMealFromId(widget.id, _controller.allMeal).asset,
               height: widthDevice / 2,
               width: widthDevice / 2,
             ),
@@ -73,7 +73,9 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
               RichTextCustom(
                   size: 23,
                   title: 'Calories: ',
-                  data: _controller.allMeal[widget.index].kCal *
+                  data: _controller
+                          .getMealFromId(widget.id, _controller.allMeal)
+                          .kCal *
                       slideValue.round()),
               const SizedBox(height: 10),
               Row(
@@ -82,7 +84,9 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Carbs: ',
-                    data: _controller.allMeal[widget.index].carbs *
+                    data: _controller
+                            .getMealFromId(widget.id, _controller.allMeal)
+                            .carbs *
                         slideValue.round(),
                   ),
                   Container(
@@ -94,7 +98,9 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Protein: ',
-                    data: _controller.allMeal[widget.index].proteins *
+                    data: _controller
+                            .getMealFromId(widget.id, _controller.allMeal)
+                            .proteins *
                         slideValue.round(),
                   ),
                   Container(
@@ -106,7 +112,9 @@ class _SelectAmountFoodState extends State<SelectAmountFood> {
                   RichTextCustom(
                     size: 18,
                     title: 'Fats: ',
-                    data: _controller.allMeal[widget.index].fats *
+                    data: _controller
+                            .getMealFromId(widget.id, _controller.allMeal)
+                            .fats *
                         slideValue.round(),
                   ),
                 ],

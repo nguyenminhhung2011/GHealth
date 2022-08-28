@@ -49,7 +49,24 @@ class TodayMealCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.network(imagePath, width: 65, height: 65),
+            Image.network(
+              imagePath,
+              width: 65,
+              height: 65,
+              loadingBuilder: (BuildContext context, Widget child,
+                  ImageChunkEvent? loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: CircularProgressIndicator(
+                    color: AppColors.primaryColor1,
+                    value: loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+                  ),
+                );
+              },
+            ),
             const SizedBox(width: 20),
             Expanded(
               child: Column(

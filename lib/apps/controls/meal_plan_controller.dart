@@ -12,11 +12,11 @@ class MealPlanController extends GetxController with TrackerController {
   final Rx<List<Meal>> _allMeal = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealBreakFast = Rx<List<Meal>>([]);
   final Rx<List<Meal>> _listMealLunch = Rx<List<Meal>>([]);
-  final Rx<List<Meal>> _listMealDinner = Rx<List<Meal>>([]);
+  final Rx<List<Meal>> _listMealSnack = Rx<List<Meal>>([]);
   List<Meal> get listMealLunch => _listMealLunch.value;
   List<Meal> get allMeal => _allMeal.value;
   List<Meal> get listMealBreakFast => _listMealBreakFast.value;
-  List<Meal> get listMealDinner => _listMealDinner.value;
+  List<Meal> get listMealSnack => _listMealSnack.value;
   @override
   void onInit() {
     super.onInit();
@@ -247,7 +247,7 @@ class MealPlanController extends GetxController with TrackerController {
   }
 
   getListMealDinner() async {
-    _listMealDinner.bindStream(
+    _listMealSnack.bindStream(
       firestore.collection('meal').snapshots().map(
         (event) {
           List<Meal> result = [];

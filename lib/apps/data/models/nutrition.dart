@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Nutrition {
-  int id;
+  String id;
   int amount;
   DateTime dateTime;
   Nutrition({
@@ -19,7 +19,7 @@ class Nutrition {
   factory Nutrition.fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Nutrition(
-      id: snapshot['id'] ?? 0,
+      id: snapshot['id'] ?? '',
       amount: snapshot['amount'] ?? 0,
       dateTime: snap['dateTime'],
     );
