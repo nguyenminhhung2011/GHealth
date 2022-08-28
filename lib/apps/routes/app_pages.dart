@@ -152,7 +152,6 @@ class AppPages {
     GetPage(
       name: RouteName.workoutDetail2Screen,
       page: () => const WorkoutDetail2Screen(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.dailyNutritionScreen,
