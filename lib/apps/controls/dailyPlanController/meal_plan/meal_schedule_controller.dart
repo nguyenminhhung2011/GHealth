@@ -15,6 +15,7 @@ class MealScheduleC extends GetxController {
   Rx<Map<String, dynamic>> mealDate = Rx<Map<String, dynamic>>({});
   List<Meal> allMeal = Get.arguments['allMeal'];
   List<Map<String, dynamic>> mealPlan = Get.arguments['mealPlan'];
+  List<DateTime> timeEat = Get.arguments['timeEat'];
 
   Rx<int> calories = 0.obs;
   Rx<int> proteins = 0.obs;

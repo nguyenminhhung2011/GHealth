@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 import 'package:gold_health/apps/data/fake_data.dart';
 import 'package:gold_health/constrains.dart';
+import 'package:gold_health/services/auth_service.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../data/models/Meal.dart';
 
@@ -17,6 +18,14 @@ class MealPlanController extends GetxController with TrackerController {
   List<Meal> get allMeal => _allMeal.value;
   List<Meal> get listMealBreakFast => _listMealBreakFast.value;
   List<Meal> get listMealSnack => _listMealSnack.value;
+
+  RxList<DateTime> timeEat = <DateTime>[
+    DateTime.now(),
+    DateTime.now(),
+    DateTime.now(),
+    DateTime.now(),
+  ].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -26,6 +35,7 @@ class MealPlanController extends GetxController with TrackerController {
     getListMealDinner();
     getStartDateAndFinishDate();
     getMealToDay();
+    getTimeEat();
     dateController = DateRangePickerController();
   }
 
@@ -202,6 +212,14 @@ class MealPlanController extends GetxController with TrackerController {
 
   Rx<String> selectPlan = 'BreakFast'.obs;
 
+  int get planInt => (selectPlan.value == 'BreakFast')
+      ? 0
+      : (selectPlan.value == 'Lunch')
+          ? 1
+          : (selectPlan.value == "Snack")
+              ? 2
+              : 3;
+
   selectMealPlan(String value) {
     selectPlan.value = value;
     update();
@@ -261,6 +279,25 @@ class MealPlanController extends GetxController with TrackerController {
           return result;
         },
       ),
+    );
+    update();
+  }
+
+  getTimeEat() async {
+    timeEat.bindStream(
+      firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('timeEat')
+          .snapshots()
+          .map((event) {
+        List<DateTime> result = [];
+        Map<String, dynamic> listTime = event.docs[0].data();
+        for (var item in listTime['list']) {
+          result.add(DateTime.fromMillisecondsSinceEpoch(item.seconds * 1000));
+        }
+        return result;
+      }),
     );
     update();
   }

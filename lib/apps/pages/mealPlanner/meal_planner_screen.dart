@@ -232,6 +232,7 @@ class MealPlannerScreen extends StatelessWidget {
                                     arguments: {
                                       'mealPlan': controller.listMealPlan,
                                       'allMeal': controller.allMeal,
+                                      'timeEat': controller.timeEat.value,
                                     },
                                   ),
                                   title: 'Check',
@@ -377,7 +378,8 @@ class MealPlannerScreen extends StatelessWidget {
                                               .value[controller
                                                   .selectPlan.value][i]
                                               .name,
-                                          time: 'Today | 3am',
+                                          time:
+                                              'Today | ${DateFormat.jm().format(controller.timeEat[controller.planInt])}',
                                           imagePath: controller
                                               .mealToday
                                               .value[controller
