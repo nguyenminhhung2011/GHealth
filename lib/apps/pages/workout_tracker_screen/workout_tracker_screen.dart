@@ -30,8 +30,8 @@ class WorkoutTrackerScreen extends StatelessWidget {
       'Fasting',
       'Sleep',
     ];
-    final WorkoutApi tests = WorkoutApi();
-    tests.getData();
+    // final WorkoutApi tests = WorkoutApi();
+    // tests.getData();
     bool val = true;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
