@@ -418,13 +418,7 @@ class MealPlannerScreen extends StatelessWidget {
                           //   RouteName.categoryMeal,
                           //   arguments: controller.listMealBreakFast,
                           // );
-                          // for (var item in controller.allDateBetWeen) {
-                          //   print(item.weekday);
-                          //   print(item);
-                          // }
-                          // for (var item in controller.listNutrition) {
-                          //   print(item.amount.toString() + item.id);
-                          // }
+                          print(controller.listWeekNutrition);
                         },
                       ),
                       const SizedBox(width: 10),
