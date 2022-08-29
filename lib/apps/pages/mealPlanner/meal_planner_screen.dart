@@ -173,7 +173,7 @@ class MealPlannerScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Obx(
                   () => (controller.listWeekNutrition.isNotEmpty &&
-                          controller.listDataNutriPlan.value.isNotEmpty)
+                          controller.listDataNutriPlan.isNotEmpty)
                       ? chartLoading(widthDevice, controller)
                       : const Center(
                           child: CircularProgressIndicator(
@@ -185,7 +185,7 @@ class MealPlannerScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Obx(
                   () => (controller.listWeekNutrition.isNotEmpty &&
-                          controller.listDataNutriPlan.value.isNotEmpty)
+                          controller.listDataNutriPlan.isNotEmpty)
                       ? listNutriWeekday(controller)
                       : const Center(
                           child: CircularProgressIndicator(
@@ -229,7 +229,7 @@ class MealPlannerScreen extends StatelessWidget {
                             arguments: {
                               'mealPlan': controller.listMealPlan,
                               'allMeal': controller.allMeal,
-                              'timeEat': controller.timeEat.value,
+                              'timeEat': controller.timeEat,
                             },
                           ),
                           title: 'Check',
@@ -414,11 +414,10 @@ class MealPlannerScreen extends StatelessWidget {
                         collect: 'Breakfast',
                         noFoods: controller.listMealBreakFast.length,
                         press: () {
-                          // Get.toNamed(
-                          //   RouteName.categoryMeal,
-                          //   arguments: controller.listMealBreakFast,
-                          // );
-                          print(controller.listWeekNutrition);
+                          Get.toNamed(
+                            RouteName.categoryMeal,
+                            arguments: controller.listMealBreakFast,
+                          );
                         },
                       ),
                       const SizedBox(width: 10),
@@ -470,30 +469,30 @@ class MealPlannerScreen extends StatelessWidget {
           ControlMealCard(
             header: 'Calories',
             percent: controller.listWeekNutrition[
-                    controller.weekdayNutriFocus.value - 1]['kCal'] /
-                controller.listDataNutriPlan
-                    .value[controller.weekdayNutriFocus.value - 1]['kCal'],
+                    controller.weekdayNutriFocus.value - 2]['kCal'] /
+                controller.listDataNutriPlan[
+                    controller.weekdayNutriFocus.value - 2]['kCal'],
           ),
           ControlMealCard(
             header: 'Carbs',
             percent: controller.listWeekNutrition[
-                    controller.weekdayNutriFocus.value - 1]['carbs'] /
-                controller.listDataNutriPlan
-                    .value[controller.weekdayNutriFocus.value - 1]['carbs'],
+                    controller.weekdayNutriFocus.value - 2]['carbs'] /
+                controller.listDataNutriPlan[
+                    controller.weekdayNutriFocus.value - 2]['carbs'],
           ),
           ControlMealCard(
             header: 'Proteins',
             percent: controller.listWeekNutrition[
-                    controller.weekdayNutriFocus.value - 1]['pro'] /
-                controller.listDataNutriPlan
-                    .value[controller.weekdayNutriFocus.value - 1]['pro'],
+                    controller.weekdayNutriFocus.value - 2]['pro'] /
+                controller.listDataNutriPlan[
+                    controller.weekdayNutriFocus.value - 2]['pro'],
           ),
           ControlMealCard(
             header: 'fats',
             percent: controller.listWeekNutrition[
-                    controller.weekdayNutriFocus.value - 1]['fats'] /
-                controller.listDataNutriPlan
-                    .value[controller.weekdayNutriFocus.value - 1]['fats'],
+                    controller.weekdayNutriFocus.value - 2]['fats'] /
+                controller.listDataNutriPlan[
+                    controller.weekdayNutriFocus.value - 2]['fats'],
           ),
           const SizedBox(width: 20),
         ],
@@ -517,19 +516,31 @@ class MealPlannerScreen extends StatelessWidget {
                 return;
               }
               final value = lineTouchResponse.lineBarSpots![0].x;
-              controller.updateweekdayNutriFocus(value);
+              double add = (value == 1.0) ? 8.0 : value;
+              controller.updateweekdayNutriFocus(add);
             },
             listData: [
-              for (int i = 0; i < 7; i++)
+              FlSpot(
+                1 * 1.0,
+                controller.listWeekNutrition[6]['kCal'] == 0
+                    ? 1
+                    : (controller.listWeekNutrition[6]['kCal'] >
+                            controller.listDataNutriPlan[6]['kCal'])
+                        ? 6
+                        : (controller.listWeekNutrition[6]['kCal'] /
+                            controller.listDataNutriPlan[6]['kCal'] *
+                            6),
+              ),
+              for (int i = 1; i <= 6; i++)
                 FlSpot(
                   (i + 1) * 1.0,
-                  controller.listWeekNutrition[i]['kCal'] == 0
+                  controller.listWeekNutrition[i - 1]['kCal'] == 0
                       ? 1
-                      : (controller.listWeekNutrition[i]['kCal'] >
-                              controller.listDataNutriPlan.value[i]['kCal'])
+                      : (controller.listWeekNutrition[i - 1]['kCal'] >
+                              controller.listDataNutriPlan[i - 1]['kCal'])
                           ? 6
-                          : (controller.listWeekNutrition[i]['kCal'] /
-                              controller.listDataNutriPlan.value[i]['kCal'] *
+                          : (controller.listWeekNutrition[i - 1]['kCal'] /
+                              controller.listDataNutriPlan[i - 1]['kCal'] *
                               6),
                 ),
             ],

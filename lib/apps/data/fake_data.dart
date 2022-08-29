@@ -509,3 +509,40 @@ class Data {
 //   }));
 //   update();
 // }
+
+
+// final Rx<List<Meal>> _allMeal = Rx<List<Meal>>([]);
+  // final Rx<List<Meal>> _listMealBreakFast = Rx<List<Meal>>([]);
+  // final Rx<List<Meal>> _listMealLunch = Rx<List<Meal>>([]);
+  // final Rx<List<Meal>> _listMealSnack = Rx<List<Meal>>([]);
+
+
+   // <DateTime>[
+  //   DateTime.now(),
+  //   DateTime.now(),
+  //   DateTime.now(),
+  //   DateTime.now(),
+  // ].obs;
+
+    // Map<String, dynamic> getNutritionDateTime(DateTime date) {
+  //   Map<String, dynamic> result = {
+  //     'id': date.weekday,
+  //     'kCal': 0,
+  //     'carbs': 0,
+  //     'pro': 0,
+  //     'fats': 0,
+  //   };
+  //   for (var item in listNutrition) {
+  //     if (item.dateTime.day == date.day &&
+  //         item.dateTime.month == date.month &&
+  //         item.dateTime.year == date.year) {
+  //       result['kCal'] += item.amount * getMealId(item.id, allMeal).kCal;
+  //       result['carbs'] += item.amount * getMealId(item.id, allMeal).carbs;
+  //       result['pro'] += item.amount * getMealId(item.id, allMeal).proteins;
+  //       result['fats'] += item.amount * getMealId(item.id, allMeal).fats;
+  //     }
+  //   }
+  //   return result;
+  // }
+
+  // --> kcal, proteins, fats, carbo

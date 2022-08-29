@@ -28,6 +28,7 @@ class DailyPlanController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    // nutrition daily plan
     await DataService.instance.loadMealList();
     await DataService.instance.loadMealBreakFastList();
     await DataService.instance.loadMealLunchDinnerList();

@@ -104,25 +104,25 @@ class LineChartOneLine extends StatelessWidget {
     );
     Widget text;
     switch (value.toInt()) {
-      case 1:
+      case 2:
         text = const Text('Mon', style: style);
         break;
-      case 2:
+      case 3:
         text = const Text('Tue', style: style);
         break;
-      case 3:
+      case 4:
         text = const Text('Wed', style: style);
         break;
-      case 4:
+      case 5:
         text = const Text('Thu', style: style);
         break;
-      case 5:
+      case 6:
         text = const Text('Fri', style: style);
         break;
-      case 6:
+      case 7:
         text = const Text('Sat', style: style);
         break;
-      case 7:
+      case 1:
         text = const Text('Sun', style: style);
         break;
       default:
