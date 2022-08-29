@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
+import '../../../services/data_service.dart';
 import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
 import '../../template/misc/colors.dart';
 
@@ -55,8 +56,11 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     for (var item in controller.foodTemp) {
                       //   controller.listFoodToday.add(item);
                       // controller.listFoodToday.add(item);
-                      controller.addNutriToFirebase(
-                          item['id'], item['amount'], item['dateTime']);
+                      DataService.instance.addNutrition(
+                        item['id'],
+                        item['amount'],
+                        item['dateTime'],
+                      );
                     }
                     controller.clearFoodTemp();
                     controller.update();

@@ -178,29 +178,29 @@ class DailyNutritionController extends GetxController {
     update();
   }
 
-  Future<void> addNutriToFirebase(
-      String id, int slideValue, DateTime date) async {
-    // String result = "Some errors";
-    try {
-      Nutrition nutri = Nutrition(
-        id: id,
-        amount: slideValue,
-        dateTime: date,
-      );
-      await firestore
-          .collection('users')
-          .doc(AuthService.instance.currentUser!.uid)
-          .collection('Nutrition')
-          .add(nutri.toJson());
-      // result = "Success";
-      return;
-    } catch (err) {
-      // ignore: avoid_print
-      print(err.toString());
-      // result = err.toString();
-      return;
-    }
-  }
+  // Future<void> addNutriToFirebase(
+  //     String id, int slideValue, DateTime date) async {
+  //   // String result = "Some errors";
+  //   try {
+  //     Nutrition nutri = Nutrition(
+  //       id: id,
+  //       amount: slideValue,
+  //       dateTime: date,
+  //     );
+  //     await firestore
+  //         .collection('users')
+  //         .doc(AuthService.instance.currentUser!.uid)
+  //         .collection('Nutrition')
+  //         .add(nutri.toJson());
+  //     // result = "Success";
+  //     return;
+  //   } catch (err) {
+  //     // ignore: avoid_print
+  //     print(err.toString());
+  //     // result = err.toString();
+  //     return;
+  //   }
+  // }
 
   searchMeal(String text) async {
     _listMealSearch.value.clear();

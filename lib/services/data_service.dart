@@ -33,6 +33,14 @@ class DataService {
     _mealList = await _mealProvider.getAllMeal();
   }
 
+  addNutrition(
+    String id,
+    int slideValue,
+    DateTime date,
+  ) async {
+    await _nutritionProvider.addNutrition(id, slideValue, date);
+  }
+
   loadMealBreakFastList() async {
     if (_mealBreakFastList.isNotEmpty) return;
     _mealBreakFastList = await _mealProvider.getAllMealBreakFast();
