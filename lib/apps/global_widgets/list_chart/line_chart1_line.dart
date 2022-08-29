@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import '../../template/misc/colors.dart';
 
 class LineChartOneLine extends StatelessWidget {
-  LineChartOneLine({Key? key, required this.listData}) : super(key: key);
+  LineChartOneLine({
+    Key? key,
+    required this.listData,
+    required this.callBack,
+  }) : super(key: key);
   final List<FlSpot> listData;
+  final Function(FlTouchEvent, LineTouchResponse?) callBack;
   @override
   Widget build(BuildContext context) {
     return LineChart(
@@ -29,8 +34,9 @@ class LineChartOneLine extends StatelessWidget {
   LineTouchData get lineTouchData1 => LineTouchData(
         handleBuiltInTouches: true,
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+          tooltipBgColor: Colors.black,
         ),
+        touchCallback: callBack,
       );
 
   FlTitlesData get titlesData1 => FlTitlesData(

@@ -33,7 +33,7 @@ class ControlMealCard extends StatelessWidget {
                 ),
               ),
               Text(
-                '${percent * 100}%',
+                '${(percent * 100).toStringAsFixed(2)}%',
                 style: TextStyle(
                   color: (percent > 0.5) ? Colors.green : Colors.red,
                 ),
@@ -46,7 +46,7 @@ class ControlMealCard extends StatelessWidget {
             height: 10,
             child: LinearPercentIndicator(
               lineHeight: 30,
-              percent: percent,
+              percent: percent >= 1 ? 1 : percent,
               progressColor: (percent > 0.5)
                   ? Colors.green.withOpacity(0.5)
                   : Colors.red.withOpacity(0.5),
