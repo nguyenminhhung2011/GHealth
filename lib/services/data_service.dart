@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/data/provider/nutrition_provider.dart';
 import 'package:gold_health/constrains.dart';
@@ -5,7 +6,9 @@ import 'package:gold_health/services/auth_service.dart';
 
 import '../apps/data/models/Meal.dart';
 import '../apps/data/models/nutrition.dart';
+import '../apps/data/models/water.dart';
 import '../apps/data/provider/meal_provider.dart';
+import '../apps/data/provider/water_provider.dart';
 
 class DataService {
   DataService._privateConstructor();
@@ -17,13 +20,14 @@ class DataService {
   static late Rx<List<Meal>> _mealSnackList = Rx<List<Meal>>([]);
   static late Rx<List<Nutrition>> _nutritonList = Rx<List<Nutrition>>([]);
   static late Rx<List<DateTime>> _timeEatList = Rx<List<DateTime>>([]);
+  static late Rx<List<Water>> _waterConsume = Rx<List<Water>>([]);
 
   static late Rx<List<Map<String, dynamic>>> _dataNutriPlan =
       Rx<List<Map<String, dynamic>>>([]);
 
   final _mealProvider = MealProvider();
   final _nutritionProvider = NutritionProvider();
-
+  final _waterProvider = WaterProvider();
   List<Meal> get mealList => _mealList.value;
   List<Meal> get mealBreakFastList => _mealBreakFastList.value;
   List<Meal> get mealSnackList => _mealLunchDinnerList.value;
@@ -31,6 +35,7 @@ class DataService {
   List<Nutrition> get nutritionList => _nutritonList.value;
   List<DateTime> get timeEatList => _timeEatList.value;
   List<Map<String, dynamic>> get dataNutriPlan => _dataNutriPlan.value;
+  List<Water> get waterConsume => _waterConsume.value;
 
   loadMealList() async {
     if (_mealList.value.isNotEmpty) return;
@@ -79,9 +84,51 @@ class DataService {
     }));
   }
 
+  loadWaterConsumeList() async {
+    if (_waterConsume.value.isNotEmpty) return;
+    _waterConsume.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('water')
+        .snapshots()
+        .map((event) {
+      List<Water> result = [];
+      return result;
+    }));
+  }
+
   loadTimeEatList() async {
     if (_timeEatList.value.isNotEmpty) return;
     _timeEatList.value = await _mealProvider.getTimeEat();
+  }
+
+  addWaterCollection() async {
+    DateTime now = DateTime.now();
+    bool check = false;
+    QuerySnapshot<Map<String, dynamic>> raw = await firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('water')
+        .get();
+    for (var item in raw.docs) {
+      Water data = Water.fromSnap(item);
+      if (data.date.day == now.day &&
+          data.date.month == now.month &&
+          data.date.year == now.year) {
+        return;
+      }
+    }
+    await firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('water')
+        .add(
+      {
+        'date': now,
+        'target': 4000,
+        'waterConsume': [],
+      },
+    );
   }
 
   loadDataNutriPlan() async {

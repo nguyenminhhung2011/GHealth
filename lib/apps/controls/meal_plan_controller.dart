@@ -161,6 +161,15 @@ class MealPlanController extends GetxController with TrackerController {
     update();
   }
 
+  bool checkDateInList(DateTime date) {
+    for (var item in allDateBetWeen.value) {
+      if (date.day == item.day &&
+          date.month == item.month &&
+          date.year == item.year) return true;
+    }
+    return false;
+  }
+
   // get data to load chart
   getDataChart(int check) async {
     _listWeekNutriton.bindStream(firestore
@@ -182,8 +191,10 @@ class MealPlanController extends GetxController with TrackerController {
       result.sort((a, b) => a['id'].compareTo(b['id']));
       for (var item in event.docs) {
         Nutrition data = Nutrition.fromSnap(item);
-        if (allDateBetWeen.value[0].isBefore(data.dateTime) &&
-            allDateBetWeen.value[6].isAfter(data.dateTime)) {
+        if (checkDateInList(data.dateTime)
+            // allDateBetWeen.value[0].isBefore(data.dateTime) &&
+            //   allDateBetWeen.value[6].isAfter(data.dateTime)
+            ) {
           result[data.dateTime.weekday - 1]['kCal'] +=
               data.amount * getMealId(data.id, allMeal).kCal;
           result[data.dateTime.weekday - 1]['carbs'] +=

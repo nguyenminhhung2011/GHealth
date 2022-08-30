@@ -38,16 +38,7 @@ class MealPlannerScreen extends StatelessWidget {
         child: GetBuilder<MealPlanController>(
           init: MealPlanController(),
           builder: (controller) {
-            return
-                //  Obx(
-                //   // ignore: unnecessary_null_comparison
-                //   () => (controller == null)
-                //       ? const Center(
-                //           child: CircularProgressIndicator(
-                //               color: AppColors.primaryColor1),
-                //         )
-                //       :
-                Column(
+            return Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -300,11 +291,6 @@ class MealPlannerScreen extends StatelessWidget {
                             ),
                       ),
                       const Spacer(),
-                      // ButtonIconGradientColor(
-                      //   title: ' Breakfast',
-                      //   icon: Icons.keyboard_arrow_down_sharp,
-                      //   press: () {},
-                      // )
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 5),

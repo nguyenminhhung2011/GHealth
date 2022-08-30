@@ -7,7 +7,6 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/up_coming_workout_containerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
 
-import '../../../services/workout_api.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/row_text_see_more.dart';
 import '../../global_widgets/list_chart/line_chart2_line.dart';

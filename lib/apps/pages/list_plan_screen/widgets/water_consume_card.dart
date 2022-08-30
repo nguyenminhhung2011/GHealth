@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../../template/misc/colors.dart';
 
@@ -51,7 +52,7 @@ class WaterConsumeCard extends StatelessWidget {
                         ),
                         const Spacer(),
                         Text(
-                          data['date'],
+                          DateFormat().add_yMd().format(data['date']),
                           style: const TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -64,7 +65,7 @@ class WaterConsumeCard extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '${data['ml']} ml',
+                          '${data['consume']} ml',
                           style: const TextStyle(
                             color: AppColors.primaryColor1,
                             fontWeight: FontWeight.bold,
@@ -78,7 +79,7 @@ class WaterConsumeCard extends StatelessWidget {
                           size: 18,
                         ),
                         Text(
-                          data['time'],
+                          DateFormat().add_jm().format(data['date']),
                           style: const TextStyle(
                             color: Colors.grey,
                             fontWeight: FontWeight.w500,
