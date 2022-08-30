@@ -5,6 +5,7 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_c
 import '../../data/fake_data.dart';
 import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
+import 'workout_screen.dart';
 
 class ListWorkoutScreen extends StatelessWidget {
   const ListWorkoutScreen({Key? key}) : super(key: key);
@@ -233,7 +234,7 @@ class ListWorkoutScreen extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  Get.toNamed(RouteName.workoutDetail2Screen);
+                  //  Get.to(() => const WorkoutScreen(), arguments: exercise.exerciseUrl);
                 },
                 child: Container(
                   alignment: Alignment.center,

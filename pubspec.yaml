@@ -71,6 +71,7 @@ dependencies:
   age: ^0.0.1
   syncfusion_flutter_datepicker: ^20.2.45
   video_thumbnail: ^0.5.2
+  better_player: ^0.0.83
 
   
 
@@ -109,8 +110,6 @@ flutter:
     - assets/fonts/
     - assets/gift/
     - assets/icons/
-    # - assets/gift/
-    # - assets/icons/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

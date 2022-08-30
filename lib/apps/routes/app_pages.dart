@@ -60,31 +60,26 @@ class AppPages {
     GetPage(
       name: RouteName.intro,
       page: () => const IntroScreen(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.logIn,
-      page: () => LogInScreen(),
+      page: () => const LogInScreen(),
       binding: LogInB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.profileScreen,
       page: () => ProfileScreen(),
       binding: ProfileB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.signUp,
       page: () => SignUpScreen(),
       binding: SignUpB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.basicInfoScreen,
       page: () => BasicInfoScreen(),
       binding: BasicInfoB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.selectGender,
@@ -95,59 +90,49 @@ class AppPages {
       name: RouteName.selectDuration,
       page: () => SelectDurationScreen(),
       //binding: SelectDurationB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.getOld,
       page: () => const GetOldScreen(),
       //binding: GetOldB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.getWeight,
       page: () => GetWeightScreen(),
       // binding: GetWeightB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.getHeight,
       page: () => GetHeightScreen(),
 //binding: GetHeightB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.fillProfile,
       page: () => const FillProfileScreen(),
       // binding: FillProfileB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.homeScreen,
       page: () => HomeScreen(),
       binding: HomeScreenBinding(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.dashboardScreen,
       page: () => const DashBoardScreen(),
       binding: DashBoardBinding(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.activityTrackerScreen,
       page: () => ActivityTrackerScreen(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.notificationScreen,
       page: () => NotifiCationScreen(),
       // binding: NotificationBiding(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.workoutScheduleScreen,
       page: () => const WorkoutScheduleScreen(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.workoutDetail2Screen,
@@ -157,37 +142,31 @@ class AppPages {
       name: RouteName.dailyNutritionScreen,
       page: () => DailyNutriScreen(),
       binding: DailyNutritionB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.mealDetail,
       page: () => MealDetailScreen(),
       binding: MealDetailB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.categoryMeal,
       page: () => CategoryMealScreen(),
       binding: CategoryMealB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.viewMeal,
       page: () => ViewMealScreen(),
       binding: ViewMealB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.addFoodNutri,
       page: () => AddFoodScreen(),
       //    binding: AddFoddNutriB(),
-      transition: Transition.fade,
     ),
     GetPage(
       name: RouteName.mealSchedule,
       page: () => MealScheduleScreen(),
       binding: MealScheduleB(),
-      transition: Transition.fade,
     ),
   ];
 }

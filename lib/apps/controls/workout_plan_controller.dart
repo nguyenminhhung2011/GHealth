@@ -28,9 +28,61 @@ class WorkoutPlanController extends GetxController with TrackerController {
   ].obs;
 
   var exercises = Rx<Map<String, Exercise>>({});
-  var workouts = Rx<List<Workout>>([]);
+  var workouts = Rx<Map<String, Map<String, dynamic>>>({});
+  // {
+  //     'idWorkout': {
+  //       'collection': {
+  //         'fullbody1': 'Workout',
+  //         'fullbody2': 'Workout',
+  //       },
+  //       'workoutCategory': 'fullbody',
+  //     }
+  //   },
 
-  Future fetchExerciseList() async {
+  Future<bool> fetchWorkoutList() async {
+    String temp = ' ';
+    try {
+      CollectionReference<Map<String, dynamic>> listWorkout =
+          FirebaseFirestore.instance.collection('workout');
+      final data = await listWorkout.get();
+      // print(data.size);
+      for (var doc in data.docs) {
+        String idWorkout = doc.id;
+        String workoutCategory = doc.data()['workoutCategory'];
+        Map<String, dynamic> listLevel = {};
+
+        for (String level in ['Beginner', 'Intermediate', 'Advanced']) {
+          final docOfCollectionWorkout =
+              await listWorkout.doc(idWorkout).collection(level).get();
+
+          Map<String, dynamic> listWorkoutInLevel = {};
+          for (var docWorkout in docOfCollectionWorkout.docs) {
+            temp = '$workoutCategory $level ${docWorkout.id}';
+
+            listWorkoutInLevel.putIfAbsent(docWorkout.id,
+                () => Workout.fromSnap(docWorkout, workoutCategory));
+          }
+          listLevel.putIfAbsent(level, () => listWorkoutInLevel);
+        }
+        workouts.value.putIfAbsent(
+          idWorkout,
+          () => {
+            'workoutCategory': workoutCategory,
+            'collection': listLevel,
+          },
+        );
+        print('$idWorkout: ${workouts.value[idWorkout]}');
+      }
+      update();
+      return true;
+    } catch (e) {
+      print('fetchWorkoutList ------ ${e.toString()}');
+      print(temp);
+      return false;
+    }
+  }
+
+  Future<bool> fetchExerciseList() async {
     try {
       CollectionReference<Map<String, dynamic>> listExercise =
           FirebaseFirestore.instance.collection('exercise');
@@ -51,9 +103,10 @@ class WorkoutPlanController extends GetxController with TrackerController {
       //   ),
       // );
       update();
+      return true;
     } catch (e) {
       print('fetchExerciseList ------ ${e.toString()}');
-      rethrow;
+      return false;
     }
   }
 }
