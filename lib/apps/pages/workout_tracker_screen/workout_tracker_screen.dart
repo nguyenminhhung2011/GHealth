@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/choose_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories_workout_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/up_coming_workout_containerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
@@ -289,7 +290,7 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                         cate_name: 'Fullbody Workout',
                                         press: () {
                                           Get.to(
-                                              () => const WorkoutDetailScreen(),
+                                              () => const ChoseWorkoutScreen(),
                                               arguments:
                                                   listWorkoutID['Fullbody']
                                                       as String);

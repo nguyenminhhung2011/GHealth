@@ -19,50 +19,33 @@ class WorkoutDetailScreen extends StatefulWidget {
 
 class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
   final _workoutController = Get.find<WorkoutPlanController>();
-  final List<ExerciseCard> _listExerciseCart = [];
-  final idWorkout = Get.arguments as String;
+  final List<ExerciseCard> listExerciseCard = [];
+  final List<String> listIdExercise = [];
+  final workout = Get.arguments as Workout;
+  bool _initSate = true;
   Future<bool> _getAndSetUpData() async {
     String? temp;
+    if (!_initSate) return true;
     try {
       temp = '1';
-
-      final listExercisesAccordingLevel = _workoutController
-          .workouts.value[idWorkout]?['collection'] as Map<String, dynamic>;
-      // _workoutController.exercises.value.forEach((key, value) {
-      //   print(key);
-      //   _listExerciseCart
-      //       .add(ExerciseCard(widthDevice: Get.mediaQuery.size.width, e: {
-      //     'id': value.idExercise,
-      //     'url': value.exerciseUrl,
-      //     'name': value.exerciseName,
-      //     'time': value.duration.inSeconds
-      //   }));
-      // });
-      listExercisesAccordingLevel.forEach((key, value) {
-        temp = '2';
-        final data = value as Map<String, dynamic>;
-        Map<String, Workout> extractData = {};
-        data.forEach((key, value) {
-          extractData.addAll({key: value as Workout});
-        });
-        extractData.forEach((key, workout) {
-          for (var element in workout.exercises) {
-            _listExerciseCart.add(
-              ExerciseCard(widthDevice: Get.mediaQuery.size.width, e: {
-                'id': _workoutController.exercises.value[element]!.idExercise,
-                'url': _workoutController.exercises.value[element]!.exerciseUrl,
-                'name':
-                    _workoutController.exercises.value[element]!.exerciseName,
-                'time': _workoutController
-                    .exercises.value[element]!.duration.inSeconds,
-              }),
-            );
-          }
-        });
-      });
+      listExerciseCard.clear();
+      for (var element in workout.exercises) {
+        listIdExercise
+            .add(_workoutController.exercises.value[element]!.idExercise);
+        listExerciseCard.add(
+          ExerciseCard(widthDevice: Get.mediaQuery.size.width, e: {
+            'id': _workoutController.exercises.value[element]!.idExercise,
+            'url': _workoutController.exercises.value[element]!.exerciseUrl,
+            'name': _workoutController.exercises.value[element]!.exerciseName,
+            'time':
+                _workoutController.exercises.value[element]!.duration.inSeconds,
+          }),
+        );
+      }
+      _initSate = false;
       return true;
     } catch (e) {
-      print('_getAndSetUpData: ' + e.toString());
+      print('_getAndSetUpData: $e');
       print(temp);
       return false;
     }
@@ -162,8 +145,8 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: const [
-                                                  Text(
+                                                children: [
+                                                  const Text(
                                                     'Fullbody Workout',
                                                     style: TextStyle(
                                                       color: Colors.black,
@@ -173,8 +156,8 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '11 Exercises | 32 mins | 320 Calories Burn',
-                                                    style: TextStyle(
+                                                    '${workout.exercises.length} Exercises | 32 mins | 320 Calories Burn',
+                                                    style: const TextStyle(
                                                       color: Colors.grey,
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -203,111 +186,111 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                                             ],
                                           ),
                                           const SizedBox(height: 20),
-                                          Column(
-                                            children: [
-                                              InkWell(
-                                                //borderRadius: BorderRadius.circular(20),
-                                                onTap: () {},
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 18),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    color: AppColors
-                                                        .primaryColor1
-                                                        .withOpacity(0.3),
-                                                  ),
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                          'assets/icons/Calendar.svg',
-                                                          color: Colors.grey),
-                                                      const SizedBox(width: 5),
-                                                      const Text(
-                                                        'Schedule Workout',
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      const Spacer(),
-                                                      const Text(
-                                                        '5/27,09:00 AM',
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(width: 5),
-                                                      const Icon(
-                                                        Icons
-                                                            .arrow_forward_ios_sharp,
-                                                        color: Colors.grey,
-                                                        size: 15,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(height: 20),
-                                              InkWell(
-                                                onTap: () {},
-                                                child: Container(
-                                                  padding: const EdgeInsets
-                                                          .symmetric(
-                                                      horizontal: 20,
-                                                      vertical: 18),
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20),
-                                                    color: AppColors
-                                                        .primaryColor2
-                                                        .withOpacity(0.3),
-                                                  ),
-                                                  child: Row(
-                                                    children: [
-                                                      SvgPicture.asset(
-                                                          'assets/icons/Swap.svg',
-                                                          color: Colors.grey),
-                                                      const SizedBox(width: 5),
-                                                      const Text(
-                                                        'Difficulty',
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      const Spacer(),
-                                                      const Text(
-                                                        'Beginner',
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
-                                                      const SizedBox(width: 5),
-                                                      const Icon(
-                                                        Icons
-                                                            .arrow_forward_ios_sharp,
-                                                        color: Colors.grey,
-                                                        size: 15,
-                                                      )
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 20),
+                                          // Column(
+                                          //   children: [
+                                          //     InkWell(
+                                          //       //borderRadius: BorderRadius.circular(20),
+                                          //       onTap: () {},
+                                          //       child: Container(
+                                          //         padding: const EdgeInsets
+                                          //                 .symmetric(
+                                          //             horizontal: 20,
+                                          //             vertical: 18),
+                                          //         decoration: BoxDecoration(
+                                          //           borderRadius:
+                                          //               BorderRadius.circular(
+                                          //                   20),
+                                          //           color: AppColors
+                                          //               .primaryColor1
+                                          //               .withOpacity(0.3),
+                                          //         ),
+                                          //         child: Row(
+                                          //           children: [
+                                          //             SvgPicture.asset(
+                                          //                 'assets/icons/Calendar.svg',
+                                          //                 color: Colors.grey),
+                                          //             const SizedBox(width: 5),
+                                          //             const Text(
+                                          //               'Schedule Workout',
+                                          //               style: TextStyle(
+                                          //                 color: Colors.grey,
+                                          //                 fontWeight:
+                                          //                     FontWeight.w500,
+                                          //               ),
+                                          //             ),
+                                          //             const Spacer(),
+                                          //             const Text(
+                                          //               '5/27,09:00 AM',
+                                          //               style: TextStyle(
+                                          //                 color: Colors.grey,
+                                          //                 fontWeight:
+                                          //                     FontWeight.w500,
+                                          //               ),
+                                          //             ),
+                                          //             const SizedBox(width: 5),
+                                          //             const Icon(
+                                          //               Icons
+                                          //                   .arrow_forward_ios_sharp,
+                                          //               color: Colors.grey,
+                                          //               size: 15,
+                                          //             )
+                                          //           ],
+                                          //         ),
+                                          //       ),
+                                          //     ),
+                                          //     const SizedBox(height: 20),
+                                          //     InkWell(
+                                          //       onTap: () {},
+                                          //       child: Container(
+                                          //         padding: const EdgeInsets
+                                          //                 .symmetric(
+                                          //             horizontal: 20,
+                                          //             vertical: 18),
+                                          //         decoration: BoxDecoration(
+                                          //           borderRadius:
+                                          //               BorderRadius.circular(
+                                          //                   20),
+                                          //           color: AppColors
+                                          //               .primaryColor2
+                                          //               .withOpacity(0.3),
+                                          //         ),
+                                          //         child: Row(
+                                          //           children: [
+                                          //             SvgPicture.asset(
+                                          //                 'assets/icons/Swap.svg',
+                                          //                 color: Colors.grey),
+                                          //             const SizedBox(width: 5),
+                                          //             const Text(
+                                          //               'Difficulty',
+                                          //               style: TextStyle(
+                                          //                 color: Colors.grey,
+                                          //                 fontWeight:
+                                          //                     FontWeight.w500,
+                                          //               ),
+                                          //             ),
+                                          //             const Spacer(),
+                                          //             const Text(
+                                          //               'Beginner',
+                                          //               style: TextStyle(
+                                          //                 color: Colors.grey,
+                                          //                 fontWeight:
+                                          //                     FontWeight.w500,
+                                          //               ),
+                                          //             ),
+                                          //             const SizedBox(width: 5),
+                                          //             const Icon(
+                                          //               Icons
+                                          //                   .arrow_forward_ios_sharp,
+                                          //               color: Colors.grey,
+                                          //               size: 15,
+                                          //             )
+                                          //           ],
+                                          //         ),
+                                          //       ),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                          // const SizedBox(height: 20),
                                           Row(
                                             children: const [
                                               Text(
@@ -358,8 +341,8 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                                           ),
                                           const SizedBox(height: 30),
                                           Row(
-                                            children: const [
-                                              Text(
+                                            children: [
+                                              const Text(
                                                 'Exercises',
                                                 style: TextStyle(
                                                   color: Colors.black,
@@ -367,10 +350,10 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                                                   fontSize: 17,
                                                 ),
                                               ),
-                                              Spacer(),
+                                              const Spacer(),
                                               Text(
-                                                '3 Sets',
-                                                style: TextStyle(
+                                                '${workout.exercises.length} exercises',
+                                                style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontWeight: FontWeight.w400,
                                                 ),
@@ -378,18 +361,8 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                                             ],
                                           ),
                                           const SizedBox(height: 20),
-                                          const Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: Text(
-                                              'Set 1',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
                                           Column(
-                                            children: _listExerciseCart,
+                                            children: listExerciseCard,
                                           )
                                         ],
                                       ),
@@ -409,12 +382,10 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                         const Spacer(),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ListWorkoutScreen(),
-                              ),
-                            );
+                            Get.to(() => const ListWorkoutScreen(), arguments: {
+                              'listExerciseCard': listExerciseCard,
+                              'listIdExercise': listIdExercise
+                            });
                           },
                           child: Container(
                             alignment: Alignment.center,

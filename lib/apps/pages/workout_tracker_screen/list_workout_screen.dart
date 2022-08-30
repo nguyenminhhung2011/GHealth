@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_screen.dart';
 
 import '../../data/fake_data.dart';
 import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
-import 'workout_screen.dart';
 
-class ListWorkoutScreen extends StatelessWidget {
+class ListWorkoutScreen extends StatefulWidget {
   const ListWorkoutScreen({Key? key}) : super(key: key);
 
+  @override
+  State<ListWorkoutScreen> createState() => _ListWorkoutScreenState();
+}
+
+class _ListWorkoutScreenState extends State<ListWorkoutScreen> {
+  var data = Get.arguments as Map<String, dynamic>;
+  late List<ExerciseCard> listExerciseCard = data['listExerciseCard'];
+  late List<String> listIdExercise = data['listIdExercise'];
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -173,12 +181,7 @@ class ListWorkoutScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 20),
                                 Column(
-                                  children: FakeData.list_set.map((e) {
-                                    return ExerciseCard(
-                                      widthDevice: widthDevice,
-                                      e: e,
-                                    );
-                                  }).toList(),
+                                  children: listExerciseCard,
                                 )
                               ],
                             ),
@@ -234,7 +237,8 @@ class ListWorkoutScreen extends StatelessWidget {
               const Spacer(),
               InkWell(
                 onTap: () {
-                  //  Get.to(() => const WorkoutScreen(), arguments: exercise.exerciseUrl);
+                  // Updating
+                  //  Get.to(() => const WorkoutScreen(), arguments: listIdExercise);
                 },
                 child: Container(
                   alignment: Alignment.center,
@@ -251,7 +255,7 @@ class ListWorkoutScreen extends StatelessWidget {
                       ),
                       BoxShadow(
                         color: Colors.black.withOpacity(0.05),
-                        offset: Offset(-2, -3),
+                        offset: const Offset(-2, -3),
                         blurRadius: 2,
                       )
                     ],
