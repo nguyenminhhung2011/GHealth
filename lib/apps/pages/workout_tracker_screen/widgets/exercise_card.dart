@@ -23,6 +23,8 @@ class ExerciseCard extends StatefulWidget {
 }
 
 class _ExerciseCardState extends State<ExerciseCard> {
+  bool _initState = true;
+  Uint8List? byte;
   Future<Uint8List?> getThumbnailImage() async {
     try {
       final bytes = await VideoThumbnail.thumbnailData(
@@ -63,11 +65,11 @@ class _ExerciseCardState extends State<ExerciseCard> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
                         if (snapshot.data != null) {
-                          Uint8List bytes = snapshot.data as Uint8List;
+                          byte = snapshot.data as Uint8List;
                           return Hero(
                             tag: widget.e['id'],
                             child: FadeInImage(
-                              image: MemoryImage(bytes),
+                              image: MemoryImage(byte!),
                               placeholder: const AssetImage(
                                   'assets/images/place_holder.png'),
                               fit: BoxFit.cover,

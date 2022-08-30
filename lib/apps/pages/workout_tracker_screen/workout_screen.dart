@@ -78,7 +78,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      Navigator.pop(context);
+                      Get.back();
                     },
                     child: Container(
                       padding: const EdgeInsets.all(5),

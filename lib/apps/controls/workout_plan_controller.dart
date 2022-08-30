@@ -29,11 +29,13 @@ class WorkoutPlanController extends GetxController with TrackerController {
 
   var exercises = Rx<Map<String, Exercise>>({});
   var workouts = Rx<Map<String, Map<String, dynamic>>>({});
+  ///////Data Structure
   // {
   //     'idWorkout': {
   //       'collection': {
-  //         'fullbody1': 'Workout',
-  //         'fullbody2': 'Workout',
+  //         'Beginner': {'Workout'},
+  //         'Intermediate': {'Workout'},
+  //         'Advance': {'Workout'},
   //       },
   //       'workoutCategory': 'fullbody',
   //     }
@@ -83,12 +85,14 @@ class WorkoutPlanController extends GetxController with TrackerController {
   }
 
   Future<bool> fetchExerciseList() async {
+    String? id;
     try {
       CollectionReference<Map<String, dynamic>> listExercise =
           FirebaseFirestore.instance.collection('exercise');
       final data = await listExercise.get();
       print(data.size);
       for (var doc in data.docs) {
+        id = doc.id;
         exercises.value.putIfAbsent(doc.id, () => Exercise.fromSnap(doc));
       }
       // exercises.bindStream(
@@ -106,6 +110,7 @@ class WorkoutPlanController extends GetxController with TrackerController {
       return true;
     } catch (e) {
       print('fetchExerciseList ------ ${e.toString()}');
+      print('Exercise id:$id');
       return false;
     }
   }
