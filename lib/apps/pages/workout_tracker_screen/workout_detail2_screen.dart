@@ -35,37 +35,22 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
 
   Future<bool> _getAndSetUpData() async {
     try {
-      await _workoutController.fetchExerciseList();
-      print(
-          '_getAndSetUpData ----- ${_workoutController.exercises.value.length}');
-      exercise = Exercise(
-        equipRequest: null,
-        exerciseUrl:
-            _workoutController.exercises.value[idExercise]!.exerciseUrl,
-        idExercise: idExercise,
-        exerciseName:
-            _workoutController.exercises.value[idExercise]!.exerciseName,
-        duration: _workoutController.exercises.value[idExercise]!.duration,
-        level: _workoutController.exercises.value[idExercise]!.level,
-        caloriesBurn:
-            _workoutController.exercises.value[idExercise]!.caloriesBurn,
-        description:
-            _workoutController.exercises.value[idExercise]!.description,
-        instructions:
-            _workoutController.exercises.value[idExercise]!.instructions,
-        repetitions:
-            _workoutController.exercises.value[idExercise]!.repetitions,
-      );
-      repetitionBuilder();
-      instructionsBuilder();
-      _controller = VideoPlayerController.network(
-        exercise.exerciseUrl,
-      );
+      await Future(
+        () {
+          print(
+              '_getAndSetUpData ----- ${_workoutController.exercises.value.length}');
+          exercise = _workoutController.exercises.value[idExercise] as Exercise;
+          repetitionBuilder();
+          instructionsBuilder();
+          _controller = VideoPlayerController.network(
+            exercise.exerciseUrl,
+          );
 
-      _initializeVideoPlayerFuture = _controller!.initialize().then((_) {
-        _controller?.setLooping(true);
-        _controller?.play();
-      });
+          _initializeVideoPlayerFuture = _controller!.initialize();
+          _controller?.setLooping(true);
+          _controller?.play();
+        },
+      );
 
       return true;
     } catch (e) {
@@ -152,7 +137,6 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
                           height: heightDevice * 0.35,
                           width: double.infinity,
                           child: Hero(
-                            transitionOnUserGestures: true,
                             tag: idExercise,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
@@ -276,8 +260,7 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
           colors: [Colors.blue[200]!, Colors.blue[300]!, Colors.blue[400]!],
         ),
         onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const WorkoutScreen()));
+          Get.back();
         },
         title: const Text(
           'Save',

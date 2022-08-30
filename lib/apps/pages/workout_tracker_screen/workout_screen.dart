@@ -6,39 +6,57 @@ import 'package:gold_health/apps/controls/workout_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/time_custom.dart';
-import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:video_player/video_player.dart';
+// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../template/misc/colors.dart';
 
 class WorkoutScreen extends StatefulWidget {
   const WorkoutScreen({Key? key}) : super(key: key);
-
   @override
   State<WorkoutScreen> createState() => _WorkoutScreenState();
 }
 
 class _WorkoutScreenState extends State<WorkoutScreen> {
   final _controller = Get.find<WorkoutPlanController>();
-  late YoutubePlayerController _videoController;
+  late VideoPlayerController? _videoPlayerController;
+  late Future<void> _initializeVideoPlayerFuture;
+
+  var url = Get.arguments as String;
+  // late YoutubePlayerController _videoController;
   @override
   void initState() {
     super.initState();
-    _videoController = YoutubePlayerController(
-      initialVideoId: 'cTN6gS1jC0k',
-      flags: const YoutubePlayerFlags(
-        autoPlay: false,
-        mute: false,
-        forceHD: true,
-      ),
+    // _videoController = YoutubePlayerController(
+    //   initialVideoId: 'cTN6gS1jC0k',
+    //   flags: const YoutubePlayerFlags(
+    //     autoPlay: false,
+    //     mute: false,
+    //     forceHD: true,
+    //   ),
+    // );
+    _videoPlayerController = VideoPlayerController.network(
+      url,
     );
+
+    _initializeVideoPlayerFuture =
+        _videoPlayerController!.initialize().then((_) {
+      _videoPlayerController?.setLooping(true);
+      _videoPlayerController?.play();
+    });
   }
 
   @override
   void dispose() {
-    _videoController.dispose();
+    // _videoController.dispose();
+    _videoPlayerController?.setLooping(false);
+    _videoPlayerController?.pause();
+    _videoPlayerController = null;
+    _videoPlayerController?.dispose();
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
@@ -136,9 +154,26 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
                         decoration: BoxDecoration(color: AppColors.mainColor),
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(5),
-                          child: YoutubePlayer(
-                            controller: _videoController,
-                            showVideoProgressIndicator: true,
+                          // child: YoutubePlayer(
+                          //   controller: _videoController,
+                          //   showVideoProgressIndicator: true,
+                          // ),
+                          child: FutureBuilder(
+                            future: _initializeVideoPlayerFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.done) {
+                                return AspectRatio(
+                                  aspectRatio:
+                                      _videoPlayerController!.value.aspectRatio,
+                                  child: VideoPlayer(_videoPlayerController!),
+                                );
+                              } else {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+                            },
                           ),
                         ),
                       ),

@@ -65,7 +65,6 @@ class _ExerciseCardState extends State<ExerciseCard> {
                         if (snapshot.data != null) {
                           Uint8List bytes = snapshot.data as Uint8List;
                           return Hero(
-                            transitionOnUserGestures: true,
                             tag: widget.e['id'],
                             child: FadeInImage(
                               image: MemoryImage(bytes),

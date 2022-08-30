@@ -1,7 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_plan_controller.dart';
+import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/list_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_workout_screen.dart';
@@ -17,24 +20,51 @@ class WorkoutDetailScreen extends StatefulWidget {
 class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
   final _workoutController = Get.find<WorkoutPlanController>();
   final List<ExerciseCard> _listExerciseCart = [];
-
+  final idWorkout = Get.arguments as String;
   Future<bool> _getAndSetUpData() async {
+    String? temp;
     try {
-      await _workoutController.fetchExerciseList();
-      _workoutController.exercises.value.forEach((key, value) {
-        print(key);
-        _listExerciseCart
-            .add(ExerciseCard(widthDevice: Get.mediaQuery.size.width, e: {
-          'id': value.idExercise,
-          'url': value.exerciseUrl,
-          'name': value.exerciseName,
-          'time': value.duration.inSeconds
-        }));
+      temp = '1';
+
+      final listExercisesAccordingLevel = _workoutController
+          .workouts.value[idWorkout]?['collection'] as Map<String, dynamic>;
+      // _workoutController.exercises.value.forEach((key, value) {
+      //   print(key);
+      //   _listExerciseCart
+      //       .add(ExerciseCard(widthDevice: Get.mediaQuery.size.width, e: {
+      //     'id': value.idExercise,
+      //     'url': value.exerciseUrl,
+      //     'name': value.exerciseName,
+      //     'time': value.duration.inSeconds
+      //   }));
+      // });
+      listExercisesAccordingLevel.forEach((key, value) {
+        temp = '2';
+        final data = value as Map<String, dynamic>;
+        Map<String, Workout> extractData = {};
+        data.forEach((key, value) {
+          extractData.addAll({key: value as Workout});
+        });
+        extractData.forEach((key, workout) {
+          for (var element in workout.exercises) {
+            _listExerciseCart.add(
+              ExerciseCard(widthDevice: Get.mediaQuery.size.width, e: {
+                'id': _workoutController.exercises.value[element]!.idExercise,
+                'url': _workoutController.exercises.value[element]!.exerciseUrl,
+                'name':
+                    _workoutController.exercises.value[element]!.exerciseName,
+                'time': _workoutController
+                    .exercises.value[element]!.duration.inSeconds,
+              }),
+            );
+          }
+        });
       });
       return true;
     } catch (e) {
-      print(e.toString());
-      rethrow;
+      print('_getAndSetUpData: ' + e.toString());
+      print(temp);
+      return false;
     }
   }
 
@@ -42,7 +72,6 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
-    bool val = true;
     return FutureBuilder(
       future: _getAndSetUpData(),
       builder: (context, snapshot) {

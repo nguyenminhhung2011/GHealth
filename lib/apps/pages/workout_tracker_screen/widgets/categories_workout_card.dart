@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../global_widgets/gradient_text.dart';
 import '../../../template/misc/colors.dart';
@@ -85,9 +86,7 @@ class CategoriesWorkoutCard extends StatelessWidget {
               decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: AppColors.primaryColor1.withOpacity(0.2)),
-              child: Image.asset(
-                imagePath,
-              ),
+              child: Image.asset(imagePath, bundle: PlatformAssetBundle()),
             ),
           )
         ],

@@ -11,18 +11,50 @@ class Workout {
     required this.level,
     required this.equipmentRequest,
     required this.exercises,
-    required this.isFavorite,
+    required this.note,
   });
 
   final String idWorkout;
-  final WorkoutCategory workoutCategory;
-  final Duration durationWorkout;
-  final int calories;
+  final String workoutCategory;
+  final Duration? durationWorkout;
+  final int? calories;
   final String level;
-
-  final List<Map<String, String>> equipmentRequest; // <nameEquip,imageEquip>
+  final String? note;
+  final List<Map<String, String>>? equipmentRequest; // <nameEquip,imageEquip>
   final List<String> exercises;
+
   bool isFavorite = false;
+
+  Map<String, dynamic> toJson() => {
+        'idWorkout': idWorkout,
+        'workoutCategory': workoutCategory,
+        'durationWorkout': durationWorkout,
+        'calories': calories,
+        'level': level,
+        'equipmentRequest': equipmentRequest,
+        'exercises': exercises,
+      };
+
+  factory Workout.fromSnap(DocumentSnapshot snap, String workoutCategory) {
+    var snapshot = snap.data() as Map<String, dynamic>;
+
+    // Map<String, String>? equipRe quest;
+    // final equipRequestData = snapshot['equipRequest'] as Map<String, dynamic>;
+    List<String> listExercise = [];
+    for (var element in (snapshot['exercises'] as List<dynamic>)) {
+      listExercise.add(element as String);
+    }
+    return Workout(
+      idWorkout: snap.id,
+      workoutCategory: workoutCategory,
+      durationWorkout: null,
+      calories: null,
+      level: snapshot['level'],
+      equipmentRequest: null,
+      exercises: listExercise,
+      note: snapshot['note'],
+    );
+  }
 }
 
 class Exercise {
