@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../../constrains.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/data_service.dart';
@@ -26,17 +27,11 @@ class DailyWaterController extends GetxController with TrackerController {
         })
       : 0;
 
-  // int waterConsumer() {
-  //   int result = 0;
-  //   for (var item in _waterToday.value['waterConsume']) {
-
-  //   }
-  // }
-
   @override
   void onInit() {
     super.onInit();
     getWaterToday();
+    getStartDateAndFinishDate();
   }
 
   getWaterToday() async {
@@ -92,6 +87,94 @@ class DailyWaterController extends GetxController with TrackerController {
         'waterConsume': temp,
       },
     );
+    update();
+  }
+
+  DateTime selectDateTemp1 = DateTime.now();
+  DateTime selectDateTemp2 = DateTime.now();
+
+  Rx<DateTime> startDate = DateTime.now().obs;
+  Rx<DateTime> finishDate = DateTime.now().obs;
+  DateRangePickerController dateController = DateRangePickerController();
+
+  RxList<DateTime> allDateBetWeen = <DateTime>[].obs;
+
+  bool isSameDate(DateTime date1, DateTime date2) {
+    if (date2 == date1) {
+      return true;
+    }
+    if (date1 == null || date2 == null) {
+      return false;
+    }
+    return date1.month == date2.month &&
+        date1.year == date2.year &&
+        date1.day == date2.day;
+  }
+
+  // change date select
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    int firstDayOfWeek = DateTime.sunday % 7;
+    int endDayOfWeek = (firstDayOfWeek - 1) % 7;
+    endDayOfWeek = endDayOfWeek < 0 ? 7 + endDayOfWeek : endDayOfWeek;
+    PickerDateRange ranges = args.value;
+    DateTime date1 = ranges.startDate!;
+    DateTime date2 = (ranges.endDate ?? ranges.startDate)!;
+    if (date1.isAfter(date2)) {
+      var date = date1;
+      date1 = date2;
+      date2 = date;
+    }
+    int day1 = date1.weekday % 7;
+    int day2 = date2.weekday % 7;
+
+    DateTime dat1 = date1.add(Duration(days: (firstDayOfWeek - day1)));
+    DateTime dat2 = date2.add(Duration(days: (endDayOfWeek - day2)));
+
+    if (!isSameDate(dat1, ranges.startDate!) ||
+        !isSameDate(dat2, ranges.endDate!)) {
+      dateController.selectedRange = PickerDateRange(dat1, dat2);
+      selectDateTemp1 = dat1;
+      selectDateTemp2 = dat2;
+    }
+  }
+
+  //load data chart with select calendar
+  selectDateDoneClick() {
+    startDate.value = selectDateTemp1;
+    finishDate.value = selectDateTemp2;
+    allDateBetWeen.value = getListDateBetWeenRange();
+    update();
+  }
+
+  // get number date between
+  getDayInBetWeen() {
+    final int difference = finishDate.value.difference(startDate.value).inDays;
+    return difference;
+  }
+
+  //get list date to load chart
+  List<DateTime> getListDateBetWeenRange() {
+    final items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+      DateTime date = startDate.value;
+      return date.add(Duration(days: index));
+    });
+    return items;
+  }
+
+  //get date start and date finish to load chart
+  void getStartDateAndFinishDate() {
+    DateTime now = DateTime.now();
+    int weekDay = now.weekday == 7 ? 0 : now.weekday;
+    startDate.value = DateTime.now();
+    finishDate.value = DateTime.now();
+    for (int i = 0; i < weekDay; i++) {
+      startDate.value = startDate.value.add(const Duration(days: -1));
+    }
+    for (int i = 0; i < 6 - weekDay; i++) {
+      finishDate.value = finishDate.value.add(const Duration(days: 1));
+    }
+    allDateBetWeen.value = List<DateTime>.generate(
+        7, (index) => startDate.value.add(Duration(days: index)));
     update();
   }
 }

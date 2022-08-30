@@ -5,7 +5,11 @@ import '../../template/misc/colors.dart';
 import '../gradient_text.dart';
 
 class ColumnChartTwoColumnCustom extends StatefulWidget {
-  const ColumnChartTwoColumnCustom({Key? key}) : super(key: key);
+  const ColumnChartTwoColumnCustom(
+      {Key? key, required this.startDate, required this.endDate})
+      : super(key: key);
+  final String startDate;
+  final String endDate;
 
   @override
   State<StatefulWidget> createState() => ColumnChartTwoColumnCustomState();
@@ -67,13 +71,13 @@ class ColumnChartTwoColumnCustomState
               const SizedBox(
                 height: 12,
               ),
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(left: 20.0),
                 child: GradientText(
-                  'Week 25/7/2022 - 1/8/2022',
-                  gradient:
-                      LinearGradient(colors: [Colors.black, Colors.black]),
-                  style: TextStyle(
+                  'Week ${widget.startDate} - ${widget.endDate}',
+                  gradient: const LinearGradient(
+                      colors: [Colors.black, Colors.black]),
+                  style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 17,
                   ),

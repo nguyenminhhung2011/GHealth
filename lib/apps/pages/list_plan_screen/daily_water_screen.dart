@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/water_consume_card.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/show_dialog_edit_water.dart';
+import 'package:intl/intl.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../controls/dailyPlanController/daily_waterController.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
@@ -115,7 +117,9 @@ class DailyWaterScreen extends StatelessWidget {
                         ButtonIconGradientColor(
                           title: ' Week',
                           icon: Icons.calendar_month,
-                          press: () {},
+                          press: () async {
+                            await _showDatePicker(context: context);
+                          },
                         )
                       ],
                     ),
@@ -123,7 +127,14 @@ class DailyWaterScreen extends StatelessWidget {
                     SizedBox(
                       height: heightDevice / 2.9,
                       width: double.infinity,
-                      child: const ColumnChartTwoColumnCustom(),
+                      child: ColumnChartTwoColumnCustom(
+                        startDate: DateFormat()
+                            .add_yMd()
+                            .format(controller.startDate.value),
+                        endDate: DateFormat()
+                            .add_yMd()
+                            .format(controller.finishDate.value),
+                      ),
                     ),
                     const SizedBox(height: 20),
                     Padding(
@@ -232,7 +243,7 @@ class DailyWaterScreen extends StatelessWidget {
                     Obx(
                       () => InkWell(
                         onTap: () async {
-                          int targetValue = controller.waterTarget.value;
+                          int targetValue = controller.waterToday['target'];
                           int consumeValue = controller.waterCon;
                           final r = await showDialog(
                             useRootNavigator: false,
@@ -355,6 +366,89 @@ class DailyWaterScreen extends StatelessWidget {
               ),
             );
           }),
+    );
+  }
+
+  _showDatePicker({required BuildContext context}) async {
+    await showDialog(
+      useRootNavigator: false,
+      barrierColor: Colors.black54,
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          height: 430,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: AppColors.mainColor,
+          ),
+          child: Column(
+            children: [
+              Card(
+                elevation: 2,
+                child: SfDateRangePicker(
+                  selectionTextStyle:
+                      const TextStyle(fontWeight: FontWeight.bold),
+                  rangeTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  headerStyle: const DateRangePickerHeaderStyle(
+                    backgroundColor: AppColors.primaryColor1,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  monthCellStyle: const DateRangePickerMonthCellStyle(
+                    textStyle: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  selectionColor: AppColors.primaryColor1,
+                  rangeSelectionColor: AppColors.primaryColor1,
+                  todayHighlightColor: AppColors.primaryColor1,
+                  controller: controller.dateController,
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.range,
+                  onSelectionChanged: controller.selectionChanged,
+                  monthViewSettings: const DateRangePickerMonthViewSettings(
+                      enableSwipeSelection: false),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: AppColors.primaryColor1,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.selectDateDoneClick();
+                    Get.back();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      primary: Colors.transparent,
+                      shadowColor: Colors.transparent),
+                  child: const Text(
+                    'Done',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

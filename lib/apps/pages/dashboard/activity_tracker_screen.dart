@@ -287,7 +287,10 @@ class ActivityTrackerScreen extends StatelessWidget {
         SizedBox(
           height: heightDevice / 2.9,
           width: double.infinity,
-          child: const ColumnChartTwoColumnCustom(),
+          child: const ColumnChartTwoColumnCustom(
+            startDate: '20/11/2002',
+            endDate: '20/11/2002',
+          ),
         ),
       ],
     );
