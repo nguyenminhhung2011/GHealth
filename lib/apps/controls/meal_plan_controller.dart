@@ -63,16 +63,10 @@ class MealPlanController extends GetxController with TrackerController {
   @override
   void onInit() {
     super.onInit();
-    initAllListData();
     getStartDateAndFinishDate();
     getMealToDay();
     getDataChart(1);
-
     dateController = DateRangePickerController();
-  }
-
-  void initAllListData() {
-    update();
   }
 
   TextEditingController text = TextEditingController();
