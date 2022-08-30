@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
+import '../../../services/data_service.dart';
 import '../../controls/dailyPlanController/meal_plan/daily_nutrition_controller.dart';
 import '../../template/misc/colors.dart';
 
@@ -13,16 +14,8 @@ class AddFoodScreen extends StatefulWidget {
 }
 
 class _AddFoodScreenState extends State<AddFoodScreen> {
-  // final controller = Get.find<DailyNutritionController>();
-
-  // List<Map<String, dynamic>> foodTemp = [
-  //   {'temp': 0}
-  // ];
-  // RxMap<String, dynamic> foodData = [];
   @override
   Widget build(BuildContext context) {
-    // var widthDevice = MediaQuery.of(context).size.width;
-    // var heightDevice = MediaQuery.of(context).size.height;
     return GetBuilder<DailyNutritionController>(
       init: DailyNutritionController(),
       builder: (controller) {
@@ -53,10 +46,11 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 IconButton(
                   onPressed: () {
                     for (var item in controller.foodTemp) {
-                      //   controller.listFoodToday.add(item);
-                      // controller.listFoodToday.add(item);
-                      controller.addNutriToFirebase(
-                          item['id'], item['amount'], item['dateTime']);
+                      DataService.instance.addNutrition(
+                        item['id'],
+                        item['amount'],
+                        item['dateTime'],
+                      );
                     }
                     controller.clearFoodTemp();
                     controller.update();
@@ -181,13 +175,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                                       index++)
                                     _foodSelectCard(
                                         controller.listMealSearch[index].id),
-                                ]
-                                // controller.allMeal
-                                //     .map(
-                                //       (e) => _foodSelectCard(e),
-                                //     )
-                                //     .toList(),
-                                ),
+                                ]),
                           )
                         : Center(
                             child: Column(
@@ -222,16 +210,6 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                               _foodSelectCard(controller.mealFindCate
                                   .value[controller.selectPlan.value][i].id),
                           ],
-                          //  [
-                          //   for (int index = 0;
-                          //       index < controller.allMeal.length;
-                          //       index++)
-                          // ]
-                          // controller.allMeal
-                          //     .map(
-                          //       (e) => _foodSelectCard(e),
-                          //     )
-                          //     .toList(),
                         ),
                       ),
               ],

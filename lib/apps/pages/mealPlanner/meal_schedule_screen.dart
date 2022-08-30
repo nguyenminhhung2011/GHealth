@@ -212,7 +212,8 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
                                 FoodScheduleCard(
                                   imagePath: item.asset,
                                   name: item.name,
-                                  time: '11:00am',
+                                  time: DateFormat.jm()
+                                      .format(controller.timeEat[0]),
                                   press: () {},
                                   color:
                                       AppColors.primaryColor2.withOpacity(0.2),
@@ -255,7 +256,8 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
                                 FoodScheduleCard(
                                   imagePath: item.asset,
                                   name: item.name,
-                                  time: '11:00am',
+                                  time: DateFormat.jm()
+                                      .format(controller.timeEat[1]),
                                   press: () {},
                                   color:
                                       AppColors.primaryColor1.withOpacity(0.2),
@@ -299,7 +301,8 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
                                 FoodScheduleCard(
                                   imagePath: item.asset,
                                   name: item.name,
-                                  time: '11:00am',
+                                  time: DateFormat.jm()
+                                      .format(controller.timeEat[2]),
                                   press: () {},
                                   color:
                                       AppColors.primaryColor2.withOpacity(0.2),
@@ -342,7 +345,8 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
                                 FoodScheduleCard(
                                   imagePath: item.asset,
                                   name: item.name,
-                                  time: '11:00am',
+                                  time: DateFormat.jm()
+                                      .format(controller.timeEat[3]),
                                   press: () {},
                                   color:
                                       AppColors.primaryColor1.withOpacity(0.2),

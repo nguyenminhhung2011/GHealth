@@ -1,22 +1,16 @@
-import 'dart:async';
 import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/daily_step_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/data_step_card.dart';
-import 'package:pedometer/pedometer.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../../services/notification_api.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/list_chart/colum_chart1_colum.dart';
 import '../../template/misc/colors.dart';
-import '../dashboard/activity_tracker_screen.dart';
 
 class DailyStepScreen extends StatefulWidget {
   DailyStepScreen({Key? key}) : super(key: key);

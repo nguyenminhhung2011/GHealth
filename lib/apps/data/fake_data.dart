@@ -369,3 +369,180 @@ class Data {
       required this.percents,
       required this.color});
 }
+//-------------------------------------------------------------------
+
+  // getAllMeal() {
+  //   _allMeal.bindStream(
+  //     firestore.collection('meal').snapshots().map(
+  //       (event) {
+  //         List<Meal> result = [];
+  //         for (var item in event.docs) {
+  //           //print(1);
+  //           result.add(Meal.fromSnap(item));
+  //         }
+  //         return result;
+  //       },
+  //     ),
+  //   );
+  //   update();
+  // }
+
+
+//-------------------------------------------------
+  // getListMealBreakFast() async {
+  //   _listMealBreakFast.bindStream(
+  //     firestore.collection('meal').snapshots().map(
+  //       (event) {
+  //         List<Meal> result = [];
+  //         for (var item in event.docs) {
+  //           //print(1);
+  //           Map<String, dynamic> temp = item.data();
+  //           if (temp['time'] == 1) {
+  //             result.add(Meal.fromSnap(item));
+  //           }
+  //         }
+  //         return result;
+  //       },
+  //     ),
+  //   );
+  //   update();
+  // }
+
+  // getListMealLunch() async {
+  //   _listMealLunch.bindStream(
+  //     firestore.collection('meal').snapshots().map(
+  //       (event) {
+  //         List<Meal> result = [];
+  //         for (var item in event.docs) {
+  //           //print(1);
+  //           Map<String, dynamic> temp = item.data();
+  //           if (temp['time'] == 2) {
+  //             result.add(Meal.fromSnap(item));
+  //           }
+  //         }
+  //         return result;
+  //       },
+  //     ),
+  //   );
+  //   update();
+  // }
+
+  // getListMealDinner() async {
+  //   _listMealSnack.bindStream(
+  //     firestore.collection('meal').snapshots().map(
+  //       (event) {
+  //         List<Meal> result = [];
+  //         for (var item in event.docs) {
+  //           //print(1);
+  //           Map<String, dynamic> temp = item.data();
+  //           if (temp['time'] == 3) {
+  //             result.add(Meal.fromSnap(item));
+  //           }
+  //         }
+  //         return result;
+  //       },
+  //     ),
+  //   );
+  //   update();
+  // }
+
+  // getAllNutrtion() async {
+  //   _listNutrition.bindStream(
+  //     firestore
+  //         .collection('users')
+  //         .doc(AuthService.instance.currentUser!.uid)
+  //         .collection('Nutrition')
+  //         .snapshots()
+  //         .map(
+  //       (event) {
+  //         List<Nutrition> result = [];
+  //         for (var item in event.docs) {
+  //           result.add(Nutrition.fromSnap(item));
+  //         }
+  //         return result;
+  //       },
+  //     ),
+  //   );
+  //   update();
+  // }
+
+  // getTimeEat() async {
+  //   timeEat.bindStream(
+  //     firestore
+  //         .collection('users')
+  //         .doc(AuthService.instance.currentUser!.uid)
+  //         .collection('timeEat')
+  //         .snapshots()
+  //         .map((event) {
+  //       List<DateTime> result = [];
+  //       Map<String, dynamic> listTime = event.docs[0].data();
+  //       for (var item in listTime['list']) {
+  //         result.add(DateTime.fromMillisecondsSinceEpoch(item.seconds * 1000));
+  //       }
+  //       return result;
+  //     }),
+  //   );
+  //   update();
+  // }
+
+//    getDataNutriPlan() async {
+//   listDataNutriPlan
+//       .bindStream(firestore.collection('PlanMeal').snapshots().map((event) {
+//     List<Map<String, dynamic>> result = [
+//       for (int i = 1; i <= 7; i++)
+//         {
+//           'id': i,
+//           'kCal': 0,
+//           'pro': 0,
+//           'fats': 0,
+//           'carbs': 0,
+//         }
+//     ];
+//     for (var item in event.docs) {
+//       var data = item.data();
+//       result[data['id'] - 1]['kCal'] = data['listNutri'][0];
+//       result[data['id'] - 1]['pro'] = data['listNutri'][1];
+//       result[data['id'] - 1]['fats'] = data['listNutri'][2];
+//       result[data['id'] - 1]['carbs'] = data['listNutri'][3];
+//     }
+//     return result;
+//   }));
+//   update();
+// }
+
+
+// final Rx<List<Meal>> _allMeal = Rx<List<Meal>>([]);
+  // final Rx<List<Meal>> _listMealBreakFast = Rx<List<Meal>>([]);
+  // final Rx<List<Meal>> _listMealLunch = Rx<List<Meal>>([]);
+  // final Rx<List<Meal>> _listMealSnack = Rx<List<Meal>>([]);
+
+
+   // <DateTime>[
+  //   DateTime.now(),
+  //   DateTime.now(),
+  //   DateTime.now(),
+  //   DateTime.now(),
+  // ].obs;
+
+    // Map<String, dynamic> getNutritionDateTime(DateTime date) {
+  //   Map<String, dynamic> result = {
+  //     'id': date.weekday,
+  //     'kCal': 0,
+  //     'carbs': 0,
+  //     'pro': 0,
+  //     'fats': 0,
+  //   };
+  //   for (var item in listNutrition) {
+  //     if (item.dateTime.day == date.day &&
+  //         item.dateTime.month == date.month &&
+  //         item.dateTime.year == date.year) {
+  //       result['kCal'] += item.amount * getMealId(item.id, allMeal).kCal;
+  //       result['carbs'] += item.amount * getMealId(item.id, allMeal).carbs;
+  //       result['pro'] += item.amount * getMealId(item.id, allMeal).proteins;
+  //       result['fats'] += item.amount * getMealId(item.id, allMeal).fats;
+  //     }
+  //   }
+  //   return result;
+  // }
+
+  // --> kcal, proteins, fats, carbo

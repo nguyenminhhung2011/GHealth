@@ -1,38 +1,40 @@
-// ignore_for_file: unnecessary_null_comparison
-
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
-import 'package:gold_health/apps/data/fake_data.dart';
+import 'package:gold_health/apps/data/models/nutrition.dart';
 import 'package:gold_health/constrains.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import '../../services/auth_service.dart';
+import '../../services/data_service.dart';
 import '../data/models/Meal.dart';
 
 class MealPlanController extends GetxController with TrackerController {
-  final Rx<List<Meal>> _allMeal = Rx<List<Meal>>([]);
-  final Rx<List<Meal>> _listMealBreakFast = Rx<List<Meal>>([]);
-  final Rx<List<Meal>> _listMealLunch = Rx<List<Meal>>([]);
-  final Rx<List<Meal>> _listMealSnack = Rx<List<Meal>>([]);
-  List<Meal> get listMealLunch => _listMealLunch.value;
-  List<Meal> get allMeal => _allMeal.value;
-  List<Meal> get listMealBreakFast => _listMealBreakFast.value;
-  List<Meal> get listMealSnack => _listMealSnack.value;
-  @override
-  void onInit() {
-    super.onInit();
-    getAllMeal();
-    getListMealBreakFast();
-    getListMealLunch();
-    getListMealDinner();
-    getStartDateAndFinishDate();
-    getMealToDay();
-    dateController = DateRangePickerController();
-  }
+  //Data
 
-  TextEditingController text = TextEditingController();
-  RxList<Map<String, dynamic>> todayListMeal = <Map<String, dynamic>>[].obs;
+  List<String> mealPlan = [
+    'BreakFast',
+    'Lunch',
+    'Snack',
+    'Dinner',
+  ];
 
-  //date controller
+  Rx<String> selectPlan = 'BreakFast'.obs;
+
+  int get planInt => (selectPlan.value == 'BreakFast')
+      ? 0
+      : (selectPlan.value == 'Lunch')
+          ? 1
+          : (selectPlan.value == "Snack")
+              ? 2
+              : 3;
+
+  final Rx<List<FlSpot>> _listDataChart = Rx<List<FlSpot>>([]);
+  // final Rx<List<Nutrition>> _listNutrition = Rx<List<Nutrition>>([]);
+  final Rx<List<Map<String, dynamic>>> _listWeekNutriton =
+      Rx<List<Map<String, dynamic>>>([]);
+
+  final Rx<int> weekdayNutriFocus = 2.obs;
   DateTime selectDateTemp1 = DateTime.now();
   DateTime selectDateTemp2 = DateTime.now();
 
@@ -41,6 +43,36 @@ class MealPlanController extends GetxController with TrackerController {
   DateRangePickerController dateController = DateRangePickerController();
 
   RxList<DateTime> allDateBetWeen = <DateTime>[].obs;
+
+  List<Map<String, dynamic>> get listDataNutriPlan =>
+      DataService.instance.dataNutriPlan;
+  // Rx<List<Map<String, dynamic>>>([]);
+  List<Meal> get listMealLunch => DataService.instance.mealLunchDinnerList;
+  List<Meal> get allMeal => DataService.instance.mealList;
+  List<Meal> get listMealBreakFast => DataService.instance.mealBreakFastList;
+  List<Meal> get listMealSnack => DataService.instance.mealSnackList;
+  List<Nutrition> get listNutrition => DataService.instance.nutritionList;
+
+  List<DateTime> get timeEat => DataService.instance.timeEatList;
+
+  List<FlSpot> get listDataChart => _listDataChart.value;
+  List<Map<String, dynamic>> get listWeekNutrition => _listWeekNutriton.value;
+  Rx<Map<String, dynamic>> mealToday = Rx<Map<String, dynamic>>({});
+
+  List<Map<String, dynamic>> listMealPlan = [];
+  @override
+  void onInit() {
+    super.onInit();
+    getStartDateAndFinishDate();
+    getMealToDay();
+    getDataChart(1);
+    dateController = DateRangePickerController();
+  }
+
+  TextEditingController text = TextEditingController();
+  RxList<Map<String, dynamic>> todayListMeal = <Map<String, dynamic>>[].obs;
+
+  //date controller-----------------
 
   bool isSameDate(DateTime date1, DateTime date2) {
     if (date2 == date1) {
@@ -54,6 +86,7 @@ class MealPlanController extends GetxController with TrackerController {
         date1.day == date2.day;
   }
 
+  // change date select
   void selectionChanged(DateRangePickerSelectionChangedArgs args) {
     int firstDayOfWeek = DateTime.sunday % 7;
     int endDayOfWeek = (firstDayOfWeek - 1) % 7;
@@ -80,18 +113,22 @@ class MealPlanController extends GetxController with TrackerController {
     }
   }
 
+  //load data chart with select calendar
   selectDateDoneClick() {
     startDate.value = selectDateTemp1;
     finishDate.value = selectDateTemp2;
+    allDateBetWeen.value = getListDateBetWeenRange();
+    getDataChart(0);
     update();
   }
 
+  // get number date between
   getDayInBetWeen() {
     final int difference = finishDate.value.difference(startDate.value).inDays;
-    print(difference);
     return difference;
   }
 
+  //get list date to load chart
   List<DateTime> getListDateBetWeenRange() {
     final items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
       DateTime date = startDate.value;
@@ -100,11 +137,12 @@ class MealPlanController extends GetxController with TrackerController {
     return items;
   }
 
+  //get date start and date finish to load chart
   void getStartDateAndFinishDate() {
-    DateTime now = DateTime.now().add(const Duration(days: -4));
+    DateTime now = DateTime.now();
     int weekDay = now.weekday == 7 ? 0 : now.weekday;
-    startDate.value = DateTime.now().add(const Duration(days: -4));
-    finishDate.value = DateTime.now().add(const Duration(days: -4));
+    startDate.value = DateTime.now();
+    finishDate.value = DateTime.now();
     for (int i = 0; i < weekDay; i++) {
       startDate.value = startDate.value.add(const Duration(days: -1));
     }
@@ -116,33 +154,54 @@ class MealPlanController extends GetxController with TrackerController {
     update();
   }
 
-  //-------------------------------------------------------------------
+  //-----------------------Chart-----------------
 
-  Rx<Map<String, dynamic>> mealToday = Rx<Map<String, dynamic>>({});
-  List<Map<String, dynamic>> listMealPlan = [];
-  // {
-  //   'break': [Meal],
-  //   'lunch': [Meal],
-  //   'snack': [Meal],
-  //   'dinner': [Meal],
-  // }
-  getAllMeal() {
-    _allMeal.bindStream(
-      firestore.collection('meal').snapshots().map(
-        (event) {
-          List<Meal> result = [];
-          for (var item in event.docs) {
-            //print(1);
-            result.add(Meal.fromSnap(item));
-          }
-          return result;
-        },
-      ),
-    );
+  updateweekdayNutriFocus(double selected) {
+    weekdayNutriFocus.value = selected.toInt();
     update();
   }
 
+  // get data to load chart
+  getDataChart(int check) async {
+    _listWeekNutriton.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('Nutrition')
+        .snapshots()
+        .map((event) {
+      List<Map<String, dynamic>> result = [
+        for (var item in allDateBetWeen.value)
+          {
+            'id': item.weekday,
+            'kCal': 0,
+            'carbs': 0,
+            'pro': 0,
+            'fats': 0,
+          }
+      ];
+      result.sort((a, b) => a['id'].compareTo(b['id']));
+      for (var item in event.docs) {
+        Nutrition data = Nutrition.fromSnap(item);
+        if (allDateBetWeen.value[0].isBefore(data.dateTime) &&
+            allDateBetWeen.value[6].isAfter(data.dateTime)) {
+          result[data.dateTime.weekday - 1]['kCal'] +=
+              data.amount * getMealId(data.id, allMeal).kCal;
+          result[data.dateTime.weekday - 1]['carbs'] +=
+              data.amount * getMealId(data.id, allMeal).carbs;
+          result[data.dateTime.weekday - 1]['pro'] +=
+              data.amount * getMealId(data.id, allMeal).proteins;
+          result[data.dateTime.weekday - 1]['fats'] +=
+              data.amount * getMealId(data.id, allMeal).fats;
+        }
+      }
+      return result;
+    }));
+    update();
+  }
+
+  //------------------------------------------------------
   Meal getMealId(String id, List<Meal> l) {
+    // get meal from id String
     final meal = l.firstWhere(
       (element) => element.id == id,
       orElse: () {
@@ -152,6 +211,7 @@ class MealPlanController extends GetxController with TrackerController {
     return meal;
   }
 
+  // get meal plan today
   getMealToDay() async {
     final listPlan = await firestore.collection('PlanMeal').get();
     final list = listPlan.docs;
@@ -193,95 +253,8 @@ class MealPlanController extends GetxController with TrackerController {
     update();
   }
 
-  List<String> mealPlan = [
-    'BreakFast',
-    'Lunch',
-    'Snack',
-    'Dinner',
-  ];
-
-  Rx<String> selectPlan = 'BreakFast'.obs;
-
   selectMealPlan(String value) {
     selectPlan.value = value;
     update();
   }
-
-  //-------------------------------------------------
-  getListMealBreakFast() async {
-    _listMealBreakFast.bindStream(
-      firestore.collection('meal').snapshots().map(
-        (event) {
-          List<Meal> result = [];
-          for (var item in event.docs) {
-            //print(1);
-            Map<String, dynamic> temp = item.data();
-            if (temp['time'] == 1) {
-              result.add(Meal.fromSnap(item));
-            }
-          }
-          return result;
-        },
-      ),
-    );
-    update();
-  }
-
-  getListMealLunch() async {
-    _listMealLunch.bindStream(
-      firestore.collection('meal').snapshots().map(
-        (event) {
-          List<Meal> result = [];
-          for (var item in event.docs) {
-            //print(1);
-            Map<String, dynamic> temp = item.data();
-            if (temp['time'] == 2) {
-              result.add(Meal.fromSnap(item));
-            }
-          }
-          return result;
-        },
-      ),
-    );
-    update();
-  }
-
-  getListMealDinner() async {
-    _listMealSnack.bindStream(
-      firestore.collection('meal').snapshots().map(
-        (event) {
-          List<Meal> result = [];
-          for (var item in event.docs) {
-            //print(1);
-            Map<String, dynamic> temp = item.data();
-            if (temp['time'] == 3) {
-              result.add(Meal.fromSnap(item));
-            }
-          }
-          return result;
-        },
-      ),
-    );
-    update();
-  }
-
-  remove() {
-    _allMeal.value.removeWhere((element) => element.name == 'Protein Oat');
-    update();
-  }
-
-  // Ok() async {
-  //   for (int i = 0; i < FakeData.list11.length; i++) {
-  //     await firestore
-  //         .collection('PlanMeal')
-  //         .doc(FakeData.dayList[i])
-  //         .set(FakeData.list11[i]);
-  //   }
-  // }
-  //@override
-  // fetchTracksByDate(DateTime date) {
-  //   // TODO: implement fetchTracksByDate
-  //   throw UnimplementedError();
-  // }
-
 }

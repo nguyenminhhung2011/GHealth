@@ -8,6 +8,7 @@ import 'package:gold_health/apps/pages/list_plan_screen/daily_water_screen.dart'
 import 'package:gold_health/apps/pages/list_plan_screen/fasting_plan/fasting_plan_screen.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/sleep_tracker_screen.dart';
 
+import '../../../services/data_service.dart';
 import '../../pages/list_plan_screen/daily_step_screen.dart.dart';
 import '../../pages/mealPlanner/meal_planner_screen.dart';
 import '../../pages/workout_tracker_screen/workout_tracker_screen.dart';
@@ -24,6 +25,18 @@ class DailyPlanController extends GetxController {
   Rx<int> currentTab = nutrition.obs;
 
   TextEditingController text = TextEditingController();
+  @override
+  void onInit() async {
+    super.onInit();
+    // nutrition daily plan
+    await DataService.instance.loadMealList();
+    await DataService.instance.loadMealBreakFastList();
+    await DataService.instance.loadMealLunchDinnerList();
+    await DataService.instance.loadMealSnackList();
+    await DataService.instance.loadNutritionList();
+    await DataService.instance.loadTimeEatList();
+    await DataService.instance.loadDataNutriPlan();
+  }
 
   void changeTab(int newTabIndex) {
     int currentIndex = currentTab.value;

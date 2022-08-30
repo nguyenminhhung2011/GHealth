@@ -4,8 +4,13 @@ import 'package:flutter/material.dart';
 import '../../template/misc/colors.dart';
 
 class LineChartOneLine extends StatelessWidget {
-  const LineChartOneLine({Key? key}) : super(key: key);
-
+  LineChartOneLine({
+    Key? key,
+    required this.listData,
+    required this.callBack,
+  }) : super(key: key);
+  final List<FlSpot> listData;
+  final Function(FlTouchEvent, LineTouchResponse?) callBack;
   @override
   Widget build(BuildContext context) {
     return LineChart(
@@ -29,8 +34,9 @@ class LineChartOneLine extends StatelessWidget {
   LineTouchData get lineTouchData1 => LineTouchData(
         handleBuiltInTouches: true,
         touchTooltipData: LineTouchTooltipData(
-          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+          tooltipBgColor: Colors.black,
         ),
+        touchCallback: callBack,
       );
 
   FlTitlesData get titlesData1 => FlTitlesData(
@@ -98,9 +104,6 @@ class LineChartOneLine extends StatelessWidget {
     );
     Widget text;
     switch (value.toInt()) {
-      case 1:
-        text = const Text('Sun', style: style);
-        break;
       case 2:
         text = const Text('Mon', style: style);
         break;
@@ -118,6 +121,9 @@ class LineChartOneLine extends StatelessWidget {
         break;
       case 7:
         text = const Text('Sat', style: style);
+        break;
+      case 1:
+        text = const Text('Sun', style: style);
         break;
       default:
         text = const Text('');
@@ -164,22 +170,13 @@ class LineChartOneLine extends StatelessWidget {
       );
 
   LineChartBarData get lineChartBarData1_1 => LineChartBarData(
-        isCurved: true,
-        color: AppColors.primaryColor1,
-        barWidth: 3,
-        isStrokeCapRound: true,
-        dotData: FlDotData(
-          show: true,
-        ),
-        belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(2, 1.5),
-          FlSpot(3, 1.4),
-          FlSpot(4, 5.5),
-          FlSpot(5, 2),
-          FlSpot(6, 2.2),
-          FlSpot(7, 1.8),
-        ],
-      );
+      isCurved: true,
+      color: AppColors.primaryColor1,
+      barWidth: 3,
+      isStrokeCapRound: true,
+      dotData: FlDotData(
+        show: true,
+      ),
+      belowBarData: BarAreaData(show: false),
+      spots: listData);
 }

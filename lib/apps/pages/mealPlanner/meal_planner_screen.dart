@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,438 +38,513 @@ class MealPlannerScreen extends StatelessWidget {
         child: GetBuilder<MealPlanController>(
           init: MealPlanController(),
           builder: (controller) {
-            return Obx(
-              () => (controller == null)
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                          color: AppColors.primaryColor1),
-                    )
-                  : Column(
+            return
+                //  Obx(
+                //   // ignore: unnecessary_null_comparison
+                //   () => (controller == null)
+                //       ? const Center(
+                //           child: CircularProgressIndicator(
+                //               color: AppColors.primaryColor1),
+                //         )
+                //       :
+                Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () async {
+                          int? newIndex;
+                          await _showDialogMethod(
+                            context: context,
+                            tabs: tabs,
+                            onselectedTabs: (value) {
+                              newIndex = value;
+                            },
+                            done: () {
+                              print(newIndex);
+                              if (newIndex != null) {
+                                controller.changeTab(newIndex ?? 0);
+                              }
+                              Navigator.pop(context);
+                            },
+                          );
+                        },
+                        child: Row(
+                          children: const [
+                            Text(
+                              'Meal Planner',
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ),
+                            Icon(
+                              Icons.keyboard_arrow_down_outlined,
+                              color: Colors.black,
+                              size: 24,
+                            )
+                          ],
+                        ),
+                      ),
+                      const Spacer(),
+                      InkWell(
+                        onTap: () {
+                          // controller.Ok();
+                          for (var item
+                              in controller.mealToday.value['break']) {
+                            print(item.name);
+                          }
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryColor1.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: const Icon(
+                            Icons.more_horiz,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Meal Nutritions',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              fontSize: 17,
+                            ),
+                      ),
+                      const Spacer(),
+                      ButtonIconGradientColor(
+                        title: ' Week',
+                        icon: Icons.calendar_month,
+                        press: () async {
+                          await _showDatePicker(context: context);
+                        },
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        DateFormat()
+                            .add_yMMMMd()
+                            .format(controller.startDate.value)
+                            .toString(),
+                        style: const TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17),
+                      ),
+                      const Text(
+                        ' - ',
+                        style: TextStyle(
+                            color: AppColors.primaryColor1,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17),
+                      ),
+                      Text(
+                        DateFormat()
+                            .add_yMMMMd()
+                            .format(controller.finishDate.value)
+                            .toString(),
+                        style: const TextStyle(
+                            color: Colors.grey,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Obx(
+                  () => (controller.listWeekNutrition.isNotEmpty &&
+                          controller.listDataNutriPlan.isNotEmpty)
+                      ? chartLoading(widthDevice, controller)
+                      : const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primaryColor1,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                ),
+                const SizedBox(height: 20),
+                Obx(
+                  () => (controller.listWeekNutrition.isNotEmpty &&
+                          controller.listDataNutriPlan.isNotEmpty)
+                      ? listNutriWeekday(controller)
+                      : const Center(
+                          child: CircularProgressIndicator(
+                            color: AppColors.primaryColor1,
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Container(
+                    width: widthDevice,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          AppColors.primaryColor1.withOpacity(0.1),
+                          AppColors.primaryColor2.withOpacity(0.1)
+                        ],
+                      ),
+                    ),
+                    child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () async {
-                                  int? newIndex;
-                                  await _showDialogMethod(
-                                    context: context,
-                                    tabs: tabs,
-                                    onselectedTabs: (value) {
-                                      newIndex = value;
-                                    },
-                                    done: () {
-                                      print(newIndex);
-                                      if (newIndex != null) {
-                                        controller.changeTab(newIndex ?? 0);
-                                      }
-                                      Navigator.pop(context);
-                                    },
-                                  );
-                                },
-                                child: Row(
-                                  children: const [
-                                    Text(
-                                      'Meal Planner',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    Icon(
-                                      Icons.keyboard_arrow_down_outlined,
-                                      color: Colors.black,
-                                      size: 24,
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  // controller.Ok();
-                                  for (var item
-                                      in controller.mealToday.value['break']) {
-                                    print(item.name);
-                                  }
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryColor1
-                                        .withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: const Icon(
-                                    Icons.more_horiz,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ],
+                        const Text(
+                          'Daily Meal Scheduele',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
                           ),
                         ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Meal Nutritions',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                      fontSize: 17,
-                                    ),
-                              ),
-                              const Spacer(),
-                              ButtonIconGradientColor(
-                                title: ' Week',
-                                icon: Icons.calendar_month,
-                                press: () async {
-                                  await _showDatePicker(context: context);
-                                },
-                              )
-                            ],
+                        const Spacer(),
+                        ButtonText(
+                          press: () => Get.toNamed(
+                            RouteName.mealSchedule,
+                            arguments: {
+                              'mealPlan': controller.listMealPlan,
+                              'allMeal': controller.allMeal,
+                              'timeEat': controller.timeEat,
+                            },
                           ),
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                DateFormat()
-                                    .add_yMMMMd()
-                                    .format(controller.startDate.value)
-                                    .toString(),
-                                style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17),
-                              ),
-                              const Text(
-                                ' - ',
-                                style: TextStyle(
-                                    color: AppColors.primaryColor1,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17),
-                              ),
-                              Text(
-                                DateFormat()
-                                    .add_yMMMMd()
-                                    .format(controller.finishDate.value)
-                                    .toString(),
-                                style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 17),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: SizedBox(
-                            width: widthDevice,
-                            height: 200,
-                            // ignore: avoid_unnecessary_containers
-                            child: Container(
-                              child: const LineChartOneLine(),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: const [
-                              ControlMealCard(
-                                  header: 'Calories', percent: 0.82),
-                              ControlMealCard(header: 'Carbs', percent: 0.39),
-                              ControlMealCard(
-                                  header: 'Proteins', percent: 0.88),
-                              ControlMealCard(header: 'fats', percent: 0.42),
-                              SizedBox(width: 20),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Container(
-                            width: widthDevice,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  AppColors.primaryColor1.withOpacity(0.1),
-                                  AppColors.primaryColor2.withOpacity(0.1)
-                                ],
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                const Text(
-                                  'Daily Meal Scheduele',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const Spacer(),
-                                ButtonText(
-                                  press: () => Get.toNamed(
-                                    RouteName.mealSchedule,
-                                    arguments: {
-                                      'mealPlan': controller.listMealPlan,
-                                      'allMeal': controller.allMeal,
-                                    },
-                                  ),
-                                  title: 'Check',
-                                  color: AppColors.primaryColor1,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Container(
-                            width: widthDevice,
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              gradient: LinearGradient(
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                                colors: [
-                                  AppColors.primaryColor1.withOpacity(0.1),
-                                  AppColors.primaryColor2.withOpacity(0.1)
-                                ],
-                              ),
-                            ),
-                            child: Row(
-                              children: [
-                                const Text(
-                                  'Amount of food absorbed',
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                const Spacer(),
-                                ButtonText(
-                                  press: () {
-                                    Get.toNamed(
-                                      RouteName.dailyNutritionScreen,
-                                      arguments: {
-                                        'allMeal': controller.allMeal,
-                                        'break': controller.listMealBreakFast,
-                                        'lunch': controller.listMealLunch,
-                                        'snack': controller.listMealSnack,
-                                        'dinner': controller.listMealLunch,
-                                      },
-                                    );
-                                  },
-                                  title: 'Check',
-                                  color: AppColors.primaryColor1,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Row(
-                            children: [
-                              Text(
-                                'Today Meals',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headline4!
-                                    .copyWith(
-                                      fontSize: 17,
-                                    ),
-                              ),
-                              const Spacer(),
-                              // ButtonIconGradientColor(
-                              //   title: ' Breakfast',
-                              //   icon: Icons.keyboard_arrow_down_sharp,
-                              //   press: () {},
-                              // )
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: AppColors.primaryColor1,
-                                ),
-                                child: SizedBox(
-                                  height: 30,
-                                  child: DropdownButton<String>(
-                                    dropdownColor: AppColors.primaryColor1,
-                                    borderRadius: BorderRadius.circular(15),
-                                    value: controller.selectPlan.value,
-                                    elevation: 5,
-                                    icon: const Icon(Icons.keyboard_arrow_down,
-                                        color: Colors.white),
-                                    items: controller.mealPlan
-                                        .map(
-                                          (e) => DropdownMenuItem<String>(
-                                            value: e,
-                                            child: Text(
-                                              e,
-                                              style: const TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                        .toList(),
-                                    onChanged: controller.selectPlan,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        Obx(
-                          () => Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 20.0),
-                            // ignore: unnecessary_null_comparison
-                            child: controller.mealToday
-                                        .value[controller.selectPlan.value] ==
-                                    null
-                                ? const Center(
-                                    child: CircularProgressIndicator(
-                                        color: AppColors.primaryColor1))
-                                : Column(
-                                    children: [
-                                      for (int i = 0;
-                                          i <
-                                              controller
-                                                  .mealToday
-                                                  .value[controller
-                                                      .selectPlan.value]
-                                                  .length;
-                                          i++)
-                                        TodayMealCard(
-                                          widthDevice: widthDevice,
-                                          title: controller
-                                              .mealToday
-                                              .value[controller
-                                                  .selectPlan.value][i]
-                                              .name,
-                                          time: 'Today | 3am',
-                                          imagePath: controller
-                                              .mealToday
-                                              .value[controller
-                                                  .selectPlan.value][i]
-                                              .asset,
-                                          press: () {
-                                            Get.toNamed(
-                                              RouteName.mealDetail,
-                                              arguments: controller
-                                                  .mealToday
-                                                  .value[controller
-                                                      .selectPlan.value][i]
-                                                  .toJson(),
-                                            );
-                                          },
-                                        ),
-                                    ],
-                                  ),
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              'Find Something to Eat',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headline4!
-                                  .copyWith(
-                                    fontSize: 17,
-                                  ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              MealSelect(
-                                imagePath: 'assets/images/break.png',
-                                color: AppColors.primaryColor1.withOpacity(0.2),
-                                color_btn: AppColors.primaryColor1,
-                                collect: 'Breakfast',
-                                noFoods: controller.listMealBreakFast.length,
-                                press: () {
-                                  Get.toNamed(
-                                    RouteName.categoryMeal,
-                                    arguments: controller.listMealBreakFast,
-                                  );
-                                },
-                              ),
-                              const SizedBox(width: 10),
-                              MealSelect(
-                                imagePath: 'assets/images/lunch.png',
-                                color: AppColors.primaryColor2.withOpacity(0.2),
-                                color_btn: AppColors.primaryColor2,
-                                collect: 'Lunch/Dinner',
-                                noFoods: controller.listMealLunch.length,
-                                press: () {
-                                  Get.toNamed(
-                                    RouteName.categoryMeal,
-                                    arguments: controller.listMealLunch,
-                                  );
-                                },
-                              ),
-                              const SizedBox(width: 15),
-                              MealSelect(
-                                imagePath: 'assets/images/snack.png',
-                                color: AppColors.primaryColor.withOpacity(0.2),
-                                color_btn: AppColors.primaryColor,
-                                collect: 'Snack/Smooth',
-                                noFoods: controller.listMealSnack.length,
-                                press: () {
-                                  Get.toNamed(
-                                    RouteName.categoryMeal,
-                                    arguments: controller.listMealSnack,
-                                  );
-                                },
-                              ),
-                              const SizedBox(width: 20),
-                            ],
-                          ),
+                          title: 'Check',
+                          color: AppColors.primaryColor1,
                         ),
                       ],
                     ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Container(
+                    width: widthDevice,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 20, horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      gradient: LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          AppColors.primaryColor1.withOpacity(0.1),
+                          AppColors.primaryColor2.withOpacity(0.1)
+                        ],
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        const Text(
+                          'Amount of food absorbed',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Spacer(),
+                        ButtonText(
+                          press: () {
+                            Get.toNamed(
+                              RouteName.dailyNutritionScreen,
+                              arguments: {
+                                'allMeal': controller.allMeal,
+                                'break': controller.listMealBreakFast,
+                                'lunch': controller.listMealLunch,
+                                'snack': controller.listMealSnack,
+                                'dinner': controller.listMealLunch,
+                              },
+                            );
+                          },
+                          title: 'Check',
+                          color: AppColors.primaryColor1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Today Meals',
+                        style: Theme.of(context).textTheme.headline4!.copyWith(
+                              fontSize: 17,
+                            ),
+                      ),
+                      const Spacer(),
+                      // ButtonIconGradientColor(
+                      //   title: ' Breakfast',
+                      //   icon: Icons.keyboard_arrow_down_sharp,
+                      //   press: () {},
+                      // )
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: AppColors.primaryColor1,
+                        ),
+                        child: SizedBox(
+                          height: 30,
+                          child: DropdownButton<String>(
+                            dropdownColor: AppColors.primaryColor1,
+                            borderRadius: BorderRadius.circular(15),
+                            value: controller.selectPlan.value,
+                            elevation: 5,
+                            icon: const Icon(Icons.keyboard_arrow_down,
+                                color: Colors.white),
+                            items: controller.mealPlan
+                                .map(
+                                  (e) => DropdownMenuItem<String>(
+                                    value: e,
+                                    child: Text(
+                                      e,
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                            onChanged: controller.selectPlan,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Obx(
+                  () => Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    // ignore: unnecessary_null_comparison
+                    child: controller
+                                .mealToday.value[controller.selectPlan.value] ==
+                            null
+                        ? const Center(
+                            child: CircularProgressIndicator(
+                                color: AppColors.primaryColor1))
+                        : Column(
+                            children: [
+                              for (int i = 0;
+                                  i <
+                                      controller
+                                          .mealToday
+                                          .value[controller.selectPlan.value]
+                                          .length;
+                                  i++)
+                                TodayMealCard(
+                                  widthDevice: widthDevice,
+                                  title: controller
+                                      .mealToday
+                                      .value[controller.selectPlan.value][i]
+                                      .name,
+                                  time:
+                                      'Today | ${DateFormat.jm().format(controller.timeEat[controller.planInt])}',
+                                  imagePath: controller
+                                      .mealToday
+                                      .value[controller.selectPlan.value][i]
+                                      .asset,
+                                  press: () {
+                                    Get.toNamed(
+                                      RouteName.mealDetail,
+                                      arguments: controller.mealToday
+                                          .value[controller.selectPlan.value][i]
+                                          .toJson(),
+                                    );
+                                  },
+                                ),
+                            ],
+                          ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Find Something to Eat',
+                      style: Theme.of(context).textTheme.headline4!.copyWith(
+                            fontSize: 17,
+                          ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      MealSelect(
+                        imagePath: 'assets/images/break.png',
+                        color: AppColors.primaryColor1.withOpacity(0.2),
+                        color_btn: AppColors.primaryColor1,
+                        collect: 'Breakfast',
+                        noFoods: controller.listMealBreakFast.length,
+                        press: () {
+                          Get.toNamed(
+                            RouteName.categoryMeal,
+                            arguments: controller.listMealBreakFast,
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 10),
+                      MealSelect(
+                        imagePath: 'assets/images/lunch.png',
+                        color: AppColors.primaryColor2.withOpacity(0.2),
+                        color_btn: AppColors.primaryColor2,
+                        collect: 'Lunch/Dinner',
+                        noFoods: controller.listMealLunch.length,
+                        press: () {
+                          Get.toNamed(
+                            RouteName.categoryMeal,
+                            arguments: controller.listMealLunch,
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 15),
+                      MealSelect(
+                        imagePath: 'assets/images/snack.png',
+                        color: AppColors.primaryColor.withOpacity(0.2),
+                        color_btn: AppColors.primaryColor,
+                        collect: 'Snack/Smooth',
+                        noFoods: controller.listMealSnack.length,
+                        press: () {
+                          Get.toNamed(
+                            RouteName.categoryMeal,
+                            arguments: controller.listMealSnack,
+                          );
+                        },
+                      ),
+                      const SizedBox(width: 20),
+                    ],
+                  ),
+                ),
+              ],
+              // ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  SingleChildScrollView listNutriWeekday(MealPlanController controller) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          ControlMealCard(
+            header: 'Calories',
+            percent: controller.listWeekNutrition[
+                    controller.weekdayNutriFocus.value - 2]['kCal'] /
+                controller.listDataNutriPlan[
+                    controller.weekdayNutriFocus.value - 2]['kCal'],
+          ),
+          ControlMealCard(
+            header: 'Carbs',
+            percent: controller.listWeekNutrition[
+                    controller.weekdayNutriFocus.value - 2]['carbs'] /
+                controller.listDataNutriPlan[
+                    controller.weekdayNutriFocus.value - 2]['carbs'],
+          ),
+          ControlMealCard(
+            header: 'Proteins',
+            percent: controller.listWeekNutrition[
+                    controller.weekdayNutriFocus.value - 2]['pro'] /
+                controller.listDataNutriPlan[
+                    controller.weekdayNutriFocus.value - 2]['pro'],
+          ),
+          ControlMealCard(
+            header: 'fats',
+            percent: controller.listWeekNutrition[
+                    controller.weekdayNutriFocus.value - 2]['fats'] /
+                controller.listDataNutriPlan[
+                    controller.weekdayNutriFocus.value - 2]['fats'],
+          ),
+          const SizedBox(width: 20),
+        ],
+      ),
+    );
+  }
+
+  Padding chartLoading(double widthDevice, MealPlanController controller) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: SizedBox(
+        width: widthDevice,
+        height: 200,
+        // ignore: avoid_unnecessary_containers
+        child: Container(
+          child: LineChartOneLine(
+            callBack: (FlTouchEvent event, lineTouchResponse) {
+              if (!event.isInterestedForInteractions ||
+                  lineTouchResponse == null ||
+                  lineTouchResponse.lineBarSpots == null) {
+                return;
+              }
+              final value = lineTouchResponse.lineBarSpots![0].x;
+              double add = (value == 1.0) ? 8.0 : value;
+              controller.updateweekdayNutriFocus(add);
+            },
+            listData: [
+              FlSpot(
+                1 * 1.0,
+                controller.listWeekNutrition[6]['kCal'] == 0
+                    ? 1
+                    : (controller.listWeekNutrition[6]['kCal'] >
+                            controller.listDataNutriPlan[6]['kCal'])
+                        ? 6
+                        : (controller.listWeekNutrition[6]['kCal'] /
+                            controller.listDataNutriPlan[6]['kCal'] *
+                            6),
+              ),
+              for (int i = 1; i <= 6; i++)
+                FlSpot(
+                  (i + 1) * 1.0,
+                  controller.listWeekNutrition[i - 1]['kCal'] == 0
+                      ? 1
+                      : (controller.listWeekNutrition[i - 1]['kCal'] >
+                              controller.listDataNutriPlan[i - 1]['kCal'])
+                          ? 6
+                          : (controller.listWeekNutrition[i - 1]['kCal'] /
+                              controller.listDataNutriPlan[i - 1]['kCal'] *
+                              6),
+                ),
+            ],
+          ),
         ),
       ),
     );

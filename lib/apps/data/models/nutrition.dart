@@ -21,7 +21,8 @@ class Nutrition {
     return Nutrition(
       id: snapshot['id'] ?? '',
       amount: snapshot['amount'] ?? 0,
-      dateTime: snap['dateTime'],
+      dateTime: DateTime.fromMillisecondsSinceEpoch(
+          snapshot['dateTime'].seconds * 1000),
     );
   }
 }
