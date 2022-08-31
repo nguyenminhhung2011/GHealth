@@ -38,355 +38,369 @@ class DailyWaterScreen extends StatelessWidget {
       body: GetBuilder<DailyWaterController>(
           init: DailyWaterController(),
           builder: (controller) {
-            return ScreenTemplate(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                child: Column(
-                  children: [
-                    //App Bar
-                    Row(
+            return Obx(
+              () {
+                if (controller.waterToday.isEmpty) {
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: AppColors.primaryColor1,
+                      backgroundColor: Colors.white,
+                    ),
+                  );
+                }
+                return ScreenTemplate(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Column(
                       children: [
-                        InkWell(
-                          onTap: () async {
-                            int? newIndex;
-                            await _showDialogMethod(
-                              context: context,
-                              tabs: tabs,
-                              onselectedTabs: (value) {
-                                newIndex = value;
-                              },
-                              done: () {
-                                print(newIndex);
-                                if (newIndex != null) {
-                                  controller.changeTab(newIndex ?? 0);
-                                } else {
-                                  controller.changeTab(0);
-                                }
+                        //App Bar
+                        Row(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                int? newIndex;
+                                await _showDialogMethod(
+                                  context: context,
+                                  tabs: tabs,
+                                  onselectedTabs: (value) {
+                                    newIndex = value;
+                                  },
+                                  done: () {
+                                    print(newIndex);
+                                    if (newIndex != null) {
+                                      controller.changeTab(newIndex ?? 0);
+                                    } else {
+                                      controller.changeTab(0);
+                                    }
 
-                                Navigator.pop(context);
+                                    Navigator.pop(context);
+                                  },
+                                );
                               },
-                            );
-                          },
-                          child: Row(
-                            children: const [
-                              Text(
-                                'Water Planner',
-                                style: TextStyle(
+                              child: Row(
+                                children: const [
+                                  Text(
+                                    'Water Planner',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                    ),
+                                  ),
+                                  Icon(
+                                    Icons.keyboard_arrow_down_outlined,
+                                    color: Colors.black,
+                                    size: 24,
+                                  )
+                                ],
+                              ),
+                            ),
+                            const Spacer(),
+                            InkWell(
+                              onTap: () {
+                                print(controller.maxList);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color:
+                                      AppColors.primaryColor1.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: const Icon(
+                                  Icons.more_horiz,
                                   color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
                                 ),
                               ),
-                              Icon(
-                                Icons.keyboard_arrow_down_outlined,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 20),
+                        Row(
+                          children: [
+                            const Text(
+                              'Water consume',
+                              style: TextStyle(
                                 color: Colors.black,
-                                size: 24,
-                              )
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            const Spacer(),
+                            ButtonIconGradientColor(
+                              title: ' Week',
+                              icon: Icons.calendar_month,
+                              press: () async {
+                                await _showDatePicker(context: context);
+                              },
+                            )
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Obx(
+                          () => controller.dataChart.isNotEmpty
+                              ? SizedBox(
+                                  height: heightDevice / 2.9,
+                                  width: double.infinity,
+                                  child: ColumnChartTwoColumnCustom(
+                                    columnData: controller.maxList,
+                                    startDate: DateFormat()
+                                        .add_yMd()
+                                        .format(controller.startDate.value),
+                                    endDate: DateFormat()
+                                        .add_yMd()
+                                        .format(controller.finishDate.value),
+                                    barGroups: [
+                                      for (int i = 0;
+                                          i < controller.dataChart.length;
+                                          i++)
+                                        controller.makeGroupData(
+                                            i,
+                                            controller.dataChart[i]['consume'] /
+                                                controller.maxList *
+                                                19.0,
+                                            controller.dataChart[i]['target'] /
+                                                controller.maxList *
+                                                19.0),
+                                    ],
+                                  ),
+                                )
+                              : const Center(
+                                  child: CircularProgressIndicator(
+                                      color: AppColors.primaryColor1),
+                                ),
+                        ),
+                        const SizedBox(height: 20),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.blue.withOpacity(0.7),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    'Water Consume',
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 2),
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.red.withOpacity(0.7),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  const Text(
+                                    'Water Target',
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ],
                           ),
                         ),
-                        const Spacer(),
-                        InkWell(
-                          onTap: () {
-                            print(controller.maxList);
-                          },
+                        const SizedBox(height: 20),
+                        Align(
+                          alignment: Alignment.center,
                           child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryColor1.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: const Icon(
-                              Icons.more_horiz,
+                            width: widthDevice * 0.7,
+                            height: 1,
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'Today',
+                            style: TextStyle(
                               color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23,
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: [
-                        const Text(
-                          'Water consume',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
+                        const SizedBox(height: 10),
+                        Obx(
+                          () => controller.waterToday != null
+                              ? Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    RichTextCustom(
+                                      size: 18,
+                                      title: 'Consume: ',
+                                      data: controller.waterCon,
+                                    ),
+                                    Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      height: 20,
+                                      width: 0.5,
+                                      color: Colors.grey,
+                                    ),
+                                    RichTextCustom(
+                                      size: 18,
+                                      title: 'Target: ',
+                                      data: controller.waterToday['target'],
+                                    ),
+                                  ],
+                                )
+                              : const Center(
+                                  child: CircularProgressIndicator(
+                                    backgroundColor: Colors.white,
+                                    color: AppColors.primaryColor1,
+                                  ),
+                                ),
+                        ),
+                        const SizedBox(height: 20),
+                        Obx(
+                          () => InkWell(
+                            onTap: () async {
+                              int targetValue = controller.waterToday['target'];
+                              int consumeValue = controller.waterCon;
+                              final r = await showDialog(
+                                useRootNavigator: false,
+                                barrierColor: Colors.black54,
+                                context: context,
+                                builder: (context) => showDialogEditWater(
+                                  max: 2000,
+                                  min: 0,
+                                  waterConsumer: consumeValue,
+                                  waterTarget: targetValue,
+                                ),
+                              );
+                              if (r != null) {
+                                controller.updateWaterTargetAndConsume(
+                                    r['target'], r['consume']);
+                              }
+                            },
+                            child: SizedBox(
+                              height: 180.0,
+                              width: 180.0,
+                              child: LiquidCircularProgressIndicator(
+                                value: (controller.waterCon <
+                                        controller.waterToday['target'])
+                                    ? (controller.waterCon /
+                                        controller.waterToday['target'])
+                                    : 1,
+                                valueColor: AlwaysStoppedAnimation(
+                                    (controller.waterCon <
+                                            controller.waterToday['target'])
+                                        ? AppColors.primaryColor1
+                                        : Colors.green.withOpacity(0.6)),
+                                backgroundColor: Colors.grey.withOpacity(0.1),
+                                borderWidth: 1.0,
+                                borderColor: Colors.black,
+                                direction: Axis.vertical,
+                                center: (controller.waterCon <
+                                        controller.waterToday['target'])
+                                    ? Text(
+                                        '${((controller.waterCon / controller.waterToday['target']) * 100).round()} \%',
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
+                                      )
+                                    : Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: const [
+                                          Icon(Icons.check_circle,
+                                              color: Colors.green),
+                                          SizedBox(width: 4),
+                                          Text(
+                                            'Success',
+                                            style: TextStyle(
+                                              color: Colors.green,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                              ),
+                            ),
                           ),
                         ),
-                        const Spacer(),
-                        ButtonIconGradientColor(
-                          title: ' Week',
-                          icon: Icons.calendar_month,
-                          press: () async {
-                            await _showDatePicker(context: context);
-                          },
+                        const SizedBox(height: 10),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              'Tap Circle to Edit Water consume and Water Target',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+
+                        Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: widthDevice * 0.7,
+                            height: 1,
+                            color: Colors.grey.withOpacity(0.5),
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        const Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            'History',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 23,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Obx(
+                          () => controller.waterCons.isNotEmpty
+                              ? Column(
+                                  children: controller.waterCons.map((e) {
+                                  return WaterConsumeCard(data: e);
+                                }).toList())
+                              : const Text(
+                                  'No Water Consume Today',
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
+                                ),
                         )
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    Obx(
-                      () => controller.dataChart.isNotEmpty
-                          ? SizedBox(
-                              height: heightDevice / 2.9,
-                              width: double.infinity,
-                              child: ColumnChartTwoColumnCustom(
-                                columnData: controller.maxList,
-                                startDate: DateFormat()
-                                    .add_yMd()
-                                    .format(controller.startDate.value),
-                                endDate: DateFormat()
-                                    .add_yMd()
-                                    .format(controller.finishDate.value),
-                                barGroups: [
-                                  for (int i = 0;
-                                      i < controller.dataChart.length;
-                                      i++)
-                                    controller.makeGroupData(
-                                        i,
-                                        controller.dataChart[i]['consume'] /
-                                            controller.maxList *
-                                            19.0,
-                                        controller.dataChart[i]['target'] /
-                                            controller.maxList *
-                                            19.0),
-                                ],
-                              ),
-                            )
-                          : const Center(
-                              child: CircularProgressIndicator(
-                                  color: AppColors.primaryColor1),
-                            ),
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.blue.withOpacity(0.7),
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              const Text(
-                                'Water Consume',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 2),
-                          Row(
-                            children: [
-                              Container(
-                                width: 20,
-                                height: 20,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: Colors.red.withOpacity(0.7),
-                                ),
-                              ),
-                              const SizedBox(width: 5),
-                              const Text(
-                                'Water Target',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: widthDevice * 0.7,
-                        height: 1,
-                        color: Colors.grey.withOpacity(0.5),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'Today',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 23,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Obx(
-                      () => controller.waterToday != null
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                RichTextCustom(
-                                  size: 18,
-                                  title: 'Consume: ',
-                                  data: controller.waterCon,
-                                ),
-                                Container(
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 10),
-                                  height: 20,
-                                  width: 0.5,
-                                  color: Colors.grey,
-                                ),
-                                RichTextCustom(
-                                  size: 18,
-                                  title: 'Target: ',
-                                  data: controller.waterToday['target'],
-                                ),
-                              ],
-                            )
-                          : const Center(
-                              child: CircularProgressIndicator(
-                                backgroundColor: Colors.white,
-                                color: AppColors.primaryColor1,
-                              ),
-                            ),
-                    ),
-                    const SizedBox(height: 20),
-                    Obx(
-                      () => InkWell(
-                        onTap: () async {
-                          int targetValue = controller.waterToday['target'];
-                          int consumeValue = controller.waterCon;
-                          final r = await showDialog(
-                            useRootNavigator: false,
-                            barrierColor: Colors.black54,
-                            context: context,
-                            builder: (context) => showDialogEditWater(
-                              max: 2000,
-                              min: 0,
-                              waterConsumer: consumeValue,
-                              waterTarget: targetValue,
-                            ),
-                          );
-                          if (r != null) {
-                            controller.updateWaterTargetAndConsume(
-                                r['target'], r['consume']);
-                          }
-                        },
-                        child: SizedBox(
-                          height: 180.0,
-                          width: 180.0,
-                          child: LiquidCircularProgressIndicator(
-                            value: (controller.waterCon <
-                                    controller.waterToday['target'])
-                                ? (controller.waterCon /
-                                    controller.waterToday['target'])
-                                : 1,
-                            valueColor: AlwaysStoppedAnimation(
-                                (controller.waterCon <
-                                        controller.waterToday['target'])
-                                    ? AppColors.primaryColor1
-                                    : Colors.green.withOpacity(0.6)),
-                            backgroundColor: Colors.grey.withOpacity(0.1),
-                            borderWidth: 1.0,
-                            borderColor: Colors.black,
-                            direction: Axis.vertical,
-                            center: (controller.waterCon <
-                                    controller.waterToday['target'])
-                                ? Text(
-                                    '${((controller.waterCon / controller.waterToday['target']) * 100).round()} \%',
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  )
-                                : Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(Icons.check_circle,
-                                          color: Colors.green),
-                                      SizedBox(width: 4),
-                                      Text(
-                                        'Success',
-                                        style: TextStyle(
-                                          color: Colors.green,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 17,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Tap Circle to Edit Water consume and Water Target',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 15,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        width: widthDevice * 0.7,
-                        height: 1,
-                        color: Colors.grey.withOpacity(0.5),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        'History',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 23,
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Obx(
-                      () => controller.waterCons.isNotEmpty
-                          ? Column(
-                              children: controller.waterCons.map((e) {
-                              return WaterConsumeCard(data: e);
-                            }).toList())
-                          : const Text(
-                              'No Water Consume Today',
-                              style: TextStyle(
-                                color: Colors.grey,
-                              ),
-                            ),
-                    )
-                  ],
-                ),
-              ),
+                  ),
+                );
+              },
             );
           }),
     );
