@@ -1,8 +1,6 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/pages/dashboard/activity_tracker_screen.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/water_consume_card.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/show_dialog_edit_water.dart';

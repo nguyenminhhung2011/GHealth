@@ -6,6 +6,7 @@ import 'package:gold_health/services/auth_service.dart';
 
 import '../apps/data/models/Meal.dart';
 import '../apps/data/models/nutrition.dart';
+import '../apps/data/models/sleep.dart';
 import '../apps/data/models/water.dart';
 import '../apps/data/provider/meal_provider.dart';
 import '../apps/data/provider/water_provider.dart';
@@ -21,6 +22,9 @@ class DataService {
   static late Rx<List<Nutrition>> _nutritonList = Rx<List<Nutrition>>([]);
   static late Rx<List<DateTime>> _timeEatList = Rx<List<DateTime>>([]);
   static late Rx<List<Water>> _waterConsume = Rx<List<Water>>([]);
+  static late Rx<Map<String, dynamic>> _sleepBasicTime =
+      Rx<Map<String, dynamic>>({});
+  static late Rx<List<Sleep>> _listSleepTIme = Rx<List<Sleep>>([]);
 
   static late Rx<List<Map<String, dynamic>>> _dataNutriPlan =
       Rx<List<Map<String, dynamic>>>([]);
@@ -36,7 +40,8 @@ class DataService {
   List<DateTime> get timeEatList => _timeEatList.value;
   List<Map<String, dynamic>> get dataNutriPlan => _dataNutriPlan.value;
   List<Water> get waterConsume => _waterConsume.value;
-
+  Map<String, dynamic> get sleepBasicTIme => _sleepBasicTime.value;
+  List<Sleep> get listSleepTime => _listSleepTIme.value;
   loadMealList() async {
     if (_mealList.value.isNotEmpty) return;
     _mealList.value = await _mealProvider.getAllMeal();
@@ -129,6 +134,42 @@ class DataService {
         'waterConsume': [],
       },
     );
+  }
+
+  loadSleepBasicTime() async {
+    var data = await firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('sleep_basic_time')
+        .doc('sleep')
+        .get();
+    Map<String, dynamic> dataTemp = data.data() as Map<String, dynamic>;
+
+    _sleepBasicTime.value = {
+      'alarm':
+          DateTime.fromMillisecondsSinceEpoch(dataTemp['alarm'].seconds * 1000),
+      'bedTime': DateTime.fromMillisecondsSinceEpoch(
+          dataTemp['bedTime'].seconds * 1000),
+      'isTurnOn': dataTemp['isTurnOn'],
+      'isTurnOn1': dataTemp['isTurnOn1'],
+    };
+  }
+
+  loadListSleepTime() async {
+    _listSleepTIme.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('sleep_basic_time')
+        .doc('sleep')
+        .collection('sleep_time')
+        .snapshots()
+        .map((event) {
+      List<Sleep> result = [];
+      for (var item in event.docs) {
+        result.add(Sleep.fromSnap(item));
+      }
+      return result;
+    }));
   }
 
   loadDataNutriPlan() async {

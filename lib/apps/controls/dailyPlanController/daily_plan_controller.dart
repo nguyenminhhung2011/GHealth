@@ -38,6 +38,8 @@ class DailyPlanController extends GetxController {
     await DataService.instance.loadDataNutriPlan();
     await DataService.instance.loadWaterConsumeList();
     await DataService.instance.addWaterCollection();
+    await DataService.instance.loadSleepBasicTime();
+    await DataService.instance.loadListSleepTime();
   }
 
   void changeTab(int newTabIndex) {

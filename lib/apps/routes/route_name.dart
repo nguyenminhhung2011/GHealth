@@ -25,4 +25,5 @@ abstract class RouteName {
   static const viewMeal = "/view_meal";
   static const addFoodNutri = "/add_food_nutri";
   static const mealSchedule = "/meal_schedule";
+  static const sleepSchedule = "/sleep_schedule";
 }

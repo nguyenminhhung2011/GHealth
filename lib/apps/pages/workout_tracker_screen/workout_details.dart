@@ -1,7 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_plan_controller.dart';
 import 'package:gold_health/apps/data/models/workout_model.dart';

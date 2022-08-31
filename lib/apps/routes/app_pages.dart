@@ -168,5 +168,9 @@ class AppPages {
       page: () => MealScheduleScreen(),
       binding: MealScheduleB(),
     ),
+    // GetPage(
+    //   name: RouteName.sleepSchedule,
+    //   page: () => SleepS
+    // ),
   ];
 }
