@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/pages/dashboard/activity_tracker_screen.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/water_consume_card.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/widgets/show_dialog_edit_water.dart';
@@ -87,7 +88,7 @@ class DailyWaterScreen extends StatelessWidget {
                         const Spacer(),
                         InkWell(
                           onTap: () {
-                            print(controller.dataChart);
+                            print(controller.maxList);
                           },
                           child: Container(
                             padding: const EdgeInsets.all(8),
@@ -126,35 +127,37 @@ class DailyWaterScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 10),
                     Obx(
-                      () => SizedBox(
-                        height: heightDevice / 2.9,
-                        width: double.infinity,
-                        child: ColumnChartTwoColumnCustom(
-                          startDate: DateFormat()
-                              .add_yMd()
-                              .format(controller.startDate.value),
-                          endDate: DateFormat()
-                              .add_yMd()
-                              .format(controller.finishDate.value),
-                          barGroups: [
-                            // for (int i = 0;
-                            //     i < controller.dataChart.length;
-                            //     i++)
-                            //   controller.makeGroupData(
-                            //       i,
-                            //       controller.dataChart[i]['consume'] * 1.0,
-                            //       controller.dataChart[i]['target'] * 1.0),
-
-                            controller.makeGroupData(0, 5, 15),
-                            controller.makeGroupData(1, 16, 12),
-                            controller.makeGroupData(2, 18, 5),
-                            controller.makeGroupData(3, 20, 16),
-                            controller.makeGroupData(4, 17, 6),
-                            controller.makeGroupData(5, 19, 1.5),
-                            controller.makeGroupData(6, 10, 1.5),
-                          ],
-                        ),
-                      ),
+                      () => controller.dataChart.isNotEmpty
+                          ? SizedBox(
+                              height: heightDevice / 2.9,
+                              width: double.infinity,
+                              child: ColumnChartTwoColumnCustom(
+                                columnData: controller.maxList,
+                                startDate: DateFormat()
+                                    .add_yMd()
+                                    .format(controller.startDate.value),
+                                endDate: DateFormat()
+                                    .add_yMd()
+                                    .format(controller.finishDate.value),
+                                barGroups: [
+                                  for (int i = 0;
+                                      i < controller.dataChart.length;
+                                      i++)
+                                    controller.makeGroupData(
+                                        i,
+                                        controller.dataChart[i]['consume'] /
+                                            controller.maxList *
+                                            19.0,
+                                        controller.dataChart[i]['target'] /
+                                            controller.maxList *
+                                            19.0),
+                                ],
+                              ),
+                            )
+                          : const Center(
+                              child: CircularProgressIndicator(
+                                  color: AppColors.primaryColor1),
+                            ),
                     ),
                     const SizedBox(height: 20),
                     Padding(
@@ -286,13 +289,13 @@ class DailyWaterScreen extends StatelessWidget {
                           width: 180.0,
                           child: LiquidCircularProgressIndicator(
                             value: (controller.waterCon <
-                                    controller.waterTarget.value)
+                                    controller.waterToday['target'])
                                 ? (controller.waterCon /
-                                    controller.waterTarget.value)
+                                    controller.waterToday['target'])
                                 : 1,
                             valueColor: AlwaysStoppedAnimation(
                                 (controller.waterCon <
-                                        controller.waterTarget.value)
+                                        controller.waterToday['target'])
                                     ? AppColors.primaryColor1
                                     : Colors.green.withOpacity(0.6)),
                             backgroundColor: Colors.grey.withOpacity(0.1),
@@ -300,9 +303,9 @@ class DailyWaterScreen extends StatelessWidget {
                             borderColor: Colors.black,
                             direction: Axis.vertical,
                             center: (controller.waterCon <
-                                    controller.waterTarget.value)
+                                    controller.waterToday['target'])
                                 ? Text(
-                                    '${((controller.waterCon / controller.waterTarget.value) * 100).round()} \%',
+                                    '${((controller.waterCon / controller.waterToday['target']) * 100).round()} \%',
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -19,7 +21,6 @@ class DailyWaterController extends GetxController with TrackerController {
 
   Rx<int> waterTarget = 4000.obs;
   String id = '';
-  // Rx<int> waterConsume = 200.obs;
 
   List<Water> get allWaterConsume => DataService.instance.waterConsume;
 
@@ -28,6 +29,17 @@ class DailyWaterController extends GetxController with TrackerController {
           return sum + e['consume'] as int;
         })
       : 0;
+  DateTime selectDateTemp1 = DateTime.now();
+  DateTime selectDateTemp2 = DateTime.now();
+
+  Rx<DateTime> startDate = DateTime.now().obs;
+  Rx<DateTime> finishDate = DateTime.now().obs;
+  DateRangePickerController dateController = DateRangePickerController();
+
+  RxList<DateTime> allDateBetWeen = <DateTime>[].obs;
+  final Rx<List<Map<String, dynamic>>> _dataChart =
+      Rx<List<Map<String, dynamic>>>([]);
+  List<Map<String, dynamic>> get dataChart => _dataChart.value;
 
   @override
   void onInit() {
@@ -92,15 +104,6 @@ class DailyWaterController extends GetxController with TrackerController {
     );
     update();
   }
-
-  DateTime selectDateTemp1 = DateTime.now();
-  DateTime selectDateTemp2 = DateTime.now();
-
-  Rx<DateTime> startDate = DateTime.now().obs;
-  Rx<DateTime> finishDate = DateTime.now().obs;
-  DateRangePickerController dateController = DateRangePickerController();
-
-  RxList<DateTime> allDateBetWeen = <DateTime>[].obs;
 
   bool isSameDate(DateTime date1, DateTime date2) {
     if (date2 == date1) {
@@ -182,11 +185,6 @@ class DailyWaterController extends GetxController with TrackerController {
     update();
   }
 
-  final Rx<List<Map<String, dynamic>>> _dataChart =
-      Rx<List<Map<String, dynamic>>>([]);
-  List<Map<String, dynamic>> get dataChart =>
-      (_dataChart.value.isNotEmpty) ? _dataChart.value : [];
-
   bool checkDateInList(DateTime date) {
     for (var item in allDateBetWeen.value) {
       if (date.day == item.day &&
@@ -195,6 +193,11 @@ class DailyWaterController extends GetxController with TrackerController {
     }
     return false;
   }
+
+  int get maxList => [
+        for (var item in dataChart)
+          max(item['consume'] as int, item['target'] as int)
+      ].reduce(max);
 
   BarChartGroupData makeGroupData(int x, double y1, double y2) {
     return BarChartGroupData(barsSpace: 4, x: x, barRods: [

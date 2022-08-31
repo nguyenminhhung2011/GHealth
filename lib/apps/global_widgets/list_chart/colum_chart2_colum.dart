@@ -5,15 +5,17 @@ import '../../template/misc/colors.dart';
 import '../gradient_text.dart';
 
 class ColumnChartTwoColumnCustom extends StatefulWidget {
-  const ColumnChartTwoColumnCustom(
+  ColumnChartTwoColumnCustom(
       {Key? key,
       required this.startDate,
       required this.endDate,
-      required this.barGroups})
+      required this.barGroups,
+      required this.columnData})
       : super(key: key);
   final String startDate;
   final String endDate;
   final List<BarChartGroupData> barGroups;
+  final int columnData;
 
   @override
   State<StatefulWidget> createState() => ColumnChartTwoColumnCustomState();
@@ -33,14 +35,6 @@ class ColumnChartTwoColumnCustomState
   @override
   void initState() {
     super.initState();
-    final barGroup1 = makeGroupData(0, 5, 15);
-    final barGroup2 = makeGroupData(1, 16, 12);
-    final barGroup3 = makeGroupData(2, 18, 5);
-    final barGroup4 = makeGroupData(3, 20, 16);
-    final barGroup5 = makeGroupData(4, 17, 6);
-    final barGroup6 = makeGroupData(5, 19, 1.5);
-    final barGroup7 = makeGroupData(6, 10, 1.5);
-
     final items = widget.barGroups;
 
     rawBarGroups = items;
@@ -96,6 +90,7 @@ class ColumnChartTwoColumnCustomState
               ),
               Expanded(
                 child: BarChart(
+                  swapAnimationDuration: const Duration(milliseconds: 250),
                   BarChartData(
                     maxY: 20,
                     barTouchData: BarTouchData(
@@ -172,7 +167,7 @@ class ColumnChartTwoColumnCustomState
                     borderData: FlBorderData(
                       show: false,
                     ),
-                    barGroups: showingBarGroups,
+                    barGroups: widget.barGroups,
                     gridData: FlGridData(show: false),
                   ),
                 ),
@@ -195,11 +190,11 @@ class ColumnChartTwoColumnCustomState
     );
     String text;
     if (value == 0) {
-      text = 'Little';
+      text = '0';
     } else if (value == 10) {
-      text = 'Medium';
+      text = '${(widget.columnData / 2000).round()}K';
     } else if (value == 19) {
-      text = 'Many';
+      text = '${(widget.columnData / 1000).round()}K';
     } else {
       return Container();
     }
