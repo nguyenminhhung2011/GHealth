@@ -1,3 +1,5 @@
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -32,6 +34,7 @@ class DailyWaterController extends GetxController with TrackerController {
     super.onInit();
     getWaterToday();
     getStartDateAndFinishDate();
+    getDataChart();
   }
 
   getWaterToday() async {
@@ -143,6 +146,7 @@ class DailyWaterController extends GetxController with TrackerController {
     startDate.value = selectDateTemp1;
     finishDate.value = selectDateTemp2;
     allDateBetWeen.value = getListDateBetWeenRange();
+    getDataChart();
     update();
   }
 
@@ -175,6 +179,70 @@ class DailyWaterController extends GetxController with TrackerController {
     }
     allDateBetWeen.value = List<DateTime>.generate(
         7, (index) => startDate.value.add(Duration(days: index)));
+    update();
+  }
+
+  final Rx<List<Map<String, dynamic>>> _dataChart =
+      Rx<List<Map<String, dynamic>>>([]);
+  List<Map<String, dynamic>> get dataChart =>
+      (_dataChart.value.isNotEmpty) ? _dataChart.value : [];
+
+  bool checkDateInList(DateTime date) {
+    for (var item in allDateBetWeen.value) {
+      if (date.day == item.day &&
+          date.month == item.month &&
+          date.year == item.year) return true;
+    }
+    return false;
+  }
+
+  BarChartGroupData makeGroupData(int x, double y1, double y2) {
+    return BarChartGroupData(barsSpace: 4, x: x, barRods: [
+      BarChartRodData(
+        toY: y1,
+        color: Colors.blue.withOpacity(0.7),
+        width: 7,
+      ),
+      BarChartRodData(
+        toY: y2,
+        color: Colors.red.withOpacity(0.7),
+        width: 7,
+      ),
+    ]);
+  }
+
+  getDataChart() async {
+    _dataChart.bindStream(
+      firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('water')
+          .snapshots()
+          .map(
+        (event) {
+          List<Map<String, dynamic>> result = [
+            for (var item in allDateBetWeen.value)
+              {
+                'id': item.weekday,
+                'consume': 0,
+                'target': 4000,
+              }
+          ];
+          result.sort((a, b) => a['id'].compareTo(b['id']));
+          for (var item in event.docs) {
+            Water data = Water.fromSnap(item);
+            if (checkDateInList(data.date)) {
+              result[data.date.weekday - 1]['target'] = data.target;
+              result[data.date.weekday - 1]['consume'] =
+                  data.waterConsume.fold<int>(0, (sum, e) {
+                return sum + e['consume'] as int;
+              });
+            }
+          }
+          return result;
+        },
+      ),
+    );
     update();
   }
 }

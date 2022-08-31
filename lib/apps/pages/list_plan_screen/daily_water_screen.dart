@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -86,7 +87,7 @@ class DailyWaterScreen extends StatelessWidget {
                         const Spacer(),
                         InkWell(
                           onTap: () {
-                            print(controller.id);
+                            print(controller.dataChart);
                           },
                           child: Container(
                             padding: const EdgeInsets.all(8),
@@ -124,16 +125,35 @@ class DailyWaterScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    SizedBox(
-                      height: heightDevice / 2.9,
-                      width: double.infinity,
-                      child: ColumnChartTwoColumnCustom(
-                        startDate: DateFormat()
-                            .add_yMd()
-                            .format(controller.startDate.value),
-                        endDate: DateFormat()
-                            .add_yMd()
-                            .format(controller.finishDate.value),
+                    Obx(
+                      () => SizedBox(
+                        height: heightDevice / 2.9,
+                        width: double.infinity,
+                        child: ColumnChartTwoColumnCustom(
+                          startDate: DateFormat()
+                              .add_yMd()
+                              .format(controller.startDate.value),
+                          endDate: DateFormat()
+                              .add_yMd()
+                              .format(controller.finishDate.value),
+                          barGroups: [
+                            // for (int i = 0;
+                            //     i < controller.dataChart.length;
+                            //     i++)
+                            //   controller.makeGroupData(
+                            //       i,
+                            //       controller.dataChart[i]['consume'] * 1.0,
+                            //       controller.dataChart[i]['target'] * 1.0),
+
+                            controller.makeGroupData(0, 5, 15),
+                            controller.makeGroupData(1, 16, 12),
+                            controller.makeGroupData(2, 18, 5),
+                            controller.makeGroupData(3, 20, 16),
+                            controller.makeGroupData(4, 17, 6),
+                            controller.makeGroupData(5, 19, 1.5),
+                            controller.makeGroupData(6, 10, 1.5),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),

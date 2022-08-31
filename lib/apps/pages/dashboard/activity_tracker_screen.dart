@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/activity_tracker_controller.dart';
@@ -287,9 +288,18 @@ class ActivityTrackerScreen extends StatelessWidget {
         SizedBox(
           height: heightDevice / 2.9,
           width: double.infinity,
-          child: const ColumnChartTwoColumnCustom(
+          child: ColumnChartTwoColumnCustom(
             startDate: '20/11/2002',
             endDate: '20/11/2002',
+            barGroups: [
+              makeGroupData(0, 5, 15),
+              makeGroupData(1, 16, 12),
+              makeGroupData(2, 18, 5),
+              makeGroupData(3, 20, 16),
+              makeGroupData(4, 17, 6),
+              makeGroupData(5, 19, 1.5),
+              makeGroupData(6, 10, 1.5),
+            ],
           ),
         ),
       ],
@@ -550,4 +560,19 @@ class ActivityTrackerScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+BarChartGroupData makeGroupData(int x, double y1, double y2) {
+  return BarChartGroupData(barsSpace: 4, x: x, barRods: [
+    BarChartRodData(
+      toY: y1,
+      color: Colors.blue.withOpacity(0.7),
+      width: 7,
+    ),
+    BarChartRodData(
+      toY: y2,
+      color: Colors.red.withOpacity(0.7),
+      width: 7,
+    ),
+  ]);
 }

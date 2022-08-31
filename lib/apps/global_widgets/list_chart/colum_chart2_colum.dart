@@ -6,10 +6,14 @@ import '../gradient_text.dart';
 
 class ColumnChartTwoColumnCustom extends StatefulWidget {
   const ColumnChartTwoColumnCustom(
-      {Key? key, required this.startDate, required this.endDate})
+      {Key? key,
+      required this.startDate,
+      required this.endDate,
+      required this.barGroups})
       : super(key: key);
   final String startDate;
   final String endDate;
+  final List<BarChartGroupData> barGroups;
 
   @override
   State<StatefulWidget> createState() => ColumnChartTwoColumnCustomState();
@@ -37,15 +41,7 @@ class ColumnChartTwoColumnCustomState
     final barGroup6 = makeGroupData(5, 19, 1.5);
     final barGroup7 = makeGroupData(6, 10, 1.5);
 
-    final items = [
-      barGroup1,
-      barGroup2,
-      barGroup3,
-      barGroup4,
-      barGroup5,
-      barGroup6,
-      barGroup7,
-    ];
+    final items = widget.barGroups;
 
     rawBarGroups = items;
 
@@ -199,11 +195,11 @@ class ColumnChartTwoColumnCustomState
     );
     String text;
     if (value == 0) {
-      text = '1K';
+      text = 'Little';
     } else if (value == 10) {
-      text = '5K';
+      text = 'Medium';
     } else if (value == 19) {
-      text = '10K';
+      text = 'Many';
     } else {
       return Container();
     }
