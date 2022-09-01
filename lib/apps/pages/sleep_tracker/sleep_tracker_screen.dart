@@ -588,23 +588,18 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                               ...controller.listSleepToday.map((e) {
                                 return Column(
                                   children: [
-                                    controller.itemBuilder({
-                                      'timeBed': e.bedTime,
-                                      'timeAlarm': e.alarm,
-                                      'isTurnOn': e.isTurnOn,
-                                      'isTurnOn1': e.isTurnOn1,
-                                    }, widthDevice),
+                                    controller.itemBuilder(e, widthDevice),
                                   ],
                                 );
                               }).toList(),
-                              controller.itemBuilder({
-                                'timeBed': controller.sleepBasictime['bedTime'],
-                                'timeAlarm': controller.sleepBasictime['alarm'],
-                                'isTurnOn':
-                                    controller.sleepBasictime['isTurnOn'],
-                                'isTurnOn1':
-                                    controller.sleepBasictime['isTurnOn1'],
-                              }, widthDevice),
+                              // controller.itemBuilder({
+                              //   'timeBed': controller.sleepBasictime['bedTime'],
+                              //   'timeAlarm': controller.sleepBasictime['alarm'],
+                              //   'isTurnOn':
+                              //       controller.sleepBasictime['isTurnOn'],
+                              //   'isTurnOn1':
+                              //       controller.sleepBasictime['isTurnOn1'],
+                              // }, widthDevice),
                             ],
                           ),
                         )

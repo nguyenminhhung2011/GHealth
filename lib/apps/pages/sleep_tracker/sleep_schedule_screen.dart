@@ -284,24 +284,19 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                               //     child:
                               Column(
                             children: [
-                              controller.itemBuilder({
-                                'timeBed': controller.sleepBasictime['bedTime'],
-                                'timeAlarm': controller.sleepBasictime['alarm'],
-                                'isTurnOn':
-                                    controller.sleepBasictime['isTurnOn'],
-                                'isTurnOn1':
-                                    controller.sleepBasictime['isTurnOn1'],
-                              }, widthDevice),
+                              // controller.itemBuilder({
+                              //   'timeBed': controller.sleepBasictime['bedTime'],
+                              //   'timeAlarm': controller.sleepBasictime['alarm'],
+                              //   'isTurnOn':
+                              //       controller.sleepBasictime['isTurnOn'],
+                              //   'isTurnOn1':
+                              //       controller.sleepBasictime['isTurnOn1'],
+                              // }, widthDevice),
                               ...(controller.listSleepWithDate(controller
                                       .listDateTime[controller.onFocus]
                                       .weekday))
                                   .map((e) {
-                                return controller.itemBuilder({
-                                  'timeBed': e.bedTime,
-                                  'timeAlarm': e.alarm,
-                                  'isTurnOn': e.isTurnOn,
-                                  'isTurnOn1': e.isTurnOn1,
-                                }, widthDevice);
+                                return controller.itemBuilder(e, widthDevice);
                               }).toList(),
                             ],
                           ),

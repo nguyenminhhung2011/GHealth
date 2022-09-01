@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
@@ -11,6 +12,7 @@ import '../../../services/auth_service.dart';
 import '../../../services/data_service.dart';
 import '../../data/models/sleep.dart';
 import '../../global_widgets/toggle_button_ios.dart';
+import '../../template/misc/colors.dart';
 
 class DailySleepController extends GetxController with TrackerController {
   RxList<Map<String, dynamic>> stepWeek = <Map<String, dynamic>>[].obs;
@@ -116,20 +118,38 @@ class DailySleepController extends GetxController with TrackerController {
         .collection('sleep_basic_time')
         .doc('sleep')
         .collection('sleep_time')
-        .add({
+        .doc('sleep ${DataService.instance.listSleepTime.length}')
+        .set({
+      'id': 'sleep ${DataService.instance.listSleepTime.length}',
       'alarm': (choseTime.value).add((choseDuration.value)),
       'bedTime': choseTime.value,
       'isTurnOn': isVibrate.value,
       'isTurnOn1': isVibrate.value,
       'listDate': dateSelect.isNotEmpty ? dateSelect : [1, 2, 3, 4, 5, 6, 7],
-    }).then((value) => print(value));
+    });
+  }
+
+  updateDataCollection(Map<String, dynamic> data) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('sleep_basic_time')
+          .doc('sleep')
+          .collection('sleep_time')
+          .doc(data['id'])
+          .update(data);
+    } catch (err) {
+      // ignore: avoid_print
+      print(err);
+    }
   }
   //------------------------------------
 
   int get onFocus => _onFocus.value;
-  Widget itemBuilder(Map<String, dynamic> element, double widthDevice) {
-    DateTime timeBed = element['timeBed'] as DateTime;
-    DateTime timeAlarm = element['timeAlarm'] as DateTime;
+  Widget itemBuilder(Sleep element, double widthDevice) {
+    DateTime timeBed = element.bedTime;
+    DateTime timeAlarm = element.alarm;
     int hourBed = (DateTime.now().hour - timeBed.hour).abs();
     int minuteBed = (DateTime.now().minute - timeBed.minute).abs();
     int hourAlarm = (DateTime.now().hour - timeAlarm.hour).abs();
@@ -221,10 +241,25 @@ class DailySleepController extends GetxController with TrackerController {
                       children: [
                         SizedBox(
                           height: 20,
-                          child: ToggleButtonIos(
-                              val: (i == 0)
-                                  ? element['isTurnOn']
-                                  : element['isTurnOn1'] as bool),
+                          child: CupertinoSwitch(
+                            activeColor: AppColors.primaryColor1,
+                            value:
+                                (i == 0) ? element.isTurnOn : element.isTurnOn1,
+                            onChanged: (bool value) {
+                              updateDataCollection({
+                                'id': element.id,
+                                'bedTime': element.bedTime,
+                                'alarm': element.alarm,
+                                'isTurnOn': (i == 0)
+                                    ? !element.isTurnOn
+                                    : element.isTurnOn,
+                                'isTurnOn1': (i == 2)
+                                    ? !element.isTurnOn1
+                                    : element.isTurnOn1,
+                                'listDate': element.listDate,
+                              });
+                            },
+                          ),
                         ),
                       ],
                     ),

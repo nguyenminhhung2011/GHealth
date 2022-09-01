@@ -1,12 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Sleep {
+  String id;
   DateTime bedTime;
   DateTime alarm;
   bool isTurnOn;
   bool isTurnOn1;
   List listDate;
   Sleep({
+    required this.id,
     required this.bedTime,
     required this.alarm,
     required this.isTurnOn,
@@ -14,6 +16,7 @@ class Sleep {
     required this.listDate,
   });
   Map<String, dynamic> toJson() => {
+        'id': id,
         'bedTime': bedTime,
         'alarm': alarm,
         'isTurnOn': isTurnOn,
@@ -24,6 +27,7 @@ class Sleep {
   factory Sleep.fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Sleep(
+      id: snapshot['id'] ?? '',
       bedTime: DateTime.fromMillisecondsSinceEpoch(
           snapshot['bedTime'].seconds * 1000),
       alarm:
