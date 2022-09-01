@@ -165,115 +165,140 @@ class DailySleepController extends GetxController with TrackerController {
       ),
       child: Column(
         children: [
-          for (int i = 0; i < 3; i++)
-            (i == 1)
-                ? const Divider()
-                : ListTile(
-                    isThreeLine: true,
-                    leading: Image.asset(i == 0
-                        ? 'assets/images/bed.png'
-                        : 'assets/images/Icon-Alaarm.png'),
-                    title: RichText(
-                      text: TextSpan(
-                        text: '${i == 0 ? 'BedTime' : 'Alarm'}, ',
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Sen',
-                          fontSize: 19,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        children: [
-                          TextSpan(
-                              text:
-                                  "${DateFormat().add_jm().format(i == 0 ? timeBed : timeAlarm)} ",
-                              style: const TextStyle(
-                                  fontFamily: 'Sen',
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.black54)),
-                        ],
-                      ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SizedBox(
+              child: Row(
+                children: [
+                  Image.asset('assets/images/duration.png',
+                      height: 20, width: 20),
+                  const SizedBox(width: 10),
+                  const Text(
+                    'Schedule',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  ),
+                  const Spacer(),
+                  InkWell(
+                    onTap: () {},
+                    child: const Icon(
+                      Icons.more_horiz,
+                      size: 20,
+                      color: Colors.black,
                     ),
-                    subtitle: Container(
-                      margin: const EdgeInsets.only(top: 10),
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'in ',
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.grey[600],
-                          ),
-                          children: [
-                            TextSpan(
-                              text: '${i == 0 ? hourBed : hourAlarm}',
-                              style: TextStyle(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey[600]),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const Divider(),
+          ...[0, 1, 2]
+              .map(
+                (i) => (i == 1)
+                    ? const Divider()
+                    : ListTile(
+                        isThreeLine: true,
+                        leading: Image.asset(i == 0
+                            ? 'assets/images/bed.png'
+                            : 'assets/images/Icon-Alaarm.png'),
+                        title: RichText(
+                          text: TextSpan(
+                            text: '${i == 0 ? 'BedTime' : 'Alarm'}, ',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Sen',
+                              fontSize: 19,
+                              fontWeight: FontWeight.w600,
                             ),
-                            TextSpan(
-                              text: 'hours ',
+                            children: [
+                              TextSpan(
+                                  text:
+                                      "${DateFormat().add_jm().format(i == 0 ? timeBed : timeAlarm)} ",
+                                  style: const TextStyle(
+                                      fontFamily: 'Sen',
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54)),
+                            ],
+                          ),
+                        ),
+                        subtitle: Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          child: RichText(
+                            text: TextSpan(
+                              text: 'in ',
                               style: TextStyle(
                                 fontSize: 18,
                                 color: Colors.grey[600],
                               ),
+                              children: [
+                                TextSpan(
+                                  text: '${i == 0 ? hourBed : hourAlarm}',
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[600]),
+                                ),
+                                TextSpan(
+                                  text: 'hours ',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '${i == 0 ? minuteBed : minuteAlarm}',
+                                  style: TextStyle(
+                                      fontSize: 19,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey[600]),
+                                ),
+                                TextSpan(
+                                  text: 'minutes',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
                             ),
-                            TextSpan(
-                              text: '${i == 0 ? minuteBed : minuteAlarm}',
-                              style: TextStyle(
-                                  fontSize: 19,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.grey[600]),
-                            ),
-                            TextSpan(
-                              text: 'minutes',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.grey[600],
+                          ),
+                        ),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(
+                              height: 20,
+                              child: CupertinoSwitch(
+                                activeColor: AppColors.primaryColor1,
+                                value: (i == 0)
+                                    ? element.isTurnOn
+                                    : element.isTurnOn1,
+                                onChanged: (bool value) {
+                                  updateDataCollection({
+                                    'id': element.id,
+                                    'bedTime': element.bedTime,
+                                    'alarm': element.alarm,
+                                    'isTurnOn': (i == 0)
+                                        ? !element.isTurnOn
+                                        : element.isTurnOn,
+                                    'isTurnOn1': (i == 2)
+                                        ? !element.isTurnOn1
+                                        : element.isTurnOn1,
+                                    'listDate': element.listDate,
+                                  });
+                                },
                               ),
                             ),
                           ],
                         ),
                       ),
-                    ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 20,
-                          child: CupertinoSwitch(
-                            activeColor: AppColors.primaryColor1,
-                            value:
-                                (i == 0) ? element.isTurnOn : element.isTurnOn1,
-                            onChanged: (bool value) {
-                              updateDataCollection({
-                                'id': element.id,
-                                'bedTime': element.bedTime,
-                                'alarm': element.alarm,
-                                'isTurnOn': (i == 0)
-                                    ? !element.isTurnOn
-                                    : element.isTurnOn,
-                                'isTurnOn1': (i == 2)
-                                    ? !element.isTurnOn1
-                                    : element.isTurnOn1,
-                                'listDate': element.listDate,
-                              });
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+              )
+              .toList()
         ],
       ),
     );
   }
 }
-// InkWell(
-                        //   onTap: () {},
-                        //   child: const Icon(
-                        //     Icons.more_vert,
-                        //     size: 20,
-                        //     color: Colors.black,
-                        //   ),
-                        // ),
