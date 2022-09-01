@@ -296,7 +296,8 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                                       .listDateTime[controller.onFocus]
                                       .weekday))
                                   .map((e) {
-                                return controller.itemBuilder(e, widthDevice);
+                                return controller.itemBuilder(
+                                    e, widthDevice, context);
                               }).toList(),
                             ],
                           ),

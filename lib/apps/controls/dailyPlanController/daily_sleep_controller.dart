@@ -11,6 +11,7 @@ import '../../../constrains.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/data_service.dart';
 import '../../data/models/sleep.dart';
+import '../../global_widgets/dialog/yes_no_dialog.dart';
 import '../../global_widgets/toggle_button_ios.dart';
 import '../../template/misc/colors.dart';
 
@@ -144,10 +145,26 @@ class DailySleepController extends GetxController with TrackerController {
       print(err);
     }
   }
-  //------------------------------------
+
+  deleteDataCollection(String id) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('sleep_basic_time')
+          .doc('sleep')
+          .collection('sleep_time')
+          .doc(id)
+          .delete();
+    } catch (err) {
+      // ignore: avoid_print
+      print(err);
+    }
+  }
+  //------------------------------------Widget Item Builder
 
   int get onFocus => _onFocus.value;
-  Widget itemBuilder(Sleep element, double widthDevice) {
+  Widget itemBuilder(Sleep element, double widthDevice, BuildContext context) {
     DateTime timeBed = element.bedTime;
     DateTime timeAlarm = element.alarm;
     int hourBed = (DateTime.now().hour - timeBed.hour).abs();
@@ -182,7 +199,114 @@ class DailySleepController extends GetxController with TrackerController {
                   ),
                   const Spacer(),
                   InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      await showDialog(
+                        useRootNavigator: false,
+                        barrierColor: Colors.black54,
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            backgroundColor: Colors.transparent,
+                            child: Container(
+                              width: double.infinity,
+                              height: Get.height / 2,
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: AppColors.mainColor,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Column(
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.center,
+                                    child: Text('Edit Time Sleep Schedule',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        )),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Container(
+                                    height: 40,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AppColors.primaryColor1,
+                                    ),
+                                    child: ElevatedButton(
+                                      onPressed: () {
+                                        Get.back();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          primary: Colors.transparent,
+                                          shadowColor: Colors.transparent),
+                                      child: const Text(
+                                        'Update',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Container(
+                                    height: 40,
+                                    width: double.infinity,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: AppColors.mainColor,
+                                      border: Border.all(
+                                          width: 2,
+                                          color: AppColors.primaryColor1),
+                                    ),
+                                    child: ElevatedButton(
+                                      onPressed: () async {
+                                        final r = await Get.dialog(YesNoDialog(
+                                            press: () {
+                                              deleteDataCollection(element.id);
+                                              Get.back(result: true);
+                                            },
+                                            question:
+                                                'Do you want Delete this schedule ?',
+                                            title1:
+                                                'This sleep time will be removed from your schedule',
+                                            title2: ''));
+                                        print(r);
+                                        if (r == true) {
+                                          Get.back();
+                                        }
+                                        // Get.back();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
+                                          primary: Colors.transparent,
+                                          shadowColor: Colors.transparent),
+                                      child: const Text(
+                                        'Delete Time',
+                                        style: TextStyle(
+                                          color: AppColors.primaryColor1,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
                     child: const Icon(
                       Icons.more_horiz,
                       size: 20,

@@ -50,6 +50,7 @@ class YesNoDialog extends StatelessWidget {
               const Spacer(),
               Text(
                 question,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

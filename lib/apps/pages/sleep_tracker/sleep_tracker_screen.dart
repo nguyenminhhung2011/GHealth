@@ -588,7 +588,8 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                               ...controller.listSleepToday.map((e) {
                                 return Column(
                                   children: [
-                                    controller.itemBuilder(e, widthDevice),
+                                    controller.itemBuilder(
+                                        e, widthDevice, context),
                                   ],
                                 );
                               }).toList(),

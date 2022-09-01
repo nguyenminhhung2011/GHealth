@@ -142,7 +142,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                               DateFormat().add_jm().format(
                                                   controller.choseTime.value),
                                               style: TextStyle(
-                                                fontSize: 13,
+                                                fontSize: 12,
                                                 color: Colors.grey[400],
                                               ),
                                             )),
