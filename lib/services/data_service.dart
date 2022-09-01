@@ -34,7 +34,7 @@ class DataService {
   final _waterProvider = WaterProvider();
   List<Meal> get mealList => _mealList.value;
   List<Meal> get mealBreakFastList => _mealBreakFastList.value;
-  List<Meal> get mealSnackList => _mealLunchDinnerList.value;
+  List<Meal> get mealSnackList => _mealSnackList.value;
   List<Meal> get mealLunchDinnerList => _mealLunchDinnerList.value;
   List<Nutrition> get nutritionList => _nutritonList.value;
   List<DateTime> get timeEatList => _timeEatList.value;

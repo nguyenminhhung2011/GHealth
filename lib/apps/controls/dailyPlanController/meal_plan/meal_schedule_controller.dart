@@ -34,9 +34,8 @@ class MealScheduleC extends GetxController {
   // --> kcal, proteins, fats, carbo
 
   final List<DateTime> listDateTime = [
-    for (int i = 1; i <= 30; i++)
-      DateTime(2022, 8, 1).subtract(Duration(days: i)),
-    for (int i = 0; i <= 30; i++) DateTime(2022, 8, 1).add(Duration(days: i))
+    for (int i = 1; i <= 30; i++) DateTime.now().subtract(Duration(days: i)),
+    for (int i = 0; i <= 30; i++) DateTime.now().add(Duration(days: i))
   ];
   @override
   void onInit() {

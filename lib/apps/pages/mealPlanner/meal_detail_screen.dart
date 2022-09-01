@@ -328,7 +328,7 @@ class MealDetailScreen extends StatelessWidget {
                                               const Spacer(),
                                               Text(
                                                 '${controller.listSteps.length} Steps',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: Colors.grey,
                                                     fontSize: 15),
                                               )

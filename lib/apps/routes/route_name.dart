@@ -1,5 +1,3 @@
-import 'package:gold_health/apps/pages/workout_tracker_screen/workout_detail2_screen.dart';
-
 abstract class RouteName {
   static const splash = "/splash";
   static const intro = "/intro";
@@ -26,4 +24,5 @@ abstract class RouteName {
   static const addFoodNutri = "/add_food_nutri";
   static const mealSchedule = "/meal_schedule";
   static const sleepSchedule = "/sleep_schedule";
+  static const addAlarm = "/add_alarm";
 }

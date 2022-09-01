@@ -3,13 +3,11 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/binding/meal_schedule_binding.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/meal_plan/meal_schedule_controller.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/food_schedule_card.dart';
 import 'package:gold_health/apps/pages/mealPlanner/widgets/meal_nutrition_card.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 
 import '../../global_widgets/screen_template.dart';
 import '../../template/misc/colors.dart';

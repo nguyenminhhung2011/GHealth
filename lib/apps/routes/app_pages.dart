@@ -1,19 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get_navigation/get_navigation.dart';
-import 'package:gold_health/apps/binding/add_food_nutri_binding.dart';
 import 'package:gold_health/apps/binding/category_meal_binding.dart';
 import 'package:gold_health/apps/binding/daily_nutrition_binding.dart';
-import 'package:gold_health/apps/binding/fill_profile_binding.dart';
-import 'package:gold_health/apps/binding/get_old_binding.dart';
 import 'package:gold_health/apps/binding/login_binding.dart';
 import 'package:gold_health/apps/binding/meal_detail_binding.dart';
 import 'package:gold_health/apps/binding/profile_bindinig.dart';
-import 'package:gold_health/apps/binding/select_duration_binding.dart';
 import 'package:gold_health/apps/binding/select_gender_binding.dart';
 import 'package:gold_health/apps/binding/splash_binding.dart';
 import 'package:gold_health/apps/binding/home_screen_binding.dart';
 import 'package:gold_health/apps/binding/dashboard_binding.dart';
-import 'package:gold_health/apps/controls/dailyPlanController/meal_plan/category_meal_controller.dart';
 
 import 'package:gold_health/apps/pages/IntroListScreen/intro_screen.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splash_screen.dart';
@@ -27,13 +21,13 @@ import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/profile_screen.dart';
 import 'package:gold_health/apps/pages/mealPlanner/category_meal_screen.dart';
 import 'package:gold_health/apps/pages/mealPlanner/meal_detail_screen.dart';
+import 'package:gold_health/apps/pages/sleep_tracker/add_alarm_screen.dart';
+import 'package:gold_health/apps/pages/sleep_tracker/sleep_schedule_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_detail2_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_tracker_screen.dart';
 import '../binding/basic_info_binding.dart';
-import '../binding/get_height_binding.dart';
-import '../binding/get_weight_binding.dart';
 import '../binding/meal_schedule_binding.dart';
 import '../binding/view_meal_binding.dart';
 import '../pages/dashboard/notification_screen.dart';
@@ -168,9 +162,13 @@ class AppPages {
       page: () => MealScheduleScreen(),
       binding: MealScheduleB(),
     ),
-    // GetPage(
-    //   name: RouteName.sleepSchedule,
-    //   page: () => SleepS
-    // ),
+    GetPage(
+      name: RouteName.sleepSchedule,
+      page: () => SleepScheduleScreen(),
+    ),
+    GetPage(
+      name: RouteName.addAlarm,
+      page: () => AddAlarmScreen(),
+    ),
   ];
 }

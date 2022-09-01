@@ -8,6 +8,7 @@ import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/sleep_schedule_screen.dart';
 import 'package:intl/intl.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/widgets/button_gradient.dart';
 
@@ -52,105 +53,6 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
   @override
   void initState() {
     super.initState();
-  }
-
-  Widget itemBuilder(Map<String, dynamic> element, double widthDevice) {
-    DateTime time = element['time'] as DateTime;
-    int hour = (DateTime.now().hour - time.hour).abs();
-    int minute = (DateTime.now().minute - time.minute).abs();
-    return Container(
-      margin: const EdgeInsets.only(bottom: 20),
-      height: 100,
-      width: widthDevice * 0.9,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-        color: Color.fromARGB(255, 240, 248, 251),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: ListTile(
-        isThreeLine: true,
-        leading: Image.asset(element['icon'] as String),
-        title: RichText(
-          text: TextSpan(
-            text: '${element['name'] as String}, ',
-            style: const TextStyle(
-              color: Colors.black,
-              fontFamily: 'Sen',
-              fontSize: 19,
-              fontWeight: FontWeight.w600,
-            ),
-            children: [
-              TextSpan(
-                  text: "${DateFormat().add_jm().format(time)} ",
-                  style: const TextStyle(
-                      fontFamily: 'Sen',
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black54)),
-            ],
-          ),
-        ),
-        subtitle: Container(
-          margin: const EdgeInsets.only(top: 10),
-          child: RichText(
-            text: TextSpan(
-              text: 'in ',
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.grey[600],
-              ),
-              children: [
-                TextSpan(
-                  text: '$hour',
-                  style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[600]),
-                ),
-                TextSpan(
-                  text: 'hours ',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                TextSpan(
-                  text: '$minute',
-                  style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.grey[600]),
-                ),
-                TextSpan(
-                  text: 'minutes',
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-        trailing: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            InkWell(
-              onTap: () {},
-              child: const Icon(
-                Icons.more_vert,
-                size: 20,
-                color: Colors.black,
-              ),
-            ),
-            SizedBox(
-              height: 20,
-              child: ToggleButtonIos(val: element['isTurnOn'] as bool),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   List<PieChartSectionData> showingSections(var widthDevice) {
@@ -661,14 +563,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                       color: Colors.white, fontSize: 12),
                                 ),
                                 onPressed: () {
-                                  Navigator.of(context).push<void>(
-                                    MaterialPageRoute<void>(
-                                      builder: (BuildContext context) =>
-                                          SleepScheduleScreen(
-                                              itemBuilder: itemBuilder,
-                                              listSchedule: listSchedule),
-                                    ),
-                                  );
+                                  Get.toNamed(RouteName.sleepSchedule);
                                 },
                                 linearGradient: LinearGradient(colors: [
                                   Colors.blue[200]!,
@@ -693,33 +588,21 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                               ...controller.listSleepToday.map((e) {
                                 return Column(
                                   children: [
-                                    itemBuilder({
-                                      'name': 'Bedtime',
-                                      'icon': 'assets/images/bed.png',
-                                      'time': e.bedTime,
+                                    controller.itemBuilder({
+                                      'timeBed': e.bedTime,
+                                      'timeAlarm': e.alarm,
                                       'isTurnOn': e.isTurnOn,
-                                    }, widthDevice),
-                                    itemBuilder({
-                                      'name': 'Alarm',
-                                      'icon': 'assets/images/Icon-Alaarm.png',
-                                      'time': e.alarm,
-                                      'isTurnOn': e.isTurnOn1,
+                                      'isTurnOn1': e.isTurnOn1,
                                     }, widthDevice),
                                   ],
                                 );
                               }).toList(),
-                              itemBuilder({
-                                'name': 'Bedtime',
-                                'icon': 'assets/images/bed.png',
-                                'time': controller.sleepBasictime['bedTime'],
+                              controller.itemBuilder({
+                                'timeBed': controller.sleepBasictime['bedTime'],
+                                'timeAlarm': controller.sleepBasictime['alarm'],
                                 'isTurnOn':
                                     controller.sleepBasictime['isTurnOn'],
-                              }, widthDevice),
-                              itemBuilder({
-                                'name': 'Alarm',
-                                'icon': 'assets/images/Icon-Alaarm.png',
-                                'time': controller.sleepBasicTime['alarm'],
-                                'isTurnOn':
+                                'isTurnOn1':
                                     controller.sleepBasictime['isTurnOn1'],
                               }, widthDevice),
                             ],

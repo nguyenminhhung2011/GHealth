@@ -8,32 +8,20 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../../controls/dailyPlanController/daily_sleep_controller.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 // ignore: must_be_immutable
 class SleepScheduleScreen extends StatefulWidget {
-  SleepScheduleScreen(
-      {Key? key, required this.itemBuilder, required this.listSchedule})
-      : super(key: key);
-  final Widget Function(Map<String, dynamic>, double) itemBuilder;
-  RxList<Map<String, dynamic>> listSchedule;
+  SleepScheduleScreen({Key? key}) : super(key: key);
   @override
   State<SleepScheduleScreen> createState() => _SleepScheduleScreenState();
 }
 
 class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
   final _controller = Get.find<DailySleepController>();
-  final List<DateTime> listDateTime = [
-    for (int i = 1; i <= 30; i++)
-      DateTime(2022, 8, 1).subtract(Duration(days: i)),
-    for (int i = 0; i <= 30; i++) DateTime(2022, 8, 1).add(Duration(days: i))
-  ];
 
   PageController pageController = PageController();
-
-  late int onFocus = listDateTime.indexWhere((element) =>
-      DateFormat().add_yMd().format(element) ==
-      DateFormat().add_yMd().format(DateTime.now()));
 
   Widget _itemBuilder(BuildContext context, int index) {
     return Container(
@@ -43,7 +31,7 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
       height: 100,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(15),
-        gradient: onFocus == index
+        gradient: _controller.onFocus == index
             ? LinearGradient(colors: [
                 Colors.blue[200]!,
                 Colors.blue[300]!,
@@ -62,15 +50,17 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Text(
-              DateFormat().add_E().format(listDateTime[index]),
+              DateFormat().add_E().format(_controller.listDateTime[index]),
               style: TextStyle(
-                color: onFocus == index ? Colors.white : Colors.black,
+                color:
+                    _controller.onFocus == index ? Colors.white : Colors.black,
               ),
             ),
             Text(
-              DateFormat().add_d().format(listDateTime[index]),
+              DateFormat().add_d().format(_controller.listDateTime[index]),
               style: TextStyle(
-                color: onFocus == index ? Colors.white : Colors.black,
+                color:
+                    _controller.onFocus == index ? Colors.white : Colors.black,
               ),
             ),
           ],
@@ -92,12 +82,13 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
             backgroundColor: AppColors.mainColor,
             floatingActionButton: FloatingActionButton(
               onPressed: () {
-                Navigator.of(context).push<void>(
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        AddAlarmScreen(listSchedule: widget.listSchedule.value),
-                  ),
-                );
+                // Navigator.of(context).push<void>(
+                //   MaterialPageRoute(
+                //     builder: (context) =>
+                //         AddAlarmScreen(listSchedule: widget.listSchedule.value),
+                //   ),
+                // );
+                Get.toNamed(RouteName.addAlarm);
               },
               elevation: 5,
               child: Container(
@@ -236,73 +227,87 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.17,
-                        child: ScrollSnapList(
-                          itemBuilder: _itemBuilder,
-                          background: Colors.blue[200],
-                          itemCount: listDateTime.length,
-                          itemSize: 100,
-                          dispatchScrollNotifications: true,
-                          initialIndex: onFocus.toDouble(),
-                          scrollPhysics: const ScrollPhysics(),
-                          duration: 1000,
-                          curve: Curves.linear,
-                          onItemFocus: (int index) {
-                            setState(() {
-                              onFocus = index;
-                            });
-                            pageController.animateToPage(pageIndex == 0 ? 1 : 0,
-                                duration: const Duration(milliseconds: 750),
-                                curve: Curves.ease);
-                            pageIndex = pageIndex == 0 ? 1 : 0;
-                          },
+                      Obx(
+                        () => SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.17,
+                          child: ScrollSnapList(
+                            itemBuilder: _itemBuilder,
+                            background: Colors.blue[200],
+                            itemCount: controller.listDateTime.length,
+                            itemSize: 100,
+                            dispatchScrollNotifications: true,
+                            initialIndex: controller.onFocus.toDouble(),
+                            scrollPhysics: const ScrollPhysics(),
+                            duration: 1000,
+                            curve: Curves.linear,
+                            onItemFocus: (int index) {
+                              controller.setFocus(
+                                  index, controller.listDateTime[index]);
+                              // pageController.animateToPage(
+                              //     controller
+                              //             .listSleepWithDate(controller
+                              //                 .listDateTime[controller.onFocus]
+                              //                 .weekday)
+                              //             .isEmpty
+                              //         ? 1
+                              //         : 0,
+                              //     duration: const Duration(milliseconds: 750),
+                              //     curve: Curves.ease);
+                              // pageIndex = pageIndex == 0 ? 1 : 0;
+                            },
+                          ),
                         ),
                       ),
                       const SizedBox(height: 15),
                       Obx(
                         () => Container(
-                          height: widget.listSchedule.value.length.toDouble() *
-                                  100 +
-                              70,
-                          child: PageView(
-                            controller: pageController,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          // height: (controller
+                          //         .listSleepWithDate(controller
+                          //             .listDateTime[controller.onFocus].weekday)
+                          //         .isEmpty)
+                          //     ? controller.listSleepToday.length.toDouble() *
+                          //             130 +
+                          //         70
+                          //     : controller.listSleepToday.length.toDouble() *
+                          //             160 +
+                          //         270,
+                          child:
+                              // SizedBox(
+                              //   height: controller.listSleepToday.length
+                              //               .toDouble() *
+                              //           100 +
+                              //       200,
+                              //   width: widthDevice,
+                              //   child: SingleChildScrollView(
+                              //     scrollDirection: Axis.vertical,
+                              //     child:
+                              Column(
                             children: [
-                              SizedBox(
-                                height: widget.listSchedule.value.length
-                                            .toDouble() *
-                                        100 +
-                                    50,
-                                width: widthDevice,
-                                child: Column(
-                                  children: [
-                                    ...(widget.listSchedule.value)
-                                        .map((element) {
-                                      return widget.itemBuilder(
-                                          element, widthDevice);
-                                    }).toList(),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: widget.listSchedule.value.length
-                                            .toDouble() *
-                                        100 +
-                                    50,
-                                width: widthDevice,
-                                child: Column(
-                                  children: [
-                                    ...(widget.listSchedule.value)
-                                        .map((element) {
-                                      return widget.itemBuilder(
-                                          element, widthDevice);
-                                    }).toList(),
-                                  ],
-                                ),
-                              ),
+                              controller.itemBuilder({
+                                'timeBed': controller.sleepBasictime['bedTime'],
+                                'timeAlarm': controller.sleepBasictime['alarm'],
+                                'isTurnOn':
+                                    controller.sleepBasictime['isTurnOn'],
+                                'isTurnOn1':
+                                    controller.sleepBasictime['isTurnOn1'],
+                              }, widthDevice),
+                              ...(controller.listSleepWithDate(controller
+                                      .listDateTime[controller.onFocus]
+                                      .weekday))
+                                  .map((e) {
+                                return controller.itemBuilder({
+                                  'timeBed': e.bedTime,
+                                  'timeAlarm': e.alarm,
+                                  'isTurnOn': e.isTurnOn,
+                                  'isTurnOn1': e.isTurnOn1,
+                                }, widthDevice);
+                              }).toList(),
                             ],
                           ),
                         ),
+                        // ),
+                        // ),
                       ),
                       Container(
                         height: heightDevice * 0.15,

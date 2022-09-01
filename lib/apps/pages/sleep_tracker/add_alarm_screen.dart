@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/daily_sleep_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:intl/intl.dart';
 
@@ -9,39 +10,23 @@ import '../../template/misc/colors.dart';
 import '../dashboard/widgets/button_gradient.dart';
 
 class AddAlarmScreen extends StatefulWidget {
-  AddAlarmScreen({Key? key, required this.listSchedule}) : super(key: key);
-  List<Map<String, dynamic>> listSchedule;
+  AddAlarmScreen({Key? key}) : super(key: key);
   @override
   State<AddAlarmScreen> createState() => _AddAlarmScreenState();
 }
 
 class _AddAlarmScreenState extends State<AddAlarmScreen> {
+  final controller = Get.find<DailySleepController>();
   var isExpandBedTime = false.obs;
   var isExpandHoursOfSleep = false.obs;
   var isExpandRepeat = false.obs;
-  var isVibrate = true.obs;
-
-  var choseTime = DateTime.now().obs;
-  DateTime tempTime = DateTime.now();
-
-  var choseDuration = const Duration(hours: 8).obs;
-  Duration tempDuration = const Duration();
-
-  Map<String, dynamic> listVariable = {
-    'Sun': false.obs,
-    'Mon': false.obs,
-    'Tue': false.obs,
-    'Wed': false.obs,
-    'Thu': false.obs,
-    'Fri': false.obs,
-    'Sat': false.obs,
-  };
 
   Widget _itemBuilderRepeat(String day) {
     return InkWell(
+      borderRadius: BorderRadius.circular(100),
       onTap: () {
-        (listVariable[day] as RxBool).value =
-            !(listVariable[day] as RxBool).value;
+        (controller.listVariable[day] as RxBool).value =
+            !(controller.listVariable[day] as RxBool).value;
       },
       child: Stack(
         alignment: Alignment.center,
@@ -51,24 +36,25 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
               curve: Curves.fastLinearToSlowEaseIn,
               duration: const Duration(milliseconds: 500),
               alignment: Alignment.center,
-              height: (listVariable[day] as RxBool).value ? 30 : 0,
-              width: (listVariable[day] as RxBool).value ? 43 : 0,
+              height: (controller.listVariable[day] as RxBool).value ? 45 : 0,
+              width: (controller.listVariable[day] as RxBool).value ? 45 : 0,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: AppColors.primaryColor2,
-                ),
+                border: Border.all(color: AppColors.primaryColor1, width: 2),
               ),
             ),
           ),
           Container(
             padding: const EdgeInsets.all(5),
-            height: 30,
-            width: 43,
+            height: 45,
+            width: 45,
             alignment: Alignment.center,
             child: Text(
               day,
-              style: const TextStyle(fontSize: 13.5, color: Colors.blue),
+              style: const TextStyle(
+                  fontSize: 13,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.w500),
             ),
           ),
         ],
@@ -85,7 +71,6 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
       body: ScreenTemplate(
         child: SafeArea(
           child: SizedBox(
-            height: heightDevice,
             width: widthDevice,
             child: Center(
               child: Padding(
@@ -128,9 +113,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: AppColors.primaryColor1.withOpacity(0.2),
                         ),
-                        height: isExpandBedTime.value
-                            ? heightDevice * 0.25
-                            : heightDevice * 0.1,
+                        height: isExpandBedTime.value ? 220 : 100,
                         child: Column(
                           mainAxisAlignment: isExpandBedTime.value
                               ? MainAxisAlignment.start
@@ -156,9 +139,8 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         Obx(() => Text(
-                                              DateFormat()
-                                                  .add_jm()
-                                                  .format(choseTime.value),
+                                              DateFormat().add_jm().format(
+                                                  controller.choseTime.value),
                                               style: TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.grey[400],
@@ -185,7 +167,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                     return Expanded(
                                       child: CupertinoDatePicker(
                                         onDateTimeChanged: (value) {
-                                          tempTime = value;
+                                          controller.tempTime = value;
                                         },
                                         mode: CupertinoDatePickerMode.time,
                                       ),
@@ -210,7 +192,8 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                       children: [
                                         TextButton(
                                           onPressed: () {
-                                            choseTime.value = tempTime;
+                                            controller.choseTime.value =
+                                                controller.tempTime;
                                             isExpandBedTime.value =
                                                 !isExpandBedTime.value;
                                           },
@@ -258,9 +241,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: AppColors.primaryColor1.withOpacity(0.2),
                         ),
-                        height: isExpandHoursOfSleep.value
-                            ? heightDevice * 0.25
-                            : heightDevice * 0.1,
+                        height: isExpandHoursOfSleep.value ? 230 : 100,
                         child: Column(
                           mainAxisAlignment: isExpandHoursOfSleep.value
                               ? MainAxisAlignment.start
@@ -287,7 +268,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                       children: [
                                         Obx(
                                           () => Text(
-                                            '${choseDuration.value.inHours}hours ${choseDuration.value.inMinutes - choseDuration.value.inHours * 60}minutes',
+                                            '${controller.choseDuration.value.inHours}hours ${controller.choseDuration.value.inMinutes - controller.choseDuration.value.inHours * 60}minutes',
                                             style: TextStyle(
                                               fontSize: 13,
                                               color: Colors.grey[400],
@@ -317,7 +298,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                       child: CupertinoTimerPicker(
                                         mode: CupertinoTimerPickerMode.hm,
                                         onTimerDurationChanged: (value) {
-                                          tempDuration = value;
+                                          controller.tempDuration = value;
                                         },
                                       ),
                                     );
@@ -341,7 +322,8 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                       children: [
                                         TextButton(
                                           onPressed: () {
-                                            choseDuration.value = tempDuration;
+                                            controller.choseDuration.value =
+                                                controller.tempDuration;
                                             isExpandHoursOfSleep.value =
                                                 !isExpandHoursOfSleep.value;
                                           },
@@ -389,9 +371,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                           borderRadius: BorderRadius.circular(20),
                           color: AppColors.primaryColor1.withOpacity(0.2),
                         ),
-                        height: isExpandRepeat.value
-                            ? heightDevice * 0.17
-                            : heightDevice * 0.1,
+                        height: isExpandRepeat.value ? 160 : 100,
                         child: Column(
                           mainAxisAlignment: isExpandRepeat.value
                               ? MainAxisAlignment.start
@@ -420,7 +400,7 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                           () {
                                             String date = '';
                                             int numberChose = 0;
-                                            (listVariable)
+                                            (controller.listVariable)
                                                 .forEach((key, value) {
                                               if ((value as RxBool).value) {
                                                 date += '$key, ';
@@ -502,13 +482,18 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                                       ConnectionState.done) {
                                     return Center(
                                       child: TextButton(
-                                          onPressed: () {
-                                            isExpandRepeat.value =
-                                                !isExpandRepeat.value;
-                                          },
-                                          child: Text('Save',
-                                              style: TextStyle(
-                                                  color: Colors.blue[400]))),
+                                        onPressed: () {
+                                          isExpandRepeat.value =
+                                              !isExpandRepeat.value;
+                                        },
+                                        child: Text(
+                                          'Save',
+                                          style: TextStyle(
+                                            color: Colors.blue[400],
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
                                     );
                                   } else {
                                     return const SizedBox();
@@ -542,49 +527,36 @@ class _AddAlarmScreenState extends State<AddAlarmScreen> {
                             child: Obx(
                               () => CupertinoSwitch(
                                 activeColor: Colors.blue[300],
-                                value: isVibrate.value,
-                                onChanged: (value) =>
-                                    isVibrate.value = !isVibrate.value,
+                                value: controller.isVibrate.value,
+                                onChanged: (value) => controller.isVibrate
+                                    .value = !controller.isVibrate.value,
                               ),
                             )),
                       ),
                     ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.bottomCenter,
-                        padding: const EdgeInsets.only(bottom: 30),
-                        child: ButtonGradient(
-                          height: heightDevice * 0.06,
-                          width: widthDevice * 0.9,
-                          linearGradient: LinearGradient(colors: [
-                            Colors.blue[200]!,
-                            Colors.blue[300]!,
-                            Colors.blue[400]!
-                          ]),
-                          onPressed: () {
-                            //  {
-                            //   'name': 'Bedtime',
-                            //   'icon': 'assets/images/bed.png',
-                            //   'time': DateTime(2022, 8, 5, 21),
-                            //   'isTurnOn': true,
-                            // },
-                            widget.listSchedule.add(
-                              {
-                                'name': 'Bedtime',
-                                'icon': 'assets/images/bed.png',
-                                'time': choseTime.value,
-                                'isTurnOn': true,
-                              },
-                            );
-                            Navigator.of(context).pop();
-                          },
-                          title: const Text(
-                            'Save',
-                            style: TextStyle(
-                                fontFamily: 'Sen',
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
+                    const SizedBox(height: 20),
+                    Container(
+                      alignment: Alignment.bottomCenter,
+                      padding: const EdgeInsets.only(bottom: 30),
+                      child: ButtonGradient(
+                        height: heightDevice * 0.06,
+                        width: double.infinity,
+                        linearGradient: LinearGradient(colors: [
+                          Colors.blue[200]!,
+                          Colors.blue[300]!,
+                          Colors.blue[400]!
+                        ]),
+                        onPressed: () {
+                          controller.saveAlarmFirebase();
+                          controller.initAll();
+                          Get.back();
+                        },
+                        title: const Text(
+                          'Save',
+                          style: TextStyle(
+                              fontFamily: 'Sen',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
                         ),
                       ),
                     ),
