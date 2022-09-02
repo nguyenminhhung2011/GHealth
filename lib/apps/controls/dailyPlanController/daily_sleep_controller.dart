@@ -128,8 +128,7 @@ class DailySleepController extends GetxController with TrackerController {
         .collection('sleep_basic_time')
         .doc('sleep')
         .collection('sleep_time')
-        .doc('sleep ${DataService.instance.listSleepTime.length}')
-        .set({
+        .add({
       'id': 'sleep ${DataService.instance.listSleepTime.length}',
       'alarm': (choseTime.value).add((choseDuration.value)),
       'bedTime': choseTime.value,

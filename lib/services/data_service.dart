@@ -166,7 +166,9 @@ class DataService {
         .map((event) {
       List<Sleep> result = [];
       for (var item in event.docs) {
-        result.add(Sleep.fromSnap(item));
+        Sleep data = Sleep.fromSnap(item);
+        data.id = item.id;
+        result.add(data);
       }
       return result;
     }));

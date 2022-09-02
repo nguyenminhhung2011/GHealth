@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
+import '../../../services/data_service.dart';
 import '../../controls/dailyPlanController/daily_sleep_controller.dart';
 import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
@@ -134,7 +135,9 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                             ),
                           ),
                           IconButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              print(DataService.instance.listSleepTime[1].id);
+                            },
                             icon: const Icon(Icons.more_horiz),
                           )
                         ],
