@@ -474,7 +474,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                     children: [
                                       Image.asset('assets/images/bed.png'),
                                       Container(
-                                        height: 30,
+                                        height: 40,
                                         width: 1,
                                         color: Colors.grey,
                                       ),
@@ -523,7 +523,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                         ),
                                       ),
                                       Container(
-                                        height: 30,
+                                        height: 40,
                                         width: 1,
                                         color: Colors.grey,
                                       ),
@@ -539,43 +539,103 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                         const SizedBox(height: 20),
                         const Divider(),
                         const SizedBox(height: 20),
-                        Container(
-                          padding: const EdgeInsets.only(left: 10, right: 10),
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            color: Colors.blue[100]!.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          height: heightDevice * 0.08,
-                          width: widthDevice * 0.9,
-                          child: ListTile(
-                            leading: const Text(
-                              'Daily Sleep Schedule',
-                              style: TextStyle(
-                                fontFamily: 'Sen',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w600,
-                              ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 10, bottom: 10),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: Colors.blue[100]!.withOpacity(0.5),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const Text(
+                                        'Daily Sleep Schedule',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Sen',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      ButtonGradient(
+                                        height: 30,
+                                        width: double.infinity,
+                                        title: const Text(
+                                          'Check',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
+                                        ),
+                                        onPressed: () {
+                                          Get.toNamed(RouteName.sleepSchedule);
+                                        },
+                                        linearGradient: LinearGradient(
+                                          colors: [
+                                            Colors.blue[200]!,
+                                            Colors.blue[300]!,
+                                            Colors.blue[400]!
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )),
                             ),
-                            trailing: ButtonGradient(
-                                height: 35,
-                                width: 80,
-                                title: const Text(
-                                  'Check',
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 12),
-                                ),
-                                onPressed: () {
-                                  Get.toNamed(RouteName.sleepSchedule);
-                                },
-                                linearGradient: LinearGradient(colors: [
-                                  Colors.blue[200]!,
-                                  Colors.blue[300]!,
-                                  Colors.blue[400]!
-                                ])),
-                          ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Container(
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 10, bottom: 10),
+                                  alignment: Alignment.center,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryColor2
+                                        .withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      const Text(
+                                        'Time Sleep Countdown',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontFamily: 'Sen',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      ButtonGradient(
+                                        height: 30,
+                                        width: double.infinity,
+                                        title: const Text(
+                                          'Start',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12),
+                                        ),
+                                        onPressed: () {},
+                                        linearGradient: LinearGradient(
+                                          colors: [
+                                            AppColors.primaryColor2,
+                                            AppColors.primaryColor2
+                                                .withOpacity(0.6),
+                                            AppColors.primaryColor2
+                                                .withOpacity(0.3)
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 20),
                         const Text(
                           'Today Schedule',
                           style: TextStyle(
