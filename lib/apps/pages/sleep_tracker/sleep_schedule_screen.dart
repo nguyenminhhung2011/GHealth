@@ -82,15 +82,7 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
           return Scaffold(
             backgroundColor: AppColors.mainColor,
             floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                // Navigator.of(context).push<void>(
-                //   MaterialPageRoute(
-                //     builder: (context) =>
-                //         AddAlarmScreen(listSchedule: widget.listSchedule.value),
-                //   ),
-                // );
-                Get.toNamed(RouteName.addAlarm);
-              },
+              onPressed: () => Get.toNamed(RouteName.addAlarm),
               elevation: 5,
               child: Container(
                 height: 60,
@@ -246,17 +238,6 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                             onItemFocus: (int index) {
                               controller.setFocus(
                                   index, controller.listDateTime[index]);
-                              // pageController.animateToPage(
-                              //     controller
-                              //             .listSleepWithDate(controller
-                              //                 .listDateTime[controller.onFocus]
-                              //                 .weekday)
-                              //             .isEmpty
-                              //         ? 1
-                              //         : 0,
-                              //     duration: const Duration(milliseconds: 750),
-                              //     curve: Curves.ease);
-                              // pageIndex = pageIndex == 0 ? 1 : 0;
                             },
                           ),
                         ),
@@ -265,36 +246,8 @@ class _SleepScheduleScreenState extends State<SleepScheduleScreen> {
                       Obx(
                         () => Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
-                          // height: (controller
-                          //         .listSleepWithDate(controller
-                          //             .listDateTime[controller.onFocus].weekday)
-                          //         .isEmpty)
-                          //     ? controller.listSleepToday.length.toDouble() *
-                          //             130 +
-                          //         70
-                          //     : controller.listSleepToday.length.toDouble() *
-                          //             160 +
-                          //         270,
-                          child:
-                              // SizedBox(
-                              //   height: controller.listSleepToday.length
-                              //               .toDouble() *
-                              //           100 +
-                              //       200,
-                              //   width: widthDevice,
-                              //   child: SingleChildScrollView(
-                              //     scrollDirection: Axis.vertical,
-                              //     child:
-                              Column(
+                          child: Column(
                             children: [
-                              // controller.itemBuilder({
-                              //   'timeBed': controller.sleepBasictime['bedTime'],
-                              //   'timeAlarm': controller.sleepBasictime['alarm'],
-                              //   'isTurnOn':
-                              //       controller.sleepBasictime['isTurnOn'],
-                              //   'isTurnOn1':
-                              //       controller.sleepBasictime['isTurnOn1'],
-                              // }, widthDevice),
                               ...(controller.listSleepWithDate(controller
                                       .listDateTime[controller.onFocus]
                                       .weekday))

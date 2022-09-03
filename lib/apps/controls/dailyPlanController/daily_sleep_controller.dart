@@ -1,16 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
-
 import '../../../constrains.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/data_service.dart';
 import '../../data/models/sleep.dart';
-import '../../global_widgets/dialog/yes_no_dialog.dart';
 import '../../pages/sleep_tracker/widgets/updateDeleteItemDialog.dart';
 import '../../template/misc/colors.dart';
 
@@ -169,7 +166,7 @@ class DailySleepController extends GetxController with TrackerController {
       print(err);
     }
   }
-  //------------------------------------Widget Item Builder
+  //------------------------------------Widget Item Builder--------------------------------
 
   int get onFocus => _onFocus.value;
   Widget itemBuilder(Sleep element, double widthDevice, BuildContext context) {

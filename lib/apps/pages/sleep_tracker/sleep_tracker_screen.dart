@@ -443,98 +443,101 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Card(
-                          elevation: 0,
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 5),
-                              const Text(
-                                'Your last night time analyst',
+                        Column(
+                          children: [
+                            const SizedBox(height: 5),
+                            const Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Time Slepp Report',
                                 style: TextStyle(
                                     fontSize: 20, fontWeight: FontWeight.w600),
                               ),
-                              Row(
-                                children: [
-                                  SizedBox(
-                                    height: heightDevice * 0.35,
-                                    width: widthDevice * 0.6,
-                                    child: PieChart(
-                                      PieChartData(
-                                          pieTouchData: PieTouchData(
-                                            touchCallback: (flTouchEvent,
-                                                pieTouchResponse) {
-                                              setState(() {
-                                                if (!flTouchEvent
-                                                        .isInterestedForInteractions ||
-                                                    pieTouchResponse == null ||
-                                                    pieTouchResponse
-                                                            .touchedSection ==
-                                                        null) {
-                                                  touchedIndex = -1;
-                                                  return;
-                                                }
-                                                touchedIndex = pieTouchResponse
-                                                    .touchedSection!
-                                                    .touchedSectionIndex;
-                                              });
-                                            },
-                                          ),
-                                          sectionsSpace: 0,
-                                          centerSpaceRadius: 40,
-                                          sections:
-                                              showingSections(widthDevice)),
-                                      swapAnimationDuration:
-                                          const Duration(milliseconds: 300),
-                                      swapAnimationCurve: Curves.ease,
-                                    ),
+                            ),
+                            const SizedBox(height: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  width: widthDevice * 0.9,
+                                  alignment: Alignment.center,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 20),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryColor1
+                                        .withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Row(
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Image.asset('assets/images/bed.png'),
+                                      Container(
+                                        height: 30,
+                                        width: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      RichText(
+                                        textAlign: TextAlign.center,
+                                        text: const TextSpan(
+                                          style: TextStyle(),
                                           children: [
-                                            Icon(Icons.square,
-                                                color: Colors.blue[300]),
-                                            const Text('Awake'),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.square,
-                                                color: Colors.amber[300]),
-                                            const Text('REM'),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.square,
-                                                color: const Color.fromARGB(
-                                                        255, 108, 39, 176)
-                                                    .withOpacity(0.6)),
-                                            const Text('Core'),
-                                          ],
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Row(
-                                          children: [
-                                            Icon(Icons.square,
-                                                color: Colors.green[300]),
-                                            const Text(
-                                              'Deep',
-                                              style: TextStyle(fontSize: 15),
+                                            TextSpan(
+                                              text: 'Bed Time \n',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: '20:30 PM',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
+                                      ),
+                                      Image.asset('assets/images/duration.png',
+                                          height: 20, width: 20),
+                                      RichText(
+                                        textAlign: TextAlign.center,
+                                        text: const TextSpan(
+                                          style: TextStyle(),
+                                          children: [
+                                            TextSpan(
+                                              text: 'Alarm Goff\n',
+                                              style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                            TextSpan(
+                                              text: '5:30 AM',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Container(
+                                        height: 30,
+                                        width: 1,
+                                        color: Colors.grey,
+                                      ),
+                                      Image.asset(
+                                          'assets/images/Icon-Alaarm.png'),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
+                        const SizedBox(height: 20),
+                        const Divider(),
                         const SizedBox(height: 20),
                         Container(
                           padding: const EdgeInsets.only(left: 10, right: 10),

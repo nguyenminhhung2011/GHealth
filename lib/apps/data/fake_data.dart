@@ -546,3 +546,16 @@ class Data {
   // }
 
   // --> kcal, proteins, fats, carbo
+
+
+  // pageController.animateToPage(
+                              //     controller
+                              //             .listSleepWithDate(controller
+                              //                 .listDateTime[controller.onFocus]
+                              //                 .weekday)
+                              //             .isEmpty
+                              //         ? 1
+                              //         : 0,
+                              //     duration: const Duration(milliseconds: 750),
+                              //     curve: Curves.ease);
+                              // pageIndex = pageIndex == 0 ? 1 : 0;
