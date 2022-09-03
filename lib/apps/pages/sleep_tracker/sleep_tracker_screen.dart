@@ -385,13 +385,13 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                       lineBarsData: [
                                         LineChartBarData(
                                           spots: const [
-                                            FlSpot(1, 7),
-                                            FlSpot(2, 6),
-                                            FlSpot(3, 8),
-                                            FlSpot(4, 6),
-                                            FlSpot(5, 8),
-                                            FlSpot(6, 6.5),
-                                            FlSpot(7, 7.5),
+                                            FlSpot(1, 3),
+                                            FlSpot(2, 4),
+                                            FlSpot(3, 5),
+                                            FlSpot(4, 3),
+                                            FlSpot(5, 3),
+                                            FlSpot(6, 4.5),
+                                            FlSpot(7, 5.5),
                                           ],
                                           barWidth: 2,
                                           dotData: FlDotData(show: false),
@@ -619,7 +619,8 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                               fontWeight: FontWeight.bold,
                                               fontSize: 12),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () => Get.toNamed(
+                                            RouteName.sleepCounting),
                                         linearGradient: LinearGradient(
                                           colors: [
                                             AppColors.primaryColor2,
@@ -656,14 +657,6 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                   ],
                                 );
                               }).toList(),
-                              // controller.itemBuilder({
-                              //   'timeBed': controller.sleepBasictime['bedTime'],
-                              //   'timeAlarm': controller.sleepBasictime['alarm'],
-                              //   'isTurnOn':
-                              //       controller.sleepBasictime['isTurnOn'],
-                              //   'isTurnOn1':
-                              //       controller.sleepBasictime['isTurnOn1'],
-                              // }, widthDevice),
                             ],
                           ),
                         )

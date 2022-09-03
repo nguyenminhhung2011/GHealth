@@ -43,6 +43,7 @@ import '../pages/list_plan_screen/add_food_nutri_screen.dart';
 import '../pages/list_plan_screen/daili_nutri_screen.dart';
 import '../pages/mealPlanner/meal_schedule_screen.dart';
 import '../pages/mealPlanner/view_meal_screen.dart';
+import '../pages/sleep_tracker/sleep_counting_screen.dart';
 
 class AppPages {
   static final pages = [
@@ -169,6 +170,10 @@ class AppPages {
     GetPage(
       name: RouteName.addAlarm,
       page: () => AddAlarmScreen(),
+    ),
+    GetPage(
+      name: RouteName.sleepCounting,
+      page: () => SleepCounting(),
     ),
   ];
 }
