@@ -72,8 +72,8 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.2.45
   video_thumbnail: ^0.5.2
   better_player: ^0.0.83
+  progressive_time_picker: ^0.0.6
 
-  
 
 
 dev_dependencies:

@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../controls/dailyPlanController/daily_sleep_controller.dart';
 import '../../template/misc/colors.dart';
 
 class SleepCounting extends StatefulWidget {
@@ -14,9 +16,25 @@ class SleepCounting extends StatefulWidget {
 }
 
 class _SleepCountingState extends State<SleepCounting> {
+  final controller = Get.find<DailySleepController>();
   var isBedTimeExpanded = false.obs;
   var isAlarmExnpanded = false.obs;
+  final now = DateTime.now();
+  final later = DateTime.now().add(const Duration(days: 1));
+  RxBool isStart = false.obs;
+  Rx<DateTime> choseBedTime = DateTime.now().obs;
+  Rx<DateTime> choseAlarm = DateTime.now().obs;
+
   @override
+  void initState() {
+    super.initState();
+    choseBedTime.value = DateTime(now.year, now.month, now.day,
+        controller.inBedTime.h, controller.inBedTime.m, 0);
+
+    choseAlarm.value = DateTime(later.year, later.month, later.day,
+        controller.outBedTime.h, controller.outBedTime.m, 0);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -159,48 +177,20 @@ class _SleepCountingState extends State<SleepCounting> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        const Text(
-                                          '10:00 PM',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            isBedTimeExpanded.value =
-                                                !isBedTimeExpanded.value;
-                                          },
-                                          child: const Icon(
-                                            Icons.change_circle,
-                                            size: 25,
-                                            color: AppColors.primaryColor,
+                                        Obx(
+                                          () => Text(
+                                            DateFormat()
+                                                .add_jm()
+                                                .format(choseBedTime.value),
+                                            style: const TextStyle(
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                            ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                    if (isBedTimeExpanded.value)
-                                      FutureBuilder(
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            return SizedBox(
-                                              height: 100,
-                                              child: CupertinoTimerPicker(
-                                                mode:
-                                                    CupertinoTimerPickerMode.hm,
-                                                onTimerDurationChanged:
-                                                    (value) {},
-                                              ),
-                                            );
-                                          } else {
-                                            return const SizedBox();
-                                          }
-                                        },
-                                        future: Future.delayed(
-                                            const Duration(milliseconds: 550)),
-                                      ),
                                   ],
                                 ),
                               ),
@@ -243,52 +233,18 @@ class _SleepCountingState extends State<SleepCounting> {
                                       ],
                                     ),
                                     const SizedBox(height: 5),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        const Text(
-                                          '5:00 AM PM',
-                                          style: TextStyle(
-                                            color: Colors.black,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
+                                    Obx(
+                                      () => Text(
+                                        DateFormat()
+                                            .add_jm()
+                                            .format(choseAlarm.value),
+                                        style: const TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
                                         ),
-                                        InkWell(
-                                          onTap: () {
-                                            isAlarmExnpanded.value =
-                                                !isAlarmExnpanded.value;
-                                          },
-                                          child: const Icon(
-                                            Icons.change_circle,
-                                            size: 25,
-                                            color: AppColors.primaryColor,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    if (isAlarmExnpanded.value)
-                                      FutureBuilder(
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            return SizedBox(
-                                              height: 100,
-                                              child: CupertinoTimerPicker(
-                                                mode:
-                                                    CupertinoTimerPickerMode.hm,
-                                                onTimerDurationChanged:
-                                                    (value) {},
-                                              ),
-                                            );
-                                          } else {
-                                            return const SizedBox();
-                                          }
-                                        },
-                                        future: Future.delayed(
-                                            const Duration(milliseconds: 550)),
                                       ),
+                                    ),
                                   ],
                                 ),
                               ),
@@ -308,33 +264,25 @@ class _SleepCountingState extends State<SleepCounting> {
                         color: Colors.white,
                       ),
                       child: Row(
-                        children: const [
-                          Icon(Icons.check_circle,
+                        children: [
+                          const Icon(Icons.check_circle,
                               size: 35, color: AppColors.primaryColor),
-                          SizedBox(width: 10),
-                          Text(
+                          const SizedBox(width: 10),
+                          const Text(
                             'Sleep Goal',
                             style: TextStyle(
                               color: Colors.black,
                               fontWeight: FontWeight.bold,
-                              fontSize: 22,
-                            ),
-                          ),
-                          Spacer(),
-                          Text(
-                            '8',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                          Text(
-                            'h',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
                               fontSize: 20,
                             ),
+                          ),
+                          const Spacer(),
+                          Text(
+                            '${NumberFormat('00').format(controller.intervalBedTime.h)}Hr ${NumberFormat('00').format(controller.intervalBedTime.m)}Min',
+                            style: const TextStyle(
+                                fontSize: 14.0,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),

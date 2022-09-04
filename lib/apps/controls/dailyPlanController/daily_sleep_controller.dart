@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 import 'package:intl/intl.dart';
+import 'package:progressive_time_picker/progressive_time_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../../constrains.dart';
 import '../../../services/auth_service.dart';
@@ -47,6 +48,8 @@ class DailySleepController extends GetxController with TrackerController {
     // getNutriData(listDateTime[index]);
     update();
   }
+
+  //------------------------sleep counting
 
   //------------------------------------add alarm
 
@@ -111,6 +114,17 @@ class DailySleepController extends GetxController with TrackerController {
     'Fri': 5,
     'Sat': 6,
   };
+
+  PickedTime inBedTime = PickedTime(h: 0, m: 0);
+  PickedTime outBedTime = PickedTime(h: 8, m: 0);
+  PickedTime intervalBedTime = PickedTime(h: 0, m: 0);
+
+  void disposePickTime() {
+    inBedTime = PickedTime(h: 0, m: 0);
+    outBedTime = PickedTime(h: 8, m: 0);
+    intervalBedTime = PickedTime(h: 0, m: 0);
+  }
+
   List ntToWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   saveAlarmFirebase() async {
     List<int> dateSelect = [];

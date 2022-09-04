@@ -620,7 +620,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                               fontSize: 12),
                                         ),
                                         onPressed: () => Get.toNamed(
-                                            RouteName.sleepCounting),
+                                            RouteName.selectSleepTime),
                                         linearGradient: LinearGradient(
                                           colors: [
                                             AppColors.primaryColor2,

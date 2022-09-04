@@ -658,6 +658,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "4.2.4"
+  progressive_time_picker:
+    dependency: "direct main"
+    description:
+      name: progressive_time_picker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.6"
   provider:
     dependency: "direct main"
     description:
