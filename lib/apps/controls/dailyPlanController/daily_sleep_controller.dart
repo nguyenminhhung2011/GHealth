@@ -34,8 +34,18 @@ class DailySleepController extends GetxController with TrackerController {
         for (var item in DataService.instance.listSleepTime)
           if (item.listDate.contains(date)) item
       ];
+  List<Map<String, dynamic>> get listSleepReport =>
+      DataService.instance.listSleepReport;
+  List<Map<String, dynamic>> listSleepReportDate(DateTime date) => [
+        for (var item in DataService.instance.listSleepReport)
+          if (item['bedTime'].year == date.year &&
+              item['bedTime'].month == date.month &&
+              item['bedTime'].day == date.day)
+            item
+      ];
   final Rx<int> _onFocus = 1.obs;
   final Rx<CalendarController> _calendarController = CalendarController().obs;
+
   CalendarController get calendarController => _calendarController.value;
   final List<DateTime> listDateTime = [
     for (int i = 1; i <= 30; i++) DateTime.now().subtract(Duration(days: i)),

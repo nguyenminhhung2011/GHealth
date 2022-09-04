@@ -15,7 +15,8 @@ class SleepCounting extends StatefulWidget {
   State<SleepCounting> createState() => _SleepCountingState();
 }
 
-class _SleepCountingState extends State<SleepCounting> {
+class _SleepCountingState extends State<SleepCounting>
+    with TickerProviderStateMixin {
   final controller = Get.find<DailySleepController>();
   var isBedTimeExpanded = false.obs;
   var isAlarmExnpanded = false.obs;
@@ -24,15 +25,48 @@ class _SleepCountingState extends State<SleepCounting> {
   RxBool isStart = false.obs;
   Rx<DateTime> choseBedTime = DateTime.now().obs;
   Rx<DateTime> choseAlarm = DateTime.now().obs;
-
+  Rx<int> currentTime = 1.obs;
+  AnimationController? controllerCurrentTime;
+  double progress = 0;
+  onComPleted() {}
   @override
   void initState() {
     super.initState();
+
+    currentTime.value =
+        controller.intervalBedTime.h * 3600 + controller.intervalBedTime.m * 60;
     choseBedTime.value = DateTime(now.year, now.month, now.day,
         controller.inBedTime.h, controller.inBedTime.m, 0);
 
     choseAlarm.value = DateTime(later.year, later.month, later.day,
         controller.outBedTime.h, controller.outBedTime.m, 0);
+    controllerCurrentTime = AnimationController(
+        vsync: this, duration: Duration(seconds: currentTime.value));
+    controllerCurrentTime!.forward(from: controllerCurrentTime!.value);
+    controllerCurrentTime!.stop();
+    controllerCurrentTime!.addListener(() {
+      setState(() {
+        progress = controllerCurrentTime!.value;
+      });
+    });
+    controllerCurrentTime!.addStatusListener((status) {
+      switch (status) {
+        case AnimationStatus.forward:
+          break;
+        case AnimationStatus.completed:
+          onComPleted();
+          break;
+        default:
+          break;
+      }
+    });
+  }
+
+  void dispose() {
+    if (controllerCurrentTime != null) {
+      controllerCurrentTime?.dispose();
+    }
+    super.dispose();
   }
 
   Widget build(BuildContext context) {
@@ -98,7 +132,7 @@ class _SleepCountingState extends State<SleepCounting> {
                             height: 120, width: 120),
                       ),
                       circularStrokeCap: CircularStrokeCap.round,
-                      percent: 0.4,
+                      percent: progress,
                       // reverse: fastingPlanController.isRemainMode.value,
                       curve: Curves.linear,
                       progressColor: AppColors.primaryColor,
@@ -106,10 +140,11 @@ class _SleepCountingState extends State<SleepCounting> {
                       lineWidth: 7,
                       radius: 150,
                       backgroundWidth: 9,
+                      onAnimationEnd: () {},
                     ),
                     const SizedBox(height: 10),
                     Container(
-                      width: 130,
+                      width: 180,
                       alignment: Alignment.center,
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 10),
@@ -119,11 +154,11 @@ class _SleepCountingState extends State<SleepCounting> {
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(Icons.timelapse, color: Colors.white),
-                          SizedBox(width: 5),
-                          Text('4:30',
-                              style: TextStyle(
+                        children: [
+                          const Icon(Icons.timelapse, color: Colors.white),
+                          const SizedBox(width: 5),
+                          Text(DateFormat().add_jm().format(choseAlarm.value),
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17,
@@ -291,28 +326,38 @@ class _SleepCountingState extends State<SleepCounting> {
                     Container(
                       width: double.infinity,
                       margin: const EdgeInsets.symmetric(horizontal: 20),
-                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      // padding: const EdgeInsets.symmetric(vertical: 5),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
                         color: AppColors.primaryColor,
                       ),
                       child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            primary: AppColors.primaryColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                            alignment: Alignment.center,
-                            fixedSize: const Size(110, 20),
-                            elevation: 0,
-                          ),
-                          child: const Text(
-                            'Start Sleep',
-                            style: TextStyle(
+                        onPressed: () {
+                          print(progress * currentTime.value);
+                          isStart.value = !isStart.value;
+                          (isStart.value)
+                              ? controllerCurrentTime!
+                                  .forward(from: controllerCurrentTime!.value)
+                              : controllerCurrentTime!.stop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: AppColors.primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          alignment: Alignment.center,
+                          fixedSize: const Size(double.infinity, 45),
+                          elevation: 0,
+                        ),
+                        child: Obx(
+                          () => Text(
+                            !isStart.value ? 'Start Sleeping' : 'Awake ',
+                            style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold),
-                          )),
+                          ),
+                        ),
+                      ),
                     )
                   ],
                 )
@@ -324,3 +369,56 @@ class _SleepCountingState extends State<SleepCounting> {
     );
   }
 }
+
+// class TimeSleepCountdown extends StatefulWidget {
+//   const TimeSleepCountdown(
+//       {Key? key, required this.currentTime, required this.onComPleted})
+//       : super(key: key);
+//   final Duration currentTime;
+//   final VoidCallback onComPleted;
+
+//   @override
+//   State<TimeSleepCountdown> createState() => _TimeSleepCountdownState();
+// }
+
+// class _TimeSleepCountdownState extends State<TimeSleepCountdown>
+//     with TickerProviderStateMixin {
+//   AnimationController? controllerCurrentTime;
+//   double progress = 0;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     controllerCurrentTime =
+//         AnimationController(vsync: this, duration: widget.currentTime);
+//     controllerCurrentTime!.forward(from: controllerCurrentTime!.value);
+//     controllerCurrentTime!.addListener(() {
+//       setState(() {
+//         progress = controllerCurrentTime!.value;
+//       });
+//     });
+//     controllerCurrentTime!.addStatusListener((status) {
+//       switch (status) {
+//         case AnimationStatus.forward:
+//           break;
+//         case AnimationStatus.completed:
+//           widget.onComPleted();
+//           break;
+//         default:
+//           break;
+//       }
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     if (controllerCurrentTime != null) {
+//       controllerCurrentTime?.dispose();
+//     }
+//     super.dispose();
+//   }
+
+//   Widget build(BuildContext context) {
+//     return ;
+//   }
+// }

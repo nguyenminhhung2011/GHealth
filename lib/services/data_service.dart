@@ -29,6 +29,9 @@ class DataService {
   static late Rx<List<Map<String, dynamic>>> _dataNutriPlan =
       Rx<List<Map<String, dynamic>>>([]);
 
+  static late Rx<List<Map<String, dynamic>>> _listSleepReport =
+      Rx<List<Map<String, dynamic>>>([]);
+
   final _mealProvider = MealProvider();
   final _nutritionProvider = NutritionProvider();
   final _waterProvider = WaterProvider();
@@ -42,6 +45,8 @@ class DataService {
   List<Water> get waterConsume => _waterConsume.value;
   Map<String, dynamic> get sleepBasicTIme => _sleepBasicTime.value;
   List<Sleep> get listSleepTime => _listSleepTIme.value;
+  List<Map<String, dynamic>> get listSleepReport => _listSleepReport.value;
+
   loadMealList() async {
     if (_mealList.value.isNotEmpty) return;
     _mealList.value = await _mealProvider.getAllMeal();
@@ -169,6 +174,29 @@ class DataService {
         Sleep data = Sleep.fromSnap(item);
         data.id = item.id;
         result.add(data);
+      }
+      return result;
+    }));
+  }
+
+  loadListSleepReport() async {
+    _listSleepReport.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('sleep_basic_time')
+        .doc('sleep')
+        .collection('sleep_report')
+        .snapshots()
+        .map((event) {
+      List<Map<String, dynamic>> result = [];
+      for (var item in event.docs) {
+        result.add({
+          'bedTime': DateTime.fromMillisecondsSinceEpoch(
+              item.data()['bedTime'].seconds * 1000),
+          'alarm': DateTime.fromMillisecondsSinceEpoch(
+              item.data()['alarm'].seconds * 1000),
+          'goal': item.data()['goal'],
+        });
       }
       return result;
     }));

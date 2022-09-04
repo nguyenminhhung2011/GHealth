@@ -559,3 +559,77 @@ class Data {
                               //     duration: const Duration(milliseconds: 750),
                               //     curve: Curves.ease);
                               // pageIndex = pageIndex == 0 ? 1 : 0;
+
+ // void scheduleAlarm(DateTime scheduledNotificationDateTime,
+  //     {required bool isRepeating}) async {
+  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+  //     'alarm_notif',
+  //     'alarm_notif',
+  //     channelDescription: 'Channel for Alarm notification',
+  //     icon: 'codex_logo',
+  //     sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+  //     largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
+  //   );
+
+  //   var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+  //     sound: 'a_long_cold_sting.wav',
+  //     presentAlert: true,
+  //     presentBadge: true,
+  //     presentSound: true,
+  //   );
+  //   var platformChannelSpecifics = NotificationDetails(
+  //     android: androidPlatformChannelSpecifics,
+  //     iOS: iOSPlatformChannelSpecifics,
+  //   );
+
+  //   if (isRepeating)
+  //     await flutterLocalNotificationsPlugin.showDailyAtTime(
+  //       0,
+  //       'Office',
+  //       'OK',
+  //       Time(
+  //         scheduledNotificationDateTime.hour,
+  //         scheduledNotificationDateTime.minute,
+  //         scheduledNotificationDateTime.second,
+  //       ),
+  //       platformChannelSpecifics,
+  //     );
+  //   else
+  //     await flutterLocalNotificationsPlugin.zonedSchedule(
+  //       0,
+  //       'Office',
+  //       'Ok',
+  //       tz.TZDateTime.from(scheduledNotificationDateTime, tz.local),
+  //       platformChannelSpecifics,
+  //       androidAllowWhileIdle: true,
+  //       uiLocalNotificationDateInterpretation:
+  //           UILocalNotificationDateInterpretation.absoluteTime,
+  //     );
+  // }
+
+  // void onSaveAlarm(bool _isRepeating) {
+  //   DateTime? scheduleAlarmDateTime;
+  //   if (_alarmTime!.isAfter(DateTime.now()))
+  //     scheduleAlarmDateTime = _alarmTime;
+  //   else
+  //     scheduleAlarmDateTime = _alarmTime!.add(Duration(days: 1));
+
+  //   var alarmInfo = AlarmInfo(
+  //     alarmDateTime: scheduleAlarmDateTime,
+  //     gradientColorIndex: _currentAlarms!.length,
+  //     title: 'alarm',
+  //   );
+  //   _alarmHelper.insertAlarm(alarmInfo);
+  //   if (scheduleAlarmDateTime != null) {
+  //     scheduleAlarm(scheduleAlarmDateTime, alarmInfo,
+  //         isRepeating: _isRepeating);
+  //   }
+  //   Navigator.pop(context);
+  //   loadAlarms();
+  // }
+
+  // void deleteAlarm(int? id) {
+  //   _alarmHelper.delete(id);
+  //   //unsubscribe for notification
+  //   loadAlarms();
+  // }

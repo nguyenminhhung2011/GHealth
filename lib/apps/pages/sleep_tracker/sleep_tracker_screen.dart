@@ -3,9 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/daily_sleep_controller.dart';
-import 'package:gold_health/apps/global_widgets/toggle_button_ios.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
-import 'package:gold_health/apps/pages/sleep_tracker/sleep_schedule_screen.dart';
 import 'package:intl/intl.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../routes/route_name.dart';
@@ -25,21 +23,6 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
   var bedTimeSwitchButton = true.obs;
   var alarmSwitchButton = true.obs;
   // ignore: unnecessary_cast
-  var listSchedule = ([
-    {
-      'name': 'Bedtime',
-      'icon': 'assets/images/bed.png',
-      'time': DateTime(2022, 8, 5, 21),
-      'isTurnOn': true,
-    },
-    {
-      'name': 'Alarm',
-      'icon': 'assets/images/Icon-Alaarm.png',
-      'time': DateTime(2022, 8, 5, 5, 10),
-      'isTurnOn': true,
-    },
-  ] as List<Map<String, dynamic>>)
-      .obs;
 
   List<String> tabs = [
     'Nutrition',
@@ -446,97 +429,122 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                         Column(
                           children: [
                             const SizedBox(height: 5),
-                            const Align(
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                'Time Slepp Report',
-                                style: TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
-                              ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text(
+                                  'Time Slepp Report',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w600),
+                                ),
+                                Text(
+                                  'Yesterday',
+                                  style: TextStyle(
+                                      color: Colors.grey, fontSize: 15),
+                                )
+                              ],
                             ),
                             const SizedBox(height: 20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: widthDevice * 0.9,
-                                  alignment: Alignment.center,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 15, vertical: 20),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryColor1
-                                        .withOpacity(0.2),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Image.asset('assets/images/bed.png'),
-                                      Container(
-                                        height: 40,
-                                        width: 1,
-                                        color: Colors.grey,
-                                      ),
-                                      RichText(
-                                        textAlign: TextAlign.center,
-                                        text: const TextSpan(
-                                          style: TextStyle(),
-                                          children: [
-                                            TextSpan(
-                                              text: 'Bed Time \n',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 17,
+                            Obx(
+                              () => Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ...controller
+                                      .listSleepReportDate(DateTime.now()
+                                          .subtract(const Duration(days: 1)))
+                                      .map(
+                                        (e) => SleepReportItem(
+                                            widthDevice: widthDevice, e: e),
+                                      )
+                                      .toList(),
+                                  const SizedBox(height: 10),
+                                  InkWell(
+                                    onTap: () async {
+                                      await Get.bottomSheet(
+                                        isScrollControlled: true,
+                                        enterBottomSheetDuration:
+                                            const Duration(milliseconds: 100),
+                                        Container(
+                                          margin:
+                                              const EdgeInsets.only(top: 100),
+                                          child: ClipRRect(
+                                            borderRadius:
+                                                const BorderRadius.only(
+                                              topLeft: Radius.circular(10.0),
+                                              topRight: Radius.circular(10.0),
+                                            ),
+                                            child: Scaffold(
+                                              appBar: AppBar(
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                elevation: 0,
+                                                leading: IconButton(
+                                                  icon: const Icon(Icons.close,
+                                                      color: Colors.black),
+                                                  onPressed: () => Get.back(),
+                                                ),
+                                                centerTitle: true,
+                                              ),
+                                              body: ListView(
+                                                physics:
+                                                    const BouncingScrollPhysics(
+                                                        parent:
+                                                            AlwaysScrollableScrollPhysics()),
+                                                children: [
+                                                  const Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      'List Sleep Time Report',
+                                                      style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontSize: 18,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  const SizedBox(height: 20),
+                                                  Column(
+                                                    children: [
+                                                      ...controller
+                                                          .listSleepReport
+                                                          .map(
+                                                            (e) => SleepReportItem(
+                                                                widthDevice:
+                                                                    widthDevice,
+                                                                e: e),
+                                                          )
+                                                          .toList(),
+                                                    ],
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                            TextSpan(
-                                              text: '20:30 PM',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                          ],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: double.infinity,
+                                      height: 20,
+                                      alignment: Alignment.center,
+                                      child: const Text(
+                                        'View More',
+                                        style: TextStyle(
+                                          color: Colors.grey,
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Image.asset('assets/images/duration.png',
-                                          height: 20, width: 20),
-                                      RichText(
-                                        textAlign: TextAlign.center,
-                                        text: const TextSpan(
-                                          style: TextStyle(),
-                                          children: [
-                                            TextSpan(
-                                              text: 'Alarm Goff\n',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 17,
-                                              ),
-                                            ),
-                                            TextSpan(
-                                              text: '5:30 AM',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 40,
-                                        width: 1,
-                                        color: Colors.grey,
-                                      ),
-                                      Image.asset(
-                                          'assets/images/Icon-Alaarm.png'),
-                                    ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
                         const Divider(),
                         const SizedBox(height: 20),
                         Row(
@@ -757,78 +765,111 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
       },
     );
   }
+}
 
-  // void scheduleAlarm(DateTime scheduledNotificationDateTime,
-  //     {required bool isRepeating}) async {
-  //   var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-  //     'alarm_notif',
-  //     'alarm_notif',
-  //     channelDescription: 'Channel for Alarm notification',
-  //     icon: 'codex_logo',
-  //     sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
-  //     largeIcon: DrawableResourceAndroidBitmap('codex_logo'),
-  //   );
+class SleepReportItem extends StatelessWidget {
+  const SleepReportItem({
+    Key? key,
+    required this.widthDevice,
+    required this.e,
+  }) : super(key: key);
 
-  //   var iOSPlatformChannelSpecifics = IOSNotificationDetails(
-  //     sound: 'a_long_cold_sting.wav',
-  //     presentAlert: true,
-  //     presentBadge: true,
-  //     presentSound: true,
-  //   );
-  //   var platformChannelSpecifics = NotificationDetails(
-  //     android: androidPlatformChannelSpecifics,
-  //     iOS: iOSPlatformChannelSpecifics,
-  //   );
+  final double widthDevice;
+  final Map<String, dynamic> e;
 
-  //   if (isRepeating)
-  //     await flutterLocalNotificationsPlugin.showDailyAtTime(
-  //       0,
-  //       'Office',
-  //       'OK',
-  //       Time(
-  //         scheduledNotificationDateTime.hour,
-  //         scheduledNotificationDateTime.minute,
-  //         scheduledNotificationDateTime.second,
-  //       ),
-  //       platformChannelSpecifics,
-  //     );
-  //   else
-  //     await flutterLocalNotificationsPlugin.zonedSchedule(
-  //       0,
-  //       'Office',
-  //       'Ok',
-  //       tz.TZDateTime.from(scheduledNotificationDateTime, tz.local),
-  //       platformChannelSpecifics,
-  //       androidAllowWhileIdle: true,
-  //       uiLocalNotificationDateInterpretation:
-  //           UILocalNotificationDateInterpretation.absoluteTime,
-  //     );
-  // }
+  formatedTime({required int timeInSecond}) {
+    int h, m, s;
+    h = timeInSecond ~/ 3600;
+    m = ((timeInSecond - h * 3600)) ~/ 60;
+    s = timeInSecond - (h * 3600) - (m * 60);
+    String result = "${h}h:${m}m";
+    return result;
+  }
 
-  // void onSaveAlarm(bool _isRepeating) {
-  //   DateTime? scheduleAlarmDateTime;
-  //   if (_alarmTime!.isAfter(DateTime.now()))
-  //     scheduleAlarmDateTime = _alarmTime;
-  //   else
-  //     scheduleAlarmDateTime = _alarmTime!.add(Duration(days: 1));
-
-  //   var alarmInfo = AlarmInfo(
-  //     alarmDateTime: scheduleAlarmDateTime,
-  //     gradientColorIndex: _currentAlarms!.length,
-  //     title: 'alarm',
-  //   );
-  //   _alarmHelper.insertAlarm(alarmInfo);
-  //   if (scheduleAlarmDateTime != null) {
-  //     scheduleAlarm(scheduleAlarmDateTime, alarmInfo,
-  //         isRepeating: _isRepeating);
-  //   }
-  //   Navigator.pop(context);
-  //   loadAlarms();
-  // }
-
-  // void deleteAlarm(int? id) {
-  //   _alarmHelper.delete(id);
-  //   //unsubscribe for notification
-  //   loadAlarms();
-  // }
+  Widget build(BuildContext context) {
+    return Container(
+      width: widthDevice * 0.9,
+      alignment: Alignment.center,
+      margin: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      decoration: BoxDecoration(
+        color: AppColors.primaryColor1.withOpacity(0.2),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+              '${DateFormat().add_yMd().format(e['bedTime'])} ~ ${DateFormat().add_yMd().format(e['alarm'])} ',
+              style: const TextStyle(color: Colors.grey)),
+          const SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset('assets/images/bed.png'),
+              Container(
+                height: 40,
+                width: 1,
+                color: Colors.grey,
+              ),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: 'Bed Time \n',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    TextSpan(
+                      text: DateFormat().add_jm().format(e['bedTime']),
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  Image.asset('assets/images/duration.png',
+                      height: 20, width: 20),
+                  Text(
+                    formatedTime(timeInSecond: e['goal']),
+                    style: const TextStyle(color: Colors.grey, fontSize: 12),
+                  )
+                ],
+              ),
+              RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  children: [
+                    const TextSpan(
+                      text: 'Alarm Goff \n',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17,
+                      ),
+                    ),
+                    TextSpan(
+                      text: DateFormat().add_jm().format(e['alarm']),
+                      style: const TextStyle(color: Colors.grey),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 40,
+                width: 1,
+                color: Colors.grey,
+              ),
+              Image.asset('assets/images/Icon-Alaarm.png'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 }

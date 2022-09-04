@@ -221,7 +221,7 @@ class _SelectSleepTimeState extends State<SelectSleepTime> {
                     color: AppColors.primaryColor,
                   ),
                   child: ElevatedButton(
-                      onPressed: () => Get.toNamed(RouteName.sleepCounting),
+                      onPressed: () => Get.offNamed(RouteName.sleepCounting),
                       style: ElevatedButton.styleFrom(
                         primary: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
@@ -231,7 +231,7 @@ class _SelectSleepTimeState extends State<SelectSleepTime> {
                         elevation: 0,
                       ),
                       child: const Text(
-                        'Select Complete',
+                        'Set Alarm',
                         style: TextStyle(
                             color: Colors.white,
                             fontSize: 18,
