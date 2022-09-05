@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/global_widgets/dialog/success_dialog.dart';
+import 'package:gold_health/apps/global_widgets/dialog/yes_no_dialog.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -28,16 +30,26 @@ class _SleepCountingState extends State<SleepCounting>
   Rx<int> currentTime = 1.obs;
   AnimationController? controllerCurrentTime;
   double progress = 0;
-  onComPleted() {}
+  onComPleted() async {
+    final update = await controller.updateGoalSleepReport(currentTime.value);
+    if (update == 'Success') {
+      controller.disposePickTime();
+      final r = await Get.dialog(const SuccessDialog(
+          question: 'Congratulations on completing your sleep',
+          title1: 'Have a goodday'));
+      if (r == true) {
+        Get.back();
+      }
+    }
+  }
+
   @override
   void initState() {
     super.initState();
-
     currentTime.value =
         controller.intervalBedTime.h * 3600 + controller.intervalBedTime.m * 60;
     choseBedTime.value = DateTime(now.year, now.month, now.day,
         controller.inBedTime.h, controller.inBedTime.m, 0);
-
     choseAlarm.value = DateTime(later.year, later.month, later.day,
         controller.outBedTime.h, controller.outBedTime.m, 0);
     controllerCurrentTime = AnimationController(
@@ -62,6 +74,7 @@ class _SleepCountingState extends State<SleepCounting>
     });
   }
 
+  @override
   void dispose() {
     if (controllerCurrentTime != null) {
       controllerCurrentTime?.dispose();
@@ -69,6 +82,7 @@ class _SleepCountingState extends State<SleepCounting>
     super.dispose();
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
@@ -91,7 +105,25 @@ class _SleepCountingState extends State<SleepCounting>
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: InkWell(
-                      onTap: () => Get.back(),
+                      onTap: () async {
+                        isStart.value = false;
+                        controllerCurrentTime!.stop();
+                        final update = await controller.updateGoalSleepReport(
+                            (progress * currentTime.value).round());
+                        if (update == 'Success') {
+                          final r = await Get.dialog(YesNoDialog(
+                              press: () {
+                                controller.disposePickTime();
+                                Get.back(result: true);
+                              },
+                              question: 'Do you want exist sleep counting?',
+                              title1: 'Your progress will be saved in the data',
+                              title2: ''));
+                          if (r == true) {
+                            Get.back();
+                          }
+                        }
+                      },
                       borderRadius: BorderRadius.circular(15),
                       child: Container(
                         padding: const EdgeInsets.all(10),
@@ -333,7 +365,10 @@ class _SleepCountingState extends State<SleepCounting>
                       ),
                       child: ElevatedButton(
                         onPressed: () {
-                          print(progress * currentTime.value);
+                          if (isStart.value) {
+                            controller.updateGoalSleepReport(
+                                (progress * currentTime.value).round());
+                          }
                           isStart.value = !isStart.value;
                           (isStart.value)
                               ? controllerCurrentTime!
@@ -369,56 +404,3 @@ class _SleepCountingState extends State<SleepCounting>
     );
   }
 }
-
-// class TimeSleepCountdown extends StatefulWidget {
-//   const TimeSleepCountdown(
-//       {Key? key, required this.currentTime, required this.onComPleted})
-//       : super(key: key);
-//   final Duration currentTime;
-//   final VoidCallback onComPleted;
-
-//   @override
-//   State<TimeSleepCountdown> createState() => _TimeSleepCountdownState();
-// }
-
-// class _TimeSleepCountdownState extends State<TimeSleepCountdown>
-//     with TickerProviderStateMixin {
-//   AnimationController? controllerCurrentTime;
-//   double progress = 0;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     controllerCurrentTime =
-//         AnimationController(vsync: this, duration: widget.currentTime);
-//     controllerCurrentTime!.forward(from: controllerCurrentTime!.value);
-//     controllerCurrentTime!.addListener(() {
-//       setState(() {
-//         progress = controllerCurrentTime!.value;
-//       });
-//     });
-//     controllerCurrentTime!.addStatusListener((status) {
-//       switch (status) {
-//         case AnimationStatus.forward:
-//           break;
-//         case AnimationStatus.completed:
-//           widget.onComPleted();
-//           break;
-//         default:
-//           break;
-//       }
-//     });
-//   }
-
-//   @override
-//   void dispose() {
-//     if (controllerCurrentTime != null) {
-//       controllerCurrentTime?.dispose();
-//     }
-//     super.dispose();
-//   }
-
-//   Widget build(BuildContext context) {
-//     return ;
-//   }
-// }

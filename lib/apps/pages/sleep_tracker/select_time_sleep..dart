@@ -21,6 +21,7 @@ class _SelectSleepTimeState extends State<SelectSleepTime> {
 
   final double _sleepGoal = 8.0;
   bool _isSleepGoal = false;
+  RxBool isLoading = false.obs;
 
   @override
   void initState() {
@@ -212,31 +213,46 @@ class _SelectSleepTimeState extends State<SelectSleepTime> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: AppColors.primaryColor,
-                  ),
-                  child: ElevatedButton(
-                      onPressed: () => Get.offNamed(RouteName.sleepCounting),
+                Obx(
+                  () => Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    // padding: const EdgeInsets.symmetric(vertical: 5),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: AppColors.primaryColor,
+                    ),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        isLoading.value = true;
+                        String nextPage =
+                            await controller.addNewSleepReportToFirebase();
+                        isLoading.value = false;
+                        if (nextPage == 'Success') {
+                          Get.offNamed(RouteName.sleepCounting);
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         primary: AppColors.primaryColor,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10)),
+                            borderRadius: BorderRadius.circular(20)),
                         alignment: Alignment.center,
-                        fixedSize: const Size(110, 20),
+                        fixedSize: const Size(double.infinity, 45),
                         elevation: 0,
                       ),
-                      child: const Text(
-                        'Set Alarm',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold),
-                      )),
+                      child: isLoading.value
+                          ? const Center(
+                              child: CircularProgressIndicator(
+                                  color: Colors.white))
+                          : const Text(
+                              'Set Alarm',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                    ),
+                  ),
                 )
               ],
             ),

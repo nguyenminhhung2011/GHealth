@@ -46,6 +46,7 @@ class SuccessDialog extends StatelessWidget {
               const Spacer(),
               Text(
                 question,
+                textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -70,7 +71,7 @@ class SuccessDialog extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   ElevatedButton(
-                      onPressed: () => Get.back(),
+                      onPressed: () => Get.back(result: true),
                       style: ElevatedButton.styleFrom(
                         primary: Colors.green.withOpacity(0.5),
                         shape: RoundedRectangleBorder(

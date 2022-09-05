@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -40,7 +41,8 @@ class DailySleepController extends GetxController with TrackerController {
         for (var item in DataService.instance.listSleepReport)
           if (item['bedTime'].year == date.year &&
               item['bedTime'].month == date.month &&
-              item['bedTime'].day == date.day)
+              item['bedTime'].day == date.day &&
+              item['goal'] != -1)
             item
       ];
   final Rx<int> _onFocus = 1.obs;
@@ -54,8 +56,6 @@ class DailySleepController extends GetxController with TrackerController {
   setFocus(int index, DateTime time) {
     _onFocus.value = index;
     _calendarController.value.displayDate = time;
-    // getMealDate(time);
-    // getNutriData(listDateTime[index]);
     update();
   }
 
@@ -63,6 +63,7 @@ class DailySleepController extends GetxController with TrackerController {
 
   //------------------------------------add alarm
 
+  var now = DateTime.now();
   Rx<DateTime> choseTime = DateTime.now().obs;
   DateTime tempTime = DateTime.now();
 
@@ -70,6 +71,39 @@ class DailySleepController extends GetxController with TrackerController {
   Duration tempDuration = const Duration();
   var isVibrate = true.obs;
 
+  Map<String, dynamic> listVariable = {
+    'Sun': false.obs,
+    'Mon': false.obs,
+    'Tue': false.obs,
+    'Wed': false.obs,
+    'Thu': false.obs,
+    'Fri': false.obs,
+    'Sat': false.obs,
+  };
+
+  Map<String, dynamic> weekDayTonInt = {
+    'Sun': 7,
+    'Mon': 1,
+    'Tue': 2,
+    'Wed': 3,
+    'Thu': 4,
+    'Fri': 5,
+    'Sat': 6,
+  };
+
+  PickedTime inBedTime = PickedTime(h: 0, m: 0);
+  PickedTime outBedTime = PickedTime(h: 8, m: 0);
+  PickedTime intervalBedTime = PickedTime(h: 0, m: 0);
+  Rx<String> idSleepReport = ''.obs;
+
+  void disposePickTime() {
+    inBedTime = PickedTime(h: 0, m: 0);
+    outBedTime = PickedTime(h: 8, m: 0);
+    intervalBedTime = PickedTime(h: 0, m: 0);
+    idSleepReport.value = '';
+  }
+
+  List ntToWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   initAll() {
     choseTime = DateTime.now().obs;
     tempTime = DateTime.now();
@@ -89,53 +123,6 @@ class DailySleepController extends GetxController with TrackerController {
     update();
   }
 
-  initAll1(Sleep data) {
-    choseTime.value = data.bedTime;
-    choseDuration.value =
-        Duration(hours: data.alarm.difference(data.bedTime).inHours);
-    for (var item in data.listDate) {
-      listVariable[weekDayTonInt[item - 1]] = true.obs;
-    }
-  }
-
-  Map<String, dynamic> listVariable = {
-    'Sun': false.obs,
-    'Mon': false.obs,
-    'Tue': false.obs,
-    'Wed': false.obs,
-    'Thu': false.obs,
-    'Fri': false.obs,
-    'Sat': false.obs,
-  };
-
-  Map<String, dynamic> tempData = {
-    'alarm': DateTime.now(),
-    'bedTime': DateTime.now(),
-    'isTurnOn': true,
-    'isTurnOn1': true,
-    'listDate': [],
-  };
-  Map<String, dynamic> weekDayTonInt = {
-    'Sun': 7,
-    'Mon': 1,
-    'Tue': 2,
-    'Wed': 3,
-    'Thu': 4,
-    'Fri': 5,
-    'Sat': 6,
-  };
-
-  PickedTime inBedTime = PickedTime(h: 0, m: 0);
-  PickedTime outBedTime = PickedTime(h: 8, m: 0);
-  PickedTime intervalBedTime = PickedTime(h: 0, m: 0);
-
-  void disposePickTime() {
-    inBedTime = PickedTime(h: 0, m: 0);
-    outBedTime = PickedTime(h: 8, m: 0);
-    intervalBedTime = PickedTime(h: 0, m: 0);
-  }
-
-  List ntToWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   saveAlarmFirebase() async {
     List<int> dateSelect = [];
     listVariable.forEach((key, value) {
@@ -175,6 +162,26 @@ class DailySleepController extends GetxController with TrackerController {
     }
   }
 
+  Future<String> updateGoalSleepReport(int newGoal) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('sleep_basic_time')
+          .doc('sleep')
+          .collection('sleep_report')
+          .doc(idSleepReport.value)
+          .update(
+        {
+          'goal': newGoal,
+        },
+      );
+      return 'Success';
+    } catch (err) {
+      return err.toString();
+    }
+  }
+
   deleteDataCollection(String id) async {
     try {
       await firestore
@@ -190,6 +197,33 @@ class DailySleepController extends GetxController with TrackerController {
       print(err);
     }
   }
+
+  Future<String> addNewSleepReportToFirebase() async {
+    try {
+      DateTime bedTime =
+          DateTime(now.year, now.month, now.day, inBedTime.h, inBedTime.m, 0);
+      DateTime alarm = bedTime
+          .add(Duration(minutes: intervalBedTime.h * 60 + intervalBedTime.m));
+      DocumentReference docRef = await firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('sleep_basic_time')
+          .doc('sleep')
+          .collection('sleep_report')
+          .add(
+        {
+          'bedTime': bedTime,
+          'alarm': alarm,
+          'goal': -1,
+        },
+      );
+      idSleepReport.value = docRef.id;
+      return 'Success';
+    } catch (err) {
+      return err.toString();
+    }
+  }
+
   //------------------------------------Widget Item Builder--------------------------------
 
   int get onFocus => _onFocus.value;
