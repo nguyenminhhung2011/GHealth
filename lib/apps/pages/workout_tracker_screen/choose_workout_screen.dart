@@ -1,13 +1,16 @@
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/workout_plan_controller.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/list_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/workout_routine_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
+import 'package:intl/intl.dart';
 import '../../template/misc/colors.dart';
 
 class ChoseWorkoutScreen extends StatefulWidget {
@@ -21,6 +24,7 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
   final _workoutController = Get.find<WorkoutPlanController>();
   final List<WorkoutRoutineCard> _listWorkoutRoutineCard = [];
   final idWorkout = Get.arguments as String;
+  late String workoutCategory;
   bool _initSate = true;
   Future<bool> _getAndSetUpData() async {
     String? temp;
@@ -30,6 +34,8 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
       //Extract data from according level in collection idWorkout/....
       final listExercisesAccordingLevel = _workoutController
           .workouts.value[idWorkout]?['collection'] as Map<String, dynamic>;
+      workoutCategory = _workoutController.workouts.value[idWorkout]
+          ?['workoutCategory'] as String;
       _listWorkoutRoutineCard.clear();
       //Extract data form workout in collection
       listExercisesAccordingLevel.forEach((key, value) {
@@ -62,7 +68,8 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
   }
 
   void getToWorkoutDetailPage(Workout workout) {
-    Get.to(() => const WorkoutDetailScreen(), arguments: workout);
+    Get.to(() => const WorkoutDetailScreen(),
+        arguments: {'workout': workout, 'workoutCategory': workoutCategory});
   }
 
   @override
@@ -159,10 +166,10 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
                                               Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
-                                                children: const [
+                                                children: [
                                                   Text(
-                                                    'Fullbody Workout',
-                                                    style: TextStyle(
+                                                    workoutCategory,
+                                                    style: const TextStyle(
                                                       color: Colors.black,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -195,7 +202,7 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
                                             children: [
                                               InkWell(
                                                 //borderRadius: BorderRadius.circular(20),
-                                                onTap: () {},
+                                                onTap: showTimePicker,
                                                 child: Container(
                                                   padding: const EdgeInsets
                                                           .symmetric(
@@ -224,14 +231,22 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
                                                         ),
                                                       ),
                                                       const Spacer(),
-                                                      const Text(
-                                                        '5/27,09:00 AM',
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
+                                                      Obx(() => Text(
+                                                            DateFormat.yMd()
+                                                                .add_jm()
+                                                                .format(
+                                                                    _workoutController
+                                                                        .alarmTime
+                                                                        .value),
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          )),
                                                       const SizedBox(width: 5),
                                                       const Icon(
                                                         Icons
@@ -245,7 +260,7 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
                                               ),
                                               const SizedBox(height: 20),
                                               InkWell(
-                                                onTap: () {},
+                                                onTap: showLevelDialog,
                                                 child: Container(
                                                   padding: const EdgeInsets
                                                           .symmetric(
@@ -274,14 +289,18 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
                                                         ),
                                                       ),
                                                       const Spacer(),
-                                                      const Text(
-                                                        'Beginner',
-                                                        style: TextStyle(
-                                                          color: Colors.grey,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                        ),
-                                                      ),
+                                                      Obx(() => Text(
+                                                            _workoutController
+                                                                .level.value,
+                                                            style:
+                                                                const TextStyle(
+                                                              color:
+                                                                  Colors.grey,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                            ),
+                                                          )),
                                                       const SizedBox(width: 5),
                                                       const Icon(
                                                         Icons
@@ -341,53 +360,6 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
                         ),
                       ],
                     ),
-                    // Column(
-                    //   children: [
-                    //     const SizedBox(height: 40),
-                    //     AppBarWorkout(title: '', press: () {}),
-                    //     const Spacer(),
-                    //     InkWell(
-                    //       onTap: () {
-                    //         Navigator.push(
-                    //           context,
-                    //           MaterialPageRoute(
-                    //             builder: (context) => const ListWorkoutScreen(),
-                    //           ),
-                    //         );
-                    //       },
-                    //       child: Container(
-                    //         alignment: Alignment.center,
-                    //         width: widthDevice * 0.6,
-                    //         padding: const EdgeInsets.symmetric(vertical: 15),
-                    //         decoration: BoxDecoration(
-                    //           borderRadius: BorderRadius.circular(20),
-                    //           color: AppColors.primaryColor1,
-                    //           boxShadow: [
-                    //             BoxShadow(
-                    //               color: Colors.black.withOpacity(0.05),
-                    //               offset: const Offset(2, 3),
-                    //               blurRadius: 2,
-                    //             ),
-                    //             BoxShadow(
-                    //               color: Colors.black.withOpacity(0.05),
-                    //               offset: const Offset(-2, -3),
-                    //               blurRadius: 2,
-                    //             )
-                    //           ],
-                    //         ),
-                    //         child: const Text(
-                    //           'Start Workout',
-                    //           style: TextStyle(
-                    //             color: Colors.white,
-                    //             fontWeight: FontWeight.bold,
-                    //             fontSize: 17,
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     const SizedBox(height: 30),
-                    //   ],
-                    // )
                   ],
                 ),
               );
@@ -398,6 +370,142 @@ class _ChoseWorkoutScreenState extends State<ChoseWorkoutScreen> {
           child: CircularProgressIndicator(),
         );
       },
+    );
+  }
+
+  showLevelDialog() {
+    String tempLevel = 'Beginner';
+    List<String> listLevel = ['Beginner', 'Intermediate', 'Advanced'];
+    List<Widget> listText = [];
+    for (String element in listLevel) {
+      listText.add(Center(
+        child: Text(
+          element,
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+      ));
+    }
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: 260,
+        decoration: BoxDecoration(
+          color: AppColors.mainColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 180,
+              child: CupertinoPicker(
+                itemExtent: 64,
+                onSelectedItemChanged: (value) => tempLevel = listLevel[value],
+                children: listText,
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _workoutController.level.value = tempLevel;
+                        Get.back();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: AppColors.primaryColor1),
+                        child: const Text(
+                          'Done',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  showTimePicker() {
+    DateTime timeTemp = DateTime.now();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+        height: 260,
+        decoration: BoxDecoration(
+          color: AppColors.mainColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(10),
+            topRight: Radius.circular(10),
+          ),
+        ),
+        child: Column(
+          children: [
+            SizedBox(
+              height: 180,
+              child: CupertinoDatePicker(
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (value) {
+                  timeTemp = value;
+                },
+                initialDateTime: DateTime.now(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () {
+                        _workoutController.alarmTime.value = timeTemp;
+                        Get.back();
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: AppColors.primaryColor1),
+                        child: const Text(
+                          'Done',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
     );
   }
 }

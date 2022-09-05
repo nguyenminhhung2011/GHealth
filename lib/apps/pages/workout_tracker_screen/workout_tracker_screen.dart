@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/workout_plan_controller.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
+import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/choose_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories_workout_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/up_coming_workout_containerd.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_history_screen.dart';
+import 'package:intl/intl.dart';
 
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/row_text_see_more.dart';
@@ -27,19 +29,41 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
 
   Map<String, String> listWorkoutID = {};
 
-  List<CategoriesWorkoutCard> listCategoriesWorkoutCard = [];
+  List<Padding> listWorkoutSchedule = [];
 
   Future<bool> _fetchData() async {
     try {
       await controller.fetchExerciseList();
       await controller.fetchWorkoutList();
+      await controller.fetchScheduleList();
+      await controller.fetchHistoryList();
+      await _addListWorkoutSchedule();
       controller.workouts.value.forEach((key, value) {
         listWorkoutID.addAll({(value['workoutCategory'] as String): key});
       });
-      print(listWorkoutID.toString());
+      // debugPrint(listWorkoutID.toString());
       return true;
     } catch (e) {
       return false;
+    }
+  }
+
+  Future<void> _addListWorkoutSchedule() async {
+    try {
+      final schedules = controller.schedules.value;
+      schedules.forEach((key, value) {
+        listWorkoutSchedule.add(Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: UpComingWorkoutContainer(
+            val: value.isTurnOn,
+            main: value.workoutCategory,
+            time: DateFormat.yMd().add_jm().format(value.time),
+            imagePath: controller.listImage[value.workoutCategory] as String,
+          ),
+        ));
+      });
+    } catch (e) {
+      rethrow;
     }
   }
 
@@ -57,7 +81,6 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
     ];
     // final WorkoutApi tests = WorkoutApi();
     // tests.getData();
-    bool val = true;
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       extendBody: true,
@@ -135,7 +158,10 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                       ),
                                       const Spacer(),
                                       InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          Get.to(() =>
+                                              const WorkoutHistoryScreen());
+                                        },
                                         child: Container(
                                           padding: const EdgeInsets.all(8),
                                           decoration: BoxDecoration(
@@ -145,7 +171,7 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                                 BorderRadius.circular(10),
                                           ),
                                           child: const Icon(
-                                            Icons.more_horiz,
+                                            Icons.history,
                                             color: Colors.black,
                                           ),
                                         ),
@@ -239,25 +265,14 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                   ),
                                   const SizedBox(height: 15),
                                   Column(
-                                    children: [
-                                      UpComingWorkoutContainer(
-                                        val: val,
-                                        imagePath: 'assets/images/fitness.png',
-                                        main: 'Fullbody Workout',
-                                        time: 'Today, 03:00pm',
-                                      ),
-                                      const SizedBox(height: 15),
-                                      UpComingWorkoutContainer(
-                                        val: val,
-                                        imagePath: 'assets/images/drinking.png',
-                                        main: 'Uperbody Workout',
-                                        time: 'June 05, 02:00pm',
-                                      ),
-                                    ],
+                                    children: listWorkoutSchedule,
                                   ),
                                   const SizedBox(height: 20),
                                   RowText_Seemore(
-                                    press: () {},
+                                    press: () {
+                                      Get.to(() => SeeMoreWorkoutScreen(
+                                          listWorkoutID: listWorkoutID));
+                                    },
                                     title: 'What Do You Want to Train',
                                   ),
                                   const SizedBox(height: 15),
@@ -265,7 +280,13 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                     children: [
                                       CategoriesWorkoutCard(
                                         cate_name: 'Upperbody Workout',
-                                        press: () {},
+                                        press: () {
+                                          Get.to(
+                                              () => const ChoseWorkoutScreen(),
+                                              arguments:
+                                                  listWorkoutID['Upperbody']
+                                                      as String);
+                                        },
                                         imagePath:
                                             'assets/images/upperbody.png',
                                         exer: 12,
@@ -273,17 +294,16 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                       ),
                                       CategoriesWorkoutCard(
                                         cate_name: 'Lowebody Workout',
-                                        press: () {},
+                                        press: () {
+                                          Get.to(
+                                              () => const ChoseWorkoutScreen(),
+                                              arguments:
+                                                  listWorkoutID['Lowebody']
+                                                      as String);
+                                        },
                                         imagePath: 'assets/images/lowebody.png',
                                         exer: 12,
                                         time: 40,
-                                      ),
-                                      CategoriesWorkoutCard(
-                                        cate_name: 'ABS Workout',
-                                        press: () {},
-                                        imagePath: 'assets/images/abs.png',
-                                        exer: 14,
-                                        time: 20,
                                       ),
                                       CategoriesWorkoutCard(
                                         cate_name: 'Fullbody Workout',
@@ -297,20 +317,6 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                         imagePath: 'assets/images/fullbody.png',
                                         exer: 11,
                                         time: 32,
-                                      ),
-                                      CategoriesWorkoutCard(
-                                        cate_name: 'Cardio Workout',
-                                        press: () {},
-                                        imagePath: 'assets/images/cardio.png',
-                                        exer: 14,
-                                        time: 20,
-                                      ),
-                                      CategoriesWorkoutCard(
-                                        cate_name: 'Hitt Workout',
-                                        press: () {},
-                                        imagePath: 'assets/images/hitt.png',
-                                        exer: 14,
-                                        time: 20,
                                       ),
                                     ],
                                   ),
@@ -419,6 +425,133 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
           ),
         );
       },
+    );
+  }
+}
+
+class SeeMoreWorkoutScreen extends StatelessWidget {
+  const SeeMoreWorkoutScreen({Key? key, required this.listWorkoutID})
+      : super(key: key);
+  final Map<String, String> listWorkoutID;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: ScreenTemplate(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    InkWell(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.approxWhite,
+                        ),
+                        child: const Icon(
+                          Icons.arrow_back_ios_outlined,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Workout',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4!
+                            .copyWith(fontSize: 20),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                    InkWell(
+                      onTap: () {},
+                      child: Container(
+                        padding: const EdgeInsets.all(5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: AppColors.approxWhite,
+                        ),
+                        child: const Icon(
+                          Icons.more_horiz,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                CategoriesWorkoutCard(
+                  cate_name: 'Upperbody Workout',
+                  press: () {
+                    Get.to(() => const ChoseWorkoutScreen(),
+                        arguments: listWorkoutID['Upperbody'] as String);
+                  },
+                  imagePath: 'assets/images/upperbody.png',
+                  exer: 12,
+                  time: 40,
+                ),
+                CategoriesWorkoutCard(
+                  cate_name: 'Lowebody Workout',
+                  press: () {
+                    Get.to(() => const ChoseWorkoutScreen(),
+                        arguments: listWorkoutID['Lowebody'] as String);
+                  },
+                  imagePath: 'assets/images/lowebody.png',
+                  exer: 12,
+                  time: 40,
+                ),
+                CategoriesWorkoutCard(
+                  cate_name: 'ABS Workout',
+                  press: () {
+                    Get.to(() => const ChoseWorkoutScreen(),
+                        arguments: listWorkoutID['Abs'] as String);
+                  },
+                  imagePath: 'assets/images/abs.png',
+                  exer: 14,
+                  time: 20,
+                ),
+                CategoriesWorkoutCard(
+                  cate_name: 'Fullbody Workout',
+                  press: () {
+                    Get.to(() => const ChoseWorkoutScreen(),
+                        arguments: listWorkoutID['Fullbody'] as String);
+                  },
+                  imagePath: 'assets/images/fullbody.png',
+                  exer: 11,
+                  time: 32,
+                ),
+                CategoriesWorkoutCard(
+                  cate_name: 'Cardio Workout',
+                  press: () {
+                    Get.to(() => const ChoseWorkoutScreen(),
+                        arguments: listWorkoutID['Cardio'] as String);
+                  },
+                  imagePath: 'assets/images/cardio.png',
+                  exer: 14,
+                  time: 20,
+                ),
+                CategoriesWorkoutCard(
+                  cate_name: 'Hitt Workout',
+                  press: () {
+                    Get.to(() => const ChoseWorkoutScreen(),
+                        arguments: listWorkoutID['Cardio'] as String);
+                  },
+                  imagePath: 'assets/images/hitt.png',
+                  exer: 14,
+                  time: 20,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

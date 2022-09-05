@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 
 import '../enums/workout_enums.dart';
 
@@ -40,20 +41,25 @@ class Workout {
 
     // Map<String, String>? equipRe quest;
     // final equipRequestData = snapshot['equipRequest'] as Map<String, dynamic>;
-    List<String> listExercise = [];
-    for (var element in (snapshot['exercises'] as List<dynamic>)) {
-      listExercise.add(element as String);
+    try {
+      List<String> listExercise = [];
+
+      for (var element in (snapshot['exercises'] as List<dynamic>)) {
+        listExercise.add(element as String);
+      }
+      return Workout(
+        idWorkout: snap.id,
+        workoutCategory: workoutCategory,
+        durationWorkout: null,
+        calories: null,
+        level: snapshot['level'],
+        equipmentRequest: null,
+        exercises: listExercise,
+        note: snapshot['note'],
+      );
+    } catch (e) {
+      rethrow;
     }
-    return Workout(
-      idWorkout: snap.id,
-      workoutCategory: workoutCategory,
-      durationWorkout: null,
-      calories: null,
-      level: snapshot['level'],
-      equipmentRequest: null,
-      exercises: listExercise,
-      note: snapshot['note'],
-    );
   }
 }
 
@@ -117,7 +123,8 @@ class Exercise {
       });
     });
 
-    // Map<String, String>? equipRequest;
+    // Map<String, String>?
+    // equipRequest;
     // final equipRequestData = snapshot['equipRequest'] as Map<String, dynamic>;
 
     return Exercise(
@@ -131,6 +138,57 @@ class Exercise {
       description: snapshot['description'],
       instructions: instructions,
       repetitions: repetitions,
+    );
+  }
+}
+
+class WorkoutSchedule {
+  const WorkoutSchedule(
+      {required this.level,
+      required this.repetitions,
+      required this.time,
+      required this.weight,
+      required this.workoutCategory,
+      required this.isTurnOn});
+  final String level;
+  final int repetitions;
+  final DateTime time;
+  final double weight;
+  final String workoutCategory;
+  final bool isTurnOn;
+
+  factory WorkoutSchedule.fromSnap(DocumentSnapshot snap) {
+    final data = snap.data() as Map<String, dynamic>;
+    // debugPrint(data.toString());
+    return WorkoutSchedule(
+        level: data['level'] as String,
+        repetitions: int.parse(data['repetitions'] as String),
+        time: DateTime.fromMillisecondsSinceEpoch(data['time'].seconds * 1000),
+        weight: double.parse(data['weight']),
+        workoutCategory: data['workoutCategory'],
+        isTurnOn: data['isTurnOn']);
+  }
+}
+
+class WorkoutHistory {
+  const WorkoutHistory(
+      {required this.level,
+      required this.caloriesBurn,
+      required this.time,
+      required this.workoutCategory});
+  final String level;
+  final int caloriesBurn;
+  final DateTime time;
+  final String workoutCategory;
+
+  factory WorkoutHistory.fromSnap(DocumentSnapshot snap) {
+    final data = snap.data() as Map<String, dynamic>;
+    // debugPrint(data.toString());
+    return WorkoutHistory(
+      level: data['level'] as String,
+      caloriesBurn: int.parse(data['caloriesBurn'] as String),
+      time: DateTime.fromMillisecondsSinceEpoch(data['time'].seconds * 1000),
+      workoutCategory: data['workoutCategory'],
     );
   }
 }

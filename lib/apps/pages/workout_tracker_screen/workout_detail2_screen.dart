@@ -10,7 +10,7 @@ import 'package:video_player/video_player.dart';
 import '../../data/models/workout_model.dart';
 import '../../template/misc/colors.dart';
 import 'workout_screen.dart';
-import '../../controls/workout_plan_controller.dart';
+import '../../controls/workout_controller/workout_plan_controller.dart';
 import '././widgets/gif_builder.dart';
 
 class WorkoutDetail2Screen extends StatefulWidget {
