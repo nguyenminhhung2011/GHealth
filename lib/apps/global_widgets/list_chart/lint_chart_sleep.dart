@@ -6,11 +6,15 @@ import 'package:flutter/material.dart';
 import '../../template/misc/colors.dart';
 
 class LineChartSleep extends StatelessWidget {
-  const LineChartSleep({Key? key}) : super(key: key);
+  const LineChartSleep({Key? key, required this.data, required this.columnData})
+      : super(key: key);
+  final List<FlSpot> data;
+  final int columnData;
 
   @override
   Widget build(BuildContext context) {
     return LineChart(
+      swapAnimationDuration: const Duration(milliseconds: 250),
       LineChartData(
         borderData: FlBorderData(show: false),
         gridData: FlGridData(
@@ -72,18 +76,10 @@ class LineChartSleep extends StatelessWidget {
         minX: 1,
         maxX: 7,
         minY: 0,
-        maxY: 8,
+        maxY: 2,
         lineBarsData: [
           LineChartBarData(
-            spots: const [
-              FlSpot(1, 3),
-              FlSpot(2, 4),
-              FlSpot(3, 5),
-              FlSpot(4, 3),
-              FlSpot(5, 3),
-              FlSpot(6, 4.5),
-              FlSpot(7, 5.5),
-            ],
+            spots: data,
             barWidth: 2,
             dotData: FlDotData(show: false),
             gradient: AppColors.colorGradient,
@@ -111,158 +107,75 @@ class LineChartSleep extends StatelessWidget {
       ),
     );
   }
-}
 
-int touchedIndex = -1;
-
-List<PieChartSectionData> showingSections(var widthDevice) {
-  return List.generate(4, (i) {
-    final isTouched = i == touchedIndex;
-    final fontSize = isTouched ? 25.0 : 16.0;
-    final radius = isTouched
-        ? (widthDevice as double) * 0.18
-        : (widthDevice as double) * 0.15;
-    switch (i) {
-      case 0:
-        return PieChartSectionData(
-          color: Colors.blue[300],
-          value: 40,
-          title: '40%',
-          radius: radius,
-          titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: Colors.white),
-        );
+  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+    );
+    Widget text;
+    switch (value.toInt()) {
       case 1:
-        return PieChartSectionData(
-          color: Colors.amber[300],
-          value: 30,
-          title: '30%',
-          radius: radius,
-          titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff)),
-        );
+        text = const Text('Sun', style: style);
+        break;
       case 2:
-        return PieChartSectionData(
-          color: const Color.fromARGB(255, 108, 39, 176).withOpacity(0.6),
-          value: 15,
-          title: '15%',
-          radius: radius,
-          titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff)),
-        );
+        text = const Text('Mon', style: style);
+        break;
       case 3:
-        return PieChartSectionData(
-          color: Colors.green[300],
-          value: 15,
-          title: '15%',
-          radius: radius,
-          titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff)),
-        );
+        text = const Text('Tue', style: style);
+        break;
+      case 4:
+        text = const Text('Wed', style: style);
+        break;
+      case 5:
+        text = const Text('Thu', style: style);
+        break;
+      case 6:
+        text = const Text('Fri', style: style);
+        break;
+      case 7:
+        text = const Text('Sat', style: style);
+        break;
       default:
-        throw Error();
+        text = const Text('');
+        break;
     }
-  });
-}
 
-Widget bottomTitleWidgets(double value, TitleMeta meta) {
-  const style = TextStyle(
-    color: Colors.black,
-    fontWeight: FontWeight.w500,
-    fontSize: 12,
-  );
-  Widget text;
-  switch (value.toInt()) {
-    case 1:
-      text = const Text('Sun', style: style);
-      break;
-    case 2:
-      text = const Text('Mon', style: style);
-      break;
-    case 3:
-      text = const Text('Tue', style: style);
-      break;
-    case 4:
-      text = const Text('Wed', style: style);
-      break;
-    case 5:
-      text = const Text('Thu', style: style);
-      break;
-    case 6:
-      text = const Text('Fri', style: style);
-      break;
-    case 7:
-      text = const Text('Sat', style: style);
-      break;
-    default:
-      text = const Text('');
-      break;
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 10,
+      child: text,
+    );
   }
 
-  return SideTitleWidget(
-    axisSide: meta.axisSide,
-    space: 10,
-    child: text,
-  );
-}
+  Widget rightTitleWidget(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.w500,
+      fontSize: 12,
+    );
+    Widget text;
+    switch (value.toInt()) {
+      case 0:
+        text = const Text('0h', style: style);
+        break;
+      case 1:
+        text = Text('${(columnData / 2).round()}h', style: style);
+        break;
+      case 2:
+        text = Text('${columnData}h', style: style);
+        break;
 
-Widget rightTitleWidget(double value, TitleMeta meta) {
-  const style = TextStyle(
-    color: Colors.black,
-    fontWeight: FontWeight.w500,
-    fontSize: 12,
-  );
-  Widget text;
-  switch (value.toInt()) {
-    case 0:
-      text = const Text('0h', style: style);
-      break;
-    case 1:
-      text = const Text('1h', style: style);
-      break;
-    case 2:
-      text = const Text('2h', style: style);
-      break;
-    case 3:
-      text = const Text('3h', style: style);
-      break;
-    case 4:
-      text = const Text('4h', style: style);
-      break;
-    case 5:
-      text = const Text('5h', style: style);
-      break;
-    case 6:
-      text = const Text('6h', style: style);
-      break;
-    case 7:
-      text = const Text('7h', style: style);
-      break;
-    case 8:
-      text = const Text('8h', style: style);
-      break;
-    case 9:
-      text = const Text('9h', style: style);
-      break;
-    case 10:
-      text = const Text('10h', style: style);
-      break;
-    default:
-      text = const Text('');
-      break;
+      default:
+        text = const Text('');
+        break;
+    }
+
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 10,
+      child: text,
+    );
   }
-
-  return SideTitleWidget(
-    axisSide: meta.axisSide,
-    space: 10,
-    child: text,
-  );
 }

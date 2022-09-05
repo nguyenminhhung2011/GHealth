@@ -62,7 +62,7 @@ class ColumnChartTwoColumnCustomState
                 height: 12,
               ),
               Padding(
-                padding: EdgeInsets.only(left: 20.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: GradientText(
                   'Week ${widget.startDate} - ${widget.endDate}',
                   gradient: const LinearGradient(

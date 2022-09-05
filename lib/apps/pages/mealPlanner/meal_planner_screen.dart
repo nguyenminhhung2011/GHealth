@@ -54,7 +54,6 @@ class MealPlannerScreen extends StatelessWidget {
                               newIndex = value;
                             },
                             done: () {
-                              print(newIndex);
                               if (newIndex != null) {
                                 controller.changeTab(newIndex ?? 0);
                               }

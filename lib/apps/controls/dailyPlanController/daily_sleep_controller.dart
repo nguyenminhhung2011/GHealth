@@ -1,4 +1,9 @@
+// ignore_for_file: unnecessary_null_comparison
+
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,6 +11,7 @@ import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller
 import 'package:intl/intl.dart';
 import 'package:progressive_time_picker/progressive_time_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../../constrains.dart';
 import '../../../services/auth_service.dart';
 import '../../../services/data_service.dart';
@@ -23,6 +29,8 @@ class DailySleepController extends GetxController with TrackerController {
   void onInit() {
     super.onInit();
     _calendarController.value = CalendarController();
+    getStartDateAndFinishDate();
+    getDataChart();
     update();
   }
 
@@ -45,6 +53,7 @@ class DailySleepController extends GetxController with TrackerController {
               item['goal'] != -1)
             item
       ];
+
   final Rx<int> _onFocus = 1.obs;
   final Rx<CalendarController> _calendarController = CalendarController().obs;
 
@@ -70,6 +79,7 @@ class DailySleepController extends GetxController with TrackerController {
   Rx<Duration> choseDuration = const Duration(hours: 8).obs;
   Duration tempDuration = const Duration();
   var isVibrate = true.obs;
+  DateRangePickerController dateController = DateRangePickerController();
 
   Map<String, dynamic> listVariable = {
     'Sun': false.obs,
@@ -222,6 +232,139 @@ class DailySleepController extends GetxController with TrackerController {
     } catch (err) {
       return err.toString();
     }
+  }
+
+  // ---------------------------loading chart data--------------------------
+  DateTime selectDateTemp1 = DateTime.now();
+  DateTime selectDateTemp2 = DateTime.now();
+
+  Rx<DateTime> startDate = DateTime.now().obs;
+  Rx<DateTime> finishDate = DateTime.now().obs;
+
+  RxList<DateTime> allDateBetWeen = <DateTime>[].obs;
+  final Rx<List<Map<String, dynamic>>> _dataChart =
+      Rx<List<Map<String, dynamic>>>([]);
+  List<Map<String, dynamic>> get dataChart => _dataChart.value;
+
+  bool isSameDate(DateTime date1, DateTime date2) {
+    if (date2 == date1) {
+      return true;
+    }
+    if (date1 == null || date2 == null) {
+      return false;
+    }
+    return date1.month == date2.month &&
+        date1.year == date2.year &&
+        date1.day == date2.day;
+  }
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    int firstDayOfWeek = DateTime.sunday % 7;
+    int endDayOfWeek = (firstDayOfWeek - 1) % 7;
+    endDayOfWeek = endDayOfWeek < 0 ? 7 + endDayOfWeek : endDayOfWeek;
+    PickerDateRange ranges = args.value;
+    DateTime date1 = ranges.startDate!;
+    DateTime date2 = (ranges.endDate ?? ranges.startDate)!;
+    if (date1.isAfter(date2)) {
+      var date = date1;
+      date1 = date2;
+      date2 = date;
+    }
+    int day1 = date1.weekday % 7;
+    int day2 = date2.weekday % 7;
+
+    DateTime dat1 = date1.add(Duration(days: (firstDayOfWeek - day1)));
+    DateTime dat2 = date2.add(Duration(days: (endDayOfWeek - day2)));
+
+    if (!isSameDate(dat1, ranges.startDate!) ||
+        !isSameDate(dat2, ranges.endDate!)) {
+      dateController.selectedRange = PickerDateRange(dat1, dat2);
+      selectDateTemp1 = dat1;
+      selectDateTemp2 = dat2;
+    }
+  }
+
+  //load data chart with select calendar
+  selectDateDoneClick() {
+    startDate.value = selectDateTemp1;
+    finishDate.value = selectDateTemp2;
+    allDateBetWeen.value = getListDateBetWeenRange();
+    getDataChart();
+    update();
+  }
+
+  // get number date between
+  getDayInBetWeen() {
+    final int difference = finishDate.value.difference(startDate.value).inDays;
+    return difference;
+  }
+
+  //get list date to load chart
+  List<DateTime> getListDateBetWeenRange() {
+    final items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+      DateTime date = startDate.value;
+      return date.add(Duration(days: index));
+    });
+    return items;
+  }
+
+  //get date start and date finish to load chart
+  void getStartDateAndFinishDate() {
+    DateTime now = DateTime.now();
+    int weekDay = now.weekday == 7 ? 0 : now.weekday;
+    startDate.value = DateTime.now();
+    finishDate.value = DateTime.now();
+    for (int i = 0; i < weekDay; i++) {
+      startDate.value = startDate.value.add(const Duration(days: -1));
+    }
+    for (int i = 0; i < 6 - weekDay; i++) {
+      finishDate.value = finishDate.value.add(const Duration(days: 1));
+    }
+    allDateBetWeen.value = List<DateTime>.generate(
+        7, (index) => startDate.value.add(Duration(days: index)));
+    update();
+  }
+
+  bool checkDateInList(DateTime date) {
+    for (var item in allDateBetWeen.value) {
+      if (date.day == item.day &&
+          date.month == item.month &&
+          date.year == item.year) return true;
+    }
+    return false;
+  }
+
+  int get maxList => [
+        for (var item in dataChart) (item['data'] as int),
+      ].reduce(max);
+
+  getDataChart() async {
+    _dataChart.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('sleep_basic_time')
+        .doc('sleep')
+        .collection('sleep_report')
+        .snapshots()
+        .map((event) {
+      List<Map<String, dynamic>> result = [
+        for (var item in allDateBetWeen.value)
+          {
+            'id': item.weekday,
+            'data': 0,
+          }
+      ];
+      result.sort((a, b) => a['id'].compareTo(b['id']));
+      for (var item in event.docs) {
+        Map<String, dynamic> data = item.data();
+        DateTime date =
+            DateTime.fromMillisecondsSinceEpoch(data['bedTime'].seconds * 1000);
+        if (checkDateInList(date)) {
+          result[date.weekday - 1]['data'] += data['goal'];
+        }
+      }
+      return result;
+    }));
   }
 
   //------------------------------------Widget Item Builder--------------------------------
