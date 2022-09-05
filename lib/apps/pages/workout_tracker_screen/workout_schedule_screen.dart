@@ -21,9 +21,9 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
   var now = DateTime.now().obs;
   Timer? timer;
   final List<DateTime> listDateTime = [
-    for (int i = 1; i <= 30; i++)
+    for (int i = 1; i <= 60; i++)
       DateTime(2022, 8, 1).subtract(Duration(days: i)),
-    for (int i = 0; i <= 30; i++) DateTime(2022, 8, 1).add(Duration(days: i))
+    for (int i = 0; i <= 60; i++) DateTime(2022, 8, 1).add(Duration(days: i))
   ];
   GlobalKey<ScrollSnapListState> sslKey = GlobalKey();
   late int onFocus = listDateTime.indexWhere((element) =>

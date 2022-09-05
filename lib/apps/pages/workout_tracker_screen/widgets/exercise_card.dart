@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../routes/route_name.dart';
@@ -23,19 +24,23 @@ class ExerciseCard extends StatefulWidget {
 }
 
 class _ExerciseCardState extends State<ExerciseCard> {
-  bool _initState = true;
-  Uint8List? byte;
+  Uint8List? bytes;
+  final _workoutPlanController = Get.find<WorkoutPlanController>();
   Future<Uint8List?> getThumbnailImage() async {
+    if (_workoutPlanController.listThumbnail[widget.e['id']] != null) {
+      return _workoutPlanController.listThumbnail[widget.e['id']];
+    }
     try {
-      final bytes = await VideoThumbnail.thumbnailData(
+      final thumbnailByte = await VideoThumbnail.thumbnailData(
         video: widget.e['url'],
         imageFormat: ImageFormat.PNG,
         maxHeight: 100,
         quality: 75,
       );
-      return bytes;
+      _workoutPlanController.listThumbnail[widget.e['id']] = thumbnailByte!;
+      return thumbnailByte;
     } catch (e) {
-      print('getThumbnailImage: $e');
+      print('getThumbnailImage: ${e.toString()}');
       rethrow;
     }
   }
@@ -65,11 +70,11 @@ class _ExerciseCardState extends State<ExerciseCard> {
                     if (snapshot.connectionState == ConnectionState.done) {
                       if (snapshot.hasData) {
                         if (snapshot.data != null) {
-                          byte = snapshot.data as Uint8List;
+                          bytes = snapshot.data as Uint8List;
                           return Hero(
                             tag: widget.e['id'],
                             child: FadeInImage(
-                              image: MemoryImage(byte!),
+                              image: MemoryImage(bytes!),
                               placeholder: const AssetImage(
                                   'assets/images/place_holder.png'),
                               fit: BoxFit.cover,

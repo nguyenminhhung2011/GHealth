@@ -114,8 +114,8 @@ class FastingPlanController extends GetxController with TrackerController {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      shape: CircleBorder(),
                       primary: Colors.green[50],
+                      shape: const CircleBorder(),
                     ),
                     onPressed: () {
                       _showBottomSheetTimePicker();
@@ -138,7 +138,7 @@ class FastingPlanController extends GetxController with TrackerController {
                   ),
                   Expanded(
                     child: Text(
-                      'T omorrow, 11:11',
+                      'Tomorrow, 11:11',
                       textAlign: TextAlign.end,
                       style: TextStyle(color: Colors.grey),
                     ),
