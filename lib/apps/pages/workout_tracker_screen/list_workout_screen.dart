@@ -238,7 +238,8 @@ class _ListWorkoutScreenState extends State<ListWorkoutScreen> {
               InkWell(
                 onTap: () {
                   // Updating
-                  //  Get.to(() => const WorkoutScreen(), arguments: listIdExercise);
+                  Get.to(() => const WorkoutScreen(),
+                      arguments: listIdExercise);
                 },
                 child: Container(
                   alignment: Alignment.center,

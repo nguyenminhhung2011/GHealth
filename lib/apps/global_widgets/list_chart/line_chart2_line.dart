@@ -1,17 +1,73 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../../template/misc/colors.dart';
 
-class LineChartTwoLine extends StatelessWidget {
+// ignore: must_be_immutable
+class LineChartTwoLine extends StatefulWidget {
   const LineChartTwoLine({Key? key}) : super(key: key);
 
   @override
+  State<LineChartTwoLine> createState() => _LineChartTwoLineState();
+}
+
+class _LineChartTwoLineState extends State<LineChartTwoLine> {
+  RxList<FlSpot> list1FlSpot = [
+    const FlSpot(1, 100),
+    const FlSpot(2, 100),
+    const FlSpot(3, 100),
+    const FlSpot(4, 100),
+    const FlSpot(5, 100),
+    const FlSpot(6, 100),
+    const FlSpot(7, 100),
+  ].obs;
+
+  RxList<FlSpot> list2FlSpot = [const FlSpot(0, 0)].obs;
+
+  List<FlSpot> list1 = const [
+    FlSpot(1, 150),
+    FlSpot(2, 500),
+    FlSpot(3, 130),
+    FlSpot(4, 500),
+    FlSpot(5, 600),
+    FlSpot(6, 550),
+    FlSpot(7, 700),
+  ];
+
+  List<FlSpot> list2 = const [
+    FlSpot(1, 500),
+    FlSpot(2, 410),
+    FlSpot(3, 450),
+    FlSpot(4, 320),
+    FlSpot(5, 250),
+    FlSpot(6, 110),
+    FlSpot(7, 150),
+  ];
+
+  void _addDataToRxList() async {
+    list1FlSpot.value = list1;
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() async {
+    await Future.delayed(const Duration(seconds: 1), _addDataToRxList);
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return LineChart(
-      sampleData1,
-      swapAnimationDuration: const Duration(milliseconds: 250),
-    );
+    return Obx(() => LineChart(
+          sampleData1,
+          swapAnimationCurve: Curves.linear,
+          swapAnimationDuration: const Duration(milliseconds: 400),
+        ));
   }
 
   LineChartData get sampleData1 => LineChartData(
@@ -22,8 +78,8 @@ class LineChartTwoLine extends StatelessWidget {
         lineBarsData: lineBarsData1,
         minX: 1,
         maxX: 7,
-        maxY: 6,
-        minY: 1,
+        maxY: 1100,
+        minY: 100,
       );
 
   LineTouchData get lineTouchData1 => LineTouchData(
@@ -63,23 +119,23 @@ class LineChartTwoLine extends StatelessWidget {
     );
     String text;
     switch (value.toInt()) {
-      case 1:
-        text = '0%';
+      case 100:
+        text = '100';
         break;
-      case 2:
-        text = '20%';
+      case 300:
+        text = '300';
         break;
-      case 3:
-        text = '40%';
+      case 500:
+        text = '500';
         break;
-      case 4:
-        text = '60%';
+      case 700:
+        text = '700';
         break;
-      case 5:
-        text = '80%';
+      case 900:
+        text = '900';
         break;
-      case 6:
-        text = '100%';
+      case 1100:
+        text = '1100';
         break;
       default:
         return Container();
@@ -142,6 +198,7 @@ class LineChartTwoLine extends StatelessWidget {
         interval: 1,
         getTitlesWidget: bottomTitleWidgets,
       );
+
   FlGridData get gridData => FlGridData(
       show: true,
       drawVerticalLine: true,
@@ -177,18 +234,10 @@ class LineChartTwoLine extends StatelessWidget {
           show: true,
         ),
         belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 1),
-          FlSpot(2, 1.5),
-          FlSpot(3, 1.4),
-          FlSpot(4, 5.5),
-          FlSpot(5, 2),
-          FlSpot(6, 2.2),
-          FlSpot(7, 1.8),
-        ],
+        spots: list1FlSpot.value,
       );
 
-  LineChartBarData get lineChartBarData1_2 => LineChartBarData(
+  LineChartBarData get lineChartBarData1_2 => (LineChartBarData(
         isCurved: true,
         color: AppColors.primaryColor2.withOpacity(0.5),
         barWidth: 3,
@@ -197,14 +246,6 @@ class LineChartTwoLine extends StatelessWidget {
           show: true,
         ),
         belowBarData: BarAreaData(show: false),
-        spots: const [
-          FlSpot(1, 2),
-          FlSpot(2, 1),
-          FlSpot(3, 3),
-          FlSpot(4, 4),
-          FlSpot(5, 3.2),
-          FlSpot(6, 2.2),
-          FlSpot(7, 1.8),
-        ],
-      );
+        spots: list2FlSpot.value,
+      ));
 }

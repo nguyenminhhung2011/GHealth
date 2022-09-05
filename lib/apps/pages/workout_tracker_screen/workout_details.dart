@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/workout_plan_controller.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
+import 'package:gold_health/apps/data/enums/workout_enums.dart';
 import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/list_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';
@@ -9,7 +10,6 @@ import '../../template/misc/colors.dart';
 
 class WorkoutDetailScreen extends StatefulWidget {
   const WorkoutDetailScreen({Key? key}) : super(key: key);
-
   @override
   State<WorkoutDetailScreen> createState() => _WorkoutDetailScreenState();
 }
@@ -18,7 +18,9 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
   final _workoutController = Get.find<WorkoutPlanController>();
   final List<ExerciseCard> listExerciseCard = [];
   final List<String> listIdExercise = [];
-  final workout = Get.arguments as Workout;
+  final workout = (Get.arguments as Map<String, dynamic>)['workout'] as Workout;
+  final workoutCategory =
+      (Get.arguments as Map<String, dynamic>)['workoutCategory'] as String;
   bool _initSate = true;
   Future<bool> _getAndSetUpData() async {
     String? temp;
@@ -27,6 +29,7 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
       temp = '1';
       listExerciseCard.clear();
       for (var element in workout.exercises) {
+        print(element);
         listIdExercise
             .add(_workoutController.exercises.value[element]!.idExercise);
         listExerciseCard.add(
@@ -183,111 +186,6 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                                             ],
                                           ),
                                           const SizedBox(height: 20),
-                                          // Column(
-                                          //   children: [
-                                          //     InkWell(
-                                          //       //borderRadius: BorderRadius.circular(20),
-                                          //       onTap: () {},
-                                          //       child: Container(
-                                          //         padding: const EdgeInsets
-                                          //                 .symmetric(
-                                          //             horizontal: 20,
-                                          //             vertical: 18),
-                                          //         decoration: BoxDecoration(
-                                          //           borderRadius:
-                                          //               BorderRadius.circular(
-                                          //                   20),
-                                          //           color: AppColors
-                                          //               .primaryColor1
-                                          //               .withOpacity(0.3),
-                                          //         ),
-                                          //         child: Row(
-                                          //           children: [
-                                          //             SvgPicture.asset(
-                                          //                 'assets/icons/Calendar.svg',
-                                          //                 color: Colors.grey),
-                                          //             const SizedBox(width: 5),
-                                          //             const Text(
-                                          //               'Schedule Workout',
-                                          //               style: TextStyle(
-                                          //                 color: Colors.grey,
-                                          //                 fontWeight:
-                                          //                     FontWeight.w500,
-                                          //               ),
-                                          //             ),
-                                          //             const Spacer(),
-                                          //             const Text(
-                                          //               '5/27,09:00 AM',
-                                          //               style: TextStyle(
-                                          //                 color: Colors.grey,
-                                          //                 fontWeight:
-                                          //                     FontWeight.w500,
-                                          //               ),
-                                          //             ),
-                                          //             const SizedBox(width: 5),
-                                          //             const Icon(
-                                          //               Icons
-                                          //                   .arrow_forward_ios_sharp,
-                                          //               color: Colors.grey,
-                                          //               size: 15,
-                                          //             )
-                                          //           ],
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //     const SizedBox(height: 20),
-                                          //     InkWell(
-                                          //       onTap: () {},
-                                          //       child: Container(
-                                          //         padding: const EdgeInsets
-                                          //                 .symmetric(
-                                          //             horizontal: 20,
-                                          //             vertical: 18),
-                                          //         decoration: BoxDecoration(
-                                          //           borderRadius:
-                                          //               BorderRadius.circular(
-                                          //                   20),
-                                          //           color: AppColors
-                                          //               .primaryColor2
-                                          //               .withOpacity(0.3),
-                                          //         ),
-                                          //         child: Row(
-                                          //           children: [
-                                          //             SvgPicture.asset(
-                                          //                 'assets/icons/Swap.svg',
-                                          //                 color: Colors.grey),
-                                          //             const SizedBox(width: 5),
-                                          //             const Text(
-                                          //               'Difficulty',
-                                          //               style: TextStyle(
-                                          //                 color: Colors.grey,
-                                          //                 fontWeight:
-                                          //                     FontWeight.w500,
-                                          //               ),
-                                          //             ),
-                                          //             const Spacer(),
-                                          //             const Text(
-                                          //               'Beginner',
-                                          //               style: TextStyle(
-                                          //                 color: Colors.grey,
-                                          //                 fontWeight:
-                                          //                     FontWeight.w500,
-                                          //               ),
-                                          //             ),
-                                          //             const SizedBox(width: 5),
-                                          //             const Icon(
-                                          //               Icons
-                                          //                   .arrow_forward_ios_sharp,
-                                          //               color: Colors.grey,
-                                          //               size: 15,
-                                          //             )
-                                          //           ],
-                                          //         ),
-                                          //       ),
-                                          //     ),
-                                          //   ],
-                                          // ),
-                                          // const SizedBox(height: 20),
                                           Row(
                                             children: const [
                                               Text(

@@ -13,7 +13,7 @@ import '../../pages/list_plan_screen/daily_step_screen.dart.dart';
 import '../../pages/mealPlanner/meal_planner_screen.dart';
 import '../../pages/workout_tracker_screen/workout_tracker_screen.dart';
 import '../meal_plan_controller.dart';
-import '../workout_plan_controller.dart';
+import '../workout_controller/workout_plan_controller.dart';
 
 class DailyPlanController extends GetxController {
   static const int nutrition = 0;

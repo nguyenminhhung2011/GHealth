@@ -17,13 +17,14 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   late AnimationController _controllerOpacity;
   late Animation<double> _animationOpacity;
-  late AnimationController _controller;
+  late AnimationController? _controller;
 
   var isPlay = false.obs;
   var isFinish = false.obs;
   double progress = 0;
+
   String get countText {
-    Duration count = _controller.duration! * _controller.value;
+    Duration count = _controller!.duration! * _controller!.value;
     if (fastingPlanController.isRemainMode.value) {
       count = widget.duration - count;
     }
@@ -46,12 +47,12 @@ class _CountDownTimerState extends State<CountDownTimer>
         CurvedAnimation(parent: _controllerOpacity, curve: Curves.easeIn));
     _controller = AnimationController(vsync: this, duration: widget.duration);
 
-    _controller.addListener(() {
+    _controller!.addListener(() {
       setState(() {
-        progress = _controller.value;
+        progress = _controller!.value;
       });
-      if (_controller.isCompleted) {
-        _controller.stop();
+      if (_controller!.isCompleted) {
+        _controller!.stop();
         isFinish.value = true;
         _controllerOpacity.forward();
         isPlay.value = false;
@@ -61,7 +62,8 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   @override
   void dispose() {
-    _controller.dispose();
+    _controller = null;
+    _controller?.dispose();
     super.dispose();
   }
 
@@ -124,7 +126,7 @@ class _CountDownTimerState extends State<CountDownTimer>
           ),
         ),
         AnimatedBuilder(
-          animation: _controller,
+          animation: _controller!,
           builder: (context, child) => Text(
             countText,
             style: const TextStyle(
@@ -137,9 +139,9 @@ class _CountDownTimerState extends State<CountDownTimer>
           borderRadius: BorderRadius.circular(50),
           onTap: () {
             if (isPlay.value) {
-              _controller.stop();
+              _controller!.stop();
             } else {
-              _controller.forward(from: _controller.value);
+              _controller!.forward(from: _controller!.value);
             }
             isPlay.value = !isPlay.value;
           },
