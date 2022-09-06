@@ -1,15 +1,30 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:get/get.dart';
 import 'package:gold_health/constrains.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+
+import '../../services/auth_service.dart';
 
 class ActivityTrackerC extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get user => _user.value;
+  final Rx<List<Map<String, dynamic>>> _listSleepData =
+      Rx<List<Map<String, dynamic>>>([]);
+  List<Map<String, dynamic>> get listSleepData => _listSleepData.value;
+  // {
+  //   'bedTime': DateTime(),
+  //   'alarm': DateTime(),
+  //   'goal': int
+  // }
 
   @override
   void onInit() {
-    //ignore: avoid_print
-    print(_user.value['name']);
+    // print(_user.value['name']);
     super.onInit();
+    getStartDateAndFinishDate();
+    getDataSleepChart();
+    update();
   }
 
   @override
@@ -17,6 +32,155 @@ class ActivityTrackerC extends GetxController {
   void onClose() {
     super.onClose();
   }
+
+  //-----get date -----------------------------
+  //Sleep---------------------
+
+  DateTime selectDateTemp1 = DateTime.now();
+  DateTime selectDateTemp2 = DateTime.now();
+
+  Rx<DateTime> startDate = DateTime.now().obs;
+  Rx<DateTime> finishDate = DateTime.now().obs;
+
+  RxList<DateTime> allDateSleep = <DateTime>[].obs;
+  DateRangePickerController dateSleepController = DateRangePickerController();
+  bool checkDateInList(DateTime date, List<DateTime> allDateBetWeen) {
+    for (var item in allDateBetWeen) {
+      if (date.day == item.day &&
+          date.month == item.month &&
+          date.year == item.year) return true;
+    }
+    return false;
+  }
+
+  bool checkListSleepDate(
+      DateTime date, List<Map<String, dynamic>> allDateBetWeen) {
+    for (var item in allDateBetWeen) {
+      if (date.day == item['bedTime'].day &&
+          date.month == item['bedTime'].month &&
+          date.year == item['bedTime'].year) return true;
+    }
+    return false;
+  }
+
+  getDataSleepChart() async {
+    _listSleepData.bindStream(
+      firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('sleep_basic_time')
+          .doc('sleep')
+          .collection('sleep_report')
+          .snapshots()
+          .map((event) {
+        List<Map<String, dynamic>> result = [
+          for (var item in allDateSleep.value)
+            {
+              'id': item.weekday,
+              'bedTime': item,
+              'alarm': item,
+              'goal': 0,
+            }
+        ];
+        // 1 2 3 4 5 6 7
+        result.sort((a, b) => a['id'].compareTo(b['id']));
+        DateTime getDateSunday =
+            result[5]['bedTime'].add(const Duration(days: 1));
+        result[6]['bedTime'] = getDateSunday;
+        result[6]['alarm'] = getDateSunday;
+        List<Map<String, dynamic>> resultTemp = result;
+        for (var item in event.docs) {
+          Map<String, dynamic> data = item.data();
+          DateTime date =
+              DateTime.fromMillisecondsSinceEpoch(data['alarm'].seconds * 1000);
+          if (checkListSleepDate(date, resultTemp)) {
+            // result[date.weekday - 1]['data'] += data['goal'];
+            if (data['goal'] > result[date.weekday - 1]['goal']) {
+              result[date.weekday - 1]['goal'] = data['goal'];
+              result[date.weekday - 1]['alarm'] = date;
+              result[date.weekday - 1]['bedTime'] =
+                  DateTime.fromMillisecondsSinceEpoch(
+                      data['bedTime'].seconds * 1000);
+            }
+          }
+        }
+        return result;
+      }),
+    );
+    update();
+  }
+
+  // Function for select date time ---------------------
+  bool isSameDate(DateTime date1, DateTime date2) {
+    if (date2 == date1) {
+      return true;
+    }
+    if (date1 == null || date2 == null) {
+      return false;
+    }
+    return date1.month == date2.month &&
+        date1.year == date2.year &&
+        date1.day == date2.day;
+  }
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    int firstDayOfWeek = DateTime.sunday % 7;
+    int endDayOfWeek = (firstDayOfWeek - 1) % 7;
+    endDayOfWeek = endDayOfWeek < 0 ? 7 + endDayOfWeek : endDayOfWeek;
+    PickerDateRange ranges = args.value;
+    DateTime date1 = ranges.startDate!;
+    DateTime date2 = (ranges.endDate ?? ranges.startDate)!;
+    if (date1.isAfter(date2)) {
+      var date = date1;
+      date1 = date2;
+      date2 = date;
+    }
+    int day1 = date1.weekday % 7;
+    int day2 = date2.weekday % 7;
+
+    DateTime dat1 = date1.add(Duration(days: (firstDayOfWeek - day1)));
+    DateTime dat2 = date2.add(Duration(days: (endDayOfWeek - day2)));
+
+    if (!isSameDate(dat1, ranges.startDate!) ||
+        !isSameDate(dat2, ranges.endDate!)) {
+      dateSleepController.selectedRange = PickerDateRange(dat1, dat2);
+      selectDateTemp1 = dat1;
+      selectDateTemp2 = dat2;
+    }
+  }
+
+  getDayInBetWeen() {
+    final int difference = finishDate.value.difference(startDate.value).inDays;
+    return difference;
+  }
+
+  //get list date to load chart
+  List<DateTime> getListDateBetWeenRange() {
+    final items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+      DateTime date = startDate.value;
+      return date.add(Duration(days: index));
+    });
+    return items;
+  }
+
+  //get date start and date finish to load chart
+  void getStartDateAndFinishDate() {
+    DateTime now = DateTime.now();
+    int weekDay = now.weekday == 7 ? 0 : now.weekday;
+    startDate.value = DateTime.now();
+    finishDate.value = DateTime.now();
+    for (int i = 0; i < weekDay; i++) {
+      startDate.value = startDate.value.add(const Duration(days: -1));
+    }
+    for (int i = 0; i < 6 - weekDay; i++) {
+      finishDate.value = finishDate.value.add(const Duration(days: 1));
+    }
+    allDateSleep.value = List<DateTime>.generate(
+        7, (index) => startDate.value.add(Duration(days: index)));
+    update();
+  }
+
+  //-------------------------------------------
 
   Future<Map<String, dynamic>> getDataUser(String uid) async {
     var userDoc = await firestore.collection('users').doc(uid).get();

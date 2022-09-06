@@ -6,8 +6,7 @@ import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:gold_health/apps/global_widgets/list_chart/line_chart_weight.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/dashboard/latest_acti_screen.dart';
-import 'package:gold_health/apps/pages/dashboard/profile_screen.dart';
-
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/acti_card.dart';
 import '../../global_widgets/list_chart/colum_chart2_colum.dart';
@@ -53,85 +52,101 @@ class ActivityTrackerScreen extends StatelessWidget {
             children: [
               Expanded(
                 // flex: (heightDevice / 20 * 15).round(),
-                child: ScreenTemplate(
-                  child: Column(
-                    children: [
-                      _SleepViewWeekField(heightDevice, context),
-                      _HeartRateViewWeekField(heightDevice),
-                      const SizedBox(height: 20),
-                      _AcitvityProgreenViewWeekField(context),
-                      const SizedBox(height: 20),
-                      _CaloriesAbsorbedVIewWeekField(context),
-                      const SizedBox(height: 20),
-                      _WaterConsumedViewWeekField(context, heightDevice),
-                      const SizedBox(height: 20),
-                      _FootStepsViewWeekField(context),
-                      const SizedBox(height: 20),
-                      _WeightTrackersViewFiled(
-                          context, widthDevice, heightDevice),
-                      const SizedBox(height: 20),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Hero(
-                                tag: 'latest tag',
-                                child: Text(
-                                  'Latest Activity',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headline4!
-                                      .copyWith(
-                                        fontSize: 17,
+                child: GetBuilder<ActivityTrackerC>(
+                    init: ActivityTrackerC(),
+                    builder: (controller) {
+                      return Obx(() => (controller.listSleepData.isNotEmpty)
+                          ? ScreenTemplate(
+                              child: Column(
+                                children: [
+                                  _SleepViewWeekField(
+                                      heightDevice, context, controller),
+                                  _HeartRateViewWeekField(heightDevice),
+                                  const SizedBox(height: 20),
+                                  _AcitvityProgreenViewWeekField(context),
+                                  const SizedBox(height: 20),
+                                  _CaloriesAbsorbedVIewWeekField(context),
+                                  const SizedBox(height: 20),
+                                  _WaterConsumedViewWeekField(
+                                      context, heightDevice),
+                                  const SizedBox(height: 20),
+                                  _FootStepsViewWeekField(context),
+                                  const SizedBox(height: 20),
+                                  _WeightTrackersViewFiled(
+                                      context, widthDevice, heightDevice),
+                                  const SizedBox(height: 20),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Hero(
+                                            tag: 'latest tag',
+                                            child: Text(
+                                              'Latest Activity',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headline4!
+                                                  .copyWith(
+                                                    fontSize: 17,
+                                                  ),
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      LatestActiScreen(),
+                                                ),
+                                              );
+                                            },
+                                            child: const Text(
+                                              'See more',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          )
+                                        ],
                                       ),
-                                ),
-                              ),
-                              Spacer(),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => LatestActiScreen(),
-                                    ),
-                                  );
-                                },
-                                child: const Text(
-                                  'See more',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 17,
+                                      const SizedBox(height: 20),
+                                      Column(
+                                        children: [
+                                          ActiCard(
+                                            widthDevice: widthDevice,
+                                            imagePath:
+                                                'assets/images/drinking.png',
+                                            title: 'About 3 minutes ago',
+                                            mainTitle: 'Drinking 300ml Water',
+                                            press: () {},
+                                          ),
+                                          ActiCard(
+                                            widthDevice: widthDevice,
+                                            imagePath:
+                                                'assets/images/eating.png',
+                                            title: 'About 10 minutes ago',
+                                            mainTitle: 'Eat Snack (Fitbar)',
+                                            press: () {},
+                                          ),
+                                        ],
+                                      )
+                                    ],
                                   ),
-                                ),
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 20),
-                          Column(
-                            children: [
-                              ActiCard(
-                                widthDevice: widthDevice,
-                                imagePath: 'assets/images/drinking.png',
-                                title: 'About 3 minutes ago',
-                                mainTitle: 'Drinking 300ml Water',
-                                press: () {},
+                                  const SizedBox(height: 20),
+                                ],
                               ),
-                              ActiCard(
-                                widthDevice: widthDevice,
-                                imagePath: 'assets/images/eating.png',
-                                title: 'About 10 minutes ago',
-                                mainTitle: 'Eat Snack (Fitbar)',
-                                press: () {},
+                            )
+                          : const Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.primaryColor1,
+                                backgroundColor: Colors.white,
                               ),
-                            ],
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 20),
-                    ],
-                  ),
-                ),
+                            ));
+                    }),
               ),
             ],
           ),
@@ -478,7 +493,8 @@ class ActivityTrackerScreen extends StatelessWidget {
   }
 
   // ignore: non_constant_identifier_names
-  SizedBox _SleepViewWeekField(double heightDevice, BuildContext context) {
+  SizedBox _SleepViewWeekField(
+      double heightDevice, BuildContext context, ActivityTrackerC controller) {
     return SizedBox(
       height: heightDevice * 0.5,
       // padding: const EdgeInsets.all(15),
@@ -496,7 +512,9 @@ class ActivityTrackerScreen extends StatelessWidget {
               ButtonIconGradientColor(
                 title: 'Select Week',
                 icon: Icons.calendar_month,
-                press: () {},
+                press: () {
+                  print(controller.listSleepData);
+                },
               )
             ],
           ),
@@ -550,7 +568,13 @@ class ActivityTrackerScreen extends StatelessWidget {
                       const Duration(milliseconds: 3000),
                   height: heightDevice * 0.3,
                   activeTooltip: true,
-                  data: SleepTrackerData.data,
+                  data: [
+                    for (int i = 6; i >= 0; i--)
+                      DateTimeRange(
+                        start: controller.listSleepData[i]['bedTime'],
+                        end: controller.listSleepData[i]['alarm'],
+                      ),
+                  ],
                   viewMode: ViewMode.weekly,
                   barColor: AppColors.primaryColor1,
                 ),
@@ -561,6 +585,89 @@ class ActivityTrackerScreen extends StatelessWidget {
       ),
     );
   }
+
+  // _showDatePicker({required BuildContext context, required ActivityTrackerC controller}) async {
+  //   await showDialog(
+  //     useRootNavigator: false,
+  //     barrierColor: Colors.black54,
+  //     context: context,
+  //     builder: (context) => Dialog(
+  //       backgroundColor: Colors.transparent,
+  //       child: Container(
+  //         padding: const EdgeInsets.all(10),
+  //         height: 430,
+  //         width: double.infinity,
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(5),
+  //           color: AppColors.mainColor,
+  //         ),
+  //         child: Column(
+  //           children: [
+  //             Card(
+  //               elevation: 2,
+  //               child: SfDateRangePicker(
+  //                 selectionTextStyle:
+  //                     const TextStyle(fontWeight: FontWeight.bold),
+  //                 rangeTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+  //                 headerStyle: const DateRangePickerHeaderStyle(
+  //                   backgroundColor: AppColors.primaryColor1,
+  //                   textStyle: TextStyle(
+  //                     color: Colors.white,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //                 monthCellStyle: const DateRangePickerMonthCellStyle(
+  //                   textStyle: TextStyle(
+  //                     color: Colors.grey,
+  //                     fontWeight: FontWeight.bold,
+  //                   ),
+  //                 ),
+  //                 selectionColor: AppColors.primaryColor1,
+  //                 rangeSelectionColor: AppColors.primaryColor1,
+  //                 todayHighlightColor: AppColors.primaryColor1,
+  //                 controller: controller.dateController,
+  //                 view: DateRangePickerView.month,
+  //                 selectionMode: DateRangePickerSelectionMode.range,
+  //                 onSelectionChanged: controller.selectionChanged,
+  //                 monthViewSettings: const DateRangePickerMonthViewSettings(
+  //                     enableSwipeSelection: false),
+  //               ),
+  //             ),
+  //             const Spacer(),
+  //             Container(
+  //               height: 50,
+  //               width: double.infinity,
+  //               decoration: BoxDecoration(
+  //                 borderRadius: BorderRadius.circular(5),
+  //                 color: AppColors.primaryColor1,
+  //               ),
+  //               child: ElevatedButton(
+  //                 onPressed: () {
+  //                   controller.selectDateDoneClick();
+  //                   Get.back();
+  //                 },
+  //                 style: ElevatedButton.styleFrom(
+  //                     shape: RoundedRectangleBorder(
+  //                       borderRadius: BorderRadius.circular(5),
+  //                     ),
+  //                     primary: Colors.transparent,
+  //                     shadowColor: Colors.transparent),
+  //                 child: const Text(
+  //                   'Done',
+  //                   style: TextStyle(
+  //                     color: Colors.white,
+  //                     fontWeight: FontWeight.bold,
+  //                     fontSize: 18,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 
 BarChartGroupData makeGroupData(int x, double y1, double y2) {
