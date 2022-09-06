@@ -110,6 +110,14 @@ class ActivityTrackerC extends GetxController {
     update();
   }
 
+  selectDateDoneClick() {
+    startDate.value = selectDateTemp1;
+    finishDate.value = selectDateTemp2;
+    allDateSleep.value = getListDateBetWeenRange();
+    getDataSleepChart();
+    update();
+  }
+
   // Function for select date time ---------------------
   bool isSameDate(DateTime date1, DateTime date2) {
     if (date2 == date1) {
