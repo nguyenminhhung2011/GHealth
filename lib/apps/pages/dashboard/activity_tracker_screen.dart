@@ -56,7 +56,8 @@ class ActivityTrackerScreen extends StatelessWidget {
                 child: GetBuilder<ActivityTrackerC>(
                     init: ActivityTrackerC(),
                     builder: (controller) {
-                      return Obx(() => (controller.listSleepData.isNotEmpty)
+                      return Obx(() => (controller.listSleepData.isNotEmpty &&
+                              controller.listWaterData.isNotEmpty)
                           ? ScreenTemplate(
                               child: Column(
                                 children: [
@@ -279,48 +280,66 @@ class ActivityTrackerScreen extends StatelessWidget {
   }
 
   // ignore: non_constant_identifier_names
-  Column _WaterConsumedViewWeekField(
+  GetBuilder<ActivityTrackerC> _WaterConsumedViewWeekField(
       BuildContext context, double heightDevice) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text(
-              'Water consumed',
-              overflow: TextOverflow.clip,
-              style: Theme.of(context).textTheme.headline4!.copyWith(
-                    fontSize: 17,
+    return GetBuilder<ActivityTrackerC>(
+        init: ActivityTrackerC(),
+        builder: (controller) {
+          return Column(
+            children: [
+              Row(
+                children: [
+                  Text(
+                    'Water consumed',
+                    overflow: TextOverflow.clip,
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                          fontSize: 17,
+                        ),
                   ),
-            ),
-            const Spacer(),
-            ButtonIconGradientColor(
-              title: 'Select Week',
-              icon: Icons.calendar_month,
-              press: () {},
-            )
-          ],
-        ),
-        const SizedBox(height: 20),
-        SizedBox(
-          height: heightDevice / 2.9,
-          width: double.infinity,
-          child: ColumnChartTwoColumnCustom(
-            columnData: 5000,
-            startDate: '20/11/2002',
-            endDate: '20/11/2002',
-            barGroups: [
-              makeGroupData(0, 5, 15),
-              makeGroupData(1, 16, 12),
-              makeGroupData(2, 18, 5),
-              makeGroupData(3, 20, 16),
-              makeGroupData(4, 17, 6),
-              makeGroupData(5, 19, 1.5),
-              makeGroupData(6, 10, 1.5),
+                  const Spacer(),
+                  ButtonIconGradientColor(
+                    title: 'Select Week',
+                    icon: Icons.calendar_month,
+                    press: () {
+                      controller.chartIndex.value = 4;
+                      _showDatePicker(
+                          context: context,
+                          datePicke: controller.dateWaterController,
+                          controller: controller);
+                    },
+                  )
+                ],
+              ),
+              const SizedBox(height: 20),
+              Obx(
+                () => SizedBox(
+                  height: heightDevice / 2.9,
+                  width: double.infinity,
+                  child: ColumnChartTwoColumnCustom(
+                    columnData: controller.maxList,
+                    startDate: DateFormat()
+                        .add_yMd()
+                        .format(controller.startDateWater.value),
+                    endDate: DateFormat()
+                        .add_yMd()
+                        .format(controller.finishDateWater.value),
+                    barGroups: [
+                      for (int i = 0; i < controller.listWaterData.length; i++)
+                        controller.makeGroupData(
+                            i,
+                            controller.listWaterData[i]['consume'] /
+                                controller.maxList *
+                                19.0,
+                            controller.listWaterData[i]['target'] /
+                                controller.maxList *
+                                19.0),
+                    ],
+                  ),
+                ),
+              ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
+        });
   }
 
   // ignore: non_constant_identifier_names

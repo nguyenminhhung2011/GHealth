@@ -1,10 +1,15 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:math';
+
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/constrains.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../services/auth_service.dart';
+import '../data/models/water.dart';
 
 class ActivityTrackerC extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
@@ -24,7 +29,11 @@ class ActivityTrackerC extends GetxController {
     // print(_user.value['name']);
     super.onInit();
     getStartDateAndFinishDate();
+    dateWaterController = dateSleepController;
+    allDateWater.value = allDateSleep.value;
+
     getDataSleepChart();
+    getDataWaterChart();
     update();
   }
 
@@ -35,8 +44,7 @@ class ActivityTrackerC extends GetxController {
   }
 
   //-----get date -----------------------------
-  //Sleep---------------------
-
+  //Water---------------------
   DateTime selectDateTempSleep1 = DateTime.now();
   DateTime selectDateTempSleep2 = DateTime.now();
 
@@ -110,6 +118,63 @@ class ActivityTrackerC extends GetxController {
     );
     update();
   }
+  //Sleep---------------------
+
+  DateTime selectDateTempWater1 = DateTime.now();
+  DateTime selectDateTempWater2 = DateTime.now();
+
+  Rx<DateTime> startDateWater = DateTime.now().obs;
+  Rx<DateTime> finishDateWater = DateTime.now().obs;
+
+  RxList<DateTime> allDateWater = <DateTime>[].obs;
+  DateRangePickerController dateWaterController = DateRangePickerController();
+  final Rx<List<Map<String, dynamic>>> _listWaterData =
+      Rx<List<Map<String, dynamic>>>([]);
+  List<Map<String, dynamic>> get listWaterData => _listWaterData.value;
+  bool checkListWaterDate(
+      DateTime date, List<Map<String, dynamic>> allDateBetWeen) {
+    for (var item in allDateBetWeen) {
+      if (date.day == item['bedTime'].day &&
+          date.month == item['bedTime'].month &&
+          date.year == item['bedTime'].year) return true;
+    }
+    return false;
+  }
+
+  getDataWaterChart() async {
+    _listWaterData.bindStream(
+      firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('water')
+          .snapshots()
+          .map(
+        (event) {
+          List<Map<String, dynamic>> result = [
+            for (var item in allDateWater.value)
+              {
+                'id': item.weekday,
+                'consume': 0,
+                'target': 4000,
+              }
+          ];
+          result.sort((a, b) => a['id'].compareTo(b['id']));
+          for (var item in event.docs) {
+            Water data = Water.fromSnap(item);
+            if (checkDateInList(data.date, allDateWater.value)) {
+              result[data.date.weekday - 1]['target'] = data.target;
+              result[data.date.weekday - 1]['consume'] =
+                  data.waterConsume.fold<int>(0, (sum, e) {
+                return sum + e['consume'] as int;
+              });
+            }
+          }
+          return result;
+        },
+      ),
+    );
+    update();
+  }
 
   selectDateDoneClick() {
     if (chartIndex.value == 0) {
@@ -117,8 +182,33 @@ class ActivityTrackerC extends GetxController {
       finishDateSleep.value = selectDateTempSleep2;
       allDateSleep.value = getListDateBetWeenRange();
       getDataSleepChart();
+    } else if (chartIndex.value == 4) {
+      startDateWater.value = selectDateTempWater1;
+      finishDateWater.value = selectDateTempWater2;
+      allDateWater.value = getListDateBetWeenRange();
+      getDataWaterChart();
     }
     update();
+  }
+
+  int get maxList => [
+        for (var item in listWaterData)
+          max(item['consume'] as int, item['target'] as int)
+      ].reduce(max);
+
+  BarChartGroupData makeGroupData(int x, double y1, double y2) {
+    return BarChartGroupData(barsSpace: 4, x: x, barRods: [
+      BarChartRodData(
+        toY: y1,
+        color: Colors.blue.withOpacity(0.7),
+        width: 7,
+      ),
+      BarChartRodData(
+        toY: y2,
+        color: Colors.red.withOpacity(0.7),
+        width: 7,
+      ),
+    ]);
   }
 
   //Water-------------------------------------
@@ -161,6 +251,11 @@ class ActivityTrackerC extends GetxController {
           selectDateTempSleep1 = dat1;
           selectDateTempSleep2 = dat2;
           break;
+        case 4:
+          dateWaterController.selectedRange = PickerDateRange(dat1, dat2);
+          selectDateTempWater1 = dat1;
+          selectDateTempWater2 = dat2;
+          break;
         default:
           break;
       }
@@ -174,6 +269,11 @@ class ActivityTrackerC extends GetxController {
         difference =
             finishDateSleep.value.difference(startDateSleep.value).inDays;
         break;
+      case 4:
+        difference =
+            finishDateWater.value.difference(startDateWater.value).inDays;
+        break;
+
       default:
         break;
     }
@@ -187,6 +287,12 @@ class ActivityTrackerC extends GetxController {
       case 0:
         items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
           DateTime date = startDateSleep.value;
+          return date.add(Duration(days: index));
+        });
+        break;
+      case 4:
+        items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+          DateTime date = startDateWater.value;
           return date.add(Duration(days: index));
         });
         break;
