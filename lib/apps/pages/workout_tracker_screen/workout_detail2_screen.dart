@@ -9,13 +9,12 @@ import 'package:video_player/video_player.dart';
 // import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import '../../data/models/workout_model.dart';
 import '../../template/misc/colors.dart';
-import 'workout_screen.dart';
 import '../../controls/workout_controller/workout_plan_controller.dart';
-import '././widgets/gif_builder.dart';
 
 class WorkoutDetail2Screen extends StatefulWidget {
-  const WorkoutDetail2Screen({Key? key}) : super(key: key);
-
+  const WorkoutDetail2Screen({Key? key, required this.idExercise})
+      : super(key: key);
+  final String idExercise;
   @override
   State<WorkoutDetail2Screen> createState() => _WorkoutDetail2ScreenState();
 }
@@ -25,22 +24,22 @@ class WorkoutDetail2Screen extends StatefulWidget {
 class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
     with SingleTickerProviderStateMixin {
   var isPlay = false.obs;
-  var idExercise = Get.arguments as String;
   final _workoutController = Get.find<WorkoutPlanController>();
   late VideoPlayerController? _controller;
   late Future<void> _initializeVideoPlayerFuture;
   late Exercise exercise;
   List<Row> listInstructions = [];
   List<Row> listRepetitionsChoice = [];
-
+  bool isHelpMode = Get.arguments != null ? true : false;
   Future<bool> _getAndSetUpData() async {
     try {
       await Future(
         () {
           print(
               '_getAndSetUpData ----- ${_workoutController.exercises.value.length}');
-          exercise = _workoutController.exercises.value[idExercise] as Exercise;
-          repetitionBuilder();
+          exercise =
+              _workoutController.exercises.value[widget.idExercise] as Exercise;
+          if (!isHelpMode) repetitionBuilder();
           instructionsBuilder();
           _controller = VideoPlayerController.network(
             exercise.exerciseUrl,
@@ -63,16 +62,14 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
   void dispose() {
     _controller?.setLooping(false);
     _controller?.pause();
-    _controller = null;
     _controller?.dispose();
+    _controller = null;
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
-    var widthDevice = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       body: FutureBuilder(
@@ -94,7 +91,7 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
                           children: [
                             InkWell(
                               onTap: () {
-                                Navigator.pop(context);
+                                Get.back();
                               },
                               child: Container(
                                 padding: const EdgeInsets.all(5),
@@ -109,25 +106,11 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
                               ),
                             ),
                             Text(
-                              'Workout Schedule',
+                              'Workout Instruction',
                               style: Theme.of(context)
                                   .textTheme
                                   .headline4!
                                   .copyWith(fontSize: 20),
-                            ),
-                            InkWell(
-                              onTap: () {},
-                              child: Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: AppColors.primaryColor1,
-                                ),
-                                child: const Icon(
-                                  Icons.more_horiz,
-                                  color: Colors.black54,
-                                ),
-                              ),
                             ),
                           ],
                         ),
@@ -137,7 +120,7 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
                           height: heightDevice * 0.35,
                           width: double.infinity,
                           child: Hero(
-                            tag: idExercise,
+                            tag: widget.idExercise,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
                               child: FutureBuilder(
@@ -210,35 +193,37 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
                         const SizedBox(height: 10),
                         ...listInstructions,
                         const SizedBox(height: 10),
-                        Text(
-                          'Custom Repetitions',
-                          style: Theme.of(context)
-                              .textTheme
-                              .headline4!
-                              .copyWith(fontSize: 18),
-                        ),
-                        const SizedBox(height: 10),
-                        SizedBox(
-                          height: heightDevice * 0.2,
-                          child: CupertinoPicker(
-                            looping: true,
-                            diameterRatio: 1,
-                            itemExtent: 64,
-                            onSelectedItemChanged: (int value) {},
-                            selectionOverlay: Container(
-                              decoration: BoxDecoration(
-                                border: Border.symmetric(
-                                  horizontal: BorderSide(
-                                    width: 1,
-                                    color: Colors.grey[300]!,
+                        if (!isHelpMode)
+                          Text(
+                            'Custom Repetitions',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline4!
+                                .copyWith(fontSize: 18),
+                          ),
+                        if (!isHelpMode) const SizedBox(height: 10),
+                        if (!isHelpMode)
+                          SizedBox(
+                            height: heightDevice * 0.2,
+                            child: CupertinoPicker(
+                              looping: true,
+                              diameterRatio: 1,
+                              itemExtent: 64,
+                              onSelectedItemChanged: (int value) {},
+                              selectionOverlay: Container(
+                                decoration: BoxDecoration(
+                                  border: Border.symmetric(
+                                    horizontal: BorderSide(
+                                      width: 1,
+                                      color: Colors.grey[300]!,
+                                    ),
                                   ),
                                 ),
                               ),
+                              children: listRepetitionsChoice,
                             ),
-                            children: listRepetitionsChoice,
                           ),
-                        ),
-                        const SizedBox(height: 50),
+                        if (!isHelpMode) const SizedBox(height: 50),
                       ],
                     ),
                   ),
@@ -253,20 +238,26 @@ class _WorkoutDetail2ScreenState extends State<WorkoutDetail2Screen>
           }
         },
       ),
-      floatingActionButton: ButtonGradient(
-        height: 50,
-        width: 250,
-        linearGradient: LinearGradient(
-          colors: [Colors.blue[200]!, Colors.blue[300]!, Colors.blue[400]!],
-        ),
-        onPressed: () {
-          Get.back();
-        },
-        title: const Text(
-          'Save',
-          style: TextStyle(fontSize: 20, color: Colors.white),
-        ),
-      ),
+      floatingActionButton: !isHelpMode
+          ? ButtonGradient(
+              height: 50,
+              width: 250,
+              linearGradient: LinearGradient(
+                colors: [
+                  Colors.blue[200]!,
+                  Colors.blue[300]!,
+                  Colors.blue[400]!
+                ],
+              ),
+              onPressed: () {
+                Get.back();
+              },
+              title: const Text(
+                'Save',
+                style: TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            )
+          : null,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

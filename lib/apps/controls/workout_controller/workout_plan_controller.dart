@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
+import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../services/auth_service.dart';
 import '../../data/models/workout_model.dart';
@@ -106,11 +107,31 @@ class WorkoutPlanController extends GetxController with TrackerController {
       //   ),
       // );
       update();
+      // getThumbnailImage();
       return true;
     } catch (e) {
       print('fetchExerciseList ------ ${e.toString()}');
       print('Exercise id:$id');
       return false;
+    }
+  }
+
+  Future<void> getThumbnailImage() async {
+    try {
+      int count = 0;
+      exercises.value.forEach((key, value) async {
+        debugPrint((count++).toString());
+        final thumbnailByte = await VideoThumbnail.thumbnailData(
+          video: value.exerciseUrl,
+          imageFormat: ImageFormat.PNG,
+          maxHeight: 100,
+          quality: 75,
+        );
+        listThumbnail.addAll({key: thumbnailByte!});
+      });
+    } catch (e) {
+      print('getThumbnailImage: ${e.toString()}');
+      rethrow;
     }
   }
 
