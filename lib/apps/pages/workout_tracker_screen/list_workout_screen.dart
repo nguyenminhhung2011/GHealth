@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/better_player_test.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_screen.dart';
 
-import '../../data/fake_data.dart';
-import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 class ListWorkoutScreen extends StatefulWidget {
