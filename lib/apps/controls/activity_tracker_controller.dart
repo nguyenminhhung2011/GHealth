@@ -12,6 +12,7 @@ class ActivityTrackerC extends GetxController {
   final Rx<List<Map<String, dynamic>>> _listSleepData =
       Rx<List<Map<String, dynamic>>>([]);
   List<Map<String, dynamic>> get listSleepData => _listSleepData.value;
+  RxInt chartIndex = 0.obs;
   // {
   //   'bedTime': DateTime(),
   //   'alarm': DateTime(),
@@ -36,11 +37,11 @@ class ActivityTrackerC extends GetxController {
   //-----get date -----------------------------
   //Sleep---------------------
 
-  DateTime selectDateTemp1 = DateTime.now();
-  DateTime selectDateTemp2 = DateTime.now();
+  DateTime selectDateTempSleep1 = DateTime.now();
+  DateTime selectDateTempSleep2 = DateTime.now();
 
-  Rx<DateTime> startDate = DateTime.now().obs;
-  Rx<DateTime> finishDate = DateTime.now().obs;
+  Rx<DateTime> startDateSleep = DateTime.now().obs;
+  Rx<DateTime> finishDateSleep = DateTime.now().obs;
 
   RxList<DateTime> allDateSleep = <DateTime>[].obs;
   DateRangePickerController dateSleepController = DateRangePickerController();
@@ -111,13 +112,16 @@ class ActivityTrackerC extends GetxController {
   }
 
   selectDateDoneClick() {
-    startDate.value = selectDateTemp1;
-    finishDate.value = selectDateTemp2;
-    allDateSleep.value = getListDateBetWeenRange();
-    getDataSleepChart();
+    if (chartIndex.value == 0) {
+      startDateSleep.value = selectDateTempSleep1;
+      finishDateSleep.value = selectDateTempSleep2;
+      allDateSleep.value = getListDateBetWeenRange();
+      getDataSleepChart();
+    }
     update();
   }
 
+  //Water-------------------------------------
   // Function for select date time ---------------------
   bool isSameDate(DateTime date1, DateTime date2) {
     if (date2 == date1) {
@@ -151,23 +155,45 @@ class ActivityTrackerC extends GetxController {
 
     if (!isSameDate(dat1, ranges.startDate!) ||
         !isSameDate(dat2, ranges.endDate!)) {
-      dateSleepController.selectedRange = PickerDateRange(dat1, dat2);
-      selectDateTemp1 = dat1;
-      selectDateTemp2 = dat2;
+      switch (chartIndex.value) {
+        case 0:
+          dateSleepController.selectedRange = PickerDateRange(dat1, dat2);
+          selectDateTempSleep1 = dat1;
+          selectDateTempSleep2 = dat2;
+          break;
+        default:
+          break;
+      }
     }
   }
 
   getDayInBetWeen() {
-    final int difference = finishDate.value.difference(startDate.value).inDays;
+    int difference = 0;
+    switch (chartIndex.value) {
+      case 0:
+        difference =
+            finishDateSleep.value.difference(startDateSleep.value).inDays;
+        break;
+      default:
+        break;
+    }
     return difference;
   }
 
   //get list date to load chart
   List<DateTime> getListDateBetWeenRange() {
-    final items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
-      DateTime date = startDate.value;
-      return date.add(Duration(days: index));
-    });
+    List<DateTime> items = [];
+    switch (chartIndex.value) {
+      case 0:
+        items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+          DateTime date = startDateSleep.value;
+          return date.add(Duration(days: index));
+        });
+        break;
+      default:
+        break;
+    }
+
     return items;
   }
 
@@ -175,16 +201,26 @@ class ActivityTrackerC extends GetxController {
   void getStartDateAndFinishDate() {
     DateTime now = DateTime.now();
     int weekDay = now.weekday == 7 ? 0 : now.weekday;
-    startDate.value = DateTime.now();
-    finishDate.value = DateTime.now();
+    if (chartIndex.value == 0) {
+      startDateSleep.value = DateTime.now();
+      finishDateSleep.value = DateTime.now();
+    }
     for (int i = 0; i < weekDay; i++) {
-      startDate.value = startDate.value.add(const Duration(days: -1));
+      if (chartIndex.value == 0) {
+        startDateSleep.value =
+            startDateSleep.value.add(const Duration(days: -1));
+      }
     }
     for (int i = 0; i < 6 - weekDay; i++) {
-      finishDate.value = finishDate.value.add(const Duration(days: 1));
+      if (chartIndex.value == 0) {
+        finishDateSleep.value =
+            finishDateSleep.value.add(const Duration(days: 1));
+      }
     }
-    allDateSleep.value = List<DateTime>.generate(
-        7, (index) => startDate.value.add(Duration(days: index)));
+    if (chartIndex.value == 0) {
+      allDateSleep.value = List<DateTime>.generate(
+          7, (index) => startDateSleep.value.add(Duration(days: index)));
+    }
     update();
   }
 

@@ -517,6 +517,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                     title: 'Select Week',
                     icon: Icons.calendar_month,
                     press: () {
+                      controller.chartIndex.value = 0;
                       _showDatePicker(
                           context: context,
                           datePicke: controller.dateSleepController,
@@ -552,7 +553,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           GradientText(
-                            'Week ${DateFormat().add_yMd().format(controller.startDate.value)} - ${DateFormat().add_yMd().format(controller.finishDate.value)}',
+                            'Week ${DateFormat().add_yMd().format(controller.startDateSleep.value)} - ${DateFormat().add_yMd().format(controller.finishDateSleep.value)}',
                             gradient: const LinearGradient(
                                 colors: [Colors.black, Colors.black]),
                             style: const TextStyle(
