@@ -9,6 +9,9 @@ import 'package:gold_health/constrains.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../services/auth_service.dart';
+import '../../services/data_service.dart';
+import '../data/models/Meal.dart';
+import '../data/models/nutrition.dart';
 import '../data/models/water.dart';
 
 class ActivityTrackerC extends GetxController {
@@ -31,6 +34,9 @@ class ActivityTrackerC extends GetxController {
     getStartDateAndFinishDate();
     dateWaterController = dateSleepController;
     allDateWater.value = allDateSleep.value;
+
+    dateNutriController = dateSleepController;
+    allDateNutri.value = allDateSleep.value;
 
     getDataSleepChart();
     getDataWaterChart();
@@ -131,15 +137,6 @@ class ActivityTrackerC extends GetxController {
   final Rx<List<Map<String, dynamic>>> _listWaterData =
       Rx<List<Map<String, dynamic>>>([]);
   List<Map<String, dynamic>> get listWaterData => _listWaterData.value;
-  bool checkListWaterDate(
-      DateTime date, List<Map<String, dynamic>> allDateBetWeen) {
-    for (var item in allDateBetWeen) {
-      if (date.day == item['bedTime'].day &&
-          date.month == item['bedTime'].month &&
-          date.year == item['bedTime'].year) return true;
-    }
-    return false;
-  }
 
   int get waterConsumeWeek => listWaterData.fold<int>(0, (sum, e) {
         return sum + e['consume'] as int;
@@ -179,21 +176,6 @@ class ActivityTrackerC extends GetxController {
     update();
   }
 
-  selectDateDoneClick() {
-    if (chartIndex.value == 0) {
-      startDateSleep.value = selectDateTempSleep1;
-      finishDateSleep.value = selectDateTempSleep2;
-      allDateSleep.value = getListDateBetWeenRange();
-      getDataSleepChart();
-    } else if (chartIndex.value == 4) {
-      startDateWater.value = selectDateTempWater1;
-      finishDateWater.value = selectDateTempWater2;
-      allDateWater.value = getListDateBetWeenRange();
-      getDataWaterChart();
-    }
-    update();
-  }
-
   int get maxList => [
         for (var item in listWaterData)
           max(item['consume'] as int, item['target'] as int)
@@ -214,8 +196,77 @@ class ActivityTrackerC extends GetxController {
     ]);
   }
 
-  //Water-------------------------------------
+  //Nutrition-------------------------------------
+  DateTime selectDateTempNutri1 = DateTime.now();
+  DateTime selectDateTempNutri2 = DateTime.now();
+
+  Rx<DateTime> startDateNutri = DateTime.now().obs;
+  Rx<DateTime> finishDateNutri = DateTime.now().obs;
+
+  RxList<DateTime> allDateNutri = <DateTime>[].obs;
+  DateRangePickerController dateNutriController = DateRangePickerController();
+  final Rx<List<Map<String, dynamic>>> _listNutriData =
+      Rx<List<Map<String, dynamic>>>([]);
+  List<Map<String, dynamic>> get listNutriData => _listNutriData.value;
+  Meal getMealId(String id, List<Meal> l) {
+    // get meal from id String
+    final meal = l.firstWhere(
+      (element) => element.id == id,
+      orElse: () {
+        return l[0];
+      },
+    );
+    return meal;
+  }
+
+  getDataNutriChart() async {
+    _listNutriData.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('Nutrition')
+        .snapshots()
+        .map((event) {
+      List<Map<String, dynamic>> result = [
+        for (var item in allDateNutri.value)
+          {
+            'id': item.weekday,
+            'kCal': 0,
+          }
+      ];
+      result.sort((a, b) => a['id'].compareTo(b['id']));
+      for (var item in event.docs) {
+        Nutrition data = Nutrition.fromSnap(item);
+        if (checkDateInList(data.dateTime, allDateNutri.value)) {
+          result[data.dateTime.weekday - 1]['kCal'] += data.amount *
+              getMealId(data.id, DataService.instance.mealList).kCal;
+        }
+      }
+      return result;
+    }));
+    update();
+  }
+
   // Function for select date time ---------------------
+  selectDateDoneClick() {
+    if (chartIndex.value == 0) {
+      startDateSleep.value = selectDateTempSleep1;
+      finishDateSleep.value = selectDateTempSleep2;
+      allDateSleep.value = getListDateBetWeenRange();
+      getDataSleepChart();
+    } else if (chartIndex.value == 4) {
+      startDateWater.value = selectDateTempWater1;
+      finishDateWater.value = selectDateTempWater2;
+      allDateWater.value = getListDateBetWeenRange();
+      getDataWaterChart();
+    } else if (chartIndex.value == 3) {
+      startDateNutri.value = selectDateTempNutri1;
+      finishDateNutri.value = selectDateTempNutri2;
+      allDateNutri.value = getListDateBetWeenRange();
+      getDataNutriChart();
+    }
+    update();
+  }
+
   bool isSameDate(DateTime date1, DateTime date2) {
     if (date2 == date1) {
       return true;
@@ -254,6 +305,11 @@ class ActivityTrackerC extends GetxController {
           selectDateTempSleep1 = dat1;
           selectDateTempSleep2 = dat2;
           break;
+        case 3:
+          dateNutriController.selectedRange = PickerDateRange(dat1, dat2);
+          selectDateTempNutri1 = dat1;
+          selectDateTempNutri2 = dat2;
+          break;
         case 4:
           dateWaterController.selectedRange = PickerDateRange(dat1, dat2);
           selectDateTempWater1 = dat1;
@@ -272,11 +328,15 @@ class ActivityTrackerC extends GetxController {
         difference =
             finishDateSleep.value.difference(startDateSleep.value).inDays;
         break;
+      case 3:
+        difference =
+            finishDateNutri.value.difference(startDateNutri.value).inDays;
+        break;
+
       case 4:
         difference =
             finishDateWater.value.difference(startDateWater.value).inDays;
         break;
-
       default:
         break;
     }
@@ -293,6 +353,13 @@ class ActivityTrackerC extends GetxController {
           return date.add(Duration(days: index));
         });
         break;
+      case 3:
+        items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+          DateTime date = startDateNutri.value;
+          return date.add(Duration(days: index));
+        });
+        break;
+
       case 4:
         items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
           DateTime date = startDateWater.value;
