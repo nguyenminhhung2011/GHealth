@@ -1,20 +1,18 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:audioplayers/audioplayers.dart';
 import 'package:better_player/better_player.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/time_custom.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_detail2_screen.dart';
+import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:video_player/video_player.dart';
-// import 'package:youtube_player_flutter/youtube_player_flutter.dart';
-
 import '../../data/models/workout_model.dart';
 import '../../template/misc/colors.dart';
 
@@ -30,7 +28,6 @@ class _WorkoutScreenState extends State<WorkoutScreen>
 
   VideoPlayerController? _videoPlayerController;
   Future<void>? _initializeVideoPlayerFuture;
-  BetterPlayerController? _betterPlayerController;
   AnimationController? _controller;
   List<Exercise> exercises = [];
   List<BetterPlayerDataSource> dataSourceList = [];
@@ -41,12 +38,13 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   var isPlay = false.obs;
   var isAppearFilter = true.obs;
   var isCountDown = false.obs;
-
+  /////////////////////
   RxInt currentWorkoutIndex = 0.obs;
   RxInt allTime = 60.obs;
   RxInt isReady = 1.obs;
   ///////////////////////////////
-
+  ValueNotifier<int> rebuild = ValueNotifier(0);
+  ///////////////////////////////
   Future<bool> _prepareExerciseData() async {
     try {
       await Future(
@@ -57,12 +55,15 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                 _workoutPlanController.exercises.value[element] as Exercise);
           }
           currentWorkoutIndex.listen(
-            (val) async {
+            (val) {
+              _initialCountDown();
+              _initializeAndPlay();
+              //////////////////////////////
               _getToRestPage();
             },
           );
-          await _initializePlayListVideo();
           _initialCountDown();
+          _initializeAndPlay();
         },
       );
       return true;
@@ -74,115 +75,63 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   var time = 3.obs;
   void _startCountDown() async {
     const duration = Duration(seconds: 1, milliseconds: 100);
-    final player = AudioPlayer();
-    var link = AssetSource('sounds/mixkit-select-click-1109.wav');
     Timer.periodic(duration, (timer) async {
       if (time.value > 0) {
-        await player.play(link, volume: 200);
-        time.value--;
+        --time.value;
       } else {
-        await player.play(AssetSource('sounds/scream.wav'), volume: 200);
-        timer.cancel();
-        player.dispose();
-        ////////
         isAppearFilter.value = false;
         isPlay.value = true;
         _controller?.forward();
-        // _videoPlayerController?.play();
+        _videoPlayerController?.play();
+        timer.cancel();
       }
     });
   }
 
   void _getToRestPage() async {
-    _initialCountDown();
-    // _initializeAndPlay();
-    _initializeVideo();
     Get.to(
       () => RestScreen(
-        numOfExercise: '${currentWorkoutIndex.value}/${exercises.length}',
+        videoPlayer: showVideoPlayer(),
+        numOfExercise: '${currentWorkoutIndex.value + 1}/${exercises.length}',
         exerciseName: exercises[currentWorkoutIndex.value].exerciseName,
-        url: exercises[currentWorkoutIndex.value].exerciseUrl,
+        idExercise: exercises[currentWorkoutIndex.value].idExercise,
         duration: exercises[currentWorkoutIndex.value].duration,
       ),
-    )!
-        .then((value) async {
-      await Future.delayed(const Duration(seconds: 1, milliseconds: 200), () {
-        _controller!.forward();
-        // _videoPlayerController!.play();
-        _betterPlayerController!.play();
-      });
-    });
-  }
-
-  void _initController(String link) {
-    _videoPlayerController = VideoPlayerController.network(link);
-    _initializeVideoPlayerFuture =
-        _videoPlayerController!.initialize().then((value) {
-      _videoPlayerController?.setLooping(true);
+    )?.then((_) {
+      _controller!.forward();
+      _videoPlayerController!.play();
     });
   }
 
   void _initializeAndPlay() {
-    final url = exercises[currentWorkoutIndex.value].exerciseUrl;
     if (_videoPlayerController == null) {
-      _initController(url);
-    } else {
-      var old = _videoPlayerController;
-
-      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-        await old!.dispose();
-        _initController(url);
-        _videoPlayerController!.play();
+      final videoPlayerController = VideoPlayerController.network(
+          exercises[currentWorkoutIndex.value].exerciseUrl);
+      _videoPlayerController = videoPlayerController;
+      ++rebuild.value;
+      _initializeVideoPlayerFuture =
+          videoPlayerController.initialize().then((_) {
+        videoPlayerController.setLooping(true);
+        videoPlayerController.pause();
+        ++rebuild.value;
       });
-      setState(() {
-        _videoPlayerController = null;
-      });
+      return;
     }
-  }
-
-  Future<List<BetterPlayerDataSource>> _initializePlayListVideo() async {
-    await Future(() {
-      for (var element in exercises) {
-        dataSourceList.add(
-          BetterPlayerDataSource(
-            placeholder:
-                _workoutPlanController.listThumbnail[element.idExercise] == null
-                    ? Image.asset('assets/images/place_holder.png')
-                    : Image.memory(
-                        _workoutPlanController
-                            .listThumbnail[element.idExercise]!,
-                      ),
-            BetterPlayerDataSourceType.network,
-            element.exerciseUrl,
-          ),
-        );
-      }
+    final videoPlayerController = VideoPlayerController.network(
+        exercises[currentWorkoutIndex.value].exerciseUrl);
+    var old = _videoPlayerController;
+    if (old != null) {
+      old.pause();
+      _initializeVideoPlayerFuture = null;
+    }
+    _videoPlayerController = videoPlayerController;
+    ++rebuild.value;
+    _initializeVideoPlayerFuture = videoPlayerController.initialize().then((_) {
+      old?.dispose();
+      videoPlayerController.setLooping(true);
+      videoPlayerController.pause();
+      ++rebuild.value;
     });
-
-    return dataSourceList;
-  }
-
-  void _initializeVideo() async {
-    if (_betterPlayerController == null) {
-      _betterPlayerController = BetterPlayerController(
-          const BetterPlayerConfiguration(
-            autoPlay: true,
-            // looping: true,
-            fit: BoxFit.cover,
-          ),
-          betterPlayerDataSource: dataSourceList[currentWorkoutIndex.value]);
-    } else {
-      var old = _betterPlayerController;
-      old!.dispose();
-      old = null;
-      _betterPlayerController = BetterPlayerController(
-          const BetterPlayerConfiguration(
-            autoPlay: true,
-            // looping: true,
-            fit: BoxFit.cover,
-          ),
-          betterPlayerDataSource: dataSourceList[currentWorkoutIndex.value]);
-    }
   }
 
   void _initialCountDown() {
@@ -209,14 +158,34 @@ class _WorkoutScreenState extends State<WorkoutScreen>
     });
   }
 
+  Widget showVideoPlayer() {
+    return FutureBuilder(
+      future: _initializeVideoPlayerFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          return AspectRatio(
+            aspectRatio: _videoPlayerController!.value.aspectRatio,
+            child: VideoPlayer(_videoPlayerController!),
+          );
+        } else {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+
   @override
   void dispose() {
     _controller!.dispose();
     _controller = null;
-    // _videoPlayerController?.setLooping(false);
-    // _videoPlayerController?.pause();
-    // _videoPlayerController?.dispose();
-    // _videoPlayerController = null;
+    // _betterPlayerController!.dispose();
+    // _betterPlayerController = null;
+    _videoPlayerController?.setLooping(false);
+    _videoPlayerController?.pause();
+    _videoPlayerController?.dispose();
+    _videoPlayerController = null;
     currentWorkoutIndex.close();
     super.dispose();
   }
@@ -291,37 +260,17 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                     BoxDecoration(color: AppColors.mainColor),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(5),
-                                  // child: FutureBuilder(
-                                  //   future: _initializeVideoPlayerFuture,
-                                  //   builder: (context, snapshot) {
-                                  //     if (snapshot.connectionState ==
-                                  //         ConnectionState.done) {
-                                  //       return AspectRatio(
-                                  //         aspectRatio: _videoPlayerController!
-                                  //             .value.aspectRatio,
-                                  //         child: VideoPlayer(
-                                  //             _videoPlayerController!),
-                                  //       );
-                                  //     } else {
-                                  //       return const Center(
-                                  //         child: CircularProgressIndicator(),
-                                  //       );
-                                  //     }
-                                  //   },
-                                  // ),
-                                  child: BetterPlayerPlaylist(
-                                      betterPlayerDataSourceList:
-                                          dataSourceList,
-                                      betterPlayerConfiguration:
-                                          const BetterPlayerConfiguration(
-                                        autoPlay: true,
-                                        fit: BoxFit.cover,
-                                        looping: true,
-                                      ),
-                                      betterPlayerPlaylistConfiguration:
-                                          const BetterPlayerPlaylistConfiguration(
-                                              initialStartIndex: 0,
-                                              loopVideos: true)),
+                                  child: ValueListenableBuilder(
+                                    valueListenable: rebuild,
+                                    builder: (context, value, child) {
+                                      return Hero(
+                                        tag:
+                                            exercises[currentWorkoutIndex.value]
+                                                .idExercise,
+                                        child: showVideoPlayer(),
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 20),
@@ -399,7 +348,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                   const SizedBox(width: 10),
                                   Container(
                                     width: widthDevice * 0.45,
-                                    height: heightDevice * (1 / 5),
+                                    height: heightDevice * (1.2 / 5),
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       color: AppColors.mainColor,
@@ -433,7 +382,6 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                                 ),
                                               ),
                                             )),
-                                        const SizedBox(height: 10),
                                         Row(
                                           children: [
                                             Image.asset(
@@ -441,7 +389,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                                 height: 15,
                                                 width: 15),
                                             Obx(() => RichTextCustom(
-                                                  size: 13,
+                                                  size: 15,
                                                   title: ' Calories Burned: ',
                                                   data: exercises[
                                                           currentWorkoutIndex
@@ -458,7 +406,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                                 height: 15,
                                                 width: 15),
                                             Obx(() => RichTextCustom(
-                                                  size: 13,
+                                                  size: 15,
                                                   title: ' Time: ',
                                                   data: exercises[
                                                           currentWorkoutIndex
@@ -469,112 +417,177 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                           ],
                                         ),
                                         const SizedBox(height: 10),
-                                        Container(
-                                          height: 40,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: AppColors.primaryColor1,
-                                          ),
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              if (isPlay.value) {
-                                                _controller!.stop();
-                                                _betterPlayerController!
-                                                    .pause();
-                                                // _videoPlayerController!.pause();
-                                              } else {
-                                                _controller!.forward();
-                                                _betterPlayerController!.play();
-                                                // _videoPlayerController!.play();
-                                              }
-                                              isPlay.value = !isPlay.value;
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                primary: Colors.transparent,
-                                                shadowColor:
-                                                    Colors.transparent),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Column(
                                               children: [
-                                                Obx(() => Text(
-                                                      isPlay.value
-                                                          ? 'Pause'
-                                                          : 'Resume',
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontSize: 14,
-                                                      ),
-                                                    )),
-                                                const SizedBox(width: 2),
-                                                Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  color: AppColors.mainColor,
-                                                  size: 10,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 10),
-                                        Container(
-                                          height: 40,
-                                          width: 100,
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                            color: AppColors.primaryColor1,
-                                          ),
-                                          child: ElevatedButton(
-                                            onPressed: () {
-                                              if (currentWorkoutIndex.value <
-                                                  exercises.length - 1) {
-                                                currentWorkoutIndex.value++;
-                                              }
-                                            },
-                                            style: ElevatedButton.styleFrom(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                ),
-                                                primary: Colors.transparent,
-                                                shadowColor:
-                                                    Colors.transparent),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const Text(
-                                                  'Skip',
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 14,
+                                                Container(
+                                                  height: 40,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color:
+                                                        AppColors.primaryColor1,
+                                                  ),
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      if (isPlay.value) {
+                                                        _controller!.stop();
+                                                        _videoPlayerController!
+                                                            .pause();
+                                                      } else {
+                                                        _controller!.forward();
+                                                        _videoPlayerController!
+                                                            .play();
+                                                      }
+                                                      isPlay.value =
+                                                          !isPlay.value;
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            primary: Colors
+                                                                .transparent,
+                                                            shadowColor: Colors
+                                                                .transparent),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Obx(() => Text(
+                                                              isPlay.value
+                                                                  ? 'Pause'
+                                                                  : 'Resume',
+                                                              style:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontSize: 14,
+                                                              ),
+                                                            )),
+                                                        const SizedBox(
+                                                            width: 2),
+                                                        Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          color: AppColors
+                                                              .mainColor,
+                                                          size: 10,
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
                                                 ),
-                                                const SizedBox(width: 2),
-                                                Icon(
-                                                  Icons.arrow_forward_ios,
-                                                  color: AppColors.mainColor,
-                                                  size: 10,
+                                                const SizedBox(height: 10),
+                                                Container(
+                                                  height: 40,
+                                                  width: 100,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color:
+                                                        AppColors.primaryColor1,
+                                                  ),
+                                                  child: ElevatedButton(
+                                                    onPressed: () {
+                                                      if (currentWorkoutIndex
+                                                              .value <
+                                                          exercises.length -
+                                                              1) {
+                                                        currentWorkoutIndex
+                                                            .value++;
+                                                      }
+                                                    },
+                                                    style: ElevatedButton
+                                                        .styleFrom(
+                                                            shape:
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                            ),
+                                                            primary: Colors
+                                                                .transparent,
+                                                            shadowColor: Colors
+                                                                .transparent),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        const Text(
+                                                          'Skip',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: 14,
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 2),
+                                                        Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          color: AppColors
+                                                              .mainColor,
+                                                          size: 10,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
                                               ],
                                             ),
-                                          ),
-                                        ),
+                                            InkWell(
+                                                onTap: () {
+                                                  bool isHelpingMode = true;
+                                                  _videoPlayerController
+                                                      ?.pause();
+                                                  _controller?.stop();
+                                                  Get.to(
+                                                          () => WorkoutDetail2Screen(
+                                                              idExercise: exercises[
+                                                                      currentWorkoutIndex
+                                                                          .value]
+                                                                  .idExercise),
+                                                          arguments:
+                                                              isHelpingMode)
+                                                      ?.then((_) {
+                                                    _videoPlayerController
+                                                        ?.play();
+                                                    _controller?.forward();
+                                                  });
+                                                },
+                                                child: const Icon(
+                                                  Icons.help,
+                                                  size: 40,
+                                                  color:
+                                                      AppColors.primaryColor1,
+                                                )),
+                                          ],
+                                        )
                                       ],
                                     ),
                                   ),
                                 ],
-                              )
+                              ),
                             ],
                           ),
                         ),
@@ -595,12 +608,22 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                 child: isCountDown.value
                     ? Obx(
                         () => Center(
-                          child: Text(
-                            time.value.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
+                          child: Material(
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 20, vertical: 10),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: AppColors.primaryColor1,
+                              ),
+                              child: Text(
+                                time.value.toString(),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 40,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -613,19 +636,21 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                             _startCountDown();
                           },
                           child: Center(
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20, vertical: 10),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
-                                color: AppColors.primaryColor1,
-                              ),
-                              child: const Text(
-                                'Are You Ready ?',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 30,
+                            child: Material(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 10),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: AppColors.primaryColor1,
+                                ),
+                                child: const Text(
+                                  'Are You Ready ?',
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 30,
+                                  ),
                                 ),
                               ),
                             ),
@@ -742,12 +767,14 @@ class RestScreen extends StatefulWidget {
     required this.numOfExercise,
     required this.exerciseName,
     required this.duration,
-    required this.url,
+    required this.videoPlayer,
+    required this.idExercise,
   }) : super(key: key);
+  final String idExercise;
   final String numOfExercise;
-  final String url;
   final String exerciseName;
   final Duration duration;
+  final Widget videoPlayer;
   @override
   State<RestScreen> createState() => _RestScreenState();
 }
@@ -756,7 +783,6 @@ class _RestScreenState extends State<RestScreen> {
   late Timer timer;
 
   var time = 25.obs;
-  late Future<void> _initializeVideoPlayerFuture;
   // late VideoPlayerController _videoPlayerController;
 
   Future<void> _startTimer() async {
@@ -767,7 +793,7 @@ class _RestScreenState extends State<RestScreen> {
           if (time.value == 0) {
             Future.delayed(
               const Duration(seconds: 1),
-              () => Get.back(),
+              () => Get.back(result: true),
             );
             timer.cancel();
           } else {
@@ -781,18 +807,11 @@ class _RestScreenState extends State<RestScreen> {
   @override
   void dispose() {
     timer.cancel();
-    // _videoPlayerController.dispose();
     super.dispose();
   }
 
   @override
   void didChangeDependencies() async {
-    // _videoPlayerController = VideoPlayerController.network(widget.url);
-    // _initializeVideoPlayerFuture =
-    //     _videoPlayerController.initialize().then((value) {
-    //   _videoPlayerController.setLooping(true);
-    //   _videoPlayerController.play();
-    // });
     await _startTimer();
     super.didChangeDependencies();
   }
@@ -813,7 +832,7 @@ class _RestScreenState extends State<RestScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  onPressed: () => Get.back(),
+                  onPressed: () => Get.back(result: true),
                   icon: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
@@ -872,7 +891,7 @@ class _RestScreenState extends State<RestScreen> {
                           ),
                           const SizedBox(width: 50),
                           InkWell(
-                            onTap: () => Get.back(),
+                            onTap: () => Get.back(result: true),
                             child: Container(
                               alignment: Alignment.center,
                               width: 100,
@@ -948,25 +967,14 @@ class _RestScreenState extends State<RestScreen> {
                     color: Colors.white,
                     borderRadius:
                         BorderRadius.vertical(top: Radius.circular(30))),
-                // child: ClipRRect(
-                //   borderRadius:
-                //       const BorderRadius.vertical(top: Radius.circular(30)),
-                //   child: FutureBuilder(
-                //     future: _initializeVideoPlayerFuture,
-                //     builder: (context, snapshot) {
-                //       if (snapshot.connectionState == ConnectionState.done) {
-                //         return AspectRatio(
-                //           aspectRatio: _videoPlayerController.value.aspectRatio,
-                //           child: VideoPlayer(_videoPlayerController),
-                //         );
-                //       } else {
-                //         return const Center(
-                //           child: CircularProgressIndicator(),
-                //         );
-                //       }
-                //     },
-                //   ),
-                // ),
+                child: ClipRRect(
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(30)),
+                  child: Hero(
+                    tag: widget.idExercise,
+                    child: widget.videoPlayer,
+                  ),
+                ),
               ),
             ],
           ),

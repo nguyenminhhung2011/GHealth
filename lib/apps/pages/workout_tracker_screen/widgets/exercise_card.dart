@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_detail2_screen.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
 import '../../../routes/route_name.dart';
@@ -49,7 +50,9 @@ class _ExerciseCardState extends State<ExerciseCard> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.toNamed(RouteName.workoutDetail2Screen, arguments: widget.e['id']);
+        Get.to(
+          () => WorkoutDetail2Screen(idExercise: widget.e['id']),
+        );
       },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

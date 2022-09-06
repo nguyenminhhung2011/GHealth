@@ -130,10 +130,10 @@ class AppPages {
       name: RouteName.workoutScheduleScreen,
       page: () => const WorkoutScheduleScreen(),
     ),
-    GetPage(
-      name: RouteName.workoutDetail2Screen,
-      page: () => const WorkoutDetail2Screen(),
-    ),
+    // GetPage(
+    //   name: RouteName.workoutDetail2Screen,
+    //   page: () => const WorkoutDetail2Screen(),
+    // ),
     GetPage(
       name: RouteName.dailyNutritionScreen,
       page: () => DailyNutriScreen(),
