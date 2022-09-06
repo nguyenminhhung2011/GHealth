@@ -44,7 +44,7 @@ class ActivityTrackerC extends GetxController {
   }
 
   //-----get date -----------------------------
-  //Water---------------------
+  //Sleep---------------------
   DateTime selectDateTempSleep1 = DateTime.now();
   DateTime selectDateTempSleep2 = DateTime.now();
 
@@ -118,7 +118,7 @@ class ActivityTrackerC extends GetxController {
     );
     update();
   }
-  //Sleep---------------------
+  //Water---------------------
 
   DateTime selectDateTempWater1 = DateTime.now();
   DateTime selectDateTempWater2 = DateTime.now();
@@ -141,6 +141,9 @@ class ActivityTrackerC extends GetxController {
     return false;
   }
 
+  int get waterConsumeWeek => listWaterData.fold<int>(0, (sum, e) {
+        return sum + e['consume'] as int;
+      });
   getDataWaterChart() async {
     _listWaterData.bindStream(
       firestore

@@ -10,12 +10,14 @@ class ColumnChartTwoColumnCustom extends StatefulWidget {
       required this.startDate,
       required this.endDate,
       required this.barGroups,
-      required this.columnData})
+      required this.columnData,
+      required this.waterConsume})
       : super(key: key);
   final String startDate;
   final String endDate;
   final List<BarChartGroupData> barGroups;
   final int columnData;
+  final int waterConsume;
 
   @override
   State<StatefulWidget> createState() => ColumnChartTwoColumnCustomState();
@@ -73,13 +75,13 @@ class ColumnChartTwoColumnCustomState
                   ),
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.only(left: 20.0),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
                 child: GradientText(
-                  'Water Consume: 5000ml',
-                  gradient:
-                      LinearGradient(colors: [Colors.black, Colors.black]),
-                  style: TextStyle(
+                  'Water Consume: ${widget.waterConsume}ml',
+                  gradient: const LinearGradient(
+                      colors: [Colors.black, Colors.black]),
+                  style: const TextStyle(
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                   ),

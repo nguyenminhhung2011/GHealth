@@ -214,6 +214,10 @@ class DailyWaterController extends GetxController with TrackerController {
     ]);
   }
 
+  int get waterConsumeWeek => dataChart.fold<int>(0, (sum, e) {
+        return sum + e['consume'] as int;
+      });
+
   getDataChart() async {
     _dataChart.bindStream(
       firestore

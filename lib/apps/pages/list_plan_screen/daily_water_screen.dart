@@ -141,6 +141,7 @@ class DailyWaterScreen extends StatelessWidget {
                                   height: heightDevice / 2.9,
                                   width: double.infinity,
                                   child: ColumnChartTwoColumnCustom(
+                                    waterConsume: controller.waterConsumeWeek,
                                     columnData: controller.maxList,
                                     startDate: DateFormat()
                                         .add_yMd()
