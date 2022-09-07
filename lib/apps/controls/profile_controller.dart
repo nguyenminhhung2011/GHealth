@@ -41,11 +41,39 @@ class ProfileC extends GetxController {
     getDataUser(_uid.value);
   }
 
+  addWeightToCollection(int newValue) async {
+    DateTime now = DateTime.now();
+    await firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('weight')
+        .add({
+      'data': newValue,
+      'date': now,
+    });
+  }
+
+  updateWeight(int newValue) async {
+    await firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .update(
+      {'weight': newValue},
+    );
+    await addWeightToCollection(newValue);
+  }
+
   getDataUser(String uid) async {
-    var userDoc = await firestore.collection('users').doc(uid).get();
-    Map<String, dynamic> result = (userDoc.data() as Map<String, dynamic>);
-    _user.value = result;
-    //print(result['name'] + ' and ' + _user.value['name']);
+    _user.bindStream(firestore.collection('users').snapshots().map((event) {
+      Map<String, dynamic> result = {};
+      for (var item in event.docs) {
+        if (item.id == AuthService.instance.currentUser!.uid) {
+          result = item.data();
+          break;
+        }
+      }
+      return result;
+    }));
     update();
   }
 }

@@ -1,8 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/auth_controller.dart';
@@ -10,6 +8,7 @@ import 'package:gold_health/apps/controls/profile_controller.dart';
 import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:gold_health/apps/global_widgets/gradient_icon..dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
+import 'package:gold_health/apps/global_widgets/text_field_custom/text_field_icon.dart';
 import 'package:gold_health/apps/pages/dashboard/contact_us_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/setting_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/activity_histor_dialog.dart';
@@ -41,7 +40,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     // var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Obx(
-        () => _controller.user == null
+        () => _controller.user == {}
             ? const Center(
                 child:
                     CircularProgressIndicator(color: AppColors.primaryColor1))
@@ -196,7 +195,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             ButtonIconGradientColor(
                                               title: 'Edit',
                                               icon: Icons.edit,
-                                              press: () {},
+                                              press: () async {
+                                                int heightValue =
+                                                    _controller.user['height'];
+                                                int weightValue =
+                                                    _controller.user['weight'];
+                                                final r = showDialog(
+                                                  useRootNavigator: false,
+                                                  barrierColor: Colors.black54,
+                                                  context: context,
+                                                  builder: (context) =>
+                                                      DialogEditProfile(
+                                                    hegithValue: heightValue,
+                                                    weightValue: weightValue,
+                                                    controller: _controller,
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
@@ -463,6 +478,104 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 }
 
+class DialogEditProfile extends StatefulWidget {
+  const DialogEditProfile({
+    Key? key,
+    required this.hegithValue,
+    required this.weightValue,
+    required this.controller,
+  }) : super(key: key);
+  final int hegithValue;
+  final int weightValue;
+  final ProfileC controller;
+
+  @override
+  State<DialogEditProfile> createState() => _DialogEditProfileState();
+}
+
+class _DialogEditProfileState extends State<DialogEditProfile> {
+  final TextEditingController heightController = TextEditingController();
+  final TextEditingController weightController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    heightController.text = widget.hegithValue.toString();
+    weightController.text = widget.weightValue.toString();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      child: Container(
+        width: double.infinity,
+        height: 300,
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text(
+              'Change your BMI',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextFieldNoWithIcon(
+              controller: heightController,
+              icon: Icons.accessibility_sharp,
+              hintText: 'Update Your height',
+            ),
+            const SizedBox(height: 10),
+            TextFieldNoWithIcon(
+              controller: weightController,
+              icon: Icons.scale,
+              hintText: 'Update Your height',
+            ),
+            const Spacer(),
+            Container(
+              width: double.infinity,
+              // padding: const EdgeInsets.symmetric(vertical: 5),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: AppColors.primaryColor,
+              ),
+              child: ElevatedButton(
+                onPressed: () async {
+                  widget.controller
+                      .updateWeight(int.parse(weightController.text));
+                  Get.back();
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: AppColors.primaryColor,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  alignment: Alignment.center,
+                  fixedSize: const Size(double.infinity, 45),
+                  elevation: 0,
+                ),
+                child: const Text(
+                  'Update',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class ButtonSvgIcon extends StatelessWidget {
   final String title;
   final String iconPath;
@@ -561,6 +674,67 @@ class InforCard extends StatelessWidget {
               color: Colors.black,
               fontWeight: FontWeight.w500,
               fontSize: 17,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TextFieldNoWithIcon extends StatelessWidget {
+  final IconData icon;
+  final String hintText;
+  final TextEditingController controller;
+  const TextFieldNoWithIcon({
+    Key? key,
+    required this.icon,
+    required this.hintText,
+    required this.controller,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        vertical: 5,
+        horizontal: 10,
+      ),
+      decoration: BoxDecoration(
+        color: AppColors.mainColor,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(width: 2, color: AppColors.primaryColor),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            offset: const Offset(2, 3),
+            blurRadius: 10,
+          ),
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            offset: const Offset(-2, -3),
+            blurRadius: 10,
+          )
+        ],
+      ),
+      child: Row(
+        children: [
+          Icon(
+            icon,
+            color: AppColors.primaryColor,
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: TextFormField(
+              controller: controller,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: const TextStyle(
+                    color: Colors.grey, fontWeight: FontWeight.w400),
+                border: InputBorder.none,
+              ),
             ),
           ),
         ],
