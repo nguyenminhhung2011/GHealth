@@ -7,19 +7,21 @@ import '../../template/misc/colors.dart';
 import '../gradient_text.dart';
 
 class ColumnChart1Column extends StatefulWidget {
-  const ColumnChart1Column(
-      {Key? key,
-      required this.week,
-      required this.color,
-      required this.title,
-      required this.data,
-      required this.columnColor})
-      : super(key: key);
+  const ColumnChart1Column({
+    Key? key,
+    required this.week,
+    required this.color,
+    required this.title,
+    required this.data,
+    required this.columnColor,
+    required this.dataColumn,
+  }) : super(key: key);
   final String week;
   final Color columnColor;
   final Color color;
   final String title;
   final String data;
+  final List<double> dataColumn;
   @override
   State<StatefulWidget> createState() => ColumnChart1ColumnState();
 }
@@ -140,25 +142,25 @@ class ColumnChart1ColumnState extends State<ColumnChart1Column> {
   List<BarChartGroupData> showingGroups() => List.generate(7, (i) {
         switch (i) {
           case 0:
-            return makeGroupData(0, 5,
+            return makeGroupData(0, widget.dataColumn[6],
                 isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 1:
-            return makeGroupData(1, 6.5,
+            return makeGroupData(1, widget.dataColumn[0],
                 isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 2:
-            return makeGroupData(2, 5,
+            return makeGroupData(2, widget.dataColumn[1],
                 isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 3:
-            return makeGroupData(3, 7.5,
+            return makeGroupData(3, widget.dataColumn[2],
                 isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 4:
-            return makeGroupData(4, 9,
+            return makeGroupData(4, widget.dataColumn[3],
                 isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 5:
-            return makeGroupData(5, 11.5,
+            return makeGroupData(5, widget.dataColumn[4],
                 isTouched: i == touchedIndex, barColor: widget.columnColor);
           case 6:
-            return makeGroupData(6, 6.5,
+            return makeGroupData(6, widget.dataColumn[5],
                 isTouched: i == touchedIndex, barColor: widget.columnColor);
           default:
             return throw Error();
@@ -173,32 +175,32 @@ class ColumnChart1ColumnState extends State<ColumnChart1Column> {
             getTooltipItem: (group, groupIndex, rod, rodIndex) {
               String weekDay;
               switch (group.x.toInt()) {
-                case 0:
+                case 1:
                   weekDay = 'Monday';
                   break;
-                case 1:
+                case 2:
                   weekDay = 'Tuesday';
                   break;
-                case 2:
+                case 3:
                   weekDay = 'Wednesday';
                   break;
-                case 3:
+                case 4:
                   weekDay = 'Thursday';
                   break;
-                case 4:
+                case 5:
                   weekDay = 'Friday';
                   break;
-                case 5:
+                case 6:
                   weekDay = 'Saturday';
                   break;
-                case 6:
+                case 0:
                   weekDay = 'Sunday';
                   break;
                 default:
                   throw Error();
               }
               return BarTooltipItem(
-                weekDay + '\n',
+                '$weekDay\n',
                 const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
@@ -265,26 +267,26 @@ class ColumnChart1ColumnState extends State<ColumnChart1Column> {
     );
     Widget text;
     switch (value.toInt()) {
-      case 0:
-        text = const Text('M', style: style);
-        break;
       case 1:
-        text = const Text('T', style: style);
+        text = const Text('Mon', style: style);
         break;
       case 2:
-        text = const Text('W', style: style);
+        text = const Text('Tue', style: style);
         break;
       case 3:
-        text = const Text('T', style: style);
+        text = const Text('Wed', style: style);
         break;
       case 4:
-        text = const Text('F', style: style);
+        text = const Text('Thu', style: style);
         break;
       case 5:
-        text = const Text('S', style: style);
+        text = const Text('Fri', style: style);
         break;
       case 6:
-        text = const Text('S', style: style);
+        text = const Text('Sat', style: style);
+        break;
+      case 0:
+        text = const Text('Sun', style: style);
         break;
       default:
         text = const Text('', style: style);

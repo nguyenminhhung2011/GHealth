@@ -34,12 +34,17 @@ class ActivityTrackerC extends GetxController {
     getStartDateAndFinishDate();
     dateWaterController = dateSleepController;
     allDateWater.value = allDateSleep.value;
+    startDateWater.value = startDateSleep.value;
+    finishDateWater.value = finishDateSleep.value;
 
     dateNutriController = dateSleepController;
     allDateNutri.value = allDateSleep.value;
+    startDateNutri.value = startDateSleep.value;
+    finishDateNutri.value = finishDateSleep.value;
 
     getDataSleepChart();
     getDataWaterChart();
+    getDataNutriChart();
     update();
   }
 
@@ -245,6 +250,9 @@ class ActivityTrackerC extends GetxController {
     }));
     update();
   }
+
+  List<Map<String, dynamic>> get listDataNutriPlan =>
+      DataService.instance.dataNutriPlan;
 
   // Function for select date time ---------------------
   selectDateDoneClick() {

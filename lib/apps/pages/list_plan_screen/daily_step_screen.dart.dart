@@ -181,6 +181,7 @@ class _DailyStepScreenState extends State<DailyStepScreen> {
                     height: heightDevice / 3,
                     width: double.infinity,
                     child: ColumnChart1Column(
+                      dataColumn: [2, 1, 12, 20, 3, 4, 5],
                       week: 'Week 25/7/2022 - 1/8/2022',
                       title: 'Number of FootSteps: ',
                       data: '300',

@@ -57,7 +57,8 @@ class ActivityTrackerScreen extends StatelessWidget {
                     init: ActivityTrackerC(),
                     builder: (controller) {
                       return Obx(() => (controller.listSleepData.isNotEmpty &&
-                              controller.listWaterData.isNotEmpty)
+                              controller.listWaterData.isNotEmpty &&
+                              controller.listNutriData.isNotEmpty)
                           ? ScreenTemplate(
                               child: Column(
                                 children: [
@@ -273,6 +274,7 @@ class ActivityTrackerScreen extends StatelessWidget {
             data: '300',
             color: AppColors.primaryColor1.withOpacity(0.2),
             columnColor: AppColors.primaryColor1,
+            dataColumn: [2, 1, 12, 28, 3, 4, 5],
           ),
         ),
       ],
@@ -300,9 +302,9 @@ class ActivityTrackerScreen extends StatelessWidget {
                   ButtonIconGradientColor(
                     title: 'Select Week',
                     icon: Icons.calendar_month,
-                    press: () {
+                    press: () async {
                       controller.chartIndex.value = 4;
-                      _showDatePicker(
+                      await _showDatePicker(
                           context: context,
                           datePicke: controller.dateWaterController,
                           controller: controller);
@@ -344,38 +346,60 @@ class ActivityTrackerScreen extends StatelessWidget {
   }
 
   // ignore: non_constant_identifier_names
-  Column _CaloriesAbsorbedVIewWeekField(BuildContext context) {
-    return Column(
-      children: [
-        Row(
+  GetBuilder<ActivityTrackerC> _CaloriesAbsorbedVIewWeekField(
+      BuildContext context) {
+    return GetBuilder<ActivityTrackerC>(
+      init: ActivityTrackerC(),
+      builder: (controller) {
+        return Column(
           children: [
-            Text(
-              'Calories Absorbed',
-              style: Theme.of(context).textTheme.headline4!.copyWith(
-                    fontSize: 17,
-                  ),
+            Row(
+              children: [
+                Text(
+                  'Calories Absorbed',
+                  style: Theme.of(context).textTheme.headline4!.copyWith(
+                        fontSize: 17,
+                      ),
+                ),
+                const Spacer(),
+                ButtonIconGradientColor(
+                  title: 'Select Week',
+                  icon: Icons.calendar_month,
+                  press: () async {
+                    controller.chartIndex.value = 3;
+                    await _showDatePicker(
+                        context: context,
+                        datePicke: controller.dateNutriController,
+                        controller: controller);
+                  },
+                )
+              ],
             ),
-            const Spacer(),
-            ButtonIconGradientColor(
-              title: 'Select Week',
-              icon: Icons.calendar_month,
-              press: () {},
-            )
+            const SizedBox(height: 20),
+            SizedBox(
+              height: 320,
+              width: double.infinity,
+              child: ColumnChart1Column(
+                dataColumn: [
+                  for (int i = 0; i < 7; i++)
+                    (controller.listNutriData[i]['kCal'] >
+                            controller.listDataNutriPlan[i]['kCal'])
+                        ? 20
+                        : ((controller.listNutriData[i]['kCal'] /
+                                controller.listDataNutriPlan[i]['kCal']) *
+                            20)
+                ],
+                week:
+                    'Week ${DateFormat().add_yMd().format(controller.startDateNutri.value)} - ${DateFormat().add_yMd().format(controller.finishDateNutri.value)}',
+                title: 'Calories Absorbed: ',
+                data: '4000Kcal',
+                color: AppColors.primaryColor2.withOpacity(0.1),
+                columnColor: AppColors.primaryColor2,
+              ),
+            ),
           ],
-        ),
-        const SizedBox(height: 20),
-        SizedBox(
-          height: 320,
-          width: double.infinity,
-          child: ColumnChart1Column(
-            week: 'Week 25/7/2022 - 1/8/2022',
-            title: 'Calories Absorbed: ',
-            data: '4000Kcal',
-            color: AppColors.primaryColor2.withOpacity(0.1),
-            columnColor: AppColors.primaryColor2,
-          ),
-        ),
-      ],
+        );
+      },
     );
   }
 
@@ -404,6 +428,7 @@ class ActivityTrackerScreen extends StatelessWidget {
           height: 320,
           width: double.infinity,
           child: ColumnChart1Column(
+            dataColumn: [2, 1, 12, 20, 3, 4, 5],
             week: 'Week 25/7/2022 - 1/8/2022',
             title: 'Calories burned: ',
             data: '3000Kcal',
@@ -536,9 +561,9 @@ class ActivityTrackerScreen extends StatelessWidget {
                   ButtonIconGradientColor(
                     title: 'Select Week',
                     icon: Icons.calendar_month,
-                    press: () {
+                    press: () async {
                       controller.chartIndex.value = 0;
-                      _showDatePicker(
+                      await _showDatePicker(
                           context: context,
                           datePicke: controller.dateSleepController,
                           controller: controller);
