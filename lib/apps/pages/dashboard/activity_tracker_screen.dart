@@ -274,7 +274,7 @@ class ActivityTrackerScreen extends StatelessWidget {
             data: '300',
             color: AppColors.primaryColor1.withOpacity(0.2),
             columnColor: AppColors.primaryColor1,
-            dataColumn: [2, 1, 12, 28, 3, 4, 5],
+            dataColumn: [2, 1, 12, 18, 3, 4, 5],
           ),
         ),
       ],

@@ -28,9 +28,10 @@ class ActivityTrackerC extends GetxController {
   // }
 
   @override
-  void onInit() {
+  void onInit() async {
     // print(_user.value['name']);
     super.onInit();
+    await DataService.instance.loadMealList();
     getStartDateAndFinishDate();
     dateWaterController = dateSleepController;
     allDateWater.value = allDateSleep.value;
@@ -239,6 +240,7 @@ class ActivityTrackerC extends GetxController {
           }
       ];
       result.sort((a, b) => a['id'].compareTo(b['id']));
+      print(DataService.instance.mealList);
       for (var item in event.docs) {
         Nutrition data = Nutrition.fromSnap(item);
         if (checkDateInList(data.dateTime, allDateNutri.value)) {
