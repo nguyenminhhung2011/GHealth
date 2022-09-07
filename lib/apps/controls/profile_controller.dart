@@ -54,7 +54,7 @@ class ProfileC extends GetxController {
       List<Map<String, dynamic>> result = [];
       DateTime now = DateTime.now();
       for (var item in event.docs) {
-        DateTime date = DateTime.fromMicrosecondsSinceEpoch(
+        DateTime date = DateTime.fromMillisecondsSinceEpoch(
             item.data()['date'].seconds * 1000);
         if (date.year == now.year &&
             date.month == now.month &&
