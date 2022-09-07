@@ -56,6 +56,62 @@ class ActivityTrackerC extends GetxController {
   }
 
   //-----get date -----------------------------
+  //weight ------------------------------------
+  DateTime selectDateTempWeight1 = DateTime.now();
+  DateTime selectDateTempWeight2 = DateTime.now();
+
+  Rx<DateTime> startDateWeight = DateTime.now().obs;
+  Rx<DateTime> finishDateWeight = DateTime.now().obs;
+
+  DateRangePickerController dateWeightController = DateRangePickerController();
+  RxList<DateTime> allDateWeight = <DateTime>[].obs;
+
+  final Rx<List<int>> _listWeightData = Rx<List<int>>([]);
+  List<int> get listWeightData => _listWeightData.value;
+  void onSectionDate(DateRangePickerSelectionChangedArgs args) {
+    PickerDateRange ranges = args.value;
+    DateTime date1 = ranges.startDate!;
+    DateTime date2 = (ranges.endDate ?? ranges.startDate)!;
+    if (date1.isAfter(date2)) {
+      var date = date1;
+      date1 = date2;
+      date2 = date;
+    }
+    dateWeightController.selectedRange = PickerDateRange(date1, date2);
+    if (date1 != null && date2 != null) {
+      allDateWeight.value =
+          List<DateTime>.generate(getDayInBetWeen(date2, date1) + 1, (index) {
+        DateTime date = date1;
+        return date.add(Duration(days: index));
+      });
+    }
+    print(allDateWeight.value);
+    // DateTime now = DateTime.now();
+    // DateTime temp = DateTime(now.year, now.month, now.day, 0, 0, 0);
+    // print(allDateWeight.value.indexOf(temp));
+  }
+
+  getDataChart() async {
+    _listWeightData.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('weight')
+        .snapshots()
+        .map((event) {
+      // ignore: invalid_use_of_protected_member
+      List<int> result = [for (var item in allDateWeight.value) 0];
+      for (var item in event.docs) {
+        DateTime date = DateTime.fromMillisecondsSinceEpoch(
+            item.data()['date'].seconds * 1000);
+        DateTime timeCheck = DateTime(date.year, date.month, date.day, 0, 0, 0);
+        if (allDateWeight.value.contains(timeCheck)) {
+          result[allDateWeight.value.indexOf(timeCheck)] = item.data()['data'];
+        }
+      }
+      return result;
+    }));
+  }
+
   //Sleep---------------------
   DateTime selectDateTempSleep1 = DateTime.now();
   DateTime selectDateTempSleep2 = DateTime.now();
@@ -331,25 +387,8 @@ class ActivityTrackerC extends GetxController {
     }
   }
 
-  getDayInBetWeen() {
-    int difference = 0;
-    switch (chartIndex.value) {
-      case 0:
-        difference =
-            finishDateSleep.value.difference(startDateSleep.value).inDays;
-        break;
-      case 3:
-        difference =
-            finishDateNutri.value.difference(startDateNutri.value).inDays;
-        break;
-
-      case 4:
-        difference =
-            finishDateWater.value.difference(startDateWater.value).inDays;
-        break;
-      default:
-        break;
-    }
+  getDayInBetWeen(DateTime f, DateTime s) {
+    int difference = f.difference(s).inDays;
     return difference;
   }
 
@@ -358,20 +397,26 @@ class ActivityTrackerC extends GetxController {
     List<DateTime> items = [];
     switch (chartIndex.value) {
       case 0:
-        items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+        items = List<DateTime>.generate(
+            getDayInBetWeen(finishDateSleep.value, startDateSleep.value) + 1,
+            (index) {
           DateTime date = startDateSleep.value;
           return date.add(Duration(days: index));
         });
         break;
       case 3:
-        items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+        items = List<DateTime>.generate(
+            getDayInBetWeen(finishDateNutri.value, startDateNutri.value) + 1,
+            (index) {
           DateTime date = startDateNutri.value;
           return date.add(Duration(days: index));
         });
         break;
 
       case 4:
-        items = List<DateTime>.generate(getDayInBetWeen() + 1, (index) {
+        items = List<DateTime>.generate(
+            getDayInBetWeen(finishDateWater.value, startDateWater.value) + 1,
+            (index) {
           DateTime date = startDateWater.value;
           return date.add(Duration(days: index));
         });

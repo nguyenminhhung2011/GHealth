@@ -6,6 +6,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import '../../template/misc/colors.dart';
 
 class LineChartWidget extends StatelessWidget {
+  const LineChartWidget(
+      {Key? key, required this.listData, required this.dateTime})
+      : super(key: key);
+  final List<int> listData;
+  final List<DateTime> dateTime;
+
   @override
   Widget build(BuildContext context) {
     return LineChart(

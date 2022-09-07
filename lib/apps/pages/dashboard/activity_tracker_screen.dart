@@ -96,7 +96,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                                           Spacer(),
                                           InkWell(
                                             onTap: () {
-                                              print(controller.listSleepData);
+                                              print(controller.listWeightData);
                                               // Navigator.push(
                                               //   context,
                                               //   MaterialPageRoute(
@@ -159,88 +159,101 @@ class ActivityTrackerScreen extends StatelessWidget {
   }
 
   // ignore: non_constant_identifier_names
-  Column _WeightTrackersViewFiled(
+  GetBuilder<ActivityTrackerC> _WeightTrackersViewFiled(
       BuildContext context, double widthDevice, double heightDevice) {
-    return Column(
-      children: [
-        Row(
-          children: [
-            Text(
-              'Weight Trackers',
-              overflow: TextOverflow.clip,
-              style: Theme.of(context).textTheme.headline4!.copyWith(
-                    fontSize: 17,
-                  ),
-            ),
-            const Spacer(),
-            ButtonIconGradientColor(
-              title: 'Select Days',
-              icon: Icons.calendar_month,
-              press: () {},
-            )
-          ],
-        ),
-        const SizedBox(height: 20),
-        Container(
-          width: widthDevice,
-          height: heightDevice / 3,
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(25),
-            color: AppColors.primaryColor1,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                offset: const Offset(2, 3),
-                blurRadius: 20,
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                offset: const Offset(-2, -3),
-                blurRadius: 20,
-              )
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return GetBuilder<ActivityTrackerC>(
+        init: ActivityTrackerC(),
+        builder: (controller) {
+          return Column(
             children: [
-              const Text(
-                'Week 25/7/2022 - 1/8/2022',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                  fontSize: 16,
-                ),
-              ),
               Row(
-                children: const [
+                children: [
                   Text(
-                    'Weight(kg):',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                    ),
+                    'Weight Trackers',
+                    overflow: TextOverflow.clip,
+                    style: Theme.of(context).textTheme.headline4!.copyWith(
+                          fontSize: 17,
+                        ),
                   ),
-                  Text(
-                    '40',
-                    style: TextStyle(
-                      color: AppColors.primaryColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    ),
+                  const Spacer(),
+                  ButtonIconGradientColor(
+                    title: 'Select Days',
+                    icon: Icons.calendar_month,
+                    press: () async {
+                      await _showDatePickerWeight(
+                        context: context,
+                        datePick: controller.dateWeightController,
+                        controller: controller,
+                      );
+                    },
                   )
                 ],
               ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: LineChartWidget(),
+              const SizedBox(height: 20),
+              Container(
+                width: widthDevice,
+                height: heightDevice / 3,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(25),
+                  color: AppColors.primaryColor1,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      offset: const Offset(2, 3),
+                      blurRadius: 20,
+                    ),
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      offset: const Offset(-2, -3),
+                      blurRadius: 20,
+                    )
+                  ],
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Week 25/7/2022 - 1/8/2022',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 16,
+                      ),
+                    ),
+                    Row(
+                      children: const [
+                        Text(
+                          'Weight(kg):',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                          ),
+                        ),
+                        Text(
+                          '40',
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Expanded(
+                      child: LineChartWidget(
+                        dateTime: controller.allDateWeight.value,
+                        listData: controller.listWeightData,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
-          ),
-        ),
-      ],
-    );
+          );
+        });
   }
 
   // ignore: non_constant_identifier_names
@@ -642,6 +655,93 @@ class ActivityTrackerScreen extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+
+  _showDatePickerWeight({
+    required BuildContext context,
+    required DateRangePickerController datePick,
+    required ActivityTrackerC controller,
+  }) async {
+    await showDialog(
+      useRootNavigator: false,
+      context: context,
+      barrierColor: Colors.black54,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          width: double.infinity,
+          height: 430,
+          decoration: BoxDecoration(
+            color: AppColors.mainColor,
+            borderRadius: BorderRadius.circular(5),
+          ),
+          child: Column(
+            children: [
+              Card(
+                elevation: 2,
+                child: SfDateRangePicker(
+                  selectionTextStyle:
+                      const TextStyle(fontWeight: FontWeight.bold),
+                  rangeTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  headerStyle: const DateRangePickerHeaderStyle(
+                    backgroundColor: AppColors.primaryColor1,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  monthCellStyle: const DateRangePickerMonthCellStyle(
+                    textStyle: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  selectionColor: AppColors.primaryColor1,
+                  rangeSelectionColor: AppColors.primaryColor1,
+                  todayHighlightColor: AppColors.primaryColor1,
+                  controller: datePick,
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.range,
+                  onSelectionChanged: controller.onSectionDate,
+                  monthViewSettings: const DateRangePickerMonthViewSettings(
+                      enableSwipeSelection: false),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: AppColors.primaryColor1,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.getDataChart();
+                    Get.back();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      primary: Colors.transparent,
+                      shadowColor: Colors.transparent),
+                  child: const Text(
+                    'Done',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
