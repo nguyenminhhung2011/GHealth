@@ -1,40 +1,50 @@
+import 'dart:math';
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/intl.dart';
 
 import '../../template/misc/colors.dart';
 
 class LineChartWidget extends StatelessWidget {
   const LineChartWidget(
-      {Key? key, required this.listData, required this.dateTime})
+      {Key? key,
+      required this.listData,
+      required this.dateTime,
+      required this.maxData})
       : super(key: key);
   final List<int> listData;
   final List<DateTime> dateTime;
+  final int maxData;
 
   @override
   Widget build(BuildContext context) {
     return LineChart(
+      swapAnimationDuration: const Duration(milliseconds: 250),
       LineChartData(
         minX: 0,
-        maxX: 4,
+        maxX: listData.length - 1,
         minY: 0,
         maxY: 2,
         titlesData: FlTitlesData(
             bottomTitles: AxisTitles(
               axisNameWidget: Row(
-                children: const [
+                children: [
                   Text(
-                    '25/7/2022',
-                    style: TextStyle(
+                    DateFormat().add_yMd().format(dateTime[0]),
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
-                    '1/8/2022',
-                    style: TextStyle(
+                    DateFormat()
+                        .add_yMd()
+                        .format(dateTime[dateTime.length - 1]),
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
@@ -45,19 +55,19 @@ class LineChartWidget extends StatelessWidget {
             leftTitles: AxisTitles(
               //drawBehindEverything: false,
               axisNameWidget: Row(
-                children: const [
-                  Spacer(),
+                children: [
+                  const Spacer(),
                   Text(
-                    '35',
-                    style: TextStyle(
+                    (maxData / 2).round().toString(),
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   Text(
-                    '70',
-                    style: TextStyle(
+                    maxData.toString(),
+                    style: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                     ),
@@ -83,12 +93,10 @@ class LineChartWidget extends StatelessWidget {
         ),
         lineBarsData: [
           LineChartBarData(
-            spots: const [
-              FlSpot(0, 0),
-              FlSpot(1, 1),
-              FlSpot(2, 1),
-              FlSpot(3, 2),
-              FlSpot(4, 1.5),
+            spots: [
+              for (int i = 0; i < listData.length; i++)
+                FlSpot(
+                    i * 1.0, (maxData != 0) ? (listData[i] / maxData) * 2 : 0),
             ],
             //dotData: FlDotData(show:),
             gradient: AppColors.colorGradient,

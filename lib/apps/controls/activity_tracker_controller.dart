@@ -43,9 +43,12 @@ class ActivityTrackerC extends GetxController {
     startDateNutri.value = startDateSleep.value;
     finishDateNutri.value = finishDateSleep.value;
 
+    allDateWeight.value = allDateSleep.value;
+
     getDataSleepChart();
     getDataWaterChart();
     getDataNutriChart();
+    getDataWeight();
     update();
   }
 
@@ -91,7 +94,9 @@ class ActivityTrackerC extends GetxController {
     // print(allDateWeight.value.indexOf(temp));
   }
 
-  getDataChart() async {
+  int get maxOfList => [for (var item in listWeightData) item].reduce(max);
+
+  getDataWeight() async {
     _listWeightData.bindStream(firestore
         .collection('users')
         .doc(AuthService.instance.currentUser!.uid)
@@ -110,6 +115,7 @@ class ActivityTrackerC extends GetxController {
       }
       return result;
     }));
+    update();
   }
 
   //Sleep---------------------

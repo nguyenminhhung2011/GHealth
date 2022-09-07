@@ -58,7 +58,8 @@ class ActivityTrackerScreen extends StatelessWidget {
                     builder: (controller) {
                       return Obx(() => (controller.listSleepData.isNotEmpty &&
                               controller.listWaterData.isNotEmpty &&
-                              controller.listNutriData.isNotEmpty)
+                              controller.listNutriData.isNotEmpty &&
+                              controller.listWeightData.isNotEmpty)
                           ? ScreenTemplate(
                               child: Column(
                                 children: [
@@ -244,6 +245,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Expanded(
                       child: LineChartWidget(
+                        maxData: controller.maxOfList,
                         dateTime: controller.allDateWeight.value,
                         listData: controller.listWeightData,
                       ),
@@ -719,7 +721,7 @@ class ActivityTrackerScreen extends StatelessWidget {
                 ),
                 child: ElevatedButton(
                   onPressed: () {
-                    controller.getDataChart();
+                    controller.getDataWeight();
                     Get.back();
                   },
                   style: ElevatedButton.styleFrom(
