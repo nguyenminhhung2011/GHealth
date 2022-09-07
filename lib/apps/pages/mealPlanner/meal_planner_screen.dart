@@ -393,7 +393,7 @@ class MealPlannerScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       MealSelect(
-                        imagePath: 'assets/images/break.png',
+                        imagePath: 'assets/images/soup.png',
                         color: AppColors.primaryColor1.withOpacity(0.2),
                         color_btn: AppColors.primaryColor1,
                         collect: 'Breakfast',
@@ -407,7 +407,7 @@ class MealPlannerScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 10),
                       MealSelect(
-                        imagePath: 'assets/images/lunch.png',
+                        imagePath: 'assets/images/sushi.png',
                         color: AppColors.primaryColor2.withOpacity(0.2),
                         color_btn: AppColors.primaryColor2,
                         collect: 'Lunch/Dinner',
@@ -421,7 +421,7 @@ class MealPlannerScreen extends StatelessWidget {
                       ),
                       const SizedBox(width: 15),
                       MealSelect(
-                        imagePath: 'assets/images/snack.png',
+                        imagePath: 'assets/images/egg.png',
                         color: AppColors.primaryColor.withOpacity(0.2),
                         color_btn: AppColors.primaryColor,
                         collect: 'Snack/Smooth',

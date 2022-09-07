@@ -40,11 +40,11 @@ class MealSelect extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: -15,
+            top: -8,
             left: 80,
             child: Image.asset(
-              height: 120,
-              width: 120,
+              height: 100,
+              width: 100,
               imagePath,
             ),
           ),

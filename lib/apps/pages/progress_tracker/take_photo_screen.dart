@@ -133,8 +133,13 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                                     ),
                                   ),
                                   builder: (context) => Container(
-                                    height: 250,
-                                    color: AppColors.mainColor,
+                                    height: 260,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.mainColor,
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(10),
+                                          topRight: Radius.circular(10)),
+                                    ),
                                     child: Column(
                                       children: [
                                         // ignore: avoid_unnecessary_containers

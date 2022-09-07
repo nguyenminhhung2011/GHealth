@@ -88,10 +88,6 @@ class ActivityTrackerC extends GetxController {
         return date.add(Duration(days: index));
       });
     }
-    print(allDateWeight.value);
-    // DateTime now = DateTime.now();
-    // DateTime temp = DateTime(now.year, now.month, now.day, 0, 0, 0);
-    // print(allDateWeight.value.indexOf(temp));
   }
 
   int get maxOfList => [for (var item in listWeightData) item].reduce(max);
