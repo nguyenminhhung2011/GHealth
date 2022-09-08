@@ -92,6 +92,7 @@ dev_dependencies:
 
 flutter_icons:
   image_path: "assets/images/intro.png"
+  image_path_android: "assets/images/intro.png"
   android: true
   ios: true
 
