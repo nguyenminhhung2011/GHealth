@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gold_health/constrains.dart';
 
 import '../../services/auth_service.dart';
+import '../../services/data_service.dart';
 
 class HomeScreenControl extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
@@ -61,10 +62,87 @@ class HomeScreenControl extends GetxController {
     }
   }
 
+  final Rx<List<Map<String, dynamic>>> waterViewData =
+      Rx<List<Map<String, dynamic>>>([]);
+
+  int returnIndex(List<Map<String, dynamic>> list, int hour) {
+    for (int i = 0; i < list.length; i++) {
+      if (hour >= list[i]['hour'][0] && hour <= list[i]['hour'][1]) {
+        return i;
+      }
+    }
+    return 0;
+  }
+
+  String convertIntHour(int hour) {
+    return (hour <= 12) ? '${hour}am' : '${hour - 12}pm';
+  }
+
+  int get sumWater => waterViewData.value.fold<int>(0, (sum, e) {
+        return sum + e['data'] as int;
+      });
+  loadWaterdata() async {
+    waterViewData.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('water')
+        .snapshots()
+        .map((event) {
+      List<Map<String, dynamic>> result = [
+        {
+          'hour': [6, 10],
+          'data': 0,
+        },
+        {
+          'hour': [10, 13],
+          'data': 0,
+        },
+        {
+          'hour': [13, 17],
+          'data': 0,
+        },
+        {
+          'hour': [17, 21],
+          'data': 0,
+        },
+        {
+          'hour': [21, 24],
+          'data': 0,
+        }
+      ];
+      DateTime now = DateTime.now();
+      Map<String, dynamic> dataTemp = {};
+      for (var item in event.docs) {
+        DateTime dateTemp = DateTime.fromMillisecondsSinceEpoch(
+            item.data()['date'].seconds * 1000);
+        if (dateTemp.day == now.day &&
+            dateTemp.month == now.month &&
+            dateTemp.year == now.year) {
+          dataTemp = item.data();
+          break;
+        }
+      }
+      if (dataTemp != {}) {
+        for (var item in dataTemp['waterConsume']) {
+          int time =
+              DateTime.fromMillisecondsSinceEpoch(item['date'].seconds * 1000)
+                  .hour;
+          int index = result.indexWhere(
+              (e) => (time >= e['hour'][0] && time <= e['hour'][1]));
+          // returnIndex(result, time);
+          result[index]['data'] += item['consume'];
+        }
+      }
+      return result;
+    }));
+    update();
+  }
+
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     updateUser(AuthService.instance.currentUser!.uid);
+    loadWaterdata();
     //ignore: avoid_print
     print(_user.value['uid']);
   }
@@ -76,10 +154,16 @@ class HomeScreenControl extends GetxController {
   }
 
   getDataUser(String uid) async {
-    var userDoc = await firestore.collection('users').doc(uid).get();
-    Map<String, dynamic> result = (userDoc.data() as Map<String, dynamic>);
-    _user.value = result;
-    //print(result['name'] + ' and ' + _user.value['name']);
+    _user.bindStream(firestore.collection('users').snapshots().map((event) {
+      Map<String, dynamic> result = {};
+      for (var item in event.docs) {
+        if (item.id == AuthService.instance.currentUser!.uid) {
+          result = item.data();
+          break;
+        }
+      }
+      return result;
+    }));
     update();
   }
 

@@ -38,16 +38,22 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<String> timeProgress = [
     '6am - 8am',
     '8am - 10am',
+    '10am - 1pm',
     '1pm - 3pm',
-    '4pm - 5pm',
-    '6pm - 8pm',
+    '3pm - 5pm',
+    '5pm - 8pm',
+    '8pm - 10pm',
+    '10pm - 12pm',
   ];
   final Map<String, double> litersProgress = {
     '6am - 8am': 600,
     '8am - 10am': 250,
+    '10am - 1pm': 200,
     '1pm - 3pm': 500,
-    '4pm - 5pm': 600,
-    '11pm - 3pm': 500,
+    '3pm - 5pm': 600,
+    '5pm - 8pm': 800,
+    '8pm - 10pm': 300,
+    '10pm - 12pm': 500,
   };
 
   final double calories = 760;
@@ -56,14 +62,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final int footSteps = 1000;
   final int exerciseTime = 19;
   final int standTime = 3;
-
-  double get sumLiters {
-    double sum = 0;
-    litersProgress.forEach((key, value) {
-      sum += litersProgress[key] as double;
-    });
-    return sum;
-  }
 
   final stopwatch = Stopwatch()..start();
 
@@ -75,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
-    final double heightOfWaterChart = 100 * (timeProgress.length - 1);
+    const double heightOfWaterChart = 100 * 5 - 50;
     return Obx(() => (homeScreenController.user['name'] == null)
         ? const Center(
             child: CircularProgressIndicator(color: AppColors.primaryColor1))
@@ -225,7 +223,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      print(homeScreenController.waterViewData.value);
+                    },
                     icon: Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 15,
@@ -245,12 +245,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Expanded(
             child: Center(
               child: CircularPercentIndicator(
-                radius: heightOfWaterChart / 2 - 130,
+                radius: 400 / 2 - 130,
                 lineWidth: 15.0,
                 percent: (calories - caloriesLeft) / calories,
                 center: Container(
                   alignment: Alignment.center,
-                  height: heightOfWaterChart / 2 - 100,
+                  height: 400 / 2 - 100,
                   decoration: const BoxDecoration(
                       shape: BoxShape.circle, color: AppColors.btn_color),
                   child: Text(
@@ -262,6 +262,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white),
                   ),
                 ),
+                circularStrokeCap: CircularStrokeCap.round,
                 backgroundColor: const Color.fromARGB(227, 224, 221, 221),
                 progressColor: Colors.blue[300],
               ),
@@ -416,21 +417,19 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Center(
               child: CircularPercentIndicator(
                 rotateLinearGradient: true,
-                radius: heightOfWaterChart / 2 - 140,
+                radius: 400 / 2 - 140,
                 lineWidth: 15.0,
                 circularStrokeCap: CircularStrokeCap.round,
-                onAnimationEnd: () {
-                  print('finished');
-                },
+                onAnimationEnd: () {},
                 percent: 0.7,
                 center: CircularPercentIndicator(
-                  radius: heightOfWaterChart / 2 - 160,
+                  radius: 400 / 2 - 160,
                   lineWidth: 15.0,
                   percent: 0.5,
                   circularStrokeCap: CircularStrokeCap.round,
                   center: CircularPercentIndicator(
                     circularStrokeCap: CircularStrokeCap.round,
-                    radius: heightOfWaterChart / 2 - 180,
+                    radius: 400 / 2 - 180,
                     lineWidth: 15.0,
                     percent: 0.8,
                     backgroundColor: const Color.fromARGB(227, 224, 221, 221),
@@ -481,7 +480,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 addAutomaticKeepAlive: true,
                 width: heightOfWaterChart,
                 lineHeight: 22.0,
-                percent: (sumLiters / 1000) / liters,
+                percent: (homeScreenController.sumWater / 1000) > liters
+                    ? (homeScreenController.sumWater / 1000) /
+                        (homeScreenController.sumWater / 1000 + 2)
+                    : (homeScreenController.sumWater / 1000) / liters,
                 backgroundColor: const Color.fromARGB(227, 224, 221, 221),
                 progressColor: Colors.blue[300],
                 barRadius: const Radius.circular(20),
@@ -516,7 +518,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   Text(
-                    '${sumLiters / 1000} Liters',
+                    '${homeScreenController.sumWater / 1000} Liters',
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   // const SizedBox(height: 7),
@@ -530,7 +532,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: timeProgress.map((e) {
+                    children: homeScreenController.waterViewData.value.map((e) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -553,39 +555,39 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                               const SizedBox(width: 10),
                               Text(
-                                e,
+                                '${homeScreenController.convertIntHour(e['hour'][0])} - ${homeScreenController.convertIntHour(e['hour'][1])}',
                                 style: Theme.of(context).textTheme.headline1,
                               ),
                             ],
                           ),
-                          if (litersProgress[e] != null)
-                            Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    left: 5,
-                                  ),
-                                  child: DottedLine(
-                                    lineThickness: 1.5,
-                                    lineLength: 50,
-                                    direction: Axis.vertical,
-                                    dashLength: 4.5,
-                                    dashGradient: [
-                                      Colors.purple[100]!,
-                                      const Color.fromARGB(255, 209, 159, 218),
-                                    ],
-                                  ),
+                          // if (litersProgress[e] != null)
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  left: 5,
                                 ),
-                                const SizedBox(width: 30),
-                                GradientText(
-                                  '${litersProgress[e]}ml',
-                                  gradient: AppColors.colorGradient,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                )
-                              ],
-                            )
+                                child: DottedLine(
+                                  lineThickness: 1.5,
+                                  lineLength: 50,
+                                  direction: Axis.vertical,
+                                  dashLength: 4.5,
+                                  dashGradient: [
+                                    Colors.purple[100]!,
+                                    const Color.fromARGB(255, 209, 159, 218),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(width: 30),
+                              GradientText(
+                                '${e['data']}ml',
+                                gradient: AppColors.colorGradient,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              )
+                            ],
+                          )
                         ],
                       );
                     }).toList(),
