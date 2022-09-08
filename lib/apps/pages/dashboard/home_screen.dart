@@ -322,28 +322,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       .toList(),
                 ),
               ),
-              // CircularPercentIndicator(
-              //   radius: 400 / 2 - 130,
-              //   lineWidth: 15.0,
-              //   percent: (calories - caloriesLeft) / calories,
-              //   center: Container(
-              //     alignment: Alignment.center,
-              //     height: 400 / 2 - 100,
-              //     decoration: const BoxDecoration(
-              //         shape: BoxShape.circle, color: AppColors.btn_color),
-              //     child: Text(
-              //       '$caloriesLeft kCal left',
-              //       style: const TextStyle(
-              //           fontFamily: 'Sen',
-              //           fontSize: 12,
-              //           fontWeight: FontWeight.w500,
-              //           color: Colors.white),
-              //     ),
-              //   ),
-              //   circularStrokeCap: CircularStrokeCap.round,
-              //   backgroundColor: const Color.fromARGB(227, 224, 221, 221),
-              //   progressColor: Colors.blue[300],
-              // ),
             ),
           ),
         ],
