@@ -8,6 +8,7 @@ class FastingPlanController extends GetxController with TrackerController {
   var isCountDown = false.obs;
   var chooseDateTime = DateTime.now().obs;
   var isRemainMode = false.obs;
+  // ignore: avoid_init_to_null
   dynamic fastingMode = null;
   List<Map<String, dynamic>> choices = [
     {

@@ -1,5 +1,4 @@
 import 'package:badges/badges.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -8,7 +7,6 @@ import 'package:gold_health/apps/controls/profile_controller.dart';
 import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:gold_health/apps/global_widgets/gradient_icon..dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
-import 'package:gold_health/apps/global_widgets/text_field_custom/text_field_icon.dart';
 import 'package:gold_health/apps/pages/dashboard/contact_us_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/setting_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/activity_histor_dialog.dart';

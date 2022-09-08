@@ -279,7 +279,7 @@ class _WorkoutDetailScreenState extends State<WorkoutDetailScreen> {
                           onTap: () {
                             Get.to(() => const ListWorkoutScreen(), arguments: {
                               'listExerciseCard': listExerciseCard,
-                              'listIdExercise': listIdExercise
+                              'workout': workout
                             });
                           },
                           child: Container(
