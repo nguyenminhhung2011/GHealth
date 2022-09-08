@@ -4,6 +4,7 @@ import 'package:gold_health/constrains.dart';
 
 import '../../services/auth_service.dart';
 import '../../services/data_service.dart';
+import '../data/models/Meal.dart';
 
 class HomeScreenControl extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
@@ -65,15 +66,6 @@ class HomeScreenControl extends GetxController {
   final Rx<List<Map<String, dynamic>>> waterViewData =
       Rx<List<Map<String, dynamic>>>([]);
 
-  int returnIndex(List<Map<String, dynamic>> list, int hour) {
-    for (int i = 0; i < list.length; i++) {
-      if (hour >= list[i]['hour'][0] && hour <= list[i]['hour'][1]) {
-        return i;
-      }
-    }
-    return 0;
-  }
-
   String convertIntHour(int hour) {
     return (hour <= 12) ? '${hour}am' : '${hour - 12}pm';
   }
@@ -81,6 +73,67 @@ class HomeScreenControl extends GetxController {
   int get sumWater => waterViewData.value.fold<int>(0, (sum, e) {
         return sum + e['data'] as int;
       });
+  RxInt kCalBurn = 0.obs;
+  RxInt kCalConsume = 0.obs;
+
+  getkCalBurn() async {
+    kCalBurn.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('workout_history')
+        .snapshots()
+        .map((event) {
+      int result = 0;
+      DateTime now = DateTime.now();
+      for (var item in event.docs) {
+        DateTime time = DateTime.fromMillisecondsSinceEpoch(
+            item.data()['time'].seconds * 1000);
+        if (time.day == now.day &&
+            time.month == now.month &&
+            time.year == now.year) {
+          result += int.parse(item.data()['caloriesBurn']);
+        }
+      }
+      return result;
+    }));
+    update();
+  }
+
+  Meal getMealId(String id, List<Meal> l) {
+    // get meal from id String
+    final meal = l.firstWhere(
+      (element) => element.id == id,
+      orElse: () {
+        return l[0];
+      },
+    );
+    return meal;
+  }
+
+  getkCalConsume() async {
+    kCalConsume.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('Nutrition')
+        .snapshots()
+        .map((event) {
+      int result = 0;
+      DateTime now = DateTime.now();
+      for (var item in event.docs) {
+        DateTime time = DateTime.fromMillisecondsSinceEpoch(
+            item.data()['dateTime'].seconds * 1000);
+        if (time.day == now.day &&
+            time.month == now.month &&
+            time.year == now.year) {
+          result +=
+              getMealId(item.data()['id'], DataService.instance.mealList).kCal *
+                  (item.data()['amount'] as int);
+        }
+      }
+      return result;
+    }));
+  }
+
   loadWaterdata() async {
     waterViewData.bindStream(firestore
         .collection('users')
@@ -141,8 +194,11 @@ class HomeScreenControl extends GetxController {
   @override
   void onInit() async {
     super.onInit();
+    await DataService.instance.loadMealList();
     updateUser(AuthService.instance.currentUser!.uid);
     loadWaterdata();
+    getkCalBurn();
+    getkCalConsume();
     //ignore: avoid_print
     print(_user.value['uid']);
   }

@@ -54,7 +54,19 @@ class FakeData {
       imagePath: 'assets/images/medal.png',
     )
   ];
-
+  static List<Data> data1 = [
+    Data(
+        name: 'now',
+        percents: (30.1 / 80.1 * 100).round().toDouble(),
+        color: AppColors.primaryColor2,
+        imagePath: 'assets/images/kCalBurn.png'),
+    Data(
+      name: '',
+      percents: (50 / 80.1 * 100).round().toDouble(),
+      color: AppColors.primaryColor1,
+      imagePath: 'assets/images/kcal.png',
+    )
+  ];
   static List<Map<String, dynamic>> list_set = [
     {
       "time": 35,

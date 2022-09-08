@@ -25,6 +25,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int touchedIndex = -1;
+  int touchedIndex1 = -1;
   double height_bmi_container = 0;
   double height_slideValue = 20;
   double weight_slideValue = 100;
@@ -224,7 +225,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 IconButton(
                     onPressed: () {
-                      print(homeScreenController.waterViewData.value);
+                      print(homeScreenController.kCalBurn.value);
                     },
                     icon: Icon(
                       Icons.arrow_forward_ios_outlined,
@@ -235,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           GradientText(
-            '$calories kCal',
+            '${homeScreenController.kCalConsume.value - homeScreenController.kCalBurn.value} kCal',
             gradient: AppColors.colorGradient1,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
@@ -244,28 +245,105 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: Center(
-              child: CircularPercentIndicator(
-                radius: 400 / 2 - 130,
-                lineWidth: 15.0,
-                percent: (calories - caloriesLeft) / calories,
-                center: Container(
-                  alignment: Alignment.center,
-                  height: 400 / 2 - 100,
-                  decoration: const BoxDecoration(
-                      shape: BoxShape.circle, color: AppColors.btn_color),
-                  child: Text(
-                    '$caloriesLeft kCal left',
-                    style: const TextStyle(
-                        fontFamily: 'Sen',
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white),
+              child: PieChart(
+                PieChartData(
+                  pieTouchData: PieTouchData(
+                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
+                      setState(() {
+                        if (!event.isInterestedForInteractions ||
+                            pieTouchResponse == null ||
+                            pieTouchResponse.touchedSection == null) {
+                          touchedIndex1 = -1;
+                          return;
+                        }
+                        touchedIndex1 = pieTouchResponse
+                            .touchedSection!.touchedSectionIndex;
+                      });
+                    },
                   ),
+                  startDegreeOffset: 180,
+                  borderData: FlBorderData(
+                    show: false,
+                  ),
+                  sectionsSpace: 1,
+                  centerSpaceRadius: 0,
+                  sections: [
+                    Data(
+                        name: 'now',
+                        percents: (homeScreenController.kCalBurn.value /
+                                (homeScreenController.kCalConsume.value +
+                                    homeScreenController.kCalBurn.value) *
+                                100)
+                            .round()
+                            .toDouble(),
+                        color: AppColors.primaryColor2,
+                        imagePath: 'assets/images/kCalBurn.png'),
+                    Data(
+                      name: '',
+                      percents: (homeScreenController.kCalConsume.value /
+                              (homeScreenController.kCalConsume.value +
+                                  homeScreenController.kCalBurn.value) *
+                              100)
+                          .round()
+                          .toDouble(),
+                      color: AppColors.primaryColor1,
+                      imagePath: 'assets/images/kcal.png',
+                    )
+                  ]
+                      .asMap()
+                      .map<int, PieChartSectionData>((index, data) {
+                        final isTouched = index == touchedIndex1;
+
+                        return MapEntry(
+                          index,
+                          PieChartSectionData(
+                            color: data.color,
+                            value: data.percents,
+                            title: (data.name == 'now')
+                                ? '${homeScreenController.kCalBurn.value}kCal Burn'
+                                : '${homeScreenController.kCalConsume.value}kCal \nConsume',
+                            radius: isTouched ? 90 : 70,
+                            titleStyle: const TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            titlePositionPercentageOffset: 0.55,
+                            badgeWidget: Badge(
+                              data.imagePath,
+                              size: isTouched ? 40.0 : 30.0,
+                              borderColor: data.color,
+                            ),
+                            badgePositionPercentageOffset: .98,
+                          ),
+                        );
+                      })
+                      .values
+                      .toList(),
                 ),
-                circularStrokeCap: CircularStrokeCap.round,
-                backgroundColor: const Color.fromARGB(227, 224, 221, 221),
-                progressColor: Colors.blue[300],
               ),
+              // CircularPercentIndicator(
+              //   radius: 400 / 2 - 130,
+              //   lineWidth: 15.0,
+              //   percent: (calories - caloriesLeft) / calories,
+              //   center: Container(
+              //     alignment: Alignment.center,
+              //     height: 400 / 2 - 100,
+              //     decoration: const BoxDecoration(
+              //         shape: BoxShape.circle, color: AppColors.btn_color),
+              //     child: Text(
+              //       '$caloriesLeft kCal left',
+              //       style: const TextStyle(
+              //           fontFamily: 'Sen',
+              //           fontSize: 12,
+              //           fontWeight: FontWeight.w500,
+              //           color: Colors.white),
+              //     ),
+              //   ),
+              //   circularStrokeCap: CircularStrokeCap.round,
+              //   backgroundColor: const Color.fromARGB(227, 224, 221, 221),
+              //   progressColor: Colors.blue[300],
+              // ),
             ),
           ),
         ],
