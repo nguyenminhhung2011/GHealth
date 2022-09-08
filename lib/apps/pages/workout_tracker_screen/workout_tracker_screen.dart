@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
-import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/choose_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories_workout_card.dart';
@@ -27,21 +26,19 @@ class WorkoutTrackerScreen extends StatefulWidget {
 class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
   final controller = Get.put(WorkoutPlanController());
 
-  Map<String, String> listWorkoutID = {};
+  Rx<Map<String, String>> listWorkoutID = Rx<Map<String, String>>({});
 
-  List<Padding> listWorkoutSchedule = [];
+  Rx<Map<String, Padding>> listWorkoutSchedule = Rx<Map<String, Padding>>({});
 
   Future<bool> _fetchData() async {
     try {
-      await controller.fetchExerciseList();
-      await controller.fetchWorkoutList();
-      await controller.fetchScheduleList();
-      await controller.fetchHistoryList();
       await _addListWorkoutSchedule();
-      controller.workouts.value.forEach((key, value) {
-        listWorkoutID.addAll({(value['workoutCategory'] as String): key});
+      controller.workouts.listen((workout) {
+        workout.forEach((key, value) {
+          listWorkoutID.value
+              .putIfAbsent((value['workoutCategory'] as String), () => key);
+        });
       });
-      // debugPrint(listWorkoutID.toString());
       return true;
     } catch (e) {
       return false;
@@ -50,17 +47,22 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
 
   Future<void> _addListWorkoutSchedule() async {
     try {
-      final schedules = controller.schedules.value;
-      schedules.forEach((key, value) {
-        listWorkoutSchedule.add(Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: UpComingWorkoutContainer(
-            val: value.isTurnOn,
-            main: value.workoutCategory,
-            time: DateFormat.yMd().add_jm().format(value.time),
-            imagePath: controller.listImage[value.workoutCategory] as String,
-          ),
-        ));
+      controller.schedules.listen((schedule) {
+        schedule.forEach((key, value) {
+          listWorkoutSchedule.value.putIfAbsent(
+            key,
+            () => Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: UpComingWorkoutContainer(
+                val: value.isTurnOn,
+                main: value.workoutCategory,
+                time: DateFormat.yMd().add_jm().format(value.time),
+                imagePath:
+                    controller.listImage[value.workoutCategory] as String,
+              ),
+            ),
+          );
+        });
       });
     } catch (e) {
       rethrow;
@@ -69,7 +71,6 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     List<String> tabs = [
       'Nutrition',
@@ -79,8 +80,6 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
       'Fasting',
       'Sleep',
     ];
-    // final WorkoutApi tests = WorkoutApi();
-    // tests.getData();
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       extendBody: true,
@@ -91,243 +90,256 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData) {
                 if (snapshot.data as bool) {
-                  return ScreenTemplate(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Container(
-                            width: double.maxFinite,
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.mainColor,
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(50),
-                                topRight: Radius.circular(50),
+                  return GetBuilder<WorkoutPlanController>(builder: (_) {
+                    print('build');
+                    return ScreenTemplate(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                              width: double.maxFinite,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 10,
                               ),
-                            ),
-                            child: SingleChildScrollView(
-                              physics: const NeverScrollableScrollPhysics(),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Row(
-                                    children: [
-                                      InkWell(
-                                        onTap: () async {
-                                          int? newIndex;
-                                          await _showDialogMethod(
-                                            context: context,
-                                            tabs: tabs,
-                                            onselectedTabs: (value) {
-                                              newIndex = value;
-                                            },
-                                            done: () {
-                                              print(newIndex);
-                                              if (newIndex != null) {
-                                                controller
-                                                    .changeTab(newIndex ?? 0);
-                                              } else {
-                                                controller.changeTab(0);
-                                              }
-                                              Navigator.pop(context);
-                                            },
-                                          );
-                                        },
-                                        child: Row(
-                                          children: const [
-                                            Text(
-                                              'Workout Planner',
-                                              style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20,
-                                              ),
-                                            ),
-                                            Icon(
-                                              Icons
-                                                  .keyboard_arrow_down_outlined,
-                                              color: Colors.black,
-                                              size: 24,
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      const Spacer(),
-                                      InkWell(
-                                        onTap: () {
-                                          Get.to(() =>
-                                              const WorkoutHistoryScreen());
-                                        },
-                                        child: Container(
-                                          padding: const EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                            color: AppColors.primaryColor1
-                                                .withOpacity(0.2),
-                                            borderRadius:
-                                                BorderRadius.circular(10),
-                                          ),
-                                          child: const Icon(
-                                            Icons.history,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Workout ',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headline4!
-                                            .copyWith(
-                                              fontSize: 17,
-                                            ),
-                                      ),
-                                      const Spacer(),
-                                      ButtonIconGradientColor(
-                                        title: ' Week',
-                                        icon: Icons.calendar_month,
-                                        press: () {},
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  SizedBox(
-                                    width: widthDevice,
-                                    height: 200,
-                                    // ignore: avoid_unnecessary_containers
-                                    child: Container(
-                                      child: const LineChartTwoLine(),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 20),
-                                  Container(
-                                    width: double.infinity,
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 20,
-                                      vertical: 25,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(20),
-                                      gradient: AppColors.colorGradient2,
-                                    ),
-                                    child: Row(
+                              decoration: BoxDecoration(
+                                color: AppColors.mainColor,
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(50),
+                                  topRight: Radius.circular(50),
+                                ),
+                              ),
+                              child: SingleChildScrollView(
+                                physics: const NeverScrollableScrollPhysics(),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Row(
                                       children: [
-                                        Text(
-                                          'Daily Workout Schedule',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline4!
-                                              .copyWith(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 18,
+                                        InkWell(
+                                          onTap: () async {
+                                            int? newIndex;
+                                            await _showDialogMethod(
+                                              context: context,
+                                              tabs: tabs,
+                                              onselectedTabs: (value) {
+                                                newIndex = value;
+                                              },
+                                              done: () {
+                                                print(newIndex);
+                                                if (newIndex != null) {
+                                                  controller
+                                                      .changeTab(newIndex ?? 0);
+                                                } else {
+                                                  controller.changeTab(0);
+                                                }
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          },
+                                          child: Row(
+                                            children: const [
+                                              Text(
+                                                'Workout Planner',
+                                                style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 20,
+                                                ),
                                               ),
-                                        ),
-                                        const Spacer(),
-                                        ButtonGradient(
-                                          height: 40.0,
-                                          width: 90.0,
-                                          linearGradient: const LinearGradient(
-                                            colors: [
-                                              AppColors.primaryColor1,
-                                              AppColors.primaryColor1,
+                                              Icon(
+                                                Icons
+                                                    .keyboard_arrow_down_outlined,
+                                                color: Colors.black,
+                                                size: 24,
+                                              )
                                             ],
                                           ),
-                                          onPressed: () {
-                                            Get.toNamed(RouteName
-                                                .workoutScheduleScreen);
+                                        ),
+                                        const Spacer(),
+                                        InkWell(
+                                          onTap: () {
+                                            Get.to(() =>
+                                                const WorkoutHistoryScreen());
                                           },
-                                          title: const Text(
-                                            'Check',
-                                            style: TextStyle(
-                                              fontFamily: 'Sen',
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 12,
-                                              color: Colors.white,
+                                          child: Container(
+                                            padding: const EdgeInsets.all(8),
+                                            decoration: BoxDecoration(
+                                              color: AppColors.primaryColor1
+                                                  .withOpacity(0.2),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: const Icon(
+                                              Icons.history,
+                                              color: Colors.black,
                                             ),
                                           ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                  const SizedBox(height: 30),
-                                  RowText_Seemore(
-                                    press: () {},
-                                    title: 'Upcoming Workout',
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Column(
-                                    children: listWorkoutSchedule,
-                                  ),
-                                  const SizedBox(height: 20),
-                                  RowText_Seemore(
-                                    press: () {
-                                      Get.to(() => SeeMoreWorkoutScreen(
-                                          listWorkoutID: listWorkoutID));
-                                    },
-                                    title: 'What Do You Want to Train',
-                                  ),
-                                  const SizedBox(height: 15),
-                                  Column(
-                                    children: [
-                                      CategoriesWorkoutCard(
-                                        cate_name: 'Upperbody Workout',
-                                        press: () {
-                                          Get.to(
-                                              () => const ChoseWorkoutScreen(),
-                                              arguments:
-                                                  listWorkoutID['Upperbody']
-                                                      as String);
-                                        },
-                                        imagePath:
-                                            'assets/images/upperbody.png',
-                                        exer: 12,
-                                        time: 40,
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Workout ',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .headline4!
+                                              .copyWith(
+                                                fontSize: 17,
+                                              ),
+                                        ),
+                                        const Spacer(),
+                                        ButtonIconGradientColor(
+                                          title: ' Week',
+                                          icon: Icons.calendar_month,
+                                          press: () {},
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    SizedBox(
+                                      width: widthDevice,
+                                      height: 200,
+                                      // ignore: avoid_unnecessary_containers
+                                      child: Container(
+                                        child: const LineChartTwoLine(),
                                       ),
-                                      CategoriesWorkoutCard(
-                                        cate_name: 'Lowebody Workout',
-                                        press: () {
-                                          Get.to(
-                                              () => const ChoseWorkoutScreen(),
-                                              arguments:
-                                                  listWorkoutID['Lowebody']
-                                                      as String);
-                                        },
-                                        imagePath: 'assets/images/lowebody.png',
-                                        exer: 12,
-                                        time: 40,
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Container(
+                                      width: double.infinity,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 20,
+                                        vertical: 25,
                                       ),
-                                      CategoriesWorkoutCard(
-                                        cate_name: 'Fullbody Workout',
-                                        press: () {
-                                          Get.to(
-                                              () => const ChoseWorkoutScreen(),
-                                              arguments:
-                                                  listWorkoutID['Fullbody']
-                                                      as String);
-                                        },
-                                        imagePath: 'assets/images/fullbody.png',
-                                        exer: 11,
-                                        time: 32,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(20),
+                                        gradient: AppColors.colorGradient2,
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'Daily Workout Schedule',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headline4!
+                                                .copyWith(
+                                                  color: Colors.black,
+                                                  fontWeight: FontWeight.w500,
+                                                  fontSize: 18,
+                                                ),
+                                          ),
+                                          const Spacer(),
+                                          ButtonGradient(
+                                            height: 40.0,
+                                            width: 90.0,
+                                            linearGradient:
+                                                const LinearGradient(
+                                              colors: [
+                                                AppColors.primaryColor1,
+                                                AppColors.primaryColor1,
+                                              ],
+                                            ),
+                                            onPressed: () {
+                                              Get.toNamed(RouteName
+                                                  .workoutScheduleScreen);
+                                            },
+                                            title: const Text(
+                                              'Check',
+                                              style: TextStyle(
+                                                fontFamily: 'Sen',
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(height: 30),
+                                    RowText_Seemore(
+                                      press: () {},
+                                      title: 'Upcoming Workout',
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Obx(() => Column(
+                                          children: listWorkoutSchedule
+                                              .value.entries
+                                              .map((e) => e.value)
+                                              .toList(),
+                                        )),
+                                    const SizedBox(height: 20),
+                                    RowText_Seemore(
+                                      press: () {
+                                        Get.to(() => SeeMoreWorkoutScreen(
+                                            listWorkoutID:
+                                                listWorkoutID.value));
+                                      },
+                                      title: 'What Do You Want to Train',
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Column(
+                                      children: [
+                                        CategoriesWorkoutCard(
+                                          cate_name: 'Upperbody Workout',
+                                          press: () {
+                                            Get.to(
+                                                () =>
+                                                    const ChoseWorkoutScreen(),
+                                                arguments: listWorkoutID
+                                                        .value['Upperbody']
+                                                    as String);
+                                          },
+                                          imagePath:
+                                              'assets/images/upperbody.png',
+                                          exer: 12,
+                                          time: 40,
+                                        ),
+                                        CategoriesWorkoutCard(
+                                          cate_name: 'Lowebody Workout',
+                                          press: () {
+                                            Get.to(
+                                                () =>
+                                                    const ChoseWorkoutScreen(),
+                                                arguments: listWorkoutID
+                                                        .value['Lowebody']
+                                                    as String);
+                                          },
+                                          imagePath:
+                                              'assets/images/lowebody.png',
+                                          exer: 12,
+                                          time: 40,
+                                        ),
+                                        CategoriesWorkoutCard(
+                                          cate_name: 'Fullbody Workout',
+                                          press: () {
+                                            Get.to(
+                                                () =>
+                                                    const ChoseWorkoutScreen(),
+                                                arguments: listWorkoutID
+                                                        .value['Fullbody']
+                                                    as String);
+                                          },
+                                          imagePath:
+                                              'assets/images/fullbody.png',
+                                          exer: 11,
+                                          time: 32,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  });
                 } else {
                   print('Some thing went wrong');
                 }

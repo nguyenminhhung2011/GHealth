@@ -39,8 +39,6 @@ class Workout {
   factory Workout.fromSnap(DocumentSnapshot snap, String workoutCategory) {
     var snapshot = snap.data() as Map<String, dynamic>;
 
-    // Map<String, String>? equipRe quest;
-    // final equipRequestData = snapshot['equipRequest'] as Map<String, dynamic>;
     try {
       List<String> listExercise = [];
 
@@ -145,13 +143,13 @@ class Exercise {
 class WorkoutSchedule {
   const WorkoutSchedule(
       {required this.level,
-      required this.repetitions,
+      required this.duration,
       required this.time,
       required this.weight,
       required this.workoutCategory,
       required this.isTurnOn});
   final String level;
-  final int repetitions;
+  final int duration;
   final DateTime time;
   final double weight;
   final String workoutCategory;
@@ -162,7 +160,7 @@ class WorkoutSchedule {
     // debugPrint(data.toString());
     return WorkoutSchedule(
         level: data['level'] as String,
-        repetitions: int.parse(data['repetitions'] as String),
+        duration: int.parse(data['duration'] as String),
         time: DateTime.fromMillisecondsSinceEpoch(data['time'].seconds * 1000),
         weight: double.parse(data['weight']),
         workoutCategory: data['workoutCategory'],

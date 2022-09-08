@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/better_player_test.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_screen.dart';
 
+import '../../data/models/workout_model.dart';
 import '../../template/misc/colors.dart';
 
 class ListWorkoutScreen extends StatefulWidget {
@@ -15,8 +18,10 @@ class ListWorkoutScreen extends StatefulWidget {
 
 class _ListWorkoutScreenState extends State<ListWorkoutScreen> {
   var data = Get.arguments as Map<String, dynamic>;
+  final _workoutController = Get.find<WorkoutPlanController>();
   late List<ExerciseCard> listExerciseCard = data['listExerciseCard'];
-  late List<String> listIdExercise = data['listIdExercise'];
+  late Workout workout = data['workout'];
+  late List<String> listIdExercise = workout.exercises;
   @override
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
@@ -238,7 +243,22 @@ class _ListWorkoutScreenState extends State<ListWorkoutScreen> {
                 onTap: () {
                   // Updating
                   Get.to(() => const WorkoutScreen(),
-                      arguments: listIdExercise);
+                          arguments: listIdExercise)!
+                      .then((value) {
+                    if (value) {
+                      String caloriesBurn = _workoutController
+                          .getCaloriesBurnFromWorkout(workout.exercises);
+                      String duration = _workoutController
+                          .getDurationFromWorkout(workout.exercises);
+                      _workoutController.addWorkoutHistory({
+                        'caloriesBurn': caloriesBurn,
+                        'duration': duration,
+                        'level': workout.level,
+                        'time': Timestamp.fromDate(DateTime.now()),
+                        'workoutCategory': workout.workoutCategory
+                      });
+                    }
+                  });
                 },
                 child: Container(
                   alignment: Alignment.center,

@@ -32,7 +32,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   List<Exercise> exercises = [];
   List<BetterPlayerDataSource> dataSourceList = [];
   var listIdExercise = Get.arguments as List<String>;
-
+  bool isDone = false;
   ///////Tracker exercise////////
   var progress = 0.0.obs;
   var isPlay = false.obs;
@@ -44,6 +44,9 @@ class _WorkoutScreenState extends State<WorkoutScreen>
   RxInt isReady = 1.obs;
   ///////////////////////////////
   ValueNotifier<int> rebuild = ValueNotifier(0);
+  ///////////////////////////////
+  bool get isFinishWorkout => progress.value == 1 && isDone;
+
   ///////////////////////////////
   Future<bool> _prepareExerciseData() async {
     try {
@@ -221,7 +224,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      Get.back();
+                                      Get.back(result: isFinishWorkout);
                                     },
                                     child: Container(
                                       padding: const EdgeInsets.all(5),
@@ -244,7 +247,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                         color: AppColors.primaryColor1,
                                       ),
                                       child: const Icon(
-                                        Icons.more_horiz,
+                                        Icons.list,
                                         color: Colors.black54,
                                       ),
                                     ),
@@ -733,15 +736,16 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                   color: AppColors.primaryColor1,
                 ),
                 child: ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    isDone = true;
                     Navigator.pop(context);
-                    Get.back();
+                    Get.back(result: isFinishWorkout);
                   },
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      primary: Colors.transparent,
+                      backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent),
                   child: const Text(
                     'Done',
@@ -934,17 +938,14 @@ class _RestScreenState extends State<RestScreen> {
                   width: widthDevice,
                   child: Row(
                     children: [
-                      Text(
-                        widget.exerciseName,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 25),
-                      ),
-                      const SizedBox(width: 5),
-                      const Icon(
-                        Icons.question_mark_sharp,
-                        color: Colors.white,
+                      Expanded(
+                        child: Text(
+                          widget.exerciseName,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 25),
+                        ),
                       ),
                       const Spacer(),
                       Text(

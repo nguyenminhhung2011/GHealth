@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:intl/intl.dart';
 
 import '../../global_widgets/screen_template.dart';
@@ -17,15 +19,17 @@ class AddScheduleScreen extends StatefulWidget {
 }
 
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
+  final _workoutController = Get.find<WorkoutPlanController>();
   Map<String, Map<String, dynamic>> data = {
     'Choose Workout': {
       'icon': 'assets/icons/barbel_1.svg',
       'listDropDownValue': [
-        'Upperbody Workout',
-        'Lowerbody Workout',
+        'Upperbody',
+        'Lowebody',
+        'Fullbody',
         'Cardio',
-        'Chest',
-        'ABS',
+        'Hitt',
+        'Abs',
       ],
     },
     'Difficulty': {
@@ -33,12 +37,10 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       'listDropDownValue': [
         'Beginner',
         'Intermediate',
-        'Upper Intermediate',
-        'Hard',
-        'Super Hard',
+        'Advance',
       ],
     },
-    'Custom Repetitions': {
+    'Custom Duration': {
       'icon': 'assets/icons/Icon-Repetitions.svg',
       'listDropDownValue': [
         '10',
@@ -54,14 +56,14 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
     'Custom Weights': {
       'icon': 'assets/icons/Icon-Weight.svg',
       'listDropDownValue': [
-        '10 kg',
-        '15 kg',
-        '20 kg',
-        '25 kg',
-        '30 kg',
-        '35 kg',
-        '40 kg',
-        '45 kg',
+        '10',
+        '15',
+        '20',
+        '25',
+        '30',
+        '35',
+        '40',
+        '45',
       ],
     },
   };
@@ -70,7 +72,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
       as Map<String, dynamic>)['listDropDownValue'] as List<String>)[0];
   late String dropDownValueDifficulty = ((data['Difficulty']
       as Map<String, dynamic>)['listDropDownValue'] as List<String>)[0];
-  late String dropDownValueCustomRepetitions = ((data['Custom Repetitions']
+  late String dropDownValueCustomRepetitions = ((data['Custom Duration']
       as Map<String, dynamic>)['listDropDownValue'] as List<String>)[0];
   late String dropDownValueCustomWeight = ((data['Custom Weights']
       as Map<String, dynamic>)['listDropDownValue'] as List<String>)[0];
@@ -275,12 +277,12 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                       child: Row(
                         children: [
                           const SizedBox(width: 10),
-                          SvgPicture.asset((data['Custom Repetitions']
+                          SvgPicture.asset((data['Custom Duration']
                               as Map<String, dynamic>)['icon'] as String),
                           const SizedBox(width: 10),
                           const Expanded(
-                            child: Text('Custom Repetitions',
-                                style: const TextStyle(fontSize: 15)),
+                            child: Text('Custom Duration',
+                                style: TextStyle(fontSize: 15)),
                           ),
                           SizedBox(
                             height: 30,
@@ -289,7 +291,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                               value: dropDownValueCustomRepetitions,
                               elevation: 5,
                               icon: const Icon(Icons.arrow_drop_down_outlined),
-                              items: ((data['Custom Repetitions'] as Map<String,
+                              items: ((data['Custom Duration'] as Map<String,
                                           dynamic>)['listDropDownValue']
                                       as List<String>)
                                   .map(
@@ -328,7 +330,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                           const SizedBox(width: 10),
                           const Expanded(
                             child: Text('Custom Weights',
-                                style: const TextStyle(fontSize: 15)),
+                                style: TextStyle(fontSize: 15)),
                           ),
                           SizedBox(
                             height: 30,
@@ -376,7 +378,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     Colors.blue[300]!,
                     Colors.blue[400]!
                   ]),
-                  onPressed: () {
+                  onPressed: () async {
                     Function(Meeting) addMeeting =
                         Get.arguments as Function(Meeting);
                     print(selectDate.toIso8601String());
@@ -390,6 +392,15 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                         isAllDay: false,
                       ),
                     );
+                    await _workoutController.addWorkoutSchedule({
+                      'isFinish': false,
+                      'isTurnOn': true,
+                      'level': 'Intermediate',
+                      'duration': dropDownValueCustomRepetitions,
+                      'workoutCategory': dropDownValueChooseWorkout,
+                      'time': Timestamp.fromDate(selectDate),
+                      'weight': dropDownValueCustomWeight,
+                    });
                     Get.back();
                   },
                   title: const Text(
