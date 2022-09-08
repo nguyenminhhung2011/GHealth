@@ -48,7 +48,6 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen> {
                     child: Column(
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             InkWell(
                               onTap: () => Navigator.pop(context),
@@ -64,6 +63,7 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen> {
                                 ),
                               ),
                             ),
+                            const Spacer(),
                             Container(
                               alignment: Alignment.center,
                               child: Text(
@@ -75,6 +75,7 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen> {
                                 textAlign: TextAlign.center,
                               ),
                             ),
+                            const Spacer(),
                           ],
                         ),
                         const SizedBox(height: 20),

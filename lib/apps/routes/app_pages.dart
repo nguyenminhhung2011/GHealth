@@ -8,6 +8,7 @@ import 'package:gold_health/apps/binding/select_gender_binding.dart';
 import 'package:gold_health/apps/binding/splash_binding.dart';
 import 'package:gold_health/apps/binding/home_screen_binding.dart';
 import 'package:gold_health/apps/binding/dashboard_binding.dart';
+import 'package:gold_health/apps/binding/workout_binding.dart';
 
 import 'package:gold_health/apps/pages/IntroListScreen/intro_screen.dart';
 import 'package:gold_health/apps/pages/IntroListScreen/splash_screen.dart';
@@ -25,6 +26,7 @@ import 'package:gold_health/apps/pages/sleep_tracker/add_alarm_screen.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/sleep_schedule_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_detail2_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_tracker_screen.dart';
 import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_tracker_screen.dart';
 import '../binding/basic_info_binding.dart';
@@ -112,6 +114,12 @@ class AppPages {
       page: () => HomeScreen(),
       binding: HomeScreenBinding(),
     ),
+    GetPage(
+      name: RouteName.workoutTrackerScreen,
+      page: () => const WorkoutTrackerScreen(),
+      binding: WorkoutBinding(),
+    ),
+
     GetPage(
       name: RouteName.dashboardScreen,
       page: () => const DashBoardScreen(),

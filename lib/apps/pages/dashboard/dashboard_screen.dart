@@ -1,6 +1,3 @@
-import 'dart:io';
-
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -10,7 +7,6 @@ import '../../template/misc/colors.dart';
 import '../dashboard/home_screen.dart';
 import '../progress_tracker/progress_photo_screen.dart';
 import 'activity_tracker_screen.dart';
-import 'profile_screen.dart';
 
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({Key? key}) : super(key: key);

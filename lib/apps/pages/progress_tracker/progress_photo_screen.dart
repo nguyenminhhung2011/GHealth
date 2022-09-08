@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/button_custom/button_text.dart';
 import 'package:gold_health/apps/pages/progress_tracker/take_photo_screen.dart';
 import '../../global_widgets/screen_template.dart';
@@ -49,11 +50,19 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
       'type': 0,
     }
   ].obs;
+
+  // final _controllerWorkout = Get.find<WorkoutPlanController>();
+  @override
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    // await _controllerWorkout.fetchWorkoutListWithStream();
+  }
+
   @override
   Widget build(BuildContext context) {
     // var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       extendBody: true,

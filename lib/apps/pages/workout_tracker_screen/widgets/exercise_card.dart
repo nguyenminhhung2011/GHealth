@@ -98,14 +98,15 @@ class _ExerciseCardState extends State<ExerciseCard> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.e["name"],
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 18,
-                    ),
-                  ),
+                  Obx(() => Text(
+                        _workoutPlanController
+                            .exercises.value[widget.e['id']]!.exerciseName,
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
+                        ),
+                      )),
                   Text(
                     '00:${widget.e['time']}s',
                     style: const TextStyle(
