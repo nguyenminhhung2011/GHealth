@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
+import 'package:gold_health/services/alarm_notify.dart';
 import 'package:intl/intl.dart';
 
-import '../../global_widgets/screen_template.dart';
 import '../dashboard/widgets/button_gradient.dart';
 import 'workout_schedule_screen.dart' show Meeting;
 
@@ -392,7 +392,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                         isAllDay: false,
                       ),
                     );
-                    await _workoutController.addWorkoutSchedule({
+                    final String scheduleID =
+                        await _workoutController.addWorkoutSchedule({
                       'isFinish': false,
                       'isTurnOn': true,
                       'level': 'Intermediate',
@@ -400,6 +401,13 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                       'workoutCategory': dropDownValueChooseWorkout,
                       'time': Timestamp.fromDate(selectDate),
                       'weight': dropDownValueCustomWeight,
+                    });
+
+                    final isolatedId = await AlarmNotify.alarmNotification(
+                        selectDate.add(const Duration(seconds: 10)));
+                    Future(() async {
+                      WorkoutPlanController.sharedPreferences
+                          .setInt(scheduleID, isolatedId);
                     });
                     Get.back();
                   },

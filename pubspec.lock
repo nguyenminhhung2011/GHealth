@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1"
+  android_alarm_manager_plus:
+    dependency: "direct main"
+    description:
+      name: android_alarm_manager_plus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.6+1"
   animated_bottom_navigation_bar:
     dependency: "direct main"
     description:

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/better_player_test.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_screen.dart';
 

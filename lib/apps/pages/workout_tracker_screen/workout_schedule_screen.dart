@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../template/misc/colors.dart';
@@ -18,225 +19,50 @@ class WorkoutScheduleScreen extends StatefulWidget {
 }
 
 class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
-  var now = DateTime.now().obs;
-  Timer? timer;
+  final _workoutPlanController = Get.find<WorkoutPlanController>();
+  Rx<DateTime> now = DateTime.now().obs;
+  late final Timer? timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    now.value = DateTime.now();
+  });
   final List<DateTime> listDateTime = [
-    for (int i = 1; i <= 60; i++)
-      DateTime(2022, 8, 1).subtract(Duration(days: i)),
-    for (int i = 0; i <= 60; i++) DateTime(2022, 8, 1).add(Duration(days: i))
+    for (int i = 1; i <= 10; i++) DateTime.now().subtract(Duration(days: i)),
+    for (int i = 0; i <= 10; i++) DateTime.now().add(Duration(days: i))
   ];
   GlobalKey<ScrollSnapListState> sslKey = GlobalKey();
   late int onFocus = listDateTime.indexWhere((element) =>
       DateFormat().add_yMd().format(element) ==
       DateFormat().add_yMd().format(DateTime.now()));
   final CalendarController _calendarController = CalendarController();
-  List<Meeting> meetings = [
-    Meeting(
-        from: DateTime.now().subtract(const Duration(hours: 3)),
-        to: DateTime.now().subtract(const Duration(hours: 1)),
-        eventName: 'Meeting',
-        isAllDay: false,
-        background: Colors.black),
-    Meeting(
-        from: DateTime.now().subtract(const Duration(hours: 3)),
-        to: DateTime.now().add(const Duration(hours: 1)),
-        eventName: 'Meeting',
-        isAllDay: false,
-        background: Colors.black),
-    Meeting(
-        from: DateTime.now().subtract(const Duration(hours: 1)),
-        to: DateTime.now().add(const Duration(hours: 1)),
-        eventName: 'Meeting 2',
-        isAllDay: false,
-        background: Colors.black),
-  ];
-  Widget _itemBuilder(BuildContext context, int index) {
-    return Container(
-      alignment: Alignment.center,
-      margin: const EdgeInsets.all(10),
-      width: 80,
-      height: 100,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15),
-        gradient: onFocus == index
-            ? LinearGradient(colors: [
-                Colors.blue[200]!,
-                Colors.blue[300]!,
-                Colors.blue[400]!
-              ])
-            : const LinearGradient(
-                colors: [
-                  Colors.white10,
-                  Colors.white10,
-                ],
-              ),
-      ),
-      child: SizedBox(
-        height: 80,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              DateFormat().add_E().format(listDateTime[index]),
-              style: TextStyle(
-                color: onFocus == index ? Colors.white : Colors.black,
-              ),
-            ),
-            Text(
-              DateFormat().add_d().format(listDateTime[index]),
-              style: TextStyle(
-                color: onFocus == index ? Colors.white : Colors.black,
-              ),
-            ),
-          ],
+  late RxList<Meeting> meetings = _workoutPlanController.schedules.value.entries
+      .map(
+        (schedule) => Meeting(
+          eventName: schedule.value.workoutCategory,
+          from: schedule.value.time,
+          to: schedule.value.time.add(const Duration(hours: 1)),
+          background: Colors.black,
+          isAllDay: false,
         ),
-      ),
+      )
+      .toList()
+      .obs;
+
+  bool _initState = true;
+
+  Widget _itemBuilder(BuildContext context, int index) {
+    return CustomItemBuilder(
+      index: index,
+      onFocus: onFocus,
+      listDateTime: listDateTime,
     );
   }
 
   Widget _scheduleBuilder(
       BuildContext context, CalendarAppointmentDetails details) {
     final Meeting meeting = details.appointments.first;
-    return Obx(
-      () => InkWell(
-        onTap: () {
-          showDialog(
-            context: context,
-            builder: (context) => Dialog(
-              elevation: 5,
-              child: Container(
-                padding: const EdgeInsets.only(
-                    right: 15, top: 15, bottom: 15, left: 20),
-                height: Get.mediaQuery.size.height * 0.3,
-                width: Get.mediaQuery.size.width,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          icon: const Icon(
-                            Icons.close,
-                            size: 20,
-                          ),
-                        ),
-                        const Text(
-                          'Workout Schedule',
-                          style: TextStyle(
-                            overflow: TextOverflow.ellipsis,
-                            fontFamily: 'Sen',
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: const Icon(Icons.more_horiz),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      meeting.eventName,
-                      style: const TextStyle(
-                        fontFamily: 'Sen',
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    Row(
-                      children: [
-                        const Icon(Icons.access_time_outlined),
-                        const SizedBox(width: 10),
-                        Text(
-                          '${DateFormat().add_E().format(meeting.from)} | ${DateFormat('kk:mm').format(meeting.from)}',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    Expanded(
-                      child: Center(
-                        child: ButtonGradient(
-                          height: 50,
-                          width: 250,
-                          linearGradient: LinearGradient(colors: [
-                            Colors.blue[200]!,
-                            Colors.blue[300]!,
-                            Colors.blue[400]!
-                          ]),
-                          onPressed: () {},
-                          title: const Text(
-                            'Mark as Done',
-                            style: TextStyle(
-                                fontFamily: 'Sen',
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-        child: Stack(
-          alignment: Alignment.center,
-          fit: StackFit.expand,
-          children: [
-            RotatedBox(
-              quarterTurns: 1,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(35),
-                child: LinearProgressIndicator(
-                  color: Colors.blue[300],
-                  backgroundColor: Colors.grey.withOpacity(0.5),
-                  value: (meeting.to.isBefore(now.value)
-                      ? 1.0
-                      : meeting.from.isAfter(now.value)
-                          ? 0
-                          : (now.value
-                                  .difference(meeting.from)
-                                  .inSeconds
-                                  .toDouble()) /
-                              meeting.to.difference(meeting.from).inSeconds),
-                ),
-              ),
-            ),
-            Container(
-              alignment: Alignment.center,
-              child: Text(
-                meeting.eventName,
-                style: const TextStyle(
-                  color: Colors.blueGrey,
-                  fontFamily: 'Sen',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
 
-  @override
-  void initState() {
-    super.initState();
-    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      now.value = DateTime.now();
-    });
+    return Obx(
+      () => CustomScheduleComponent(now: now.value, meeting: meeting),
+    );
   }
 
   void addMeeting(Meeting value) {
@@ -247,8 +73,6 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var heightDevice = MediaQuery.of(context).size.height;
-    var widthDevice = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -262,8 +86,8 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
             shape: BoxShape.circle,
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 226, 145, 201),
-                Color.fromARGB(255, 199, 152, 231),
+                AppColors.primaryColor1,
+                AppColors.primaryColor1,
               ],
             ),
           ),
@@ -306,9 +130,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                         .copyWith(fontSize: 20),
                   ),
                   InkWell(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
+                    onTap: Get.back,
                     child: Container(
                       padding: const EdgeInsets.all(5),
                       decoration: BoxDecoration(
@@ -365,7 +187,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
               ),
               const SizedBox(height: 15),
               SizedBox(
-                height: MediaQuery.of(context).size.height * 0.17,
+                height: Get.mediaQuery.size.height * 0.17,
                 child: ScrollSnapList(
                   key: sslKey,
                   itemBuilder: _itemBuilder,
@@ -376,7 +198,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                   initialIndex: onFocus.toDouble(),
                   scrollPhysics: const ScrollPhysics(),
                   duration: 1000,
-                  onItemFocus: (int index) {
+                  onItemFocus: (int index) async {
                     setState(() {
                       onFocus = index;
                       _calendarController.displayDate = listDateTime[onFocus];
@@ -385,7 +207,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                 ),
               ),
               SizedBox(
-                height: heightDevice + 100,
+                height: Get.mediaQuery.size.height + 100,
                 child: SfCalendar(
                   initialDisplayDate: listDateTime[onFocus],
                   controller: _calendarController,
@@ -394,7 +216,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
                   view: CalendarView.day,
                   headerHeight: 0,
                   viewHeaderHeight: 0,
-                  dataSource: MeetingDataSource(meetings),
+                  dataSource: MeetingDataSource(meetings.value),
                   appointmentBuilder: _scheduleBuilder,
                 ),
               ),
@@ -458,4 +280,201 @@ class Meeting {
   DateTime to;
   Color background;
   bool isAllDay;
+}
+
+class CustomItemBuilder extends StatelessWidget {
+  const CustomItemBuilder(
+      {super.key,
+      required this.index,
+      required this.onFocus,
+      required this.listDateTime});
+  final int index;
+  final int onFocus;
+  final List<DateTime> listDateTime;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      alignment: Alignment.center,
+      margin: const EdgeInsets.all(10),
+      width: 80,
+      height: 100,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        gradient: onFocus == index
+            ? LinearGradient(colors: [
+                Colors.blue[200]!,
+                Colors.blue[300]!,
+                Colors.blue[400]!
+              ])
+            : const LinearGradient(
+                colors: [
+                  Colors.white10,
+                  Colors.white10,
+                ],
+              ),
+      ),
+      child: SizedBox(
+        height: 80,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Text(
+              DateFormat().add_E().format(listDateTime[index]),
+              style: TextStyle(
+                color: onFocus == index ? Colors.white : Colors.black,
+              ),
+            ),
+            Text(
+              DateFormat().add_d().format(listDateTime[index]),
+              style: TextStyle(
+                color: onFocus == index ? Colors.white : Colors.black,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+    ;
+  }
+}
+
+class CustomScheduleComponent extends StatelessWidget {
+  const CustomScheduleComponent({
+    super.key,
+    required this.now,
+    required this.meeting,
+  });
+  final DateTime now;
+  final Meeting meeting;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => Dialog(
+            elevation: 5,
+            child: Container(
+              padding: const EdgeInsets.only(
+                  right: 15, top: 15, bottom: 15, left: 20),
+              height: Get.mediaQuery.size.height * 0.3,
+              width: Get.mediaQuery.size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        icon: const Icon(
+                          Icons.close,
+                          size: 20,
+                        ),
+                      ),
+                      const Text(
+                        'Workout Schedule',
+                        style: TextStyle(
+                          overflow: TextOverflow.ellipsis,
+                          fontFamily: 'Sen',
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {},
+                        icon: const Icon(Icons.more_horiz),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Text(
+                    meeting.eventName,
+                    style: const TextStyle(
+                      fontFamily: 'Sen',
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      const Icon(Icons.access_time_outlined),
+                      const SizedBox(width: 10),
+                      Text(
+                        '${DateFormat().add_E().format(meeting.from)} | ${DateFormat('kk:mm').format(meeting.from)}',
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 15),
+                  Expanded(
+                    child: Center(
+                      child: ButtonGradient(
+                        height: 50,
+                        width: 250,
+                        linearGradient: LinearGradient(colors: [
+                          Colors.blue[200]!,
+                          Colors.blue[300]!,
+                          Colors.blue[400]!
+                        ]),
+                        onPressed: () {},
+                        title: const Text(
+                          'Mark as Done',
+                          style: TextStyle(
+                              fontFamily: 'Sen',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      child: Stack(
+        alignment: Alignment.center,
+        fit: StackFit.expand,
+        children: [
+          RotatedBox(
+            quarterTurns: 1,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(35),
+              child: LinearProgressIndicator(
+                color: Colors.blue[300],
+                backgroundColor: Colors.grey.withOpacity(0.5),
+                value: (meeting.to.isBefore(now)
+                    ? 1.0
+                    : meeting.from.isAfter(now)
+                        ? 0
+                        : (now.difference(meeting.from).inSeconds.toDouble()) /
+                            meeting.to.difference(meeting.from).inSeconds),
+              ),
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            child: Text(
+              meeting.eventName,
+              style: const TextStyle(
+                color: Colors.white,
+                fontFamily: 'Sen',
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

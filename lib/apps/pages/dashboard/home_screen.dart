@@ -17,19 +17,19 @@ import 'widgets/button_gradient.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int touchedIndex = -1;
-  int touchedIndex1 = -1;
-  double height_bmi_container = 0;
-  double height_slideValue = 20;
-  double weight_slideValue = 100;
-  double height_process_container = 0;
+  RxInt touchedIndex = (-1).obs;
+  RxInt touchedIndex1 = (-1).obs;
+  RxDouble height_bmi_container = 0.0.obs;
+  RxDouble height_slideValue = 20.0.obs;
+  RxDouble weight_slideValue = 100.0.obs;
+  RxDouble height_process_container = 0.0.obs;
 
   double value = 0;
   final List<int> _list = [for (int i = 1; i <= 140; i++) i];
@@ -245,19 +245,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Expanded(
             child: Center(
-              child: PieChart(
-                PieChartData(
-                  pieTouchData: PieTouchData(
-                    touchCallback: (FlTouchEvent event, pieTouchResponse) {
-                      setState(() {
+              child: Obx(() {
+                return PieChart(
+                  PieChartData(
+                    pieTouchData: PieTouchData(
+                      touchCallback: (FlTouchEvent event, pieTouchResponse) {
                         if (!event.isInterestedForInteractions ||
                             pieTouchResponse == null ||
                             pieTouchResponse.touchedSection == null) {
-                          touchedIndex1 = -1;
+                          touchedIndex1.value = -1;
                           return;
                         }
-                        touchedIndex1 = pieTouchResponse
+                        touchedIndex1.value = pieTouchResponse
                             .touchedSection!.touchedSectionIndex;
+<<<<<<< HEAD
                       });
                     },
                   ),
@@ -288,10 +289,25 @@ class _HomeScreenState extends State<HomeScreen> {
                                   homeScreenController.kCalBurn.value) !=
                               0)
                           ? (homeScreenController.kCalConsume.value /
+=======
+                      },
+                    ),
+                    startDegreeOffset: 180,
+                    borderData: FlBorderData(
+                      show: false,
+                    ),
+                    sectionsSpace: 1,
+                    centerSpaceRadius: 0,
+                    sections: [
+                      Data(
+                          name: 'now',
+                          percents: (homeScreenController.kCalBurn.value /
+>>>>>>> 2159e5000271197c481045489b3b9a6587add37d
                                   (homeScreenController.kCalConsume.value +
                                       homeScreenController.kCalBurn.value) *
                                   100)
                               .round()
+<<<<<<< HEAD
                               .toDouble()
                           : 0.5,
                       color: AppColors.primaryColor1,
@@ -301,35 +317,78 @@ class _HomeScreenState extends State<HomeScreen> {
                       .asMap()
                       .map<int, PieChartSectionData>((index, data) {
                         final isTouched = index == touchedIndex1;
+=======
+                              .toDouble(),
+                          color: AppColors.primaryColor2,
+                          imagePath: 'assets/images/kCalBurn.png'),
+                      Data(
+                        name: '',
+                        percents: (homeScreenController.kCalConsume.value /
+                                (homeScreenController.kCalConsume.value +
+                                    homeScreenController.kCalBurn.value) *
+                                100)
+                            .round()
+                            .toDouble(),
+                        color: AppColors.primaryColor1,
+                        imagePath: 'assets/images/kcal.png',
+                      )
+                    ]
+                        .asMap()
+                        .map<int, PieChartSectionData>((index, data) {
+                          final isTouched = index == touchedIndex1.value;
+>>>>>>> 2159e5000271197c481045489b3b9a6587add37d
 
-                        return MapEntry(
-                          index,
-                          PieChartSectionData(
-                            color: data.color,
-                            value: data.percents,
-                            title: (data.name == 'now')
-                                ? '${homeScreenController.kCalBurn.value}kCal Burn'
-                                : '${homeScreenController.kCalConsume.value}kCal \nConsume',
-                            radius: isTouched ? 90 : 70,
-                            titleStyle: const TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
+                          return MapEntry(
+                            index,
+                            PieChartSectionData(
+                              color: data.color,
+                              value: data.percents,
+                              title: (data.name == 'now')
+                                  ? '${homeScreenController.kCalBurn.value}kCal Burn'
+                                  : '${homeScreenController.kCalConsume.value}kCal \nConsume',
+                              radius: isTouched ? 90 : 70,
+                              titleStyle: const TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              titlePositionPercentageOffset: 0.55,
+                              badgeWidget: Badge(
+                                data.imagePath,
+                                size: isTouched ? 40.0 : 30.0,
+                                borderColor: data.color,
+                              ),
+                              badgePositionPercentageOffset: .98,
                             ),
-                            titlePositionPercentageOffset: 0.55,
-                            badgeWidget: Badge(
-                              data.imagePath,
-                              size: isTouched ? 40.0 : 30.0,
-                              borderColor: data.color,
-                            ),
-                            badgePositionPercentageOffset: .98,
-                          ),
-                        );
-                      })
-                      .values
-                      .toList(),
-                ),
-              ),
+                          );
+                        })
+                        .values
+                        .toList(),
+                  ),
+                );
+              }),
+              // CircularPercentIndicator(
+              //   radius: 400 / 2 - 130,
+              //   lineWidth: 15.0,
+              //   percent: (calories - caloriesLeft) / calories,
+              //   center: Container(
+              //     alignment: Alignment.center,
+              //     height: 400 / 2 - 100,
+              //     decoration: const BoxDecoration(
+              //         shape: BoxShape.circle, color: AppColors.btn_color),
+              //     child: Text(
+              //       '$caloriesLeft kCal left',
+              //       style: const TextStyle(
+              //           fontFamily: 'Sen',
+              //           fontSize: 12,
+              //           fontWeight: FontWeight.w500,
+              //           color: Colors.white),
+              //     ),
+              //   ),
+              //   circularStrokeCap: CircularStrokeCap.round,
+              //   backgroundColor: const Color.fromARGB(227, 224, 221, 221),
+              //   progressColor: Colors.blue[300],
+              // ),
             ),
           ),
         ],
@@ -697,10 +756,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 onPressed: () {
-                  setState(() {
-                    height_process_container =
-                        (height_process_container - 300).abs();
-                  });
+                  height_process_container.value =
+                      (height_process_container.value - 300).abs();
                 },
                 title: const Text(
                   'Check',
@@ -715,9 +772,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           const SizedBox(height: 10),
           AnimatedContainer(
-            duration: const Duration(milliseconds: 600),
-            curve: Curves.fastOutSlowIn,
-            height: height_process_container,
+            duration: const Duration(milliseconds: 550),
+            curve: Curves.linear,
+            height: height_process_container.value,
             width: double.infinity,
             padding: const EdgeInsets.all(20),
             decoration: BoxDecoration(
@@ -824,83 +881,79 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(20),
         gradient: AppColors.colorGradient1,
       ),
-      child: Obx(
-        () =>
-            // (homeScreenController.user['name'] == null)
-            //     ? const Center(
-            //         child:
-            //             CircularProgressIndicator(color: AppColors.primaryColor1))
-            //     :
-            Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'BMI (Body Mass Index)',
+      child:
+          // (homeScreenController.user['name'] == null)
+          //     ? const Center(
+          //         child:
+          //             CircularProgressIndicator(color: AppColors.primaryColor1))
+          //     :
+          Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'BMI (Body Mass Index)',
+                    style: TextStyle(
+                      fontFamily: 'Sen',
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const Text(
+                    'You have a normal weight',
+                    style: TextStyle(
+                      fontFamily: 'Sen',
+                      fontSize: 15,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  ButtonGradient(
+                    width: 120,
+                    height: 44,
+                    linearGradient: LinearGradient(
+                      colors: [Colors.purple[100]!, Colors.purple[200]!],
+                    ),
+                    onPressed: () {
+                      height_bmi_container.value =
+                          (height_bmi_container.value - 200).abs();
+                    },
+                    title: const Text(
+                      'View More',
                       style: TextStyle(
                         fontFamily: 'Sen',
-                        fontSize: 17,
+                        fontSize: 12.5,
+                        color: Colors.white,
                         fontWeight: FontWeight.w600,
-                        color: Colors.white,
                       ),
                     ),
-                    const Text(
-                      'You have a normal weight',
-                      style: TextStyle(
-                        fontFamily: 'Sen',
-                        fontSize: 15,
-                        color: Colors.white,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    ButtonGradient(
-                      width: 120,
-                      height: 44,
-                      linearGradient: LinearGradient(
-                        colors: [Colors.purple[100]!, Colors.purple[200]!],
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          height_bmi_container =
-                              (height_bmi_container - 200).abs();
-                        });
-                      },
-                      title: const Text(
-                        'View More',
-                        style: TextStyle(
-                          fontFamily: 'Sen',
-                          fontSize: 12.5,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: SizedBox(
-                    width: 80,
-                    height: 80,
-                    child: PieChart(
+                  ),
+                ],
+              ),
+              Expanded(
+                child: SizedBox(
+                  width: 80,
+                  height: 80,
+                  child: Obx(
+                    () => PieChart(
                       PieChartData(
                         pieTouchData: PieTouchData(
                           touchCallback:
                               (FlTouchEvent event, pieTouchResponse) {
-                            setState(() {
-                              if (!event.isInterestedForInteractions ||
-                                  pieTouchResponse == null ||
-                                  pieTouchResponse.touchedSection == null) {
-                                touchedIndex = -1;
-                                return;
-                              }
-                              touchedIndex = pieTouchResponse
-                                  .touchedSection!.touchedSectionIndex;
-                            });
+                            if (!event.isInterestedForInteractions ||
+                                pieTouchResponse == null ||
+                                pieTouchResponse.touchedSection == null) {
+                              touchedIndex.value = -1;
+                              return;
+                            }
+                            touchedIndex.value = pieTouchResponse
+                                .touchedSection!.touchedSectionIndex;
                           },
                         ),
                         startDegreeOffset: 180,
@@ -912,7 +965,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         sections: FakeData.data
                             .asMap()
                             .map<int, PieChartSectionData>((index, data) {
-                              final isTouched = index == touchedIndex;
+                              final isTouched = index == touchedIndex.value;
 
                               return MapEntry(
                                 index,
@@ -946,133 +999,133 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 30),
-            Obx(
-              () => AnimatedContainer(
-                curve: Curves.linear,
-                height: height_bmi_container == 0 ? 0 : 200,
-                width: double.infinity,
-                duration: const Duration(milliseconds: 500),
-                decoration: BoxDecoration(
-                  color: AppColors.mainColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 20,
-                      vertical: 15,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            const Badge(
-                              'assets/images/medal.png',
-                              size: 30,
-                              borderColor: AppColors.primaryColor1,
+              ),
+            ],
+          ),
+          const SizedBox(height: 30),
+          Obx(
+            () => AnimatedContainer(
+              curve: Curves.linear,
+              height: height_bmi_container.value == 0 ? 0 : 200,
+              width: double.infinity,
+              duration: const Duration(milliseconds: 300),
+              decoration: BoxDecoration(
+                color: AppColors.mainColor,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 15,
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          const Badge(
+                            'assets/images/medal.png',
+                            size: 30,
+                            borderColor: AppColors.primaryColor1,
+                          ),
+                          const SizedBox(width: 10),
+                          Text(
+                            'BMI: ${homeScreenController.bmi().toStringAsFixed(1)}',
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w600,
                             ),
-                            const SizedBox(width: 10),
-                            Text(
-                              'BMI: ${homeScreenController.bmi().toStringAsFixed(1)}',
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20),
-                        Row(
-                          children: [
-                            const Text(
-                              'Height:  ',
-                              style: TextStyle(
-                                color: AppColors.primaryColor1,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            LoadHeightWeight(
-                              widthDevice: widthDevice,
-                              imgePath: 'assets/images/height.png',
-                              fData: homeScreenController.user['height']
-                                  .toDouble(),
-                              sData: homeScreenController.user['heightTarget']
-                                  .toDouble(),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        children: [
+                          const Text(
+                            'Height:  ',
+                            style: TextStyle(
                               color: AppColors.primaryColor1,
-                              press: () {},
+                              fontWeight: FontWeight.w600,
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const SizedBox(width: 60),
-                            Text(
-                              '${homeScreenController.user['height']}cm',
-                              style: const TextStyle(
-                                  color: AppColors.primaryColor1,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const Spacer(),
-                            Text(
-                              '${homeScreenController.user['heightTarget']}cm',
-                              style: const TextStyle(
-                                  color: AppColors.primaryColor1,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                        Row(
-                          children: [
-                            const Text(
-                              'Weight: ',
-                              style: TextStyle(
-                                color: AppColors.primaryColor2,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            LoadHeightWeight(
-                              widthDevice: widthDevice,
-                              imgePath: 'assets/images/weight.png',
-                              fData: homeScreenController.user['weight']
-                                  .toDouble(),
-                              sData: homeScreenController.user['weightTarget']
-                                  .toDouble(),
+                          ),
+                          LoadHeightWeight(
+                            widthDevice: widthDevice,
+                            imgePath: 'assets/images/height.png',
+                            fData:
+                                homeScreenController.user['height'].toDouble(),
+                            sData: homeScreenController.user['heightTarget']
+                                .toDouble(),
+                            color: AppColors.primaryColor1,
+                            press: () {},
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(width: 60),
+                          Text(
+                            '${homeScreenController.user['height']}cm',
+                            style: const TextStyle(
+                                color: AppColors.primaryColor1,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const Spacer(),
+                          Text(
+                            '${homeScreenController.user['heightTarget']}cm',
+                            style: const TextStyle(
+                                color: AppColors.primaryColor1,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          const Text(
+                            'Weight: ',
+                            style: TextStyle(
                               color: AppColors.primaryColor2,
-                              press: () {},
+                              fontWeight: FontWeight.w600,
                             ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const SizedBox(width: 60),
-                            Text(
-                              '${homeScreenController.user['weight']}kg',
-                              style: const TextStyle(
-                                  color: AppColors.primaryColor2,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                            const Spacer(),
-                            Text(
-                              '${homeScreenController.user['weightTarget']}kg',
-                              style: const TextStyle(
-                                  color: AppColors.primaryColor2,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          LoadHeightWeight(
+                            widthDevice: widthDevice,
+                            imgePath: 'assets/images/weight.png',
+                            fData:
+                                homeScreenController.user['weight'].toDouble(),
+                            sData: homeScreenController.user['weightTarget']
+                                .toDouble(),
+                            color: AppColors.primaryColor2,
+                            press: () {},
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const SizedBox(width: 60),
+                          Text(
+                            '${homeScreenController.user['weight']}kg',
+                            style: const TextStyle(
+                                color: AppColors.primaryColor2,
+                                fontWeight: FontWeight.w600),
+                          ),
+                          const Spacer(),
+                          Text(
+                            '${homeScreenController.user['weightTarget']}kg',
+                            style: const TextStyle(
+                                color: AppColors.primaryColor2,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

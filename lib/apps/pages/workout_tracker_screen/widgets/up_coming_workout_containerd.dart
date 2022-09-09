@@ -6,12 +6,14 @@ import '../../../template/misc/colors.dart';
 class UpComingWorkoutContainer extends StatelessWidget {
   const UpComingWorkoutContainer({
     Key? key,
+    required this.scheduleId,
     required this.val,
     required this.main,
     required this.time,
     required this.imagePath,
   }) : super(key: key);
 
+  final String scheduleId;
   final bool val;
   final String main;
   final String time;
@@ -76,7 +78,10 @@ class UpComingWorkoutContainer extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          ToggleButtonIos(val: val)
+          ToggleButtonIos(
+            val: val,
+            scheduleId: scheduleId,
+          )
         ],
       ),
     );
