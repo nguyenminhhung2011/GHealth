@@ -270,22 +270,30 @@ class _HomeScreenState extends State<HomeScreen> {
                   sections: [
                     Data(
                         name: 'now',
-                        percents: (homeScreenController.kCalBurn.value /
-                                (homeScreenController.kCalConsume.value +
-                                    homeScreenController.kCalBurn.value) *
-                                100)
-                            .round()
-                            .toDouble(),
+                        percents: (((homeScreenController.kCalConsume.value +
+                                    homeScreenController.kCalBurn.value)) !=
+                                0)
+                            ? (homeScreenController.kCalBurn.value /
+                                    (homeScreenController.kCalConsume.value +
+                                        homeScreenController.kCalBurn.value) *
+                                    100)
+                                .round()
+                                .toDouble()
+                            : 0.5,
                         color: AppColors.primaryColor2,
                         imagePath: 'assets/images/kCalBurn.png'),
                     Data(
                       name: '',
-                      percents: (homeScreenController.kCalConsume.value /
-                              (homeScreenController.kCalConsume.value +
-                                  homeScreenController.kCalBurn.value) *
-                              100)
-                          .round()
-                          .toDouble(),
+                      percents: ((homeScreenController.kCalConsume.value +
+                                  homeScreenController.kCalBurn.value) !=
+                              0)
+                          ? (homeScreenController.kCalConsume.value /
+                                  (homeScreenController.kCalConsume.value +
+                                      homeScreenController.kCalBurn.value) *
+                                  100)
+                              .round()
+                              .toDouble()
+                          : 0.5,
                       color: AppColors.primaryColor1,
                       imagePath: 'assets/images/kcal.png',
                     )
@@ -486,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   center: CircularPercentIndicator(
                     circularStrokeCap: CircularStrokeCap.round,
                     radius: 400 / 2 - 180,
-                    lineWidth: 15.0,
+                    lineWidth: 12.0,
                     percent: 0.8,
                     backgroundColor: const Color.fromARGB(227, 224, 221, 221),
                     progressColor: Colors.blue[300],

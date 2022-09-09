@@ -180,8 +180,8 @@ class HomeScreenControl extends GetxController {
           int time =
               DateTime.fromMillisecondsSinceEpoch(item['date'].seconds * 1000)
                   .hour;
-          int index = result.indexWhere(
-              (e) => (time >= e['hour'][0] && time <= e['hour'][1]));
+          int index = result
+              .indexWhere((e) => (time >= e['hour'][0] && time < e['hour'][1]));
           // returnIndex(result, time);
           result[index]['data'] += item['consume'];
         }
