@@ -258,38 +258,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                         touchedIndex1.value = pieTouchResponse
                             .touchedSection!.touchedSectionIndex;
-<<<<<<< HEAD
-                      });
-                    },
-                  ),
-                  startDegreeOffset: 180,
-                  borderData: FlBorderData(
-                    show: false,
-                  ),
-                  sectionsSpace: 1,
-                  centerSpaceRadius: 0,
-                  sections: [
-                    Data(
-                        name: 'now',
-                        percents: (((homeScreenController.kCalConsume.value +
-                                    homeScreenController.kCalBurn.value)) !=
-                                0)
-                            ? (homeScreenController.kCalBurn.value /
-                                    (homeScreenController.kCalConsume.value +
-                                        homeScreenController.kCalBurn.value) *
-                                    100)
-                                .round()
-                                .toDouble()
-                            : 0.5,
-                        color: AppColors.primaryColor2,
-                        imagePath: 'assets/images/kCalBurn.png'),
-                    Data(
-                      name: '',
-                      percents: ((homeScreenController.kCalConsume.value +
-                                  homeScreenController.kCalBurn.value) !=
-                              0)
-                          ? (homeScreenController.kCalConsume.value /
-=======
                       },
                     ),
                     startDegreeOffset: 180,
@@ -301,34 +269,30 @@ class _HomeScreenState extends State<HomeScreen> {
                     sections: [
                       Data(
                           name: 'now',
-                          percents: (homeScreenController.kCalBurn.value /
->>>>>>> 2159e5000271197c481045489b3b9a6587add37d
-                                  (homeScreenController.kCalConsume.value +
-                                      homeScreenController.kCalBurn.value) *
-                                  100)
-                              .round()
-<<<<<<< HEAD
-                              .toDouble()
-                          : 0.5,
-                      color: AppColors.primaryColor1,
-                      imagePath: 'assets/images/kcal.png',
-                    )
-                  ]
-                      .asMap()
-                      .map<int, PieChartSectionData>((index, data) {
-                        final isTouched = index == touchedIndex1;
-=======
-                              .toDouble(),
+                          percents: ((homeScreenController.kCalConsume.value +
+                                      homeScreenController.kCalBurn.value) !=
+                                  0)
+                              ? (homeScreenController.kCalBurn.value /
+                                      (homeScreenController.kCalConsume.value +
+                                          homeScreenController.kCalBurn.value) *
+                                      100)
+                                  .round()
+                                  .toDouble()
+                              : 0,
                           color: AppColors.primaryColor2,
                           imagePath: 'assets/images/kCalBurn.png'),
                       Data(
                         name: '',
-                        percents: (homeScreenController.kCalConsume.value /
-                                (homeScreenController.kCalConsume.value +
-                                    homeScreenController.kCalBurn.value) *
-                                100)
-                            .round()
-                            .toDouble(),
+                        percents: ((homeScreenController.kCalConsume.value +
+                                    homeScreenController.kCalBurn.value) !=
+                                0)
+                            ? (homeScreenController.kCalConsume.value /
+                                    (homeScreenController.kCalConsume.value +
+                                        homeScreenController.kCalBurn.value) *
+                                    100)
+                                .round()
+                                .toDouble()
+                            : 0,
                         color: AppColors.primaryColor1,
                         imagePath: 'assets/images/kcal.png',
                       )
@@ -336,7 +300,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         .asMap()
                         .map<int, PieChartSectionData>((index, data) {
                           final isTouched = index == touchedIndex1.value;
->>>>>>> 2159e5000271197c481045489b3b9a6587add37d
 
                           return MapEntry(
                             index,

@@ -25,7 +25,7 @@ class ButtonText extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            backgroundColor: Colors.transparent,
+            // backgroundColor: Colors.transparent,
             shadowColor: Colors.transparent),
         child: Text(
           title,
