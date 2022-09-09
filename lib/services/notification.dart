@@ -14,14 +14,18 @@ Future<void> createMealNotification(String title) async {
   );
 }
 
-Future<void> createWaterReminderNotification(
-    NotificationWeekAndTime notificationSchedule) async {
+Future<void> createMealNotificationAuto(
+    NotificationWeekAndTime notificationSchedule, int typeOfEat) async {
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
       id: createUniqueId(),
-      channelKey: 'scheduled_channel',
-      title: '${Emojis.wheater_droplet} Add some water to your plant!',
-      body: 'Water your plant regularly to keep it healthy.',
+      channelKey: 'basic_channel',
+      title: '${Emojis.food_red_apple} Let\' time time to Eat',
+      body: typeOfEat == 1
+          ? 'Eat breakfast to have an active day'
+          : typeOfEat == 2
+              ? 'Have lunch after a tiring work breakfast'
+              : 'Let\'s have dinner to end the day',
       notificationLayout: NotificationLayout.Default,
     ),
     actionButtons: [
