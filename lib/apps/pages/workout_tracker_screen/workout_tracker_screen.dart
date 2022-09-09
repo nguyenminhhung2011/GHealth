@@ -7,12 +7,12 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/choose_workout_scr
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories_workout_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/up_coming_workout_containerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_history_screen.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:intl/intl.dart';
 
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/row_text_see_more.dart';
 import '../../global_widgets/list_chart/line_chart2_line.dart';
-import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/widgets/button_gradient.dart';
 
@@ -24,47 +24,74 @@ class WorkoutTrackerScreen extends StatefulWidget {
 }
 
 class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
-  final controller = Get.put(WorkoutPlanController());
-
-  Rx<Map<String, String>> listWorkoutID = Rx<Map<String, String>>({});
-
-  Rx<Map<String, Padding>> listWorkoutSchedule = Rx<Map<String, Padding>>({});
-
+  late final WorkoutPlanController controller;
+  late Rx<Map<String, String>> listWorkoutID;
+  late Rx<Map<String, Padding>> listWorkoutSchedule;
   Future<bool> _fetchData() async {
     try {
-      await _addListWorkoutSchedule();
-      controller.workouts.listen((workout) {
-        workout.forEach((key, value) {
-          listWorkoutID.value
-              .putIfAbsent((value['workoutCategory'] as String), () => key);
-        });
+      controller = await Get.putAsync(() async {
+        return await Future.value(WorkoutPlanController());
       });
+      await _addListWorkoutId();
+      await _addListWorkoutSchedule();
       return true;
     } catch (e) {
+      print('_fetchData: ${e.toString()}');
       return false;
+    }
+  }
+
+  Future<void> _addListWorkoutId() async {
+    try {
+      listWorkoutID = await Get.putAsync(() async {
+        Rx<Map<String, String>> listWorkoutIDInMemory =
+            Rx<Map<String, String>>({});
+        listWorkoutIDInMemory
+            .bindStream(controller.workouts.stream.map((event) {
+          Map<String, String> result = {};
+          event.forEach((key, value) {
+            result.putIfAbsent((value['workoutCategory'] as String), () => key);
+          });
+          return result;
+        }));
+        return await Future.value(listWorkoutIDInMemory);
+      }, tag: 'listWorkoutID');
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
     }
   }
 
   Future<void> _addListWorkoutSchedule() async {
     try {
-      controller.schedules.listen((schedule) {
-        schedule.forEach((key, value) {
-          listWorkoutSchedule.value.putIfAbsent(
-            key,
-            () => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: UpComingWorkoutContainer(
-                val: value.isTurnOn,
-                main: value.workoutCategory,
-                time: DateFormat.yMd().add_jm().format(value.time),
-                imagePath:
-                    controller.listImage[value.workoutCategory] as String,
+      listWorkoutSchedule = await Get.putAsync(() async {
+        Rx<Map<String, Padding>> listWorkoutScheduleInMemory =
+            Rx<Map<String, Padding>>({});
+        listWorkoutScheduleInMemory
+            .bindStream(controller.schedules.stream.map((event) {
+          Map<String, Padding> result = {};
+          event.forEach((key, value) {
+            result.putIfAbsent(
+              key,
+              () => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: UpComingWorkoutContainer(
+                  scheduleId: key,
+                  val: value.isTurnOn,
+                  main: value.workoutCategory,
+                  time: DateFormat.yMd().add_jm().format(value.time),
+                  imagePath:
+                      controller.listImage[value.workoutCategory] as String,
+                ),
               ),
-            ),
-          );
-        });
-      });
+            );
+          });
+          return result;
+        }));
+        return await Future.value(listWorkoutScheduleInMemory);
+      }, tag: 'listWorkoutID');
     } catch (e) {
+      debugPrint(e.toString());
       rethrow;
     }
   }
@@ -91,7 +118,6 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
               if (snapshot.hasData) {
                 if (snapshot.data as bool) {
                   return GetBuilder<WorkoutPlanController>(builder: (_) {
-                    print('build');
                     return ScreenTemplate(
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -123,7 +149,7 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                             await _showDialogMethod(
                                               context: context,
                                               tabs: tabs,
-                                              onselectedTabs: (value) {
+                                              onSelectedTabs: (value) {
                                                 newIndex = value;
                                               },
                                               done: () {
@@ -244,8 +270,30 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                               ],
                                             ),
                                             onPressed: () {
-                                              Get.toNamed(RouteName
-                                                  .workoutScheduleScreen);
+                                              Get.to(() {
+                                                return FutureBuilder(
+                                                    future: Future(() async {
+                                                  await Future.delayed(
+                                                      const Duration(
+                                                          milliseconds: 800));
+                                                  return const WorkoutScheduleScreen();
+                                                }), builder:
+                                                        (context, snapshot) {
+                                                  if (snapshot
+                                                          .connectionState ==
+                                                      ConnectionState.done) {
+                                                    if (snapshot.hasData) {
+                                                      return snapshot.data
+                                                          as Widget;
+                                                    }
+                                                  }
+                                                  return const Scaffold(
+                                                    body: Center(
+                                                        child:
+                                                            CircularProgressIndicator()),
+                                                  );
+                                                });
+                                              });
                                             },
                                             title: const Text(
                                               'Check',
@@ -266,12 +314,17 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                       title: 'Upcoming Workout',
                                     ),
                                     const SizedBox(height: 15),
-                                    Obx(() => Column(
-                                          children: listWorkoutSchedule
-                                              .value.entries
-                                              .map((e) => e.value)
-                                              .toList(),
-                                        )),
+                                    Obx(() {
+                                      debugPrint(listWorkoutSchedule
+                                          .value.entries
+                                          .toString());
+                                      return Column(
+                                        children: listWorkoutSchedule
+                                            .value.entries
+                                            .map((e) => e.value)
+                                            .toList(),
+                                      );
+                                    }),
                                     const SizedBox(height: 20),
                                     RowText_Seemore(
                                       press: () {
@@ -355,7 +408,7 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
   _showDialogMethod({
     required BuildContext context,
     required List<String> tabs,
-    required Function(int)? onselectedTabs,
+    required Function(int)? onSelectedTabs,
     required Function() done,
   }) async {
     await showDialog(
@@ -380,7 +433,7 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                   height: 200,
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   child: CupertinoPicker(
-                    onSelectedItemChanged: onselectedTabs,
+                    onSelectedItemChanged: onSelectedTabs,
                     selectionOverlay: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),

@@ -373,7 +373,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           ),
                                         ),
                                         const Spacer(),
-                                        ToggleButtonIos(val: val),
+                                        // ToggleButtonIos(val: val),
                                       ],
                                     ),
                                   ],

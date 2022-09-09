@@ -4,18 +4,22 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:gold_health/apps/routes/app_pages.dart';
+import 'package:gold_health/services/alarm_notify.dart';
 import 'package:gold_health/services/start_services.dart';
 
 import 'apps/routes/route_name.dart';
 import 'apps/template/misc/colors.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await AndroidAlarmManager.initialize();
   StartService.instance.init();
   runApp(const MyApp());
+  await AlarmNotify.alarmNotification(DateTime.now());
 }
 
 class MyApp extends StatelessWidget {

@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
-import 'package:video_thumbnail/video_thumbnail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../services/auth_service.dart';
 import '../../data/models/workout_model.dart';
@@ -14,18 +14,18 @@ class WorkoutPlanController extends GetxController with TrackerController {
   Map<String, Uint8List> listThumbnail = {};
   var alarmTime = DateTime.now().obs;
   var level = 'Beginner'.obs;
+  static late final SharedPreferences sharedPreferences;
+  /////////////////////////////////////
 
-  @override
-  void onInit() async {
-    debugPrint('printing');
-    await fetchAllDataAboutWorkout();
-    super.onInit();
-  }
-
+  /////////////////////////////////////
   var exercises = Rx<Map<String, Exercise>>({});
   var workouts = Rx<Map<String, Map<String, dynamic>>>({});
   var schedules = Rx<Map<String, WorkoutSchedule>>({});
   var histories = Rx<Map<String, WorkoutHistory>>({});
+
+  Map<String, Exercise> get exerciseList {
+    return exercises.value;
+  }
 
   ///////Data Structure
   // {
@@ -38,6 +38,14 @@ class WorkoutPlanController extends GetxController with TrackerController {
   //       'workoutCategory': 'fullbody',
   //     }
   //   },
+
+  @override
+  void onInit() async {
+    debugPrint('printing');
+    sharedPreferences = await SharedPreferences.getInstance();
+    await fetchAllDataAboutWorkout();
+    super.onInit();
+  }
 
   final Map<String, String> listImage = {
     'Fullbody': 'assets/images/fullbody.png',
@@ -86,13 +94,11 @@ class WorkoutPlanController extends GetxController with TrackerController {
             },
           ),
         );
-        update();
       });
       debugPrint('workouts: ${workouts.value.length}');
       debugPrint(workouts.toString());
       return true;
     } catch (e) {
-      print('fetchWorkoutList: ${e.toString()}');
       return false;
     }
   }
@@ -114,7 +120,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
               },
             ),
           );
-          update();
         },
       );
       debugPrint('exercises: ${exercises.value.length.toString()}');
@@ -124,25 +129,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
       print('fetchExerciseList ------ ${e.toString()}');
       print('Exercise id:$id');
       return false;
-    }
-  }
-
-  Future<void> getThumbnailImage() async {
-    try {
-      int count = 0;
-      exercises.value.forEach((key, value) async {
-        debugPrint((count++).toString());
-        final thumbnailByte = await VideoThumbnail.thumbnailData(
-          video: value.exerciseUrl,
-          imageFormat: ImageFormat.PNG,
-          maxHeight: 100,
-          quality: 75,
-        );
-        listThumbnail.addAll({key: thumbnailByte!});
-      });
-    } catch (e) {
-      print('getThumbnailImage: ${e.toString()}');
-      rethrow;
     }
   }
 
@@ -172,9 +158,9 @@ class WorkoutPlanController extends GetxController with TrackerController {
               },
             ),
           );
-          update();
         },
       );
+
       debugPrint('schedules: ${schedules.value.length.toString()}');
       debugPrint(schedules.value.toString());
       return true;
@@ -221,11 +207,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
     await fetchWorkoutList();
     await fetchScheduleList();
     await fetchHistoryList();
-    update();
-  }
-
-  void rebuildWidget() {
-    update();
   }
 
   String getCaloriesBurnFromWorkout(List<String> listExercise) {
@@ -244,12 +225,15 @@ class WorkoutPlanController extends GetxController with TrackerController {
     return result.toString();
   }
 
-  Future addWorkoutSchedule(Map<String, dynamic> data) async {
-    await firestore
+  Future<String> addWorkoutSchedule(Map<String, dynamic> data) async {
+    final response = await firestore
         .collection('users')
         .doc(firebaseAuth.currentUser!.uid)
         .collection('workout_schedule')
         .add(data);
+    print('schedules.value.length: ${schedules.value.length}');
+
+    return response.id;
   }
 
   Future addWorkoutHistory(Map<String, dynamic> data) async {
