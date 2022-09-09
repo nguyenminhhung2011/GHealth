@@ -92,7 +92,7 @@ class _SettingScreenState extends State<SettingScreen> {
                           ),
                         ),
                         const Spacer(),
-                        ToggleButtonIos(val: val),
+                        // ToggleButtonIos(val: val),
                       ],
                     ),
                   ],
