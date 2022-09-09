@@ -12,6 +12,7 @@ class AlarmNotify {
       volume: 0.1, // Android only - API >= 28
       asAlarm: false, // Android only - all APIs
     );
+    Future.delayed(const Duration(seconds: 20), FlutterRingtonePlayer.stop);
   }
 
   static void stopSound() {
@@ -26,10 +27,9 @@ class AlarmNotify {
       isolateId,
       playSound,
       alarmClock: true,
-      allowWhileIdle: true,
     );
-    Future.delayed(const Duration(seconds: 60), () {
-      stopSound();
+    Future.delayed(const Duration(seconds: 30), () {
+      print('stopping');
       cancelAlarmNotification(isolateId);
     });
     return isolateId;
