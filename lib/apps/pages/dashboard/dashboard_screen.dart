@@ -88,13 +88,13 @@ class _DashBoardScreenState extends State<DashBoardScreen>
       }
     });
 
-    AwesomeNotifications().createdStream.listen((notification) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text(
-          'Notification Created on ${notification.channelKey}',
-        ),
-      ));
-    });
+    // AwesomeNotifications().createdStream.listen((notification) {
+    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //     content: Text(
+    //       'Notification Created on ${notification.channelKey}',
+    //     ),
+    //   ));
+    // });
 
     AwesomeNotifications().actionStream.listen((notification) {
       if (notification.channelKey == 'basic_channel' && Platform.isIOS) {
@@ -103,7 +103,7 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                   AwesomeNotifications().setGlobalBadgeCounter(value - 1),
             );
       }
-      _dashBoardScreenC.pageController.jumpTo(2);
+      // _dashBoardScreenC.pageController.jumpTo(2);
       // Navigator.pushAndRemoveUntil(
       //   context,
       //   MaterialPageRoute(

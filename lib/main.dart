@@ -24,9 +24,10 @@ void main() async {
       NotificationChannel(
         channelKey: 'basic_channel',
         channelName: 'Basic Notifications',
-        defaultColor: Colors.teal,
+        defaultColor: AppColors.primaryColor1,
         importance: NotificationImportance.High,
         channelShowBadge: true,
+        locked: true,
       ),
       NotificationChannel(
         channelKey: 'scheduled_channel',
@@ -34,7 +35,7 @@ void main() async {
         defaultColor: Colors.teal,
         locked: true,
         importance: NotificationImportance.High,
-        soundSource: 'resource://raw/res_c  ustom_notification',
+        soundSource: 'resource://raw/res_custom_notification',
       ),
     ],
   );

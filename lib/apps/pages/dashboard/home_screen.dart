@@ -279,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       100)
                                   .round()
                                   .toDouble()
-                              : 0,
+                              : 1,
                           color: AppColors.primaryColor2,
                           imagePath: 'assets/images/kCalBurn.png'),
                       Data(
@@ -293,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     100)
                                 .round()
                                 .toDouble()
-                            : 0,
+                            : 1,
                         color: AppColors.primaryColor1,
                         imagePath: 'assets/images/kcal.png',
                       )
