@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/badge.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/load_height_weight.dart';
+import 'package:gold_health/services/notification.dart';
 import '../../controls/home_screen_controller.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
@@ -330,28 +331,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
               }),
-              // CircularPercentIndicator(
-              //   radius: 400 / 2 - 130,
-              //   lineWidth: 15.0,
-              //   percent: (calories - caloriesLeft) / calories,
-              //   center: Container(
-              //     alignment: Alignment.center,
-              //     height: 400 / 2 - 100,
-              //     decoration: const BoxDecoration(
-              //         shape: BoxShape.circle, color: AppColors.btn_color),
-              //     child: Text(
-              //       '$caloriesLeft kCal left',
-              //       style: const TextStyle(
-              //           fontFamily: 'Sen',
-              //           fontSize: 12,
-              //           fontWeight: FontWeight.w500,
-              //           color: Colors.white),
-              //     ),
-              //   ),
-              //   circularStrokeCap: CircularStrokeCap.round,
-              //   backgroundColor: const Color.fromARGB(227, 224, 221, 221),
-              //   progressColor: Colors.blue[300],
-              // ),
             ),
           ),
         ],
@@ -399,7 +378,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      createMealNotification('It\'s breakfast time');
+                    },
                     icon: Icon(
                       Icons.arrow_forward_ios_outlined,
                       size: 15,
