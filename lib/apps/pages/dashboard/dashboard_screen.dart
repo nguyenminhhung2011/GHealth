@@ -89,30 +89,30 @@ class _DashBoardScreenState extends State<DashBoardScreen>
       }
     });
 
-    AwesomeNotifications().actionStream.listen((notification) {
-      if (notification.channelKey == 'basic_channel' && Platform.isIOS) {
-        AwesomeNotifications().getGlobalBadgeCounter().then(
-              (value) =>
-                  AwesomeNotifications().setGlobalBadgeCounter(value - 1),
-            );
-      }
-    });
-    AwesomeNotifications().actionStream.listen((notification) async {
-      if (notification.channelKey == 'basic_alarm_channel') {
-        // AlarmNotify.ca();
-      }
-    });
-    AwesomeNotifications().displayedStream.listen((notification) {
-      // if (notification.channelKey == 'basic_alarm_channel') {
-      //   // AwesomeNotifications().dismissedSink;
-      //   AlarmNotify.alarmNotification(DateTime.now()).then((value) {
-      //     AwesomeNotifications()
-      //         .dismissedStream
-      //         .every((element) => element.channelKey == 'basic_alarm_channel');
-      //   });
-      //   print(5);
-      // }
-    });
+    // AwesomeNotifications().actionStream.listen((notification) {
+    //   if (notification.channelKey == 'basic_channel' && Platform.isIOS) {
+    //     AwesomeNotifications().getGlobalBadgeCounter().then(
+    //           (value) =>
+    //               AwesomeNotifications().setGlobalBadgeCounter(value - 1),
+    //         );
+    //   }
+    // });
+    // // AwesomeNotifications().actionStream.listen((notification) async {
+    // //   if (notification.channelKey == 'basic_alarm_channel') {
+    // //     // AlarmNotify.ca();
+    // //   }
+    // // });
+    // AwesomeNotifications().displayedStream.listen((notification) {
+    //   // if (notification.channelKey == 'basic_alarm_channel') {
+    //   //   // AwesomeNotifications().dismissedSink;
+    //   //   AlarmNotify.alarmNotification(DateTime.now()).then((value) {
+    //   //     AwesomeNotifications()
+    //   //         .dismissedStream
+    //   //         .every((element) => element.channelKey == 'basic_alarm_channel');
+    //   //   });
+    //   //   print(5);
+    //   // }
+    // });
   }
 
   @override

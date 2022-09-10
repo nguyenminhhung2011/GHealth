@@ -186,8 +186,7 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                                     .map(
                                       (e) => SleepReportItem(
                                           widthDevice: widthDevice, e: e),
-                                    )
-                                    .toList(),
+                                    ),
                                 const SizedBox(height: 10),
                                 InkWell(
                                   onTap: () async {

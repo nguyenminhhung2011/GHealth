@@ -54,13 +54,13 @@ class DashBoardControl extends GetxController {
               timeOfDay: TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
             ),
           );
+          createAlarmNotificationAuto(NotificationWeekAndTime(
+            dayOfTheWeek: ite,
+            timeOfDay:
+                TimeOfDay(hour: timeAlarm.hour, minute: timeAlarm.minute),
+          ));
         }
       }
-      createAlarmNotificationAuto(NotificationWeekAndTime(
-        dayOfTheWeek: 6,
-        timeOfDay: TimeOfDay(
-            hour: DateTime.now().hour, minute: DateTime.now().minute + 1),
-      ));
     });
   }
 

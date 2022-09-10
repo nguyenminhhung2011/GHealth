@@ -75,7 +75,7 @@ dependencies:
   audioplayers: ^1.0.1
   progressive_time_picker: ^0.0.6
   chewie: ^1.3.4
-  awesome_notifications: ^0.0.6+10
+  awesome_notifications: ^0.6.21
   android_alarm_manager_plus: ^2.0.6+1
 
 
@@ -90,7 +90,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
-  flutter_launcher_icons: ^0.9.3
+  flutter_launcher_icons: ^0.10.0
 
 flutter_icons:
   image_path: "assets/images/fitness.png"

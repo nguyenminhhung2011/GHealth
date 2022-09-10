@@ -8,6 +8,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
+import 'package:gold_health/apps/template/misc/untils.dart';
+import 'package:gold_health/services/notification.dart';
 import 'package:intl/intl.dart';
 import 'package:progressive_time_picker/progressive_time_picker.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
@@ -140,6 +142,8 @@ class DailySleepController extends GetxController with TrackerController {
         dateSelect.add(weekDayTonInt[key]);
       }
     });
+    dateSelect = dateSelect.isNotEmpty ? dateSelect : [1, 2, 3, 4, 5, 6, 7];
+    DateTime alarm = (choseTime.value).add((choseDuration.value));
     await firestore
         .collection('users')
         .doc(AuthService.instance.currentUser!.uid)
@@ -148,12 +152,35 @@ class DailySleepController extends GetxController with TrackerController {
         .collection('sleep_time')
         .add({
       'id': 'sleep ${DataService.instance.listSleepTime.length}',
-      'alarm': (choseTime.value).add((choseDuration.value)),
+      'alarm': alarm,
       'bedTime': choseTime.value,
       'isTurnOn': isVibrate.value,
       'isTurnOn1': isVibrate.value,
-      'listDate': dateSelect.isNotEmpty ? dateSelect : [1, 2, 3, 4, 5, 6, 7],
+      'listDate': dateSelect,
     });
+    // for (var item in dateSelect) {
+    //   print(item);
+
+    //   createAlarmNotificationAuto(
+    //     NotificationWeekAndTime(
+    //       dayOfTheWeek: item,
+    //       timeOfDay: TimeOfDay(hour: alarm.hour, minute: alarm.minute),
+    //     ),
+    //   );
+    // }
+    print(
+      choseTime.value.hour,
+    );
+    for (var item in dateSelect) {
+      print(item + 1);
+      createAlarmNotificationAuto(
+        NotificationWeekAndTime(
+          dayOfTheWeek: item,
+          timeOfDay: TimeOfDay(
+              hour: choseTime.value.hour, minute: choseTime.value.minute),
+        ),
+      );
+    }
   }
 
   updateDataCollection(Map<String, dynamic> data) async {

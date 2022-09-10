@@ -28,6 +28,7 @@ void main() async {
         importance: NotificationImportance.High,
         channelShowBadge: true,
         locked: true,
+        channelDescription: 'Notifications',
       ),
       NotificationChannel(
         channelKey: 'scheduled_channel',
@@ -36,6 +37,7 @@ void main() async {
         locked: true,
         importance: NotificationImportance.High,
         soundSource: 'resource://raw/res_custom_notification',
+        channelDescription: 'Notifications',
       ),
       NotificationChannel(
         channelKey: 'basic_alarm_channel',
@@ -44,6 +46,7 @@ void main() async {
         importance: NotificationImportance.High,
         channelShowBadge: true,
         locked: true,
+        channelDescription: 'Notifications',
       ),
     ],
   );

@@ -99,15 +99,15 @@ Future<void> createAlarmNotificationAuto(
       repeats: true,
     ),
   );
-  DateTime now = DateTime.now();
-  AlarmNotify.alarmNotification(DateTime(
-      now.year,
-      now.month,
-      now.day,
-      notificationSchedule.timeOfDay.hour,
-      notificationSchedule.timeOfDay.minute,
-      0,
-      0));
+  // DateTime now = DateTime.now();
+  // AlarmNotify.alarmNotification(DateTime(
+  //     now.year,
+  //     now.month,
+  //     now.day,
+  //     notificationSchedule.timeOfDay.hour,
+  //     notificationSchedule.timeOfDay.minute,
+  //     0,
+  //     0));
 }
 
 Future<void> createWorkoutNotificationAuto(
