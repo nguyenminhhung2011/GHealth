@@ -117,8 +117,8 @@ class _DashBoardScreenState extends State<DashBoardScreen>
 
   @override
   void dispose() {
-    AwesomeNotifications().actionSink.close();
-    AwesomeNotifications().createdSink.close();
+    // AwesomeNotifications().actionSink.close();
+    // AwesomeNotifications().createdSink.close();
     super.dispose();
   }
 

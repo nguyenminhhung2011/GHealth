@@ -142,9 +142,11 @@ class DailySleepController extends GetxController with TrackerController {
         dateSelect.add(weekDayTonInt[key]);
       }
     });
+    Duration temp = choseDuration.value;
     dateSelect = dateSelect.isNotEmpty ? dateSelect : [1, 2, 3, 4, 5, 6, 7];
-    DateTime alarm = (choseTime.value).add((choseDuration.value));
+    // DateTime alarm = (choseTime.value).add((choseDuration.value));
     DateTime bedTime = choseTime.value;
+    DateTime alarm = bedTime.add(temp);
     await firestore
         .collection('users')
         .doc(AuthService.instance.currentUser!.uid)
@@ -159,6 +161,15 @@ class DailySleepController extends GetxController with TrackerController {
       'isTurnOn1': isVibrate.value,
       'listDate': dateSelect,
     });
+    print(alarm);
+    print(bedTime);
+    // createSleepNotificationAuto(
+    //   NotificationWeekAndTime(
+    //     dayOfTheWeek: 6,
+    //     timeOfDay: TimeOfDay(
+    //         hour: DateTime.now().hour, minute: DateTime.now().minute + 1),
+    //   ),
+    // );
     for (var item in dateSelect) {
       createSleepNotificationAuto(
         NotificationWeekAndTime(

@@ -130,3 +130,7 @@ Future<void> createWorkoutNotificationAuto(
 Future<void> cancelScheduledNotifications() async {
   await AwesomeNotifications().cancelAllSchedules();
 }
+
+Future<void> cancelScheduleNotificationsWhere(int id) async {
+  await AwesomeNotifications().cancel(id);
+}
