@@ -7,6 +7,7 @@ import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../../../services/alarm_notify.dart';
 import '../../controls/dailyPlanController/daily_sleep_controller.dart';
 import '../../template/misc/colors.dart';
 
@@ -31,6 +32,9 @@ class _SleepCountingState extends State<SleepCounting>
   AnimationController? controllerCurrentTime;
   double progress = 0;
   onComPleted() async {
+    DateTime now = DateTime.now();
+    AlarmNotify.alarmNotification(DateTime(
+        now.year, now.month, now.day, now.hour, now.minute, now.second, 0));
     final update = await controller.updateGoalSleepReport(currentTime.value);
     if (update == 'Success') {
       controller.disposePickTime();

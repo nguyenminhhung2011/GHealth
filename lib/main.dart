@@ -41,6 +41,15 @@ void main() async {
       ),
       NotificationChannel(
         channelKey: 'basic_alarm_channel',
+        channelName: 'Basic Alarm Notifications',
+        defaultColor: AppColors.primaryColor1,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+        locked: true,
+        channelDescription: 'Notifications',
+      ),
+      NotificationChannel(
+        channelKey: 'basic_sleep_channel',
         channelName: 'Basic Sleep Notifications',
         defaultColor: AppColors.primaryColor1,
         importance: NotificationImportance.High,

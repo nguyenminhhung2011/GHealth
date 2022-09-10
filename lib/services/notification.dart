@@ -52,7 +52,7 @@ Future<void> createSleepNotificationAuto(
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
         id: createUniqueId(),
-        channelKey: 'basic_channel',
+        channelKey: 'basic_sleep_channel',
         title:
             '${Emojis.smile_sleeping_face + Emojis.time_alarm_clock} It\'s time to sleep',
         body: 'Regular Sleep, Healthy Future',
@@ -99,15 +99,6 @@ Future<void> createAlarmNotificationAuto(
       repeats: true,
     ),
   );
-  // DateTime now = DateTime.now();
-  // AlarmNotify.alarmNotification(DateTime(
-  //     now.year,
-  //     now.month,
-  //     now.day,
-  //     notificationSchedule.timeOfDay.hour,
-  //     notificationSchedule.timeOfDay.minute,
-  //     0,
-  //     0));
 }
 
 Future<void> createWorkoutNotificationAuto(

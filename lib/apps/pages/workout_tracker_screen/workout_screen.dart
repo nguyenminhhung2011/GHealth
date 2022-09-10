@@ -745,7 +745,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
-                      // backgroundColor: Colors.transparent,
+                      backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent),
                   child: const Text(
                     'Done',
