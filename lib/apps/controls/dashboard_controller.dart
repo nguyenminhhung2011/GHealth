@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:gold_health/services/alarm_notify.dart';
 import 'package:gold_health/services/notification.dart';
 
 import '../../constrains.dart';
@@ -50,12 +51,16 @@ class DashBoardControl extends GetxController {
             NotificationWeekAndTime(
               dayOfTheWeek: ite,
               // timeOfDay: TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
-              timeOfDay: TimeOfDay(
-                  hour: DateTime.now().hour, minute: DateTime.now().minute + 1),
+              timeOfDay: TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
             ),
           );
         }
       }
+      createAlarmNotificationAuto(NotificationWeekAndTime(
+        dayOfTheWeek: 6,
+        timeOfDay: TimeOfDay(
+            hour: DateTime.now().hour, minute: DateTime.now().minute + 1),
+      ));
     });
   }
 

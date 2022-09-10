@@ -379,7 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 IconButton(
                     onPressed: () {
-                      createMealNotification('It\'s breakfast time');
+                      // createWorkoutNotificationAuto();
                     },
                     icon: Icon(
                       Icons.arrow_forward_ios_outlined,

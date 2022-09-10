@@ -37,10 +37,20 @@ void main() async {
         importance: NotificationImportance.High,
         soundSource: 'resource://raw/res_custom_notification',
       ),
+      NotificationChannel(
+        channelKey: 'basic_alarm_channel',
+        channelName: 'Basic Sleep Notifications',
+        defaultColor: AppColors.primaryColor1,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+        locked: true,
+      ),
     ],
   );
   runApp(const MyApp());
 }
+
+void notificationInit() async {}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

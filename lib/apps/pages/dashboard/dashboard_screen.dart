@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/daily_plan_screen.dart';
+import '../../../services/alarm_notify.dart';
 import '../../controls/dashboard_controller.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/home_screen.dart';
@@ -88,14 +89,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
       }
     });
 
-    // AwesomeNotifications().createdStream.listen((notification) {
-    //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-    //     content: Text(
-    //       'Notification Created on ${notification.channelKey}',
-    //     ),
-    //   ));
-    // });
-
     AwesomeNotifications().actionStream.listen((notification) {
       if (notification.channelKey == 'basic_channel' && Platform.isIOS) {
         AwesomeNotifications().getGlobalBadgeCounter().then(
@@ -103,14 +96,22 @@ class _DashBoardScreenState extends State<DashBoardScreen>
                   AwesomeNotifications().setGlobalBadgeCounter(value - 1),
             );
       }
-      // _dashBoardScreenC.pageController.jumpTo(2);
-      // Navigator.pushAndRemoveUntil(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (_) => PlantStatsPage(),
-      //   ),
-      //   (route) => route.isFirst,
-      // );
+    });
+    AwesomeNotifications().actionStream.listen((notification) async {
+      if (notification.channelKey == 'basic_alarm_channel') {
+        // AlarmNotify.ca();
+      }
+    });
+    AwesomeNotifications().displayedStream.listen((notification) {
+      // if (notification.channelKey == 'basic_alarm_channel') {
+      //   // AwesomeNotifications().dismissedSink;
+      //   AlarmNotify.alarmNotification(DateTime.now()).then((value) {
+      //     AwesomeNotifications()
+      //         .dismissedStream
+      //         .every((element) => element.channelKey == 'basic_alarm_channel');
+      //   });
+      //   print(5);
+      // }
     });
   }
 
