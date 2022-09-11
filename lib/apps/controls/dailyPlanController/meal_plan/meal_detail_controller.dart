@@ -1,7 +1,5 @@
 import 'package:get/get.dart';
 
-import '../../../data/models/Meal.dart';
-
 class MealDetailC extends GetxController {
   final Rx<Map<String, dynamic>> _meal = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get meal => _meal.value;

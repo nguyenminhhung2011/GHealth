@@ -2,22 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/basic_controller/basic_info_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/get_height_screen.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/get_old_screen.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/select_duration_screen.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/select_gender_screen.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
-
 import '../../template/misc/colors.dart';
-import 'fill_profile.dart';
 
 class BasicInfoScreen extends StatelessWidget {
   BasicInfoScreen({Key? key}) : super(key: key);
   final basicInfC = Get.find<BasicInfoC>();
   @override
   Widget build(BuildContext context) {
-    var heightDevice = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 50,

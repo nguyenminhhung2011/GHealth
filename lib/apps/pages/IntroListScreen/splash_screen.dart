@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/splash_controller.dart';
-import '../../global_widgets/button_custom/button_main.dart';
-import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 class SplashScreen extends StatelessWidget {
-  SplashScreen({Key? key}) : super(key: key);
-  final _controller = Get.find<SplashC>();
+  const SplashScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(

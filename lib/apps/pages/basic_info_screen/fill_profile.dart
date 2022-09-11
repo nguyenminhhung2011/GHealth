@@ -2,16 +2,13 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/basic_controller/basic_info_controller.dart';
 import 'package:gold_health/apps/controls/basic_controller/fill_profile_controller.dart';
 import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
-import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/template/misc/untils.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../global_widgets/button_custom/button_main.dart';
 import '../../global_widgets/text_field_custom/text_field_icon.dart';
-import '../../global_widgets/text_field_custom/text_phone_field.dart';
 import '../../global_widgets/text_field_custom/text_phone_field.dart';
 import '../../template/misc/colors.dart';
 

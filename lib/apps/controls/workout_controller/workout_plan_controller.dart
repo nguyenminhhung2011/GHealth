@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../services/auth_service.dart';
 import '../../data/models/workout_model.dart';

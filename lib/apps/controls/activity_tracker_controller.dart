@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, invalid_use_of_protected_member
 
 import 'dart:math';
 
@@ -99,7 +99,6 @@ class ActivityTrackerC extends GetxController {
         .collection('weight')
         .snapshots()
         .map((event) {
-      // ignore: invalid_use_of_protected_member
       List<int> result = [for (var item in allDateWeight.value) 0];
       for (var item in event.docs) {
         DateTime date = DateTime.fromMillisecondsSinceEpoch(

@@ -1,8 +1,5 @@
-import 'dart:math';
-
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DailyStepController extends GetxController with TrackerController {
   RxList<Map<String, dynamic>> stepWeek = <Map<String, dynamic>>[].obs;

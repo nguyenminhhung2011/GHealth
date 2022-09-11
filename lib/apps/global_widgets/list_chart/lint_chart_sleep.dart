@@ -62,7 +62,6 @@ class LineChartSleep extends StatelessWidget {
             tooltipBgColor: Colors.white,
             getTooltipItems: (List<LineBarSpot> touchedBarSpots) {
               return touchedBarSpots.map((barSpot) {
-                final flSpot = barSpot;
                 return LineTooltipItem(
                   '43% increase',
                   const TextStyle(

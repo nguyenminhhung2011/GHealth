@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/data/models/nutrition.dart';
 import 'package:gold_health/services/auth_service.dart';
 
 import '../../../../constrains.dart';

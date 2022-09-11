@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/basic_controller/basic_info_controller.dart';
 import 'package:gold_health/apps/controls/sign_up_controller.dart';
 import 'package:gold_health/apps/global_widgets/dialog/error_dialog.dart';
 

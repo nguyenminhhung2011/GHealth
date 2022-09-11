@@ -14,7 +14,6 @@ import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/button_custom/button_text.dart';
 import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
-import 'meal_schedule_screen.dart';
 
 class MealPlannerScreen extends StatelessWidget {
   MealPlannerScreen({Key? key}) : super(key: key);

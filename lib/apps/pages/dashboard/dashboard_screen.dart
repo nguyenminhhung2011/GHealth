@@ -1,12 +1,9 @@
-import 'dart:io';
-
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/daily_plan_screen.dart';
-import '../../../services/alarm_notify.dart';
 import '../../controls/dashboard_controller.dart';
 import '../../template/misc/colors.dart';
 import '../dashboard/home_screen.dart';
@@ -31,13 +28,6 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     DailyPlanScreen(),
     const ProgressPhotoScreen(),
     ActivityTrackerScreen(),
-  ];
-
-  final List<IconData> _iconList = [
-    Icons.home_outlined,
-    Icons.local_activity_outlined,
-    Icons.camera_alt_outlined,
-    Icons.person_outline,
   ];
 
   bool isPressButton = false;

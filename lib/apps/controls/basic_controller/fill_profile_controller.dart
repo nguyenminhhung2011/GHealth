@@ -16,12 +16,4 @@ class FillProfileC extends GetxController with BasicController {
     nickName = TextEditingController();
     phoneNo = TextEditingController();
   }
-
-  @override
-  void onClose() {
-    // fullName.dispose();
-    // nickName.dispose();
-    // phoneNo.dispose();
-    super.onClose();
-  }
 }

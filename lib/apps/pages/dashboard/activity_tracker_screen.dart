@@ -5,7 +5,6 @@ import 'package:gold_health/apps/controls/activity_tracker_controller.dart';
 import 'package:gold_health/apps/global_widgets/gradient_text.dart';
 import 'package:gold_health/apps/global_widgets/list_chart/line_chart_weight.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
-import 'package:gold_health/apps/pages/dashboard/latest_acti_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
@@ -16,7 +15,6 @@ import '../../global_widgets/list_chart/colum_chart1_colum.dart';
 import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
-import 'package:gold_health/apps/data/sleep_tracker_data.dart';
 import 'package:time_chart/time_chart.dart';
 
 class ActivityTrackerScreen extends StatelessWidget {

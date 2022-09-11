@@ -46,8 +46,6 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
       .toList()
       .obs;
 
-  bool _initState = true;
-
   Widget _itemBuilder(BuildContext context, int index) {
     return CustomItemBuilder(
       index: index,

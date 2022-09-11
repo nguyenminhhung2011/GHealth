@@ -5,10 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
-import 'package:gold_health/apps/template/misc/untils.dart';
-import 'package:gold_health/services/alarm_notify.dart';
 import 'package:intl/intl.dart';
-import 'package:workmanager/workmanager.dart';
 
 import '../../../services/notification.dart';
 import '../dashboard/widgets/button_gradient.dart';
@@ -395,8 +392,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                         isAllDay: false,
                       ),
                     );
-                    final String scheduleID =
-                        await _workoutController.addWorkoutSchedule({
+                    await _workoutController.addWorkoutSchedule({
                       'isFinish': false,
                       'isTurnOn': true,
                       'level': 'Intermediate',

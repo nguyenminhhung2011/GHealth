@@ -527,8 +527,9 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                                                       .circular(
                                                                           10),
                                                             ),
-                                                            primary: Colors
-                                                                .transparent,
+                                                            backgroundColor:
+                                                                Colors
+                                                                    .transparent,
                                                             shadowColor: Colors
                                                                 .transparent),
                                                     child: Row(

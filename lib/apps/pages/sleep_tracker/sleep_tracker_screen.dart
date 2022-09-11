@@ -612,10 +612,9 @@ class SleepReportItem extends StatelessWidget {
   final Map<String, dynamic> e;
 
   formatedTime({required int timeInSecond}) {
-    int h, m, s;
+    int h, m;
     h = timeInSecond ~/ 3600;
     m = ((timeInSecond - h * 3600)) ~/ 60;
-    s = timeInSecond - (h * 3600) - (m * 60);
     String result = "${h}h:${m}m";
     return result;
   }
