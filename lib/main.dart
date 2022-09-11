@@ -11,13 +11,50 @@ import 'apps/routes/route_name.dart';
 import 'apps/template/misc/colors.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
+import 'package:workmanager/workmanager.dart';
+import 'constrains.dart';
+import 'services/alarm_notify.dart';
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
+
+void callbackDispatcher() {
+  Workmanager().executeTask((taskName, inputData) async {
+    if (taskName == 'create_workout_alarm_notification') {
+      print('create_workout_alarm_notification');
+      try {
+        final timeData = DateTime.now().add(const Duration(
+            seconds: 10)); //DateTime.parse(inputData?['DateTime'] as String);
+        final idSharePreferences = inputData?['idSharePreferences'] as String;
+        await AlarmNotify.alarmNotification(idSharePreferences, timeData);
+      } catch (e) {
+        print('create_workout_alarm_notification: ${e.toString()}');
+        return Future.value(false);
+      }
+    } else if (taskName == 'delete_workout_alarm_notification') {
+      try {
+        debugPrint('delete_workout_alarm_notification');
+        final workoutScheduleId = inputData?['workoutScheduleId'] as String;
+        final sharedPreferencesInstance = await sharedPreferences;
+        int? isolateId = sharedPreferencesInstance.getInt(workoutScheduleId);
+        if (isolateId != null) {
+          AlarmNotify.cancelAlarmNotification(isolateId);
+          sharedPreferencesInstance.remove(workoutScheduleId);
+        }
+      } catch (e) {
+        print('delete_workout_alarm_notification: ${e.toString()}');
+        return Future.value(false);
+      }
+    }
+    return Future.value(true);
+  });
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AndroidAlarmManager.initialize();
   StartService.instance.init();
+  Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
   AwesomeNotifications().initialize(
     'resource://drawable/res_notification_app_icon',
     [

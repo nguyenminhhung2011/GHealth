@@ -101,11 +101,12 @@ Future<void> createAlarmNotificationAuto(
   );
 }
 
-Future<void> createWorkoutNotificationAuto(
-    NotificationWeekAndTime notificationSchedule) async {
+Future<int> createWorkoutNotificationAuto(
+    NotificationCalendar notificationSchedule) async {
+  int id = createUniqueId();
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-        id: createUniqueId(),
+        id: id,
         channelKey: 'basic_alarm_channel',
         title: '${Emojis.person_role_man_health_worker} It\' time to workout',
         body: 'Make yourself stronger than your excuses.',
@@ -117,14 +118,16 @@ Future<void> createWorkoutNotificationAuto(
       ),
     ],
     schedule: NotificationCalendar(
-      weekday: notificationSchedule.dayOfTheWeek,
-      hour: notificationSchedule.timeOfDay.hour,
-      minute: notificationSchedule.timeOfDay.minute,
-      second: 0,
-      millisecond: 0,
+      day: notificationSchedule.day,
+      month: notificationSchedule.month,
+      year: notificationSchedule.year,
+      hour: notificationSchedule.hour,
+      minute: notificationSchedule.minute,
+      second: notificationSchedule.second,
       repeats: true,
     ),
   );
+  return id;
 }
 
 Future<void> cancelScheduledNotifications() async {

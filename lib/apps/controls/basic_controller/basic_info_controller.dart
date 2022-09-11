@@ -109,9 +109,4 @@ class BasicInfoC extends GetxController {
     }
     update();
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
 }

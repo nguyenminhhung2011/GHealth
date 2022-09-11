@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/daily_plan_screen.dart';
@@ -42,52 +43,51 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   bool isPressButton = false;
 
   Future<Widget> refreshPage() async {
-    final result = await Future<Widget>.delayed(
-        const Duration(milliseconds: 600),
-        () => listPage[_dashBoardScreenC.tabIndex.value]);
+    final result =
+        await Future<Widget>.value(listPage[_dashBoardScreenC.tabIndex.value]);
     return result;
   }
 
   @override
   void initState() {
     super.initState();
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Allow Notifications'),
-            content: const Text('Our app would like to send you notifications'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: const Text(
-                  'Don\'t Allow',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              TextButton(
-                  onPressed: () => AwesomeNotifications()
-                      .requestPermissionToSendNotifications()
-                      .then((_) => Navigator.pop(context)),
-                  child: const Text(
-                    'Allow',
-                    style: TextStyle(
-                      color: Colors.teal,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ))
-            ],
-          ),
-        );
-      }
-    });
+    // AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+    //   if (!isAllowed) {
+    //     showDialog(
+    //       context: context,
+    //       builder: (context) => AlertDialog(
+    //         title: const Text('Allow Notifications'),
+    //         content: const Text('Our app would like to send you notifications'),
+    //         actions: [
+    //           TextButton(
+    //             onPressed: () {
+    //               Navigator.pop(context);
+    //             },
+    //             child: const Text(
+    //               'Don\'t Allow',
+    //               style: TextStyle(
+    //                 color: Colors.grey,
+    //                 fontSize: 18,
+    //               ),
+    //             ),
+    //           ),
+    //           TextButton(
+    //               onPressed: () => AwesomeNotifications()
+    //                   .requestPermissionToSendNotifications()
+    //                   .then((_) => Navigator.pop(context)),
+    //               child: const Text(
+    //                 'Allow',
+    //                 style: TextStyle(
+    //                   color: Colors.teal,
+    //                   fontSize: 18,
+    //                   fontWeight: FontWeight.bold,
+    //                 ),
+    //               ))
+    //         ],
+    //       ),
+    //     );
+    //   }
+    // });
 
     // AwesomeNotifications().actionStream.listen((notification) {
     //   if (notification.channelKey == 'basic_channel' && Platform.isIOS) {
@@ -97,28 +97,39 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     //         );
     //   }
     // });
-    // // AwesomeNotifications().actionStream.listen((notification) async {
-    // //   if (notification.channelKey == 'basic_alarm_channel') {
-    // //     // AlarmNotify.ca();
-    // //   }
-    // // });
-    // AwesomeNotifications().displayedStream.listen((notification) {
-    //   // if (notification.channelKey == 'basic_alarm_channel') {
-    //   //   // AwesomeNotifications().dismissedSink;
-    //   //   AlarmNotify.alarmNotification(DateTime.now()).then((value) {
-    //   //     AwesomeNotifications()
-    //   //         .dismissedStream
-    //   //         .every((element) => element.channelKey == 'basic_alarm_channel');
-    //   //   });
-    //   //   print(5);
-    //   // }
-    // });
+
+    AwesomeNotifications().displayedStream.listen((notification) async {
+      if (notification.channelKey == 'basic_alarm_channel') {
+        await FlutterRingtonePlayer.play(
+          fromAsset: 'assets/sounds/alarm_clock.wav',
+          ios: IosSounds.bell,
+          looping: true,
+          volume: 0.1,
+          asAlarm: true,
+        ).whenComplete(() {
+          Future.delayed(const Duration(seconds: 30), () async {
+            debugPrint('stopping after 30s');
+            FlutterRingtonePlayer.stop();
+          });
+        });
+      }
+    });
+
+    AwesomeNotifications().actionStream.listen((notification) {
+      if (notification.channelKey == 'basic_alarm_channel') {
+        FlutterRingtonePlayer.stop();
+      }
+    });
   }
 
   @override
   void dispose() {
-    // AwesomeNotifications().actionSink.close();
-    // AwesomeNotifications().createdSink.close();
+    print('dashboard dispose');
+    AwesomeNotifications().actionSink.close();
+    AwesomeNotifications().createdSink.close();
+    AwesomeNotifications().dismissedSink.close();
+    AwesomeNotifications().displayedSink.close();
+    // AwesomeNotifications().dispose();
     super.dispose();
   }
 
@@ -127,11 +138,12 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     return Scaffold(
       body: FutureBuilder(
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            return snapshot.data as Widget;
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              return snapshot.data as Widget;
+            }
           }
+          return const Center(child: CircularProgressIndicator());
         },
         future: refreshPage(),
       ),

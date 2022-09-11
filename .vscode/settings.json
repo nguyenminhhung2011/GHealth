@@ -5,7 +5,8 @@
         "Fullbody",
         "Getx",
         "syncfusion",
-        "upperbody"
+        "upperbody",
+        "Workmanager"
     ],
     "java.configuration.updateBuildConfiguration": "interactive"
 }
