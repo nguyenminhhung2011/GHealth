@@ -115,7 +115,7 @@ class FastingPlanController extends GetxController with TrackerController {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       elevation: 0,
-                      primary: Colors.green[50],
+                      backgroundColor: Colors.green[50],
                       shape: const CircleBorder(),
                     ),
                     onPressed: () {
@@ -178,10 +178,10 @@ class FastingPlanController extends GetxController with TrackerController {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(300, 50),
+                backgroundColor: Colors.blue[200],
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
-                primary: Colors.blue[200],
               ),
               onPressed: () {
                 Get.back();

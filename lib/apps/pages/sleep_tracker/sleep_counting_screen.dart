@@ -33,8 +33,10 @@ class _SleepCountingState extends State<SleepCounting>
   double progress = 0;
   onComPleted() async {
     DateTime now = DateTime.now();
-    AlarmNotify.alarmNotification(DateTime(
-        now.year, now.month, now.day, now.hour, now.minute, now.second, 0));
+    AlarmNotify.alarmNotification(
+        '${now}SleepCounting',
+        DateTime(
+            now.year, now.month, now.day, now.hour, now.minute, now.second, 0));
     final update = await controller.updateGoalSleepReport(currentTime.value);
     if (update == 'Success') {
       controller.disposePickTime();

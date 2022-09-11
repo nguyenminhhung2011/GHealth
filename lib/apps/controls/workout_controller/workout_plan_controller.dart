@@ -14,7 +14,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
   Map<String, Uint8List> listThumbnail = {};
   var alarmTime = DateTime.now().obs;
   var level = 'Beginner'.obs;
-  static late final SharedPreferences sharedPreferences;
   /////////////////////////////////////
 
   /////////////////////////////////////
@@ -42,7 +41,7 @@ class WorkoutPlanController extends GetxController with TrackerController {
   @override
   void onInit() async {
     debugPrint('printing');
-    sharedPreferences = await SharedPreferences.getInstance();
+
     await fetchAllDataAboutWorkout();
     super.onInit();
   }

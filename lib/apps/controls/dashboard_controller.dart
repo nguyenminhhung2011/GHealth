@@ -20,12 +20,12 @@ class DashBoardControl extends GetxController {
         .collection('notification')
         .get();
     // bool dCheck = raw.docs[0].data()['fCheck'];
-    List<String> listDevie =
+    List<String> listDevice =
         List<String>.from(raw.docs[0].data()['list_service']);
     AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    bool check = listDevie.contains(androidInfo.model);
-    print(listDevie);
-    listDevie.add(androidInfo.model!);
+    bool check = listDevice.contains(androidInfo.model);
+    print(listDevice);
+    listDevice.add(androidInfo.model!);
     // print('Android Device');
     // print(androidInfo.model! + '------------');
     if (!check) {
@@ -35,7 +35,7 @@ class DashBoardControl extends GetxController {
           .collection('notification')
           .doc(raw.docs[0].id)
           .update(
-        {'list_service': listDevie},
+        {'list_service': listDevice},
       ).then((value) {
         print('Update notification');
         cancelScheduledNotifications().then((value) async {
@@ -96,7 +96,7 @@ class DashBoardControl extends GetxController {
   void onInit() async {
     super.onInit();
     tabIndex.value = 0;
-    await createAllNotification();
+    // await createAllNotification();
   }
 
   @override

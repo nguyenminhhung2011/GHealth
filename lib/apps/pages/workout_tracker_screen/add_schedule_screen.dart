@@ -1,12 +1,16 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
+import 'package:gold_health/apps/template/misc/untils.dart';
 import 'package:gold_health/services/alarm_notify.dart';
 import 'package:intl/intl.dart';
+import 'package:workmanager/workmanager.dart';
 
+import '../../../services/notification.dart';
 import '../dashboard/widgets/button_gradient.dart';
 import 'workout_schedule_screen.dart' show Meeting;
 
@@ -381,7 +385,6 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                   onPressed: () async {
                     Function(Meeting) addMeeting =
                         Get.arguments as Function(Meeting);
-                    print(selectDate.toIso8601String());
                     addMeeting(
                       Meeting(
                         eventName: dropDownValueChooseWorkout,
@@ -403,12 +406,20 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                       'weight': dropDownValueCustomWeight,
                     });
 
-                    final isolatedId = await AlarmNotify.alarmNotification(
-                        selectDate.add(const Duration(seconds: 10)));
-                    Future(() async {
-                      WorkoutPlanController.sharedPreferences
-                          .setInt(scheduleID, isolatedId);
-                    });
+                    createWorkoutNotificationAuto(
+                      NotificationCalendar.fromDate(
+                          date: selectDate.add(const Duration(seconds: 5))),
+                    );
+
+                    // Workmanager().registerOneOffTask(
+                    //   '${scheduleID}create',
+                    //   'create_workout_alarm_notification',
+                    //   inputData: {
+                    //     'DateTime': selectDate.toIso8601String(),
+                    //     'idSharePreferences': scheduleID,
+                    //   },
+                    // );
+
                     Get.back();
                   },
                   title: const Text(

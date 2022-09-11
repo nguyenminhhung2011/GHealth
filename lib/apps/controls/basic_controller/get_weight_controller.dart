@@ -1,10 +1,7 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
 import 'package:gold_health/apps/controls/sign_up_controller.dart';
 
-import '../../routes/route_name.dart';
 import 'basic_controller.dart';
-import 'basic_info_controller.dart';
 
 class GetWeightC extends GetxController with BasicController {
   RxInt weight = 1.obs;

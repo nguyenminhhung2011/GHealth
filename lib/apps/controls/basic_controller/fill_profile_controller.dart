@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/sign_up_controller.dart';
 
 import 'basic_controller.dart';
-import 'basic_info_controller.dart';
 
 class FillProfileC extends GetxController with BasicController {
   late TextEditingController fullName;

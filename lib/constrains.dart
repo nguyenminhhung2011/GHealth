@@ -16,3 +16,5 @@ var firestore = FirebaseFirestore.instance;
 
 // CONTROLLER
 var authMethods = AuthC.instance;
+final Future<SharedPreferences> sharedPreferences =
+    SharedPreferences.getInstance();
