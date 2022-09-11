@@ -8,7 +8,6 @@ import 'package:gold_health/apps/controls/workout_controller/workout_plan_contro
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/select_amount_food.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_detail2_screen.dart';
-import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -258,7 +257,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                               const SizedBox(height: 20),
                               Container(
                                 width: widthDevice,
-                                height: heightDevice * 0.5,
+                                height: heightDevice * 0.48,
                                 decoration:
                                     BoxDecoration(color: AppColors.mainColor),
                                 child: ClipRRect(
@@ -351,7 +350,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                   const SizedBox(width: 10),
                                   Container(
                                     width: widthDevice * 0.45,
-                                    height: heightDevice * (1.2 / 5),
+                                    height: heightDevice * (1.15 / 5),
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
                                       color: AppColors.mainColor,
@@ -374,14 +373,17 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                           CrossAxisAlignment.start,
                                       children: [
                                         Obx(() => Expanded(
-                                              child: Text(
-                                                exercises[currentWorkoutIndex
-                                                        .value]
-                                                    .exerciseName,
-                                                style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 15,
+                                              child: Align(
+                                                alignment: Alignment.center,
+                                                child: Text(
+                                                  exercises[currentWorkoutIndex
+                                                          .value]
+                                                      .exerciseName,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 17,
+                                                  ),
                                                 ),
                                               ),
                                             )),
@@ -565,18 +567,12 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                                                       ?.pause();
                                                   _controller?.stop();
                                                   Get.to(
-                                                          () => WorkoutDetail2Screen(
-                                                              idExercise: exercises[
-                                                                      currentWorkoutIndex
-                                                                          .value]
-                                                                  .idExercise),
-                                                          arguments:
-                                                              isHelpingMode)
-                                                      ?.then((_) {
-                                                    _videoPlayerController
-                                                        ?.play();
-                                                    _controller?.forward();
-                                                  });
+                                                      () => WorkoutDetail2Screen(
+                                                          idExercise: exercises[
+                                                                  currentWorkoutIndex
+                                                                      .value]
+                                                              .idExercise),
+                                                      arguments: isHelpingMode);
                                                 },
                                                 child: const Icon(
                                                   Icons.help,
@@ -612,6 +608,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                     ? Obx(
                         () => Center(
                           child: Material(
+                            borderRadius: BorderRadius.circular(5),
                             child: Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
@@ -640,6 +637,7 @@ class _WorkoutScreenState extends State<WorkoutScreen>
                           },
                           child: Center(
                             child: Material(
+                              borderRadius: BorderRadius.circular(5),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 10),
