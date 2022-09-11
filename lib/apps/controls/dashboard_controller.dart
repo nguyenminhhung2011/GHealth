@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:gold_health/services/notification.dart';
@@ -10,6 +11,7 @@ import '../template/misc/untils.dart';
 class DashBoardControl extends GetxController {
   var tabIndex = 0.obs;
   var pageController = PageController();
+  static DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   createAllNotification() async {
     var raw = await firestore
@@ -17,15 +19,23 @@ class DashBoardControl extends GetxController {
         .doc(AuthService.instance.currentUser!.uid)
         .collection('notification')
         .get();
-    bool dCheck = raw.docs[0].data()['fCheck'];
-    if (!dCheck) {
+    // bool dCheck = raw.docs[0].data()['fCheck'];
+    List<String> listDevie =
+        List<String>.from(raw.docs[0].data()['list_service']);
+    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+    bool check = listDevie.contains(androidInfo.model);
+    print(listDevie);
+    listDevie.add(androidInfo.model!);
+    // print('Android Device');
+    // print(androidInfo.model! + '------------');
+    if (!check) {
       await firestore
           .collection('users')
           .doc(AuthService.instance.currentUser!.uid)
           .collection('notification')
           .doc(raw.docs[0].id)
           .update(
-        {'fCheck': true},
+        {'list_service': listDevie},
       ).then((value) {
         print('Update notification');
         cancelScheduledNotifications().then((value) async {
