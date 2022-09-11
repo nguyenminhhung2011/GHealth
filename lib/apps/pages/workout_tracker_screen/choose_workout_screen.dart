@@ -1,15 +1,12 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:gold_health/apps/data/models/workout_model.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/list_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/appBar_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/workout_routine_card.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_details.dart';
-import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:intl/intl.dart';
 import '../../template/misc/colors.dart';
 

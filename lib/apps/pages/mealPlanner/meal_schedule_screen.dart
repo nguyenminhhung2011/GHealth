@@ -95,10 +95,7 @@ class _MealScheduleScreenState extends State<MealScheduleScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
-    late FixedExtentScrollController _controller =
-        FixedExtentScrollController();
 
     return GetBuilder<MealScheduleC>(
         init: MealScheduleC(),

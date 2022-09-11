@@ -5,7 +5,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/badge.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/load_height_weight.dart';
-import 'package:gold_health/services/notification.dart';
 import '../../controls/home_screen_controller.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
@@ -73,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget build(BuildContext context) {
-    var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
     const double heightOfWaterChart = 100 * 5 - 50;
     return Obx(() => (homeScreenController.user['name'] == null)

@@ -19,7 +19,6 @@ class DailyNutriScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var heightDevice = MediaQuery.of(context).size.height;
     var widthDevice = MediaQuery.of(context).size.width;
-    DateTime time = DateTime.now();
     return GetBuilder<DailyNutritionController>(
         init: DailyNutritionController(),
         builder: (controller) {

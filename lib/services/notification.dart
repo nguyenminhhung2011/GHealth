@@ -1,5 +1,4 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:gold_health/services/alarm_notify.dart';
 import '../apps/template/misc/untils.dart';
 
 Future<void> createMealNotification(String title) async {

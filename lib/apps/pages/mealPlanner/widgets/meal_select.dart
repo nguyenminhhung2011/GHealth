@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../global_widgets/button_custom/button_text.dart';
-import '../meal_planner_screen.dart';
 
 class MealSelect extends StatelessWidget {
   const MealSelect({

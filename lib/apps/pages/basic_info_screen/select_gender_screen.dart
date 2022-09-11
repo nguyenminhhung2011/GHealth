@@ -4,7 +4,6 @@ import 'package:gold_health/apps/controls/basic_controller/select_gender_control
 
 import '../../data/enums/app_enums.dart';
 import '../../global_widgets/button_custom/button_main.dart';
-import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 
 class SelectGenderScreen extends StatelessWidget {

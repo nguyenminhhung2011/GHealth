@@ -9,7 +9,6 @@ import '../apps/data/models/nutrition.dart';
 import '../apps/data/models/sleep.dart';
 import '../apps/data/models/water.dart';
 import '../apps/data/provider/meal_provider.dart';
-import '../apps/data/provider/water_provider.dart';
 
 class DataService {
   DataService._privateConstructor();
@@ -34,7 +33,6 @@ class DataService {
 
   final _mealProvider = MealProvider();
   final _nutritionProvider = NutritionProvider();
-  final _waterProvider = WaterProvider();
   List<Meal> get mealList => _mealList.value;
   List<Meal> get mealBreakFastList => _mealBreakFastList.value;
   List<Meal> get mealSnackList => _mealSnackList.value;
@@ -114,7 +112,6 @@ class DataService {
 
   addWaterCollection() async {
     DateTime now = DateTime.now();
-    bool check = false;
     QuerySnapshot<Map<String, dynamic>> raw = await firestore
         .collection('users')
         .doc(AuthService.instance.currentUser!.uid)

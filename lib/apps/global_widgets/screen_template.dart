@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../template/misc/colors.dart';
-
 class ScreenTemplate extends StatefulWidget {
   final Widget child;
   const ScreenTemplate({Key? key, required this.child}) : super(key: key);

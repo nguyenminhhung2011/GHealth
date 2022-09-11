@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/pages/basic_info_screen/get_weight_screen.dart';
 import 'package:gold_health/apps/pages/basic_info_screen/widgets/select_duration_button.dart';
 
 import '../../controls/basic_controller/select_duration_controller.dart';
 import '../../data/enums/app_enums.dart';
 import '../../global_widgets/button_custom/button_main.dart';
-import '../../routes/route_name.dart';
-import '../../template/misc/colors.dart';
 
 class SelectDurationScreen extends StatelessWidget {
   SelectDurationScreen({Key? key}) : super(key: key);

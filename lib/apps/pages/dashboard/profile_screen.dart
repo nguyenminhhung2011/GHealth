@@ -13,7 +13,6 @@ import 'package:gold_health/apps/pages/dashboard/widgets/activity_histor_dialog.
 import 'package:gold_health/apps/pages/dashboard/widgets/target_data_dialog.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
-import '../../global_widgets/toggle_button_ios.dart';
 import '../../template/misc/colors.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -198,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                     _controller.user['height'];
                                                 int weightValue =
                                                     _controller.user['weight'];
-                                                final r = showDialog(
+                                                showDialog(
                                                   useRootNavigator: false,
                                                   barrierColor: Colors.black54,
                                                   context: context,

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/services.dart';
 import '../../../template/misc/colors.dart';
 
 class FastingSaveScreen extends StatelessWidget {

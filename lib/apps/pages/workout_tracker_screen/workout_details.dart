@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
-import 'package:gold_health/apps/data/enums/workout_enums.dart';
 import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/list_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/exercise_card.dart';

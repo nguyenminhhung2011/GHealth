@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/button_gradient.dart';
-import 'package:gold_health/apps/pages/sleep_tracker/add_alarm_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
@@ -14,7 +13,7 @@ import '../../template/misc/colors.dart';
 
 // ignore: must_be_immutable
 class SleepScheduleScreen extends StatefulWidget {
-  SleepScheduleScreen({Key? key}) : super(key: key);
+  const SleepScheduleScreen({Key? key}) : super(key: key);
   @override
   State<SleepScheduleScreen> createState() => _SleepScheduleScreenState();
 }

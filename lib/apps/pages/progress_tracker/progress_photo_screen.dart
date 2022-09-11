@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/button_custom/button_text.dart';
 import 'package:gold_health/apps/pages/progress_tracker/take_photo_screen.dart';
 import '../../global_widgets/screen_template.dart';

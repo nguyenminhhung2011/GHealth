@@ -107,9 +107,6 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var heightDevice = MediaQuery.of(context).size.height;
-    var widthDevice = MediaQuery.of(context).size.width;
-
     List<String> tabs = [
       'Nutrition',
       'Workout',

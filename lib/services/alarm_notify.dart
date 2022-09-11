@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import '../constrains.dart';
-import 'notification.dart';
 
 class AlarmNotify {
   static void playSound(int isolateId) async {

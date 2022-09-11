@@ -7,8 +7,6 @@ import 'package:gold_health/apps/controls/workout_controller/workout_plan_contro
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_detail2_screen.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 
-import '../../../routes/route_name.dart';
-
 class ExerciseCard extends StatefulWidget {
   const ExerciseCard({
     Key? key,

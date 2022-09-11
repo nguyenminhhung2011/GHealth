@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../global_widgets/toggle_button_ios.dart';
 import '../../global_widgets/screen_template.dart';
 import '../../template/misc/colors.dart';
 

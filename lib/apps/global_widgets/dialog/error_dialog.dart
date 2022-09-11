@@ -2,8 +2,6 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../template/misc/colors.dart';
-
 class ErrorDialog extends StatelessWidget {
   const ErrorDialog({
     Key? key,
