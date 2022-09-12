@@ -2,6 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:gold_health/apps/routes/app_pages.dart';
@@ -49,11 +50,8 @@ void callbackDispatcher() {
   });
 }
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  StartService.instance.init();
-  Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
-  AwesomeNotifications().initialize(
+Future notificationInit() async {
+  await AwesomeNotifications().initialize(
     'resource://drawable/res_notification_app_icon',
     [
       NotificationChannel(
@@ -94,10 +92,38 @@ void main() async {
       ),
     ],
   );
-  runApp(const MyApp());
+
+  AwesomeNotifications().displayedStream.listen((notification) async {
+    if (notification.channelKey == 'basic_alarm_channel') {
+      await FlutterRingtonePlayer.play(
+        fromAsset: 'assets/sounds/alarm_clock.wav',
+        ios: IosSounds.bell,
+        looping: true,
+        volume: 0.1,
+        asAlarm: true,
+      ).whenComplete(() {
+        Future.delayed(const Duration(seconds: 30), () async {
+          debugPrint('stopping after 30s');
+          FlutterRingtonePlayer.stop();
+        });
+      });
+    }
+  });
+
+  AwesomeNotifications().actionStream.listen((notification) {
+    if (notification.channelKey == 'basic_alarm_channel') {
+      FlutterRingtonePlayer.stop();
+    }
+  });
 }
 
-void notificationInit() async {}
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  StartService.instance.init();
+  Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
+  notificationInit();
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);

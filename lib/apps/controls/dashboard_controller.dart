@@ -96,7 +96,7 @@ class DashBoardControl extends GetxController {
   void onInit() async {
     super.onInit();
     tabIndex.value = 0;
-    // await createAllNotification();
+    await createAllNotification();
   }
 
   @override
