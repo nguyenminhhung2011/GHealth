@@ -125,14 +125,14 @@ class _CompareResultScreenState extends State<CompareResultScreen> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             const SizedBox(height: 10),
-                            SizedBox(
-                              width: widthDevice - 60,
-                              height: 200,
-                              // ignore: avoid_unnecessary_containers
-                              child: Container(
-                                child: const LineChartTwoLine(),
-                              ),
-                            ),
+                            // SizedBox(
+                            //   width: widthDevice - 60,
+                            //   height: 200,
+                            //   // ignore: avoid_unnecessary_containers
+                            //   child: Container(
+                            //     child: const LineChartTwoLine(),
+                            //   ),
+                            // ),
                             const SizedBox(height: 20),
                             Row(
                               children: [

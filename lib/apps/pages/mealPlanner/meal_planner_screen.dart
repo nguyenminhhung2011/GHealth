@@ -578,7 +578,7 @@ class MealPlannerScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
                       ),
-                      primary: Colors.transparent,
+                      backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent),
                   child: const Text(
                     'Done',

@@ -1,3 +1,5 @@
+// ignore_for_file: invalid_use_of_protected_member
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,7 +25,15 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
     const FlSpot(7, 100),
   ].obs;
 
-  RxList<FlSpot> list2FlSpot = [const FlSpot(0, 0)].obs;
+  RxList<FlSpot> list2FlSpot = [
+    const FlSpot(1, 100),
+    const FlSpot(2, 100),
+    const FlSpot(3, 100),
+    const FlSpot(4, 100),
+    const FlSpot(5, 100),
+    const FlSpot(6, 100),
+    const FlSpot(7, 100),
+  ].obs;
 
   List<FlSpot> list1 = const [
     FlSpot(1, 150),
@@ -47,6 +57,7 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
 
   void _addDataToRxList() async {
     list1FlSpot.value = list1;
+    list2FlSpot.value = list2;
   }
 
   @override
@@ -66,7 +77,7 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
     return Obx(() => LineChart(
           sampleData1,
           swapAnimationCurve: Curves.linear,
-          swapAnimationDuration: const Duration(milliseconds: 400),
+          swapAnimationDuration: const Duration(milliseconds: 600),
         ));
   }
 
@@ -242,9 +253,7 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
         color: AppColors.primaryColor2.withOpacity(0.5),
         barWidth: 3,
         isStrokeCapRound: true,
-        dotData: FlDotData(
-          show: true,
-        ),
+        dotData: FlDotData(show: true),
         belowBarData: BarAreaData(show: false),
         spots: list2FlSpot.value,
       ));

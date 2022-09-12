@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:gold_health/apps/routes/app_pages.dart';
 import 'package:gold_health/services/start_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'apps/routes/route_name.dart';
 import 'apps/template/misc/colors.dart';
@@ -94,6 +95,7 @@ Future notificationInit() async {
   );
 
   AwesomeNotifications().displayedStream.listen((notification) async {
+    print('capture something: displayedStream');
     if (notification.channelKey == 'basic_alarm_channel') {
       await FlutterRingtonePlayer.play(
         fromAsset: 'assets/sounds/alarm_clock.wav',
@@ -111,6 +113,7 @@ Future notificationInit() async {
   });
 
   AwesomeNotifications().actionStream.listen((notification) {
+    print('capture something: actionStream');
     if (notification.channelKey == 'basic_alarm_channel') {
       FlutterRingtonePlayer.stop();
     }
@@ -120,7 +123,7 @@ Future notificationInit() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   StartService.instance.init();
-  Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
+  // Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
   notificationInit();
   runApp(const MyApp());
 }
