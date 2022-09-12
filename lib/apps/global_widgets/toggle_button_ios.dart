@@ -6,6 +6,7 @@ import '../../services/notification.dart';
 import '../controls/workout_controller/workout_plan_controller.dart';
 import '../template/misc/colors.dart';
 
+// ignore: must_be_immutable
 class ToggleButtonIos extends StatefulWidget {
   ToggleButtonIos({Key? key, required this.val, required this.scheduleId})
       : super(key: key);

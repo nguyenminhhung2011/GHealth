@@ -8,11 +8,13 @@ class SplashC extends GetxController {
   void onInit() async {
     super.onInit();
     StartService.instance.init();
-    await Future.delayed(const Duration(seconds: 5), () {});
-    await GotoNextScreen();
+    await Future.delayed(const Duration(seconds: 5), () async {
+      await gotoNextScreen();
+    });
+    // await gotoNextScreen();
   }
 
-  Future<void> GotoNextScreen() async {
+  Future<void> gotoNextScreen() async {
     if (AuthService.instance.isLogin) {
       Get.offAllNamed(RouteName.dashboardScreen);
     } else {

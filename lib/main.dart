@@ -9,7 +9,6 @@ import 'package:gold_health/services/start_services.dart';
 
 import 'apps/routes/route_name.dart';
 import 'apps/template/misc/colors.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 import 'package:workmanager/workmanager.dart';
 import 'constrains.dart';
@@ -52,7 +51,6 @@ void callbackDispatcher() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await AndroidAlarmManager.initialize();
   StartService.instance.init();
   Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
   AwesomeNotifications().initialize(

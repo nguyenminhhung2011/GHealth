@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../../controls/splash_controller.dart';
 import '../../template/misc/colors.dart';
 
 class SplashScreen extends StatelessWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  SplashScreen({Key? key}) : super(key: key);
+  final initState = Get.put(SplashC());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
