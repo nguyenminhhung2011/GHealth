@@ -127,36 +127,16 @@ class MealPlannerScreen extends StatelessWidget {
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        DateFormat()
-                            .add_yMMMMd()
-                            .format(controller.startDate.value)
-                            .toString(),
-                        style: const TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                      const Text(
-                        ' - ',
-                        style: TextStyle(
-                            color: AppColors.primaryColor1,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                      Text(
-                        DateFormat()
-                            .add_yMMMMd()
-                            .format(controller.finishDate.value)
-                            .toString(),
-                        style: const TextStyle(
-                            color: Colors.grey,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17),
-                      ),
-                    ],
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      '${DateFormat().add_yMMMMd().format(controller.startDate.value).toString()} - ${DateFormat().add_yMMMMd().format(controller.finishDate.value).toString()}',
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 20),

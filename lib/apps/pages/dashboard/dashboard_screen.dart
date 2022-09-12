@@ -88,28 +88,28 @@ class _DashBoardScreenState extends State<DashBoardScreen>
     //   }
     // });
 
-    AwesomeNotifications().displayedStream.listen((notification) async {
-      if (notification.channelKey == 'basic_alarm_channel') {
-        await FlutterRingtonePlayer.play(
-          fromAsset: 'assets/sounds/alarm_clock.wav',
-          ios: IosSounds.bell,
-          looping: true,
-          volume: 0.1,
-          asAlarm: true,
-        ).whenComplete(() {
-          Future.delayed(const Duration(seconds: 30), () async {
-            debugPrint('stopping after 30s');
-            FlutterRingtonePlayer.stop();
-          });
-        });
-      }
-    });
+    // AwesomeNotifications().displayedStream.listen((notification) async {
+    //   if (notification.channelKey == 'basic_alarm_channel') {
+    //     await FlutterRingtonePlayer.play(
+    //       fromAsset: 'assets/sounds/alarm_clock.wav',
+    //       ios: IosSounds.bell,
+    //       looping: true,
+    //       volume: 0.1,
+    //       asAlarm: true,
+    //     ).whenComplete(() {
+    //       Future.delayed(const Duration(seconds: 30), () async {
+    //         debugPrint('stopping after 30s');
+    //         FlutterRingtonePlayer.stop();
+    //       });
+    //     });
+    //   }
+    // });
 
-    AwesomeNotifications().actionStream.listen((notification) {
-      if (notification.channelKey == 'basic_alarm_channel') {
-        FlutterRingtonePlayer.stop();
-      }
-    });
+    // AwesomeNotifications().actionStream.listen((notification) {
+    //   if (notification.channelKey == 'basic_alarm_channel') {
+    //     FlutterRingtonePlayer.stop();
+    //   }
+    // });
   }
 
   @override

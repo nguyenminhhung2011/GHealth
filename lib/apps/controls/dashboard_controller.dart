@@ -26,8 +26,8 @@ class DashBoardControl extends GetxController {
     bool check = listDevice.contains(androidInfo.model);
     print(listDevice);
     listDevice.add(androidInfo.model!);
-    // print('Android Device');
-    // print(androidInfo.model! + '------------');
+    print('Android Device');
+    print(androidInfo.model! + '------------');
     if (!check) {
       await firestore
           .collection('users')
@@ -59,34 +59,34 @@ class DashBoardControl extends GetxController {
             }
             countingCheck;
           }
-          // QuerySnapshot<Map<String, dynamic>> rawSleep = await firestore
-          //     .collection('users')
-          //     .doc(AuthService.instance.currentUser!.uid)
-          //     .collection('sleep_basic_time')
-          //     .doc('sleep')
-          //     .collection('sleep_time')
-          //     .get();
-          // for (var item in rawSleep.docs) {
-          //   DateTime timeBed = DateTime.fromMillisecondsSinceEpoch(
-          //       item.data()['bedTime'].seconds * 1000);
-          //   DateTime timeAlarm = DateTime.fromMillisecondsSinceEpoch(
-          //       item.data()['alarm'].seconds * 1000);
-          //   for (var ite in item.data()['listDate']) {
-          //     createSleepNotificationAuto(
-          //       NotificationWeekAndTime(
-          //         dayOfTheWeek: ite,
-          //         // timeOfDay: TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
-          //         timeOfDay:
-          //             TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
-          //       ),
-          //     );
-          //     createAlarmNotificationAuto(NotificationWeekAndTime(
-          //       dayOfTheWeek: ite,
-          //       timeOfDay:
-          //           TimeOfDay(hour: timeAlarm.hour, minute: timeAlarm.minute),
-          //     ));
-          //   }
-          // }
+          QuerySnapshot<Map<String, dynamic>> rawSleep = await firestore
+              .collection('users')
+              .doc(AuthService.instance.currentUser!.uid)
+              .collection('sleep_basic_time')
+              .doc('sleep')
+              .collection('sleep_time')
+              .get();
+          for (var item in rawSleep.docs) {
+            DateTime timeBed = DateTime.fromMillisecondsSinceEpoch(
+                item.data()['bedTime'].seconds * 1000);
+            DateTime timeAlarm = DateTime.fromMillisecondsSinceEpoch(
+                item.data()['alarm'].seconds * 1000);
+            for (var ite in item.data()['listDate']) {
+              createSleepNotificationAuto(
+                NotificationWeekAndTime(
+                  dayOfTheWeek: ite,
+                  // timeOfDay: TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
+                  timeOfDay:
+                      TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
+                ),
+              );
+              createAlarmNotificationAuto(NotificationWeekAndTime(
+                dayOfTheWeek: ite,
+                timeOfDay:
+                    TimeOfDay(hour: timeAlarm.hour, minute: timeAlarm.minute),
+              ));
+            }
+          }
         });
       });
     }
@@ -96,7 +96,7 @@ class DashBoardControl extends GetxController {
   void onInit() async {
     super.onInit();
     tabIndex.value = 0;
-    // await createAllNotification();
+    await createAllNotification();
   }
 
   @override

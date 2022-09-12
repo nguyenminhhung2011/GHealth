@@ -23,6 +23,7 @@ class DataService {
   static late Rx<List<Water>> _waterConsume = Rx<List<Water>>([]);
   static late Rx<Map<String, dynamic>> _sleepBasicTime =
       Rx<Map<String, dynamic>>({});
+
   static late Rx<List<Sleep>> _listSleepTIme = Rx<List<Sleep>>([]);
 
   static late Rx<List<Map<String, dynamic>>> _dataNutriPlan =
