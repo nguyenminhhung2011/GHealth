@@ -380,19 +380,8 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                     Colors.blue[400]!
                   ]),
                   onPressed: () async {
-                    Function(Meeting) addMeeting =
-                        Get.arguments as Function(Meeting);
-                    addMeeting(
-                      Meeting(
-                        eventName: dropDownValueChooseWorkout,
-                        from: selectDate,
-                        to: selectDate
-                            .add(const Duration(hours: 1, minutes: 30)),
-                        background: Colors.black,
-                        isAllDay: false,
-                      ),
-                    );
-                    await _workoutController.addWorkoutSchedule({
+                    final response =
+                        await _workoutController.addWorkoutSchedule({
                       'isFinish': false,
                       'isTurnOn': true,
                       'level': 'Intermediate',
@@ -401,6 +390,19 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                       'time': Timestamp.fromDate(selectDate),
                       'weight': dropDownValueCustomWeight,
                     });
+                    Function(Meeting) addMeeting =
+                        Get.arguments as Function(Meeting);
+                    addMeeting(
+                      Meeting(
+                        id: response,
+                        eventName: dropDownValueChooseWorkout,
+                        from: selectDate,
+                        to: selectDate
+                            .add(const Duration(hours: 1, minutes: 30)),
+                        background: Colors.black,
+                        isAllDay: false,
+                      ),
+                    );
 
                     createWorkoutNotificationAuto(
                       NotificationCalendar.fromDate(

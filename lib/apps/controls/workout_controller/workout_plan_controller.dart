@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
@@ -163,7 +164,7 @@ class WorkoutPlanController extends GetxController with TrackerController {
       debugPrint(schedules.value.toString());
       return true;
     } catch (e) {
-      print('fetchScheduleList: $e');
+      debugPrint('fetchScheduleList: $e');
       return false;
     }
   }
@@ -240,5 +241,40 @@ class WorkoutPlanController extends GetxController with TrackerController {
         .doc(firebaseAuth.currentUser!.uid)
         .collection('workout_history')
         .add(data);
+  }
+
+  Future<void> updateScheduleWorkout(
+      String id, WorkoutSchedule newSchedule) async {
+    await firestore
+        .collection('users')
+        .doc(firebaseAuth.currentUser!.uid)
+        .collection('workout_schedule')
+        .doc(id)
+        .update(
+      {
+        'duration': newSchedule.duration.toString(),
+        'isFinish': newSchedule.isFinish,
+        'isTurnOn': newSchedule.isTurnOn,
+        'level': newSchedule.level,
+        'time': Timestamp.fromDate(newSchedule.time),
+        'weight': newSchedule.weight.toString(),
+        'workoutCategory': newSchedule.workoutCategory,
+      },
+    );
+  }
+
+  Future<bool> deleteScheduleWorkout(String scheduleId) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(firebaseAuth.currentUser!.uid)
+          .collection('workout_schedule')
+          .doc(scheduleId)
+          .delete();
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      return false;
+    }
   }
 }

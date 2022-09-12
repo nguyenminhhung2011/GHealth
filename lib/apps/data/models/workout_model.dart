@@ -144,18 +144,21 @@ class WorkoutSchedule {
       required this.time,
       required this.weight,
       required this.workoutCategory,
-      required this.isTurnOn});
+      required this.isTurnOn,
+      required this.isFinish});
   final String level;
   final int duration;
   final DateTime time;
   final double weight;
   final String workoutCategory;
   final bool isTurnOn;
+  final bool isFinish;
 
   factory WorkoutSchedule.fromSnap(DocumentSnapshot snap) {
     final data = snap.data() as Map<String, dynamic>;
     // debugPrint(data.toString());
     return WorkoutSchedule(
+        isFinish: data['isFinish'],
         level: data['level'] as String,
         duration: int.parse(data['duration'] as String),
         time: DateTime.fromMillisecondsSinceEpoch(data['time'].seconds * 1000),

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
+import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 import '../../template/misc/colors.dart';
@@ -25,7 +26,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
     now.value = DateTime.now();
   });
   final List<DateTime> listDateTime = [
-    for (int i = 1; i <= 10; i++) DateTime.now().subtract(Duration(days: i)),
+    for (int i = 10; i >= 1; i--) DateTime.now().subtract(Duration(days: i)),
     for (int i = 0; i <= 10; i++) DateTime.now().add(Duration(days: i))
   ];
   GlobalKey<ScrollSnapListState> sslKey = GlobalKey();
@@ -36,6 +37,7 @@ class _WorkoutScheduleScreenState extends State<WorkoutScheduleScreen> {
   late RxList<Meeting> meetings = _workoutPlanController.schedules.value.entries
       .map(
         (schedule) => Meeting(
+          id: schedule.key,
           eventName: schedule.value.workoutCategory,
           from: schedule.value.time,
           to: schedule.value.time.add(const Duration(hours: 1)),
@@ -271,13 +273,14 @@ class Meeting {
       required this.from,
       required this.to,
       required this.background,
-      required this.isAllDay});
-
+      required this.isAllDay,
+      required this.id});
   String eventName;
   DateTime from;
   DateTime to;
   Color background;
   bool isAllDay;
+  String id;
 }
 
 class CustomItemBuilder extends StatelessWidget {
@@ -337,14 +340,14 @@ class CustomItemBuilder extends StatelessWidget {
 }
 
 class CustomScheduleComponent extends StatelessWidget {
-  const CustomScheduleComponent({
+  CustomScheduleComponent({
     super.key,
     required this.now,
     required this.meeting,
   });
   final DateTime now;
   final Meeting meeting;
-
+  final _workoutController = Get.find<WorkoutPlanController>();
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -422,9 +425,77 @@ class CustomScheduleComponent extends StatelessWidget {
                           Colors.blue[300]!,
                           Colors.blue[400]!
                         ]),
-                        onPressed: () {},
+                        onPressed: () async {
+                          try {
+                            WorkoutSchedule oldSchedule =
+                                _workoutController.schedules.value[meeting.id]!;
+                            if (!oldSchedule.isFinish) {
+                              WorkoutSchedule newSchedule = WorkoutSchedule(
+                                  level: oldSchedule.level,
+                                  duration: oldSchedule.duration,
+                                  time: oldSchedule.time,
+                                  weight: oldSchedule.weight,
+                                  workoutCategory: oldSchedule.workoutCategory,
+                                  isTurnOn: oldSchedule.isTurnOn,
+                                  isFinish: true);
+                              await _workoutController.updateScheduleWorkout(
+                                meeting.id,
+                                newSchedule,
+                              );
+                            }
+                            Get.back();
+                          } catch (e) {
+                            debugPrint(e.toString());
+                            rethrow;
+                          }
+                        },
                         title: const Text(
                           'Mark as Done',
+                          style: TextStyle(
+                              fontFamily: 'Sen',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: Center(
+                      child: ButtonGradient(
+                        height: 50,
+                        width: 250,
+                        linearGradient: LinearGradient(colors: [
+                          Colors.blue[200]!,
+                          Colors.blue[300]!,
+                          Colors.blue[400]!
+                        ]),
+                        onPressed: () async {
+                          try {
+                            WorkoutSchedule oldSchedule =
+                                _workoutController.schedules.value[meeting.id]!;
+                            if (!oldSchedule.isFinish) {
+                              WorkoutSchedule newSchedule = WorkoutSchedule(
+                                  level: oldSchedule.level,
+                                  duration: oldSchedule.duration,
+                                  time: oldSchedule.time,
+                                  weight: oldSchedule.weight,
+                                  workoutCategory: oldSchedule.workoutCategory,
+                                  isTurnOn: oldSchedule.isTurnOn,
+                                  isFinish: true);
+                              await _workoutController.updateScheduleWorkout(
+                                meeting.id,
+                                newSchedule,
+                              );
+                            }
+                            Get.back();
+                          } catch (e) {
+                            debugPrint(e.toString());
+                            rethrow;
+                          }
+                        },
+                        title: const Text(
+                          'Edit Schedule',
                           style: TextStyle(
                               fontFamily: 'Sen',
                               fontSize: 15,
@@ -450,12 +521,17 @@ class CustomScheduleComponent extends StatelessWidget {
               child: LinearProgressIndicator(
                 color: Colors.blue[300],
                 backgroundColor: Colors.grey.withOpacity(0.5),
-                value: (meeting.to.isBefore(now)
+                value: _workoutController.schedules.value[meeting.id]!.isFinish
                     ? 1.0
-                    : meeting.from.isAfter(now)
-                        ? 0
-                        : (now.difference(meeting.from).inSeconds.toDouble()) /
-                            meeting.to.difference(meeting.from).inSeconds),
+                    : (meeting.to.isBefore(now)
+                        ? 1.0
+                        : meeting.from.isAfter(now)
+                            ? 0
+                            : (now
+                                    .difference(meeting.from)
+                                    .inSeconds
+                                    .toDouble()) /
+                                meeting.to.difference(meeting.from).inSeconds),
               ),
             ),
           ),
