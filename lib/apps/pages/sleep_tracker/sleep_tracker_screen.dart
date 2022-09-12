@@ -6,6 +6,7 @@ import 'package:gold_health/apps/controls/dailyPlanController/daily_sleep_contro
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
+import '../../../services/data_service.dart';
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/list_chart/lint_chart_sleep.dart';
 import '../../routes/route_name.dart';
@@ -98,8 +99,12 @@ class _SleepTrackerScreenState extends State<SleepTrackerScreen> {
                           const Spacer(),
                           InkWell(
                             onTap: () {
-                              print(controller.allDateBetWeen);
-                              print(controller.dataChart);
+                              for (var item
+                                  in DataService.instance.listSleepTime) {
+                                print(item.id);
+                              }
+                              print(
+                                  DataService.instance.listIdNotificationSleep);
                             },
                             child: Container(
                               padding: const EdgeInsets.all(8),

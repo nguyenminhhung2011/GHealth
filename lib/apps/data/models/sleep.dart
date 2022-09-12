@@ -27,7 +27,7 @@ class Sleep {
   factory Sleep.fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
     return Sleep(
-      id: snapshot['id'] ?? '',
+      id: snap.id,
       bedTime: DateTime.fromMillisecondsSinceEpoch(
           snapshot['bedTime'].seconds * 1000),
       alarm:

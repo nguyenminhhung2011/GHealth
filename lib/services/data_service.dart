@@ -23,6 +23,8 @@ class DataService {
   static late Rx<List<Water>> _waterConsume = Rx<List<Water>>([]);
   static late Rx<Map<String, dynamic>> _sleepBasicTime =
       Rx<Map<String, dynamic>>({});
+  static late Rx<Map<String, dynamic>> _listIdNotificationSleep =
+      Rx<Map<String, dynamic>>({});
 
   static late Rx<List<Sleep>> _listSleepTIme = Rx<List<Sleep>>([]);
 
@@ -34,6 +36,9 @@ class DataService {
 
   final _mealProvider = MealProvider();
   final _nutritionProvider = NutritionProvider();
+
+  Map<String, dynamic> get listIdNotificationSleep =>
+      _listIdNotificationSleep.value;
   List<Meal> get mealList => _mealList.value;
   List<Meal> get mealBreakFastList => _mealBreakFastList.value;
   List<Meal> get mealSnackList => _mealSnackList.value;
@@ -203,5 +208,22 @@ class DataService {
   loadDataNutriPlan() async {
     if (_dataNutriPlan.value.isNotEmpty) return;
     _dataNutriPlan.value = await _nutritionProvider.getDataNutriPlan();
+  }
+
+  clearListNotification() {
+    _listIdNotificationSleep.value = {};
+  }
+
+  initIdNotificationMap(String sId) {
+    _listIdNotificationSleep.value[sId] = [];
+  }
+
+  RxInt checkIdNoti = 1.obs;
+  List<int> addDataToListNotification(String sId) {
+    int id = checkIdNoti.value;
+    _listIdNotificationSleep.value[sId].add(id);
+    _listIdNotificationSleep.value[sId].add(id + 1);
+    checkIdNoti.value += 2;
+    return [id, id + 2];
   }
 }

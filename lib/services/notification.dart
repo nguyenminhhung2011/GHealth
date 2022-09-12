@@ -47,10 +47,10 @@ Future<void> createMealNotificationAuto(
 }
 
 Future<void> createSleepNotificationAuto(
-    NotificationWeekAndTime notificationSchedule) async {
+    NotificationWeekAndTime notificationSchedule, int id) async {
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-        id: createUniqueId(),
+        id: id,
         channelKey: 'basic_sleep_channel',
         title:
             '${Emojis.smile_sleeping_face + Emojis.time_alarm_clock} It\'s time to sleep',
@@ -74,10 +74,10 @@ Future<void> createSleepNotificationAuto(
 }
 
 Future<void> createAlarmNotificationAuto(
-    NotificationWeekAndTime notificationSchedule) async {
+    NotificationWeekAndTime notificationSchedule, int id) async {
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
-        id: createUniqueId(),
+        id: id,
         channelKey: 'basic_alarm_channel',
         title: '${Emojis.time_alarm_clock} It\'s time to wake up',
         body:

@@ -146,7 +146,7 @@ class DailySleepController extends GetxController with TrackerController {
     // DateTime alarm = (choseTime.value).add((choseDuration.value));
     DateTime bedTime = choseTime.value;
     DateTime alarm = bedTime.add(temp);
-    await firestore
+    DocumentReference ref = await firestore
         .collection('users')
         .doc(AuthService.instance.currentUser!.uid)
         .collection('sleep_basic_time')
@@ -162,19 +162,15 @@ class DailySleepController extends GetxController with TrackerController {
     });
     print(alarm);
     print(bedTime);
-    // createSleepNotificationAuto(
-    //   NotificationWeekAndTime(
-    //     dayOfTheWeek: 6,
-    //     timeOfDay: TimeOfDay(
-    //         hour: DateTime.now().hour, minute: DateTime.now().minute + 1),
-    //   ),
-    // );
+    DataService.instance.initIdNotificationMap(ref.id);
     for (var item in dateSelect) {
+      List<int> id = DataService.instance.addDataToListNotification(ref.id);
       createSleepNotificationAuto(
         NotificationWeekAndTime(
           dayOfTheWeek: item,
           timeOfDay: TimeOfDay(hour: bedTime.hour, minute: bedTime.minute),
         ),
+        id[0],
       );
       int wdAlarm = ((bedTime.weekday - alarm.weekday) > 0) ? 1 : 0;
       createAlarmNotificationAuto(
@@ -186,8 +182,10 @@ class DailySleepController extends GetxController with TrackerController {
               : item + wdAlarm,
           timeOfDay: TimeOfDay(hour: alarm.hour, minute: alarm.minute),
         ),
+        id[1],
       );
     }
+    print(DataService.instance.listIdNotificationSleep);
   }
 
   updateDataCollection(Map<String, dynamic> data) async {
@@ -236,6 +234,11 @@ class DailySleepController extends GetxController with TrackerController {
           .collection('sleep_time')
           .doc(id)
           .delete();
+      for (var item in DataService.instance.listIdNotificationSleep[id]) {
+        print(item);
+        if (item > 0) cancelScheduleNotificationsWhere(item);
+      }
+      DataService.instance.listIdNotificationSleep[id] = [];
     } catch (err) {
       // ignore: avoid_print
       print(err);
