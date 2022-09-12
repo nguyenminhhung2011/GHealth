@@ -20,6 +20,7 @@ class AddScheduleScreen extends StatefulWidget {
 }
 
 class _AddScheduleScreenState extends State<AddScheduleScreen> {
+  var _isLoading = false.obs;
   final _workoutController = Get.find<WorkoutPlanController>();
   Map<String, Map<String, dynamic>> data = {
     'Choose Workout': {
@@ -371,63 +372,63 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
               ),
               const SizedBox(height: 50),
               Center(
-                child: ButtonGradient(
-                  height: Get.mediaQuery.size.height * 0.06,
-                  width: Get.mediaQuery.size.width * 0.9,
-                  linearGradient: LinearGradient(colors: [
-                    Colors.blue[200]!,
-                    Colors.blue[300]!,
-                    Colors.blue[400]!
-                  ]),
-                  onPressed: () async {
-                    final response =
-                        await _workoutController.addWorkoutSchedule({
-                      'isFinish': false,
-                      'isTurnOn': true,
-                      'level': 'Intermediate',
-                      'duration': dropDownValueCustomRepetitions,
-                      'workoutCategory': dropDownValueChooseWorkout,
-                      'time': Timestamp.fromDate(selectDate),
-                      'weight': dropDownValueCustomWeight,
-                    });
-                    Function(Meeting) addMeeting =
-                        Get.arguments as Function(Meeting);
-                    addMeeting(
-                      Meeting(
-                        id: response,
-                        eventName: dropDownValueChooseWorkout,
-                        from: selectDate,
-                        to: selectDate
-                            .add(const Duration(hours: 1, minutes: 30)),
-                        background: Colors.black,
-                        isAllDay: false,
+                child: _isLoading.value
+                    ? const CircularProgressIndicator()
+                    : ButtonGradient(
+                        height: Get.mediaQuery.size.height * 0.06,
+                        width: Get.mediaQuery.size.width * 0.9,
+                        linearGradient: LinearGradient(colors: [
+                          Colors.blue[200]!,
+                          Colors.blue[300]!,
+                          Colors.blue[400]!
+                        ]),
+                        onPressed: () async {
+                          try {
+                            _isLoading.value = true;
+                            final response =
+                                await _workoutController.addWorkoutSchedule({
+                              'isFinish': false,
+                              'isTurnOn': true,
+                              'level': 'Intermediate',
+                              'duration': dropDownValueCustomRepetitions,
+                              'workoutCategory': dropDownValueChooseWorkout,
+                              'time': Timestamp.fromDate(selectDate),
+                              'weight': dropDownValueCustomWeight,
+                            });
+                            Function(Meeting) addMeeting =
+                                Get.arguments as Function(Meeting);
+                            addMeeting(
+                              Meeting(
+                                id: response,
+                                eventName: dropDownValueChooseWorkout,
+                                from: selectDate,
+                                to: selectDate
+                                    .add(const Duration(hours: 1, minutes: 30)),
+                                background: Colors.black,
+                                isAllDay: false,
+                              ),
+                            );
+
+                            await createWorkoutNotificationAuto(
+                              NotificationCalendar.fromDate(
+                                  date: selectDate
+                                      .add(const Duration(seconds: 5))),
+                            );
+                            _isLoading.value = false;
+                            Get.back();
+                          } catch (e) {
+                            debugPrint(e.toString());
+                            rethrow;
+                          }
+                        },
+                        title: const Text(
+                          'Save',
+                          style: TextStyle(
+                              fontFamily: 'Sen',
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ),
-                    );
-
-                    createWorkoutNotificationAuto(
-                      NotificationCalendar.fromDate(
-                          date: selectDate.add(const Duration(seconds: 5))),
-                    );
-
-                    // Workmanager().registerOneOffTask(
-                    //   '${scheduleID}create',
-                    //   'create_workout_alarm_notification',
-                    //   inputData: {
-                    //     'DateTime': selectDate.toIso8601String(),
-                    //     'idSharePreferences': scheduleID,
-                    //   },
-                    // );
-
-                    Get.back();
-                  },
-                  title: const Text(
-                    'Save',
-                    style: TextStyle(
-                        fontFamily: 'Sen',
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
               ),
             ],
           ),

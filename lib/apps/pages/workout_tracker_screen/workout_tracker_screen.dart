@@ -5,10 +5,12 @@ import 'package:gold_health/apps/controls/workout_controller/workout_plan_contro
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/choose_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories_workout_card.dart';
+import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/custom_date_range_picker.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/up_coming_workout_containerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_history_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
 import 'package:intl/intl.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../global_widgets/button_custom/Button_icon_gradient_color.dart';
 import '../../global_widgets/row_text_see_more.dart';
@@ -27,6 +29,8 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
   late final WorkoutPlanController controller;
   late Rx<Map<String, String>> listWorkoutID;
   late Rx<Map<String, Padding>> listWorkoutSchedule;
+
+  // late Rx<DateTimeRange> dateTimeRange;
   Future<bool> _fetchData() async {
     try {
       controller = await Get.putAsync(() async {
@@ -219,9 +223,13 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                                         ),
                                         const Spacer(),
                                         ButtonIconGradientColor(
-                                          title: ' Week',
+                                          title: 'Week',
                                           icon: Icons.calendar_month,
-                                          press: () {},
+                                          press: () async {
+                                            _showDatePicker(
+                                              context: context,
+                                            );
+                                          },
                                         )
                                       ],
                                     ),
@@ -402,6 +410,89 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
               child: CircularProgressIndicator(),
             );
           }),
+    );
+  }
+
+  _showDatePicker({required BuildContext context}) async {
+    await showDialog(
+      useRootNavigator: false,
+      barrierColor: Colors.black54,
+      context: context,
+      builder: (context) => Dialog(
+        backgroundColor: Colors.transparent,
+        child: Container(
+          padding: const EdgeInsets.all(10),
+          height: 430,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(5),
+            color: AppColors.mainColor,
+          ),
+          child: Column(
+            children: [
+              Card(
+                elevation: 2,
+                child: SfDateRangePicker(
+                  selectionTextStyle:
+                      const TextStyle(fontWeight: FontWeight.bold),
+                  rangeTextStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  headerStyle: const DateRangePickerHeaderStyle(
+                    backgroundColor: AppColors.primaryColor1,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  monthCellStyle: const DateRangePickerMonthCellStyle(
+                    textStyle: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  selectionColor: AppColors.primaryColor1,
+                  rangeSelectionColor: AppColors.primaryColor1,
+                  todayHighlightColor: AppColors.primaryColor1,
+                  controller: controller.dateController,
+                  view: DateRangePickerView.month,
+                  selectionMode: DateRangePickerSelectionMode.range,
+                  onSelectionChanged: controller.selectionChanged,
+                  monthViewSettings: const DateRangePickerMonthViewSettings(
+                      enableSwipeSelection: false),
+                ),
+              ),
+              const Spacer(),
+              Container(
+                height: 50,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  color: AppColors.primaryColor1,
+                ),
+                child: ElevatedButton(
+                  onPressed: () {
+                    controller.selectDateDoneClick();
+                    Get.back();
+                  },
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent),
+                  child: const Text(
+                    'Done',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 

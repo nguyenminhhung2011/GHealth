@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/storage_methods.dart.dart';
@@ -121,8 +122,16 @@ class AuthC extends GetxController {
     }
   }
 
+  // void closeAllStreamOfNotification() {
+  //   AwesomeNotifications().actionSink.close();
+  //   AwesomeNotifications().createdSink.close();
+  //   AwesomeNotifications().dismissedSink.close();
+  //   AwesomeNotifications().displayedSink.close();
+  // }
+
   Future<void> signOut() async {
     await firebaseAuth.signOut();
+    // closeAllStreamOfNotification();
     Get.offAllNamed(RouteName.logIn);
   }
 

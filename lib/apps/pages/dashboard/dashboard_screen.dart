@@ -1,6 +1,5 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/daily_plan_screen.dart';
@@ -39,87 +38,13 @@ class _DashBoardScreenState extends State<DashBoardScreen>
   }
 
   @override
-  void initState() {
-    super.initState();
-    // AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-    //   if (!isAllowed) {
-    //     showDialog(
-    //       context: context,
-    //       builder: (context) => AlertDialog(
-    //         title: const Text('Allow Notifications'),
-    //         content: const Text('Our app would like to send you notifications'),
-    //         actions: [
-    //           TextButton(
-    //             onPressed: () {
-    //               Navigator.pop(context);
-    //             },
-    //             child: const Text(
-    //               'Don\'t Allow',
-    //               style: TextStyle(
-    //                 color: Colors.grey,
-    //                 fontSize: 18,
-    //               ),
-    //             ),
-    //           ),
-    //           TextButton(
-    //               onPressed: () => AwesomeNotifications()
-    //                   .requestPermissionToSendNotifications()
-    //                   .then((_) => Navigator.pop(context)),
-    //               child: const Text(
-    //                 'Allow',
-    //                 style: TextStyle(
-    //                   color: Colors.teal,
-    //                   fontSize: 18,
-    //                   fontWeight: FontWeight.bold,
-    //                 ),
-    //               ))
-    //         ],
-    //       ),
-    //     );
-    //   }
-    // });
-
-    // AwesomeNotifications().actionStream.listen((notification) {
-    //   if (notification.channelKey == 'basic_channel' && Platform.isIOS) {
-    //     AwesomeNotifications().getGlobalBadgeCounter().then(
-    //           (value) =>
-    //               AwesomeNotifications().setGlobalBadgeCounter(value - 1),
-    //         );
-    //   }
-    // });
-
-    // AwesomeNotifications().displayedStream.listen((notification) async {
-    //   if (notification.channelKey == 'basic_alarm_channel') {
-    //     await FlutterRingtonePlayer.play(
-    //       fromAsset: 'assets/sounds/alarm_clock.wav',
-    //       ios: IosSounds.bell,
-    //       looping: true,
-    //       volume: 0.1,
-    //       asAlarm: true,
-    //     ).whenComplete(() {
-    //       Future.delayed(const Duration(seconds: 30), () async {
-    //         debugPrint('stopping after 30s');
-    //         FlutterRingtonePlayer.stop();
-    //       });
-    //     });
-    //   }
-    // });
-
-    // AwesomeNotifications().actionStream.listen((notification) {
-    //   if (notification.channelKey == 'basic_alarm_channel') {
-    //     FlutterRingtonePlayer.stop();
-    //   }
-    // });
-  }
-
-  @override
   void dispose() {
     print('dashboard dispose');
-    AwesomeNotifications().actionSink.close();
-    AwesomeNotifications().createdSink.close();
-    AwesomeNotifications().dismissedSink.close();
-    AwesomeNotifications().displayedSink.close();
-    // AwesomeNotifications().dispose();
+    // AwesomeNotifications().actionSink.close();
+    // AwesomeNotifications().createdSink.close();
+    // AwesomeNotifications().dismissedSink.close();
+    // AwesomeNotifications().displayedSink.close();
+    // // AwesomeNotifications().dispose();
     super.dispose();
   }
 

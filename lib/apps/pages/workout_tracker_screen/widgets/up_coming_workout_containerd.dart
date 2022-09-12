@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
+import 'package:gold_health/constrains.dart';
 
 import '../../../global_widgets/toggle_button_ios.dart';
 import '../../../template/misc/colors.dart';
@@ -19,10 +22,24 @@ class UpComingWorkoutContainer extends StatelessWidget {
   final String time;
   final String imagePath;
 
+  void _deleteScheduleWorkout() async {
+    try {
+      bool response = await Get.find<WorkoutPlanController>()
+          .deleteScheduleWorkout(scheduleId);
+      if (response == true) {
+        final sharePreferencesInstance = await sharedPreferences;
+        sharePreferencesInstance.remove(scheduleId);
+      }
+    } catch (e) {
+      debugPrint('_deleteScheduleWorkout: $e');
+      rethrow;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: Colors.white,
@@ -78,9 +95,21 @@ class UpComingWorkoutContainer extends StatelessWidget {
             ],
           ),
           const Spacer(),
-          ToggleButtonIos(
-            val: val,
-            scheduleId: scheduleId,
+          Column(
+            children: [
+              ToggleButtonIos(
+                val: val,
+                scheduleId: scheduleId,
+              ),
+              IconButton(
+                onPressed: _deleteScheduleWorkout,
+                icon: const Icon(
+                  Icons.delete,
+                  size: 33,
+                  color: Colors.grey,
+                ),
+              )
+            ],
           )
         ],
       ),
