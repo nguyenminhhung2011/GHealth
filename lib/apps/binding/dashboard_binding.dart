@@ -4,6 +4,7 @@ import 'package:gold_health/apps/controls/dailyPlanController/daily_plan_control
 import '../controls/activity_tracker_controller.dart';
 import '../controls/home_screen_controller.dart';
 import '../controls/dashboard_controller.dart';
+import '../controls/progress_controller/progress_controller.dart';
 
 class DashBoardBinding implements Bindings {
   @override
@@ -12,5 +13,6 @@ class DashBoardBinding implements Bindings {
     Get.lazyPut<HomeScreenControl>(() => HomeScreenControl());
     Get.lazyPut<DailyPlanController>(() => DailyPlanController());
     Get.lazyPut<ActivityTrackerC>(() => ActivityTrackerC());
+    Get.lazyPut<ProgressC>(() => ProgressC());
   }
 }

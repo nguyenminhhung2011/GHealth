@@ -42,6 +42,7 @@ import '../pages/list_plan_screen/add_food_nutri_screen.dart';
 import '../pages/list_plan_screen/daili_nutri_screen.dart';
 import '../pages/mealPlanner/meal_schedule_screen.dart';
 import '../pages/mealPlanner/view_meal_screen.dart';
+import '../pages/progress_tracker/take_photo_screen.dart';
 import '../pages/sleep_tracker/select_time_sleep..dart';
 import '../pages/sleep_tracker/sleep_counting_screen.dart';
 
@@ -184,6 +185,10 @@ class AppPages {
     GetPage(
       name: RouteName.selectSleepTime,
       page: () => const SelectSleepTime(),
+    ),
+    GetPage(
+      name: RouteName.takePhotoScreen,
+      page: () => TakePhotoScreen(fakeDta: []),
     ),
   ];
 }

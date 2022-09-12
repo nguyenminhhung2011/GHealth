@@ -28,4 +28,5 @@ abstract class RouteName {
   static const addAlarm = "/add_alarm";
   static const sleepCounting = "/sleep_counting";
   static const selectSleepTime = "/select_sleep_time";
+  static const takePhotoScreen = "/take_photo_screen";
 }
