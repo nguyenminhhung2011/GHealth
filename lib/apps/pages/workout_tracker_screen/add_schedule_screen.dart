@@ -235,7 +235,7 @@ class _AddScheduleScreenState extends State<AddScheduleScreen> {
                           const SizedBox(width: 10),
                           const Expanded(
                             child: Text('Difficulty',
-                                style: const TextStyle(fontSize: 15)),
+                                style: TextStyle(fontSize: 15)),
                           ),
                           SizedBox(
                             height: 30,
