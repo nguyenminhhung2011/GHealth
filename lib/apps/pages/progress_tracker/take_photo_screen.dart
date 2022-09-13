@@ -22,60 +22,6 @@ class TakePhotoScreen extends StatefulWidget {
 class _TakePhotoScreenState extends State<TakePhotoScreen>
     with TickerProviderStateMixin {
   final conroller = Get.find<ProgressC>();
-  // List<File?> listImage = [null, null, null, null];
-  // int onFocus = 0;
-  // List<Map<String, dynamic>> basicListImage = [
-  //   {
-  //     'title': 'Front',
-  //     'image': 'assets/images/front.png',
-  //     'index': 0,
-  //   },
-  //   {
-  //     'title': 'Left',
-  //     'image': 'assets/images/front.png',
-  //     'index': 1,
-  //   },
-  //   {
-  //     'title': 'Back',
-  //     'image': 'assets/images/front.png',
-  //     'index': 2,
-  //   },
-  //   {
-  //     'title': 'Right',
-  //     'image': 'assets/images/front.png',
-  //     'index': 3,
-  //   }
-  // ];
-
-  // Future pickImage() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-  //     if (image == null) return;
-  //     final imageTemp = File(image.path);
-  //     setState(() => this.listImage[onFocus] = imageTemp);
-  //   } catch (e) {
-  //     // ignore: avoid_print
-  //     print('Failed to pick image: $e');
-  //   }
-  // }
-
-  // Future pickImageC() async {
-  //   try {
-  //     final image = await ImagePicker().pickImage(source: ImageSource.camera);
-  //     if (image == null) return;
-  //     final imageTemp = File(image.path);
-  //     setState(() => this.listImage[onFocus] = imageTemp);
-  //   } catch (e) {
-  //     // ignore: avoid_print
-  //     print('Failed to pick image: $e');
-  //   }
-  // }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // listImage.clear();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -181,27 +127,12 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                                                           .toList()
                                                           .length;
                                                       (count > 0)
-                                                          ? widget.fakeDta.add({
-                                                              'm': timeTemp
-                                                                  .month,
-                                                              'd': timeTemp.day,
-                                                              'image': [
-                                                                'assets/images/work1.png',
-                                                                'assets/images/work2.png',
-                                                                'assets/images/work3.png',
-                                                                'assets/images/work4.png',
-                                                              ],
-                                                              'type': 0,
-                                                            })
-                                                          : widget.fakeDta.add({
-                                                              'm': timeTemp
-                                                                  .month,
-                                                              'd': timeTemp.day,
-                                                              'image': controller
-                                                                  .listImage,
-                                                              'type': 1,
-                                                            });
-                                                      Navigator.pop(context);
+                                                          ? controller
+                                                              .disposeAll()
+                                                          : controller
+                                                              .upProressToFirebase(
+                                                                  timeTemp);
+                                                      Get.back();
                                                     },
                                                     child: Container(
                                                       alignment:
