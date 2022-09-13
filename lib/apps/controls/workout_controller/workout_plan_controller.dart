@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../../../services/auth_service.dart';
 import '../../data/models/workout_model.dart';
@@ -12,8 +13,12 @@ import '../../../constrains.dart';
 class WorkoutPlanController extends GetxController with TrackerController {
   TextEditingController text = TextEditingController();
   Map<String, Uint8List> listThumbnail = {};
+  DateRangePickerController dateController = DateRangePickerController();
   var alarmTime = DateTime.now().obs;
   var level = 'Beginner'.obs;
+  late Rx<DateTimeRange> dateTimeRange;
+  late Rx<List<DateTime>> allDateBetWeen;
+
   /////////////////////////////////////
 
   /////////////////////////////////////
@@ -24,6 +29,77 @@ class WorkoutPlanController extends GetxController with TrackerController {
 
   Map<String, Exercise> get exerciseList {
     return exercises.value;
+  }
+
+  DateTime findFirstDateOfTheWeek(DateTime dateTime) {
+    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+  }
+
+  DateTime findLastDateOfTheWeek(DateTime dateTime) {
+    return dateTime
+        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
+  }
+
+  bool isSameDate(DateTime date1, DateTime date2) {
+    if (date2 == date1) {
+      return true;
+    }
+    if (date1 == null || date2 == null) {
+      return false;
+    }
+    return date1.month == date2.month &&
+        date1.year == date2.year &&
+        date1.day == date2.day;
+  }
+
+  DateTime selectDateTemp1 = DateTime.now();
+  DateTime selectDateTemp2 = DateTime.now();
+
+  void selectionChanged(DateRangePickerSelectionChangedArgs args) {
+    int firstDayOfWeek = DateTime.sunday % 7;
+    int endDayOfWeek = (firstDayOfWeek - 1) % 7;
+    endDayOfWeek = endDayOfWeek < 0 ? 7 + endDayOfWeek : endDayOfWeek;
+    PickerDateRange ranges = args.value;
+    DateTime date1 = ranges.startDate!;
+    DateTime date2 = (ranges.endDate ?? ranges.startDate)!;
+    if (date1.isAfter(date2)) {
+      var date = date1;
+      date1 = date2;
+      date2 = date;
+    }
+    int day1 = date1.weekday % 7;
+    int day2 = date2.weekday % 7;
+
+    DateTime dat1 = date1.add(Duration(days: (firstDayOfWeek - day1)));
+    DateTime dat2 = date2.add(Duration(days: (endDayOfWeek - day2)));
+
+    if (!isSameDate(dat1, ranges.startDate!) ||
+        !isSameDate(dat2, ranges.endDate!)) {
+      dateController.selectedRange = PickerDateRange(dat1, dat2);
+      selectDateTemp1 = dat1;
+      selectDateTemp2 = dat2;
+    }
+  }
+
+  //load data chart with select calendar
+  selectDateDoneClick() {
+    dateTimeRange.value =
+        DateTimeRange(start: selectDateTemp1, end: selectDateTemp2);
+    allDateBetWeen.value = getListDateBetWeenRange();
+    // getDataChart(0);
+    update();
+  }
+
+  // get number date between
+
+  //get list date to load chart
+  List<DateTime> getListDateBetWeenRange() {
+    final items =
+        List<DateTime>.generate(dateTimeRange.value.duration.inDays, (index) {
+      DateTime date = dateTimeRange.value.start;
+      return date.add(Duration(days: index));
+    });
+    return items;
   }
 
   ///////Data Structure
@@ -40,9 +116,12 @@ class WorkoutPlanController extends GetxController with TrackerController {
 
   @override
   void onInit() async {
-    debugPrint('printing');
-
     await fetchAllDataAboutWorkout();
+    dateTimeRange = DateTimeRange(
+            start: findFirstDateOfTheWeek(DateTime.now()),
+            end: findLastDateOfTheWeek(DateTime.now()))
+        .obs;
+    await Future.value(allDateBetWeen.value = getListDateBetWeenRange());
     super.onInit();
   }
 
