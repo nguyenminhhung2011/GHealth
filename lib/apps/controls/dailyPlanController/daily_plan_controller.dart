@@ -51,7 +51,7 @@ class DailyPlanController extends GetxController {
         Get.delete<MealPlanController>();
         break;
       case 1:
-        Get.delete<WorkoutPlanController>();
+        Get.delete<MealPlanController>();
         break;
       case 2:
         Get.delete<DailyStepController>();
@@ -77,7 +77,7 @@ class DailyPlanController extends GetxController {
       case 0:
         return MealPlannerScreen();
       case 1:
-        return WorkoutTrackerScreen();
+        return const WorkoutTrackerScreen();
       case 2:
         return DailyStepScreen();
       case 3:

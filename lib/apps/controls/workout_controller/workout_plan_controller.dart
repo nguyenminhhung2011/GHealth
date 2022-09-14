@@ -17,8 +17,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
   var alarmTime = DateTime.now().obs;
   var level = 'Beginner'.obs;
   late Rx<DateTimeRange> dateTimeRange;
-  late Rx<List<DateTime>> allDateBetWeen;
-
   /////////////////////////////////////
 
   /////////////////////////////////////
@@ -26,71 +24,34 @@ class WorkoutPlanController extends GetxController with TrackerController {
   var workouts = Rx<Map<String, Map<String, dynamic>>>({});
   var schedules = Rx<Map<String, WorkoutSchedule>>({});
   var histories = Rx<Map<String, WorkoutHistory>>({});
+  var flSpotChart = Rx<Map<DateTime, double>>({});
+  ////////////////////////////////////////////////
 
   Map<String, Exercise> get exerciseList {
     return exercises.value;
   }
 
   DateTime findFirstDateOfTheWeek(DateTime dateTime) {
-    return dateTime.subtract(Duration(days: dateTime.weekday - 1));
+    return dateTime.subtract(Duration(days: dateTime.weekday % 7));
   }
 
   DateTime findLastDateOfTheWeek(DateTime dateTime) {
-    return dateTime
-        .add(Duration(days: DateTime.daysPerWeek - dateTime.weekday));
+    return dateTime.add(Duration(days: 6 - dateTime.weekday % 7));
   }
-
-  bool isSameDate(DateTime date1, DateTime date2) {
-    if (date2 == date1) {
-      return true;
-    }
-    if (date1 == null || date2 == null) {
-      return false;
-    }
-    return date1.month == date2.month &&
-        date1.year == date2.year &&
-        date1.day == date2.day;
-  }
-
-  DateTime selectDateTemp1 = DateTime.now();
-  DateTime selectDateTemp2 = DateTime.now();
 
   void selectionChanged(DateRangePickerSelectionChangedArgs args) {
-    int firstDayOfWeek = DateTime.sunday % 7;
-    int endDayOfWeek = (firstDayOfWeek - 1) % 7;
-    endDayOfWeek = endDayOfWeek < 0 ? 7 + endDayOfWeek : endDayOfWeek;
     PickerDateRange ranges = args.value;
-    DateTime date1 = ranges.startDate!;
-    DateTime date2 = (ranges.endDate ?? ranges.startDate)!;
-    if (date1.isAfter(date2)) {
-      var date = date1;
-      date1 = date2;
-      date2 = date;
-    }
-    int day1 = date1.weekday % 7;
-    int day2 = date2.weekday % 7;
-
-    DateTime dat1 = date1.add(Duration(days: (firstDayOfWeek - day1)));
-    DateTime dat2 = date2.add(Duration(days: (endDayOfWeek - day2)));
-
-    if (!isSameDate(dat1, ranges.startDate!) ||
-        !isSameDate(dat2, ranges.endDate!)) {
-      dateController.selectedRange = PickerDateRange(dat1, dat2);
-      selectDateTemp1 = dat1;
-      selectDateTemp2 = dat2;
-    }
+    DateTime startDate = findFirstDateOfTheWeek(ranges.startDate!);
+    DateTime lastDate = findLastDateOfTheWeek(ranges.startDate!);
+    dateController.selectedRange = PickerDateRange(startDate, lastDate);
   }
 
   //load data chart with select calendar
   selectDateDoneClick() {
-    dateTimeRange.value =
-        DateTimeRange(start: selectDateTemp1, end: selectDateTemp2);
-    allDateBetWeen.value = getListDateBetWeenRange();
-    // getDataChart(0);
-    update();
+    dateTimeRange.value = DateTimeRange(
+        start: dateController.selectedRange!.startDate!,
+        end: dateController.selectedRange!.startDate!);
   }
-
-  // get number date between
 
   //get list date to load chart
   List<DateTime> getListDateBetWeenRange() {
@@ -102,7 +63,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
     return items;
   }
 
-  ///////Data Structure
   // {
   //     'idWorkout': {
   //       'collection': {
@@ -116,12 +76,19 @@ class WorkoutPlanController extends GetxController with TrackerController {
 
   @override
   void onInit() async {
-    await fetchAllDataAboutWorkout();
     dateTimeRange = DateTimeRange(
             start: findFirstDateOfTheWeek(DateTime.now()),
             end: findLastDateOfTheWeek(DateTime.now()))
         .obs;
-    await Future.value(allDateBetWeen.value = getListDateBetWeenRange());
+
+    dateController.selectedRange = PickerDateRange(
+        findFirstDateOfTheWeek(DateTime.now()),
+        findLastDateOfTheWeek(DateTime.now()));
+    dateTimeRange.listen((p0) async {
+      await fetchWorkoutHistoryDataWithDateRange(p0);
+    });
+    await fetchAllDataAboutWorkout();
+
     super.onInit();
   }
 
@@ -263,7 +230,11 @@ class WorkoutPlanController extends GetxController with TrackerController {
               (event) {
                 Map<String, WorkoutHistory> result = {};
                 for (var doc in event.docs) {
-                  result.addAll({doc.id: WorkoutHistory.fromSnap(doc)});
+                  result.addAll(
+                    {
+                      doc.id: WorkoutHistory.fromSnap(doc),
+                    },
+                  );
                 }
                 return result;
               },
@@ -280,11 +251,39 @@ class WorkoutPlanController extends GetxController with TrackerController {
     }
   }
 
+  Future<void> fetchWorkoutHistoryDataWithDateRange(DateTimeRange range) async {
+    print(range.start);
+    flSpotChart.bindStream(histories.stream.map((event) {
+      Map<DateTime, double> result = {};
+      event.forEach((key, value) {
+        print(value.time);
+        if ((value.time.isAfter(range.start) ||
+                (value.time.day == range.start.day &&
+                    value.time.month == range.start.month &&
+                    value.time.year == range.start.year)) &&
+            (value.time.isBefore(range.end) ||
+                (value.time.day == range.end.day &&
+                    value.time.month == range.end.month &&
+                    value.time.year == range.end.year))) {
+          print('capture');
+
+          result[DateTime(value.time.year, value.time.month, value.time.day)] =
+              result[DateTime(
+                      value.time.year, value.time.month, value.time.day)] ??
+                  0.0 + value.caloriesBurn;
+        }
+      });
+      return result;
+    }));
+  }
+
   Future fetchAllDataAboutWorkout() async {
     await fetchExerciseList();
     await fetchWorkoutList();
     await fetchScheduleList();
     await fetchHistoryList();
+    await fetchWorkoutHistoryDataWithDateRange(dateTimeRange.value);
+    print('flSpotChart: ${flSpotChart.value}');
   }
 
   String getCaloriesBurnFromWorkout(List<String> listExercise) {

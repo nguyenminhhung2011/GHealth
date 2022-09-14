@@ -31,7 +31,7 @@ class MealPlanController extends GetxController with TrackerController {
 
   final Rx<List<FlSpot>> _listDataChart = Rx<List<FlSpot>>([]);
   // final Rx<List<Nutrition>> _listNutrition = Rx<List<Nutrition>>([]);
-  final Rx<List<Map<String, dynamic>>> _listWeekNutriton =
+  final Rx<List<Map<String, dynamic>>> _listWeekNutrition =
       Rx<List<Map<String, dynamic>>>([]);
 
   final Rx<int> weekdayNutriFocus = 2.obs;
@@ -56,7 +56,7 @@ class MealPlanController extends GetxController with TrackerController {
   List<DateTime> get timeEat => DataService.instance.timeEatList;
 
   List<FlSpot> get listDataChart => _listDataChart.value;
-  List<Map<String, dynamic>> get listWeekNutrition => _listWeekNutriton.value;
+  List<Map<String, dynamic>> get listWeekNutrition => _listWeekNutrition.value;
   Rx<Map<String, dynamic>> mealToday = Rx<Map<String, dynamic>>({});
 
   List<Map<String, dynamic>> listMealPlan = [];
@@ -172,7 +172,7 @@ class MealPlanController extends GetxController with TrackerController {
 
   // get data to load chart
   getDataChart(int check) async {
-    _listWeekNutriton.bindStream(firestore
+    _listWeekNutrition.bindStream(firestore
         .collection('users')
         .doc(AuthService.instance.currentUser!.uid)
         .collection('Nutrition')
