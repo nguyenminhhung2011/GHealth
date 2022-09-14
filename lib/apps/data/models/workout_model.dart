@@ -58,6 +58,32 @@ class Workout {
   }
 }
 
+class WorkoutPlan {
+  const WorkoutPlan(
+      {required this.duration,
+      required this.level,
+      required this.targetTime,
+      required this.weeklyWorkout});
+  final String level;
+  final int targetTime;
+  final Duration duration;
+  final List<String> weeklyWorkout;
+  factory WorkoutPlan.fromSnap(DocumentSnapshot snap) {
+    final data = snap.data() as Map<String, dynamic>;
+    List<String> temp = [];
+    final extractData = data['weeklyWorkout'] as List<dynamic>;
+    for (var element in extractData) {
+      temp.add(element as String);
+    }
+    return WorkoutPlan(
+      duration: Duration(days: int.parse(data['duration'])),
+      level: data['level'],
+      targetTime: int.parse(data['targetTime']),
+      weeklyWorkout: temp,
+    );
+  }
+}
+
 class Exercise {
   Exercise({
     required this.equipRequest,
@@ -173,11 +199,13 @@ class WorkoutHistory {
       {required this.level,
       required this.caloriesBurn,
       required this.time,
-      required this.workoutCategory});
+      required this.workoutCategory,
+      required this.duration});
   final String level;
   final int caloriesBurn;
   final DateTime time;
   final String workoutCategory;
+  final Duration duration;
 
   factory WorkoutHistory.fromSnap(DocumentSnapshot snap) {
     final data = snap.data() as Map<String, dynamic>;
@@ -187,6 +215,7 @@ class WorkoutHistory {
       caloriesBurn: int.parse(data['caloriesBurn'] as String),
       time: DateTime.fromMillisecondsSinceEpoch(data['time'].seconds * 1000),
       workoutCategory: data['workoutCategory'],
+      duration: Duration(minutes: int.parse(data['duration'] as String)),
     );
   }
 }

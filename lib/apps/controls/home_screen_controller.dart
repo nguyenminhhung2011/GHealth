@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:gold_health/constrains.dart';
 
 import '../../services/auth_service.dart';
@@ -10,6 +11,7 @@ class HomeScreenControl extends GetxController {
   final Rx<Map<String, dynamic>> _user = Rx<Map<String, dynamic>>({});
   Map<String, dynamic> get user => _user.value;
   final Rx<String> _uid = "".obs;
+
   var notifications = {
     DateTime.now().subtract(const Duration(minutes: 5)): {
       'icon': CircleAvatar(
@@ -133,6 +135,56 @@ class HomeScreenControl extends GetxController {
       return result;
     }));
   }
+
+  Future<int> getExerciseTimeData() async {
+    int time = 0;
+    try {
+      await Future(() async {
+        String userId = AuthService.instance.currentUser!.uid;
+        final data = await firestore
+            .collection('users')
+            .doc(userId)
+            .collection('workout_plan')
+            .get();
+        for (var doc in data.docs) {
+          final workoutId = doc.data()['workoutPlanID'] as String;
+          final temp =
+              await firestore.collection('workout_plan').doc(workoutId).get();
+          time += int.parse(temp.get('targetTime') as String);
+        }
+      });
+      return time;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<int> getExerciseTimeHistory() async {
+    int time = 0;
+    try {
+      await Future(() async {
+        String userId = AuthService.instance.currentUser!.uid;
+        final data = await firestore
+            .collection('users')
+            .doc(userId)
+            .collection('workout_history')
+            .get();
+        for (var doc in data.docs) {
+          WorkoutHistory temp = WorkoutHistory.fromSnap(doc);
+          if (temp.time.difference(DateTime.now()).inDays == 0) {
+            time += temp.duration.inMinutes;
+          }
+        }
+      });
+      return time;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  getSteepTimeData() {}
+
+  getSleepTimeData() {}
 
   loadWaterdata() async {
     waterViewData.bindStream(firestore

@@ -51,7 +51,6 @@ class DailyPlanController extends GetxController {
         Get.delete<MealPlanController>();
         break;
       case 1:
-        // Get.delete<WorkoutPlanController>();
         Get.delete<MealPlanController>();
         break;
       case 2:
