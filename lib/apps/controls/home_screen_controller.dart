@@ -175,6 +175,7 @@ class HomeScreenControl extends GetxController {
           break;
         }
       }
+
       if (dataTemp != {}) {
         for (var item in dataTemp['waterConsume']) {
           int time =

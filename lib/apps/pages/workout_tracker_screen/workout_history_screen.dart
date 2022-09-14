@@ -25,7 +25,6 @@ class _WorkoutHistoryScreenState extends State<WorkoutHistoryScreen> {
         Padding(
           padding: const EdgeInsets.all(0.0),
           child: WorkoutHistoryCard(
-            key: Key(key),
             history: value,
             imagePath: _workoutController.listImage[value.workoutCategory]!,
           ),
