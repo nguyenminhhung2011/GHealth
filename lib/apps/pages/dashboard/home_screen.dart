@@ -478,8 +478,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   animationDuration: 600,
                   radius: 400 / 2 - 160,
                   lineWidth: 15.0,
-                  percent: exerciseTime.value.toDouble() /
-                      exerciseTimeTarget.value.toDouble(),
+                  percent: exerciseTime.value >= exerciseTimeTarget.value
+                      ? 1
+                      : exerciseTime.value.toDouble() /
+                          exerciseTimeTarget.value.toDouble(),
                   circularStrokeCap: CircularStrokeCap.round,
                   center: CircularPercentIndicator(
                     animation: true,
