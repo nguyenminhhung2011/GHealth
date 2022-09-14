@@ -20,6 +20,15 @@ class ProgressC extends GetxController {
   RxBool isLoading = false.obs;
   Rx<DateTime> datePicker = DateTime.now().obs;
 
+  Rx<DateTime> dateComapare1 = DateTime.now().obs;
+  Rx<DateTime> dateComapare2 = DateTime.now().obs;
+
+  int get lengthProgess => _listProgress.value.isEmpty
+      ? 0
+      : listProgress.length > 3
+          ? 3
+          : listProgress.length;
+
   List<Map<String, dynamic>> basicListImage = [
     {
       'title': 'Front',
@@ -42,6 +51,7 @@ class ProgressC extends GetxController {
       'index': 3,
     }
   ];
+
   Future<String> uploadImageToStorage(
       Uint8List file, String child, String parrent) async {
     Reference ref = FirebaseStorage.instance
@@ -88,6 +98,7 @@ class ProgressC extends GetxController {
     try {
       List<String> list = [];
       int count = 0;
+
       for (var item in listImage) {
         // ignore: unnecessary_null_comparison
         if (item == null) {
@@ -100,6 +111,26 @@ class ProgressC extends GetxController {
             DateFormat().add_MMMEd().format(datetime));
         list.add(imagePath);
         count++;
+      }
+      for (var item in listProgress) {
+        if (item.date.day == datetime.day &&
+            item.date.month == datetime.month &&
+            item.date.year == datetime.year) {
+          firestore
+              .collection('users')
+              .doc(AuthService.instance.currentUser!.uid)
+              .collection('progress')
+              .doc(item.id)
+              .update(
+            {
+              'id': 'tempId',
+              'date': datetime,
+              'image': list,
+            },
+          );
+          disposeAll();
+          return 'Upload Image sucess';
+        }
       }
       firestore
           .collection('users')

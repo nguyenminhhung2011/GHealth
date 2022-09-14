@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:gold_health/apps/pages/mealPlanner/meal_planner_screen.dart';
 import 'package:intl/intl.dart';
 
+import '../../controls/progress_controller/progress_controller.dart';
 import '../../global_widgets/screen_template.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 import 'compare_result_screen.dart';
 
@@ -17,8 +20,11 @@ class ComparisionScreen extends StatefulWidget {
 
 class _ComparisionScreenState extends State<ComparisionScreen> {
   String iconCalender = 'assets/icons/Calendar.svg';
+
   DateTime month1 = DateTime.now();
   DateTime month2 = DateTime.now();
+
+  final controller = Get.find<ProgressC>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,11 +67,13 @@ class _ComparisionScreenState extends State<ComparisionScreen> {
                     InkWell(
                       borderRadius: BorderRadius.circular(20),
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const CompareResultScreen(),
-                          ),
+                        Get.toNamed(
+                          RouteName.compareResult,
+                          arguments: {
+                            'date1': month1,
+                            'date2': month2,
+                            'listProgess': controller.listProgress,
+                          },
                         );
                       },
                       child: Container(
