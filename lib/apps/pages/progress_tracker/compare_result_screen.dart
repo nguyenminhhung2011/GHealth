@@ -16,28 +16,6 @@ class CompareResultScreen extends StatefulWidget {
 
 class _CompareResultScreenState extends State<CompareResultScreen> {
   final controller = Get.find<CompareResultC>();
-  final List<Map<String, dynamic>> fakeData = [
-    {
-      'm': 'June',
-      'd': 2,
-      'image': [
-        'assets/images/work1.png',
-        'assets/images/work2.png',
-        'assets/images/work3.png',
-        'assets/images/work4.png',
-      ],
-    },
-    {
-      'm': 'May',
-      'd': 5,
-      'image': [
-        'assets/images/work5.png',
-        'assets/images/work6.png',
-        'assets/images/work7.png',
-        'assets/images/work8.png',
-      ],
-    },
-  ];
   final List<String> listVieww = [
     'Front Facing',
     'Back Facing',

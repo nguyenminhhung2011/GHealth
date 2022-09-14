@@ -210,6 +210,23 @@ class DataService {
     _dataNutriPlan.value = await _nutritionProvider.getDataNutriPlan();
   }
 
+  getAllNotification() async {
+    _listIdNotificationSleep.bindStream(firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('notification')
+        .doc('DlWF8upzR4gdo70OpjUO')
+        .collection('sleep_notification')
+        .snapshots()
+        .map((event) {
+      Map<String, dynamic> result = {};
+      for (var item in event.docs) {
+        result[item.id] = item.data()['list'];
+      }
+      return result;
+    }));
+  }
+
   clearListNotification() {
     _listIdNotificationSleep.value = {};
   }
@@ -224,6 +241,9 @@ class DataService {
     _listIdNotificationSleep.value[sId].add(id);
     _listIdNotificationSleep.value[sId].add(id + 1);
     checkIdNoti.value += 2;
-    return [id, id + 2];
+    return [id, id + 1];
   }
 }
+
+
+//DlWF8upzR4gdo70OpjUO

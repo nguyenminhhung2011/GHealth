@@ -162,15 +162,21 @@ class DailySleepController extends GetxController with TrackerController {
     });
     print(alarm);
     print(bedTime);
+    int indexStart = 1;
+    DataService.instance.listIdNotificationSleep.forEach((key, value) {
+      indexStart += value.length as int;
+    });
+    List<int> listIdNoti = [];
     DataService.instance.initIdNotificationMap(ref.id);
     for (var item in dateSelect) {
-      List<int> id = DataService.instance.addDataToListNotification(ref.id);
+      listIdNoti.add(indexStart);
+      listIdNoti.add(indexStart + 1);
       createSleepNotificationAuto(
         NotificationWeekAndTime(
           dayOfTheWeek: item,
           timeOfDay: TimeOfDay(hour: bedTime.hour, minute: bedTime.minute),
         ),
-        id[0],
+        indexStart,
       );
       int wdAlarm = ((bedTime.weekday - alarm.weekday) > 0) ? 1 : 0;
       createAlarmNotificationAuto(
@@ -182,10 +188,31 @@ class DailySleepController extends GetxController with TrackerController {
               : item + wdAlarm,
           timeOfDay: TimeOfDay(hour: alarm.hour, minute: alarm.minute),
         ),
-        id[1],
+        indexStart + 1,
       );
+      print(indexStart + 1);
+      indexStart += 2;
     }
-    print(DataService.instance.listIdNotificationSleep);
+    addSleepNotificationFirebase(ref.id, listIdNoti);
+  }
+
+  Future<void> addSleepNotificationFirebase(
+      String id, List<int> dateSelect) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('notification')
+          .doc('DlWF8upzR4gdo70OpjUO')
+          .collection('sleep_notification')
+          .doc(id)
+          .set(
+        {'list': dateSelect},
+      );
+    } catch (e) {
+      //ignore: avoid_print
+      print('Upload to firebase is failed $e');
+    }
   }
 
   updateDataCollection(Map<String, dynamic> data) async {
@@ -238,7 +265,7 @@ class DailySleepController extends GetxController with TrackerController {
         print(item);
         if (item > 0) cancelScheduleNotificationsWhere(item);
       }
-      DataService.instance.listIdNotificationSleep[id] = [];
+      //  DataService.instance.listIdNotificationSleep[id] = [];
     } catch (err) {
       // ignore: avoid_print
       print(err);
