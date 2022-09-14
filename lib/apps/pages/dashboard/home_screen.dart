@@ -466,19 +466,24 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Obx(
             () => Center(
               child: CircularPercentIndicator(
+                animation: true,
+                animationDuration: 600,
                 rotateLinearGradient: true,
                 radius: 400 / 2 - 140,
                 lineWidth: 15.0,
                 circularStrokeCap: CircularStrokeCap.round,
-                onAnimationEnd: () {},
                 percent: 0.7,
                 center: CircularPercentIndicator(
+                  animation: true,
+                  animationDuration: 600,
                   radius: 400 / 2 - 160,
                   lineWidth: 15.0,
                   percent: exerciseTime.value.toDouble() /
                       exerciseTimeTarget.value.toDouble(),
                   circularStrokeCap: CircularStrokeCap.round,
                   center: CircularPercentIndicator(
+                    animation: true,
+                    animationDuration: 600,
                     circularStrokeCap: CircularStrokeCap.round,
                     radius: 400 / 2 - 180,
                     lineWidth: 12.0,
