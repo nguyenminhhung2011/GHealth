@@ -29,7 +29,7 @@ class DashBoardControl extends GetxController {
     listDevice.add(androidInfo.model!);
     print('Android Device');
     print(androidInfo.model! + '------------');
-    DataService.instance.clearListNotification();
+    // DataService.instance.clearListNotification();
     DataService.instance.checkIdNoti.value = 1;
 
     if (!check) {
@@ -64,42 +64,42 @@ class DashBoardControl extends GetxController {
             countingCheck;
           }
 
-          // QuerySnapshot<Map<String, dynamic>> rawSleep = await firestore
-          //     .collection('users')
-          //     .doc(AuthService.instance.currentUser!.uid)
-          //     .collection('sleep_basic_time')
-          //     .doc('sleep')
-          //     .collection('sleep_time')
-          //     .get();
-          // for (var item in rawSleep.docs) {
-          //   DateTime timeBed = DateTime.fromMillisecondsSinceEpoch(
-          //       item.data()['bedTime'].seconds * 1000);
-          //   DateTime timeAlarm = DateTime.fromMillisecondsSinceEpoch(
-          //       item.data()['alarm'].seconds * 1000);
-          //   DataService.instance.initIdNotificationMap(item.id);
-          //   print(item.id);
-          //   for (var ite in item.data()['listDate']) {
-          //     List<int> id =
-          //         DataService.instance.addDataToListNotification(item.id);
-          //     print(id);
-          //     createSleepNotificationAuto(
-          //       NotificationWeekAndTime(
-          //         dayOfTheWeek: ite,
-          //         timeOfDay:
-          //             TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
-          //       ),
-          //       id[0],
-          //     );
-          //     createAlarmNotificationAuto(
-          //       NotificationWeekAndTime(
-          //         dayOfTheWeek: ite,
-          //         timeOfDay:
-          //             TimeOfDay(hour: timeAlarm.hour, minute: timeAlarm.minute),
-          //       ),
-          //       id[1],
-          //     );
-          //   }
-          // }
+          QuerySnapshot<Map<String, dynamic>> rawSleep = await firestore
+              .collection('users')
+              .doc(AuthService.instance.currentUser!.uid)
+              .collection('sleep_basic_time')
+              .doc('sleep')
+              .collection('sleep_time')
+              .get();
+          for (var item in rawSleep.docs) {
+            DateTime timeBed = DateTime.fromMillisecondsSinceEpoch(
+                item.data()['bedTime'].seconds * 1000);
+            DateTime timeAlarm = DateTime.fromMillisecondsSinceEpoch(
+                item.data()['alarm'].seconds * 1000);
+            DataService.instance.initIdNotificationMap(item.id);
+            print(item.id);
+            int startIndex =
+                DataService.instance.listIdNotificationSleep[item.id][0];
+            for (var ite in item.data()['listDate']) {
+              createSleepNotificationAuto(
+                NotificationWeekAndTime(
+                  dayOfTheWeek: ite,
+                  timeOfDay:
+                      TimeOfDay(hour: timeBed.hour, minute: timeBed.minute),
+                ),
+                startIndex,
+              );
+              createAlarmNotificationAuto(
+                NotificationWeekAndTime(
+                  dayOfTheWeek: ite,
+                  timeOfDay:
+                      TimeOfDay(hour: timeAlarm.hour, minute: timeAlarm.minute),
+                ),
+                startIndex + 1,
+              );
+              startIndex += 2;
+            }
+          }
           print('List Notification =========');
           print(DataService.instance.listIdNotificationSleep);
         });
@@ -111,7 +111,7 @@ class DashBoardControl extends GetxController {
   void onInit() async {
     super.onInit();
     tabIndex.value = 0;
-    DataService.instance.getAllNotification();
+    await DataService.instance.getAllNotification();
     await createAllNotification();
   }
 
