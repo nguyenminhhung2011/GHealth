@@ -253,7 +253,8 @@ class _ListWorkoutScreenState extends State<ListWorkoutScreen> {
                         'caloriesBurn': caloriesBurn,
                         'duration': duration,
                         'level': workout.level,
-                        'time': Timestamp.fromDate(DateTime.now()),
+                        'time': Timestamp.fromDate(
+                            DateTime.now().add(const Duration(seconds: 1))),
                         'workoutCategory': workout.workoutCategory
                       });
                     }

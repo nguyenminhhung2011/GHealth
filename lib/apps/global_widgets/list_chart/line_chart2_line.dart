@@ -8,21 +8,26 @@ import '../../template/misc/colors.dart';
 
 // ignore: must_be_immutable
 class LineChartTwoLine extends StatefulWidget {
-  const LineChartTwoLine({Key? key}) : super(key: key);
-
+  const LineChartTwoLine(
+      {Key? key,
+      required this.listFlSpotCaloriesIntake,
+      required this.listFlSpotCaloriesBurned})
+      : super(key: key);
+  final List<FlSpot> listFlSpotCaloriesBurned;
+  final List<FlSpot> listFlSpotCaloriesIntake;
   @override
   State<LineChartTwoLine> createState() => _LineChartTwoLineState();
 }
 
 class _LineChartTwoLineState extends State<LineChartTwoLine> {
-  RxList<FlSpot> list1FlSpot = [
-    const FlSpot(1, 100),
-    const FlSpot(2, 100),
-    const FlSpot(3, 100),
-    const FlSpot(4, 100),
-    const FlSpot(5, 100),
-    const FlSpot(6, 100),
-    const FlSpot(7, 100),
+  List<FlSpot> list1FlSpot = [
+    const FlSpot(1, 0),
+    const FlSpot(2, 0),
+    const FlSpot(3, 0),
+    const FlSpot(4, 0),
+    const FlSpot(5, 0),
+    const FlSpot(6, 0),
+    const FlSpot(7, 0),
   ].obs;
 
   RxList<FlSpot> list2FlSpot = [
@@ -35,50 +40,13 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
     const FlSpot(7, 100),
   ].obs;
 
-  List<FlSpot> list1 = const [
-    FlSpot(1, 150),
-    FlSpot(2, 500),
-    FlSpot(3, 130),
-    FlSpot(4, 500),
-    FlSpot(5, 600),
-    FlSpot(6, 550),
-    FlSpot(7, 700),
-  ];
-
-  List<FlSpot> list2 = const [
-    FlSpot(1, 500),
-    FlSpot(2, 410),
-    FlSpot(3, 450),
-    FlSpot(4, 320),
-    FlSpot(5, 250),
-    FlSpot(6, 110),
-    FlSpot(7, 150),
-  ];
-
-  void _addDataToRxList() async {
-    list1FlSpot.value = list1;
-    list2FlSpot.value = list2;
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
-  void didChangeDependencies() async {
-    await Future.delayed(const Duration(seconds: 1), _addDataToRxList);
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Obx(() => LineChart(
-          sampleData1,
-          swapAnimationCurve: Curves.linear,
-          swapAnimationDuration: const Duration(milliseconds: 600),
-        ));
+    return LineChart(
+      sampleData1,
+      swapAnimationCurve: Curves.linear,
+      swapAnimationDuration: const Duration(milliseconds: 600),
+    );
   }
 
   LineChartData get sampleData1 => LineChartData(
@@ -89,8 +57,8 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
         lineBarsData: lineBarsData1,
         minX: 1,
         maxX: 7,
-        maxY: 1100,
-        minY: 100,
+        maxY: 1500,
+        minY: 0,
       );
 
   LineTouchData get lineTouchData1 => LineTouchData(
@@ -130,6 +98,9 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
     );
     String text;
     switch (value.toInt()) {
+      case 0:
+        text = '0';
+        break;
       case 100:
         text = '100';
         break;
@@ -147,6 +118,15 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
         break;
       case 1100:
         text = '1100';
+        break;
+      case 1200:
+        text = '1200';
+        break;
+      case 1300:
+        text = '1300';
+        break;
+      case 1400:
+        text = '1200';
         break;
       default:
         return Container();
@@ -245,7 +225,7 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
           show: true,
         ),
         belowBarData: BarAreaData(show: false),
-        spots: list1FlSpot.value,
+        spots: widget.listFlSpotCaloriesBurned,
       );
 
   LineChartBarData get lineChartBarData1_2 => (LineChartBarData(
@@ -255,6 +235,6 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
         isStrokeCapRound: true,
         dotData: FlDotData(show: true),
         belowBarData: BarAreaData(show: false),
-        spots: list2FlSpot.value,
+        spots: widget.listFlSpotCaloriesIntake,
       ));
 }

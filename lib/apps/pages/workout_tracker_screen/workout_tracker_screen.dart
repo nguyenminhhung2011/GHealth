@@ -1,11 +1,12 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/controls/meal_plan_controller.dart';
 import 'package:gold_health/apps/controls/workout_controller/workout_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/choose_workout_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/categories_workout_card.dart';
-import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/custom_date_range_picker.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/widgets/up_coming_workout_containerd.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_history_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
@@ -26,23 +27,338 @@ class WorkoutTrackerScreen extends StatefulWidget {
 }
 
 class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
-  late final WorkoutPlanController controller;
+  final WorkoutPlanController controller = Get.put(WorkoutPlanController());
+  final MealPlanController _mealPlanController = Get.put(MealPlanController());
   late Rx<Map<String, String>> listWorkoutID;
   late Rx<Map<String, Padding>> listWorkoutSchedule;
-
+  Rx<List<FlSpot>> listFlSpotCaloriesBurned = Rx<List<FlSpot>>([
+    const FlSpot(1, 0),
+    const FlSpot(2, 0),
+    const FlSpot(3, 0),
+    const FlSpot(4, 0),
+    const FlSpot(5, 0),
+    const FlSpot(6, 0),
+    const FlSpot(7, 0),
+  ]);
+  Rx<List<FlSpot>> listFlSpotCaloriesIntake = Rx<List<FlSpot>>([
+    const FlSpot(1, 0),
+    const FlSpot(2, 0),
+    const FlSpot(3, 0),
+    const FlSpot(4, 0),
+    const FlSpot(5, 0),
+    const FlSpot(6, 0),
+    const FlSpot(7, 0),
+  ]);
+  List<String> tabs = [
+    'Nutrition',
+    'Workout',
+    'Foot step',
+    'Water',
+    'Fasting',
+    'Sleep',
+  ];
   // late Rx<DateTimeRange> dateTimeRange;
-  Future<bool> _fetchData() async {
+  Future<Widget> _fetchData() async {
     try {
-      controller = await Get.putAsync(() async {
-        return await Future.value(WorkoutPlanController());
-      });
       await _addListWorkoutId();
       await _addListWorkoutSchedule();
-      return true;
+      await _addListFlSpot();
+      return await Future.value(
+        GetBuilder<WorkoutPlanController>(
+          builder: (_) {
+            return ScreenTemplate(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Container(
+                      width: double.maxFinite,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 10,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.mainColor,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(50),
+                          topRight: Radius.circular(50),
+                        ),
+                      ),
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Row(
+                              children: [
+                                InkWell(
+                                  onTap: () async {
+                                    int? newIndex;
+                                    await _showDialogMethod(
+                                      context: context,
+                                      tabs: tabs,
+                                      onSelectedTabs: (value) {
+                                        newIndex = value;
+                                      },
+                                      done: () {
+                                        if (newIndex != null) {
+                                          controller.changeTab(newIndex ?? 0);
+                                        } else {
+                                          controller.changeTab(0);
+                                        }
+                                        Get.back();
+                                      },
+                                    );
+                                  },
+                                  child: Row(
+                                    children: const [
+                                      Text(
+                                        'Workout Planner',
+                                        style: TextStyle(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                        ),
+                                      ),
+                                      Icon(
+                                        Icons.keyboard_arrow_down_outlined,
+                                        color: Colors.black,
+                                        size: 24,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                const Spacer(),
+                                InkWell(
+                                  onTap: () {
+                                    Get.to(() => const WorkoutHistoryScreen());
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primaryColor1
+                                          .withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: const Icon(
+                                      Icons.history,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            Row(
+                              children: [
+                                Text(
+                                  'Workout ',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline4!
+                                      .copyWith(
+                                        fontSize: 17,
+                                      ),
+                                ),
+                                const Spacer(),
+                                ButtonIconGradientColor(
+                                  title: 'Week',
+                                  icon: Icons.calendar_month,
+                                  press: () async {
+                                    _showDatePicker(
+                                      context: context,
+                                    );
+                                  },
+                                )
+                              ],
+                            ),
+                            const SizedBox(height: 20),
+                            SizedBox(
+                                width: Get.mediaQuery.size.width,
+                                height: 400,
+                                child: GetBuilder<WorkoutPlanController>(
+                                    id: 'line_chart',
+                                    assignId: true,
+                                    builder: (_) {
+                                      return Obx(() => LineChartTwoLine(
+                                          listFlSpotCaloriesBurned:
+                                              listFlSpotCaloriesBurned.value,
+                                          listFlSpotCaloriesIntake:
+                                              listFlSpotCaloriesIntake.value));
+                                    })),
+                            const SizedBox(height: 20),
+                            Container(
+                              width: double.infinity,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 25,
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                gradient: AppColors.colorGradient2,
+                              ),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Daily Workout Schedule',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headline4!
+                                        .copyWith(
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                        ),
+                                  ),
+                                  const Spacer(),
+                                  ButtonGradient(
+                                    height: 40.0,
+                                    width: 90.0,
+                                    linearGradient: const LinearGradient(
+                                      colors: [
+                                        AppColors.primaryColor1,
+                                        AppColors.primaryColor1,
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      Get.to(() {
+                                        return FutureBuilder(
+                                            future: Future(() async {
+                                          await Future.delayed(const Duration(
+                                              milliseconds: 800));
+                                          return const WorkoutScheduleScreen();
+                                        }), builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.done) {
+                                            if (snapshot.hasData) {
+                                              return snapshot.data as Widget;
+                                            }
+                                          }
+                                          return const Scaffold(
+                                            body: Center(
+                                                child:
+                                                    CircularProgressIndicator()),
+                                          );
+                                        });
+                                      });
+                                    },
+                                    title: const Text(
+                                      'Check',
+                                      style: TextStyle(
+                                        fontFamily: 'Sen',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 12,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(height: 30),
+                            RowText_Seemore(
+                              press: () {},
+                              title: 'Upcoming Workout',
+                            ),
+                            const SizedBox(height: 15),
+                            Obx(() {
+                              return Column(
+                                children: listWorkoutSchedule.value.entries
+                                    .map((e) => e.value)
+                                    .toList(),
+                              );
+                            }),
+                            const SizedBox(height: 20),
+                            RowText_Seemore(
+                              press: () {
+                                Get.to(() => SeeMoreWorkoutScreen(
+                                    listWorkoutID: listWorkoutID.value));
+                              },
+                              title: 'What Do You Want to Train',
+                            ),
+                            const SizedBox(height: 15),
+                            Column(
+                              children: [
+                                CategoriesWorkoutCard(
+                                  cate_name: 'Upperbody Workout',
+                                  press: () {
+                                    Get.to(() => const ChoseWorkoutScreen(),
+                                        arguments: listWorkoutID
+                                            .value['Upperbody'] as String);
+                                  },
+                                  imagePath: 'assets/images/upperbody.png',
+                                  exer: 12,
+                                  time: 40,
+                                ),
+                                CategoriesWorkoutCard(
+                                  cate_name: 'Lowebody Workout',
+                                  press: () {
+                                    Get.to(() => const ChoseWorkoutScreen(),
+                                        arguments: listWorkoutID
+                                            .value['Lowebody'] as String);
+                                  },
+                                  imagePath: 'assets/images/lowebody.png',
+                                  exer: 12,
+                                  time: 40,
+                                ),
+                                CategoriesWorkoutCard(
+                                  cate_name: 'Fullbody Workout',
+                                  press: () {
+                                    Get.to(() => const ChoseWorkoutScreen(),
+                                        arguments: listWorkoutID
+                                            .value['Fullbody'] as String);
+                                  },
+                                  imagePath: 'assets/images/fullbody.png',
+                                  exer: 11,
+                                  time: 32,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      );
+      // return true;
     } catch (e) {
       print('_fetchData: ${e.toString()}');
-      return false;
+      // return false;
+      rethrow;
     }
+  }
+
+  Future<void> _addListFlSpot() async {
+    listFlSpotCaloriesBurned
+        .bindStream(controller.flSpotChart.stream.map((event) {
+      List<FlSpot> result = [];
+      event.forEach((key, value) {
+        result.add(FlSpot(key.weekday.toDouble(), value));
+      });
+      result.sort(
+        (a, b) {
+          return a.x.compareTo(b.x);
+        },
+      );
+      return result;
+    }));
+    Future.delayed(const Duration(seconds: 1), () {
+      listFlSpotCaloriesIntake.bindStream(
+          Stream.fromFuture(Future.value(_mealPlanController.listWeekNutrition))
+              .map((event) {
+        List<FlSpot> result = [];
+        double count = 1;
+        for (var element in event) {
+          result.add(FlSpot(count++, (element['kCal'] as int).toDouble()));
+        }
+        return result;
+      }));
+    });
   }
 
   Future<void> _addListWorkoutId() async {
@@ -93,7 +409,7 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
           return result;
         }));
         return await Future.value(listWorkoutScheduleInMemory);
-      }, tag: 'listWorkoutID');
+      }, tag: '_addListWorkoutSchedule');
     } catch (e) {
       debugPrint(e.toString());
       rethrow;
@@ -102,15 +418,6 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var widthDevice = MediaQuery.of(context).size.width;
-    List<String> tabs = [
-      'Nutrition',
-      'Workout',
-      'Foot step',
-      'Water',
-      'Fasting',
-      'Sleep',
-    ];
     return Scaffold(
       backgroundColor: AppColors.mainColor,
       extendBody: true,
@@ -120,290 +427,7 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData) {
-                if (snapshot.data as bool) {
-                  return GetBuilder<WorkoutPlanController>(builder: (_) {
-                    return ScreenTemplate(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            Container(
-                              width: double.maxFinite,
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 10,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.mainColor,
-                                borderRadius: const BorderRadius.only(
-                                  topLeft: Radius.circular(50),
-                                  topRight: Radius.circular(50),
-                                ),
-                              ),
-                              child: SingleChildScrollView(
-                                physics: const NeverScrollableScrollPhysics(),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () async {
-                                            int? newIndex;
-                                            await _showDialogMethod(
-                                              context: context,
-                                              tabs: tabs,
-                                              onSelectedTabs: (value) {
-                                                newIndex = value;
-                                              },
-                                              done: () {
-                                                print(newIndex);
-                                                if (newIndex != null) {
-                                                  controller
-                                                      .changeTab(newIndex ?? 0);
-                                                } else {
-                                                  controller.changeTab(0);
-                                                }
-                                                Navigator.pop(context);
-                                              },
-                                            );
-                                          },
-                                          child: Row(
-                                            children: const [
-                                              Text(
-                                                'Workout Planner',
-                                                style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 20,
-                                                ),
-                                              ),
-                                              Icon(
-                                                Icons
-                                                    .keyboard_arrow_down_outlined,
-                                                color: Colors.black,
-                                                size: 24,
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        const Spacer(),
-                                        InkWell(
-                                          onTap: () {
-                                            Get.to(() =>
-                                                const WorkoutHistoryScreen());
-                                          },
-                                          child: Container(
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                              color: AppColors.primaryColor1
-                                                  .withOpacity(0.2),
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                            ),
-                                            child: const Icon(
-                                              Icons.history,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Workout ',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headline4!
-                                              .copyWith(
-                                                fontSize: 17,
-                                              ),
-                                        ),
-                                        const Spacer(),
-                                        ButtonIconGradientColor(
-                                          title: 'Week',
-                                          icon: Icons.calendar_month,
-                                          press: () async {
-                                            _showDatePicker(
-                                              context: context,
-                                            );
-                                          },
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(height: 20),
-                                    SizedBox(
-                                      width: widthDevice,
-                                      height: 200,
-                                      // ignore: avoid_unnecessary_containers
-                                      child: Container(
-                                        child: const LineChartTwoLine(),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 20),
-                                    Container(
-                                      width: double.infinity,
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 20,
-                                        vertical: 25,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        gradient: AppColors.colorGradient2,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'Daily Workout Schedule',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headline4!
-                                                .copyWith(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18,
-                                                ),
-                                          ),
-                                          const Spacer(),
-                                          ButtonGradient(
-                                            height: 40.0,
-                                            width: 90.0,
-                                            linearGradient:
-                                                const LinearGradient(
-                                              colors: [
-                                                AppColors.primaryColor1,
-                                                AppColors.primaryColor1,
-                                              ],
-                                            ),
-                                            onPressed: () {
-                                              Get.to(() {
-                                                return FutureBuilder(
-                                                    future: Future(() async {
-                                                  await Future.delayed(
-                                                      const Duration(
-                                                          milliseconds: 800));
-                                                  return const WorkoutScheduleScreen();
-                                                }), builder:
-                                                        (context, snapshot) {
-                                                  if (snapshot
-                                                          .connectionState ==
-                                                      ConnectionState.done) {
-                                                    if (snapshot.hasData) {
-                                                      return snapshot.data
-                                                          as Widget;
-                                                    }
-                                                  }
-                                                  return const Scaffold(
-                                                    body: Center(
-                                                        child:
-                                                            CircularProgressIndicator()),
-                                                  );
-                                                });
-                                              });
-                                            },
-                                            title: const Text(
-                                              'Check',
-                                              style: TextStyle(
-                                                fontFamily: 'Sen',
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 12,
-                                                color: Colors.white,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 30),
-                                    RowText_Seemore(
-                                      press: () {},
-                                      title: 'Upcoming Workout',
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Obx(() {
-                                      debugPrint(listWorkoutSchedule
-                                          .value.entries
-                                          .toString());
-                                      return Column(
-                                        children: listWorkoutSchedule
-                                            .value.entries
-                                            .map((e) => e.value)
-                                            .toList(),
-                                      );
-                                    }),
-                                    const SizedBox(height: 20),
-                                    RowText_Seemore(
-                                      press: () {
-                                        Get.to(() => SeeMoreWorkoutScreen(
-                                            listWorkoutID:
-                                                listWorkoutID.value));
-                                      },
-                                      title: 'What Do You Want to Train',
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Column(
-                                      children: [
-                                        CategoriesWorkoutCard(
-                                          cate_name: 'Upperbody Workout',
-                                          press: () {
-                                            Get.to(
-                                                () =>
-                                                    const ChoseWorkoutScreen(),
-                                                arguments: listWorkoutID
-                                                        .value['Upperbody']
-                                                    as String);
-                                          },
-                                          imagePath:
-                                              'assets/images/upperbody.png',
-                                          exer: 12,
-                                          time: 40,
-                                        ),
-                                        CategoriesWorkoutCard(
-                                          cate_name: 'Lowebody Workout',
-                                          press: () {
-                                            Get.to(
-                                                () =>
-                                                    const ChoseWorkoutScreen(),
-                                                arguments: listWorkoutID
-                                                        .value['Lowebody']
-                                                    as String);
-                                          },
-                                          imagePath:
-                                              'assets/images/lowebody.png',
-                                          exer: 12,
-                                          time: 40,
-                                        ),
-                                        CategoriesWorkoutCard(
-                                          cate_name: 'Fullbody Workout',
-                                          press: () {
-                                            Get.to(
-                                                () =>
-                                                    const ChoseWorkoutScreen(),
-                                                arguments: listWorkoutID
-                                                        .value['Fullbody']
-                                                    as String);
-                                          },
-                                          imagePath:
-                                              'assets/images/fullbody.png',
-                                          exer: 11,
-                                          time: 32,
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  });
-                } else {
-                  print('Some thing went wrong');
-                }
+                return snapshot.data as Widget;
               }
             }
             return const Center(

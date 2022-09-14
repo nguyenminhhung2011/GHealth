@@ -34,43 +34,23 @@ class _HomeScreenState extends State<HomeScreen> {
   double value = 0;
   final List<int> _list = [for (int i = 1; i <= 140; i++) i];
   final homeScreenController = Get.find<HomeScreenControl>();
-  // final homeScreenController = Get.put(HomeScreenControl());
-
-  final List<String> timeProgress = [
-    '6am - 8am',
-    '8am - 10am',
-    '10am - 1pm',
-    '1pm - 3pm',
-    '3pm - 5pm',
-    '5pm - 8pm',
-    '8pm - 10pm',
-    '10pm - 12pm',
-  ];
-  final Map<String, double> litersProgress = {
-    '6am - 8am': 600,
-    '8am - 10am': 250,
-    '10am - 1pm': 200,
-    '1pm - 3pm': 500,
-    '3pm - 5pm': 600,
-    '5pm - 8pm': 800,
-    '8pm - 10pm': 300,
-    '10pm - 12pm': 500,
-  };
-
   final double calories = 760;
   final double liters = 8;
   final double caloriesLeft = 230;
   final int footSteps = 1000;
-  final int exerciseTime = 19;
-  final int standTime = 3;
-
-  final stopwatch = Stopwatch()..start();
-
+  late RxInt exerciseTime = 0.obs;
+  late RxInt exerciseTimeTarget = 1.obs;
+  final int sleepTime = 3;
+  final int sleepTimeTarget = 8;
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() async {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    exerciseTimeTarget.value = await homeScreenController.getExerciseTimeData();
+    exerciseTime.value = await homeScreenController.getExerciseTimeHistory();
   }
 
+  @override
   Widget build(BuildContext context) {
     var widthDevice = MediaQuery.of(context).size.width;
     const double heightOfWaterChart = 100 * 5 - 50;
@@ -340,7 +320,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Container _ActivityViewField(
       BuildContext context, double heightOfWaterChart) {
     return Container(
-      margin: const EdgeInsets.only(right: 5),
+      margin: const EdgeInsets.only(right: 5, bottom: 5),
       padding: const EdgeInsets.all(2),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -363,6 +343,9 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(
+            height: 5,
+          ),
           SizedBox(
             height: 22,
             child: Row(
@@ -387,6 +370,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           ),
+          const SizedBox(height: 5),
           Row(
             children: [
               RichText(
@@ -454,7 +438,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               RichText(
                 text: TextSpan(
-                  text: 'Stand',
+                  text: 'Sleep',
                   style: TextStyle(
                     color: Colors.blue[300],
                     fontWeight: FontWeight.bold,
@@ -462,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   children: [
                     TextSpan(
-                      text: '\n $standTime',
+                      text: '\n $sleepTime',
                       style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w800,
@@ -479,20 +463,27 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           Expanded(
-            child: Center(
+              child: Obx(
+            () => Center(
               child: CircularPercentIndicator(
+                animation: true,
+                animationDuration: 600,
                 rotateLinearGradient: true,
                 radius: 400 / 2 - 140,
                 lineWidth: 15.0,
                 circularStrokeCap: CircularStrokeCap.round,
-                onAnimationEnd: () {},
                 percent: 0.7,
                 center: CircularPercentIndicator(
+                  animation: true,
+                  animationDuration: 600,
                   radius: 400 / 2 - 160,
                   lineWidth: 15.0,
-                  percent: 0.5,
+                  percent: exerciseTime.value.toDouble() /
+                      exerciseTimeTarget.value.toDouble(),
                   circularStrokeCap: CircularStrokeCap.round,
                   center: CircularPercentIndicator(
+                    animation: true,
+                    animationDuration: 600,
                     circularStrokeCap: CircularStrokeCap.round,
                     radius: 400 / 2 - 180,
                     lineWidth: 12.0,
@@ -507,7 +498,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 progressColor: Colors.red[300],
               ),
             ),
-          ),
+          )),
         ],
       ),
     );
@@ -516,6 +507,7 @@ class _HomeScreenState extends State<HomeScreen> {
   // ignore: non_constant_identifier_names
   Container _WaterViewField(double heightOfWaterChart, BuildContext context) {
     return Container(
+      margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
