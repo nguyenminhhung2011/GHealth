@@ -5,6 +5,7 @@ import 'package:gold_health/apps/pages/progress_tracker/take_photo_screen.dart';
 import 'package:intl/intl.dart';
 import '../../controls/progress_controller/progress_controller.dart';
 import '../../global_widgets/screen_template.dart';
+import '../../routes/route_name.dart';
 import '../../template/misc/colors.dart';
 import 'comparision_sreen.dart';
 
@@ -264,13 +265,7 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
                           const Spacer(),
                           ButtonText(
                             press: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ComparisionScreen(),
-                                ),
-                              );
+                              Get.toNamed(RouteName.compareScreen);
                             },
                             title: 'Compare',
                             color: AppColors.primaryColor1,
@@ -309,48 +304,57 @@ class _ProgressPhotoScreenState extends State<ProgressPhotoScreen> {
                     Obx(
                       () => (controller.listProgress.isNotEmpty)
                           ? Column(
-                              children: controller.listProgress.map((e) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20.0),
-                                    child: Text(
-                                      DateFormat().add_MMMEd().format(e.date),
-                                      style: const TextStyle(
-                                          color: Colors.grey, fontSize: 14),
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  // ignore: sized_box_for_whitespace
-                                  Container(
-                                    height: 100,
-                                    width: widthDevice,
-                                    child: ListView.builder(
-                                      scrollDirection: Axis.horizontal,
-                                      itemCount: e.image.length,
-                                      itemBuilder: (context, index) =>
-                                          Container(
-                                        margin: const EdgeInsets.only(left: 10),
-                                        width: 100,
+                              children: [
+                                for (int i = 0;
+                                    i < controller.lengthProgess;
+                                    i++)
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0),
+                                        child: Text(
+                                          DateFormat().add_MMMEd().format(
+                                              controller.listProgress[i].date),
+                                          style: const TextStyle(
+                                              color: Colors.grey, fontSize: 14),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                      // ignore: sized_box_for_whitespace
+                                      Container(
                                         height: 100,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                              e.image[index],
+                                        width: widthDevice,
+                                        child: ListView.builder(
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: controller
+                                              .listProgress[i].image.length,
+                                          itemBuilder: (context, index) =>
+                                              Container(
+                                            margin:
+                                                const EdgeInsets.only(left: 10),
+                                            width: 100,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              image: DecorationImage(
+                                                fit: BoxFit.cover,
+                                                image: NetworkImage(
+                                                  controller.listProgress[i]
+                                                      .image[index],
+                                                ),
+                                              ),
                                             ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ),
-                                ],
-                              );
-                            }).toList())
+                                    ],
+                                  )
+                              ],
+                            )
                           : Container(),
                     )
                   ],

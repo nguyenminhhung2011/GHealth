@@ -313,16 +313,6 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                         if (count == 0) {
                           controller.datePicker.value = timeTemp;
                           Get.back(result: true);
-                          // controller.isLoading.value = true;
-
-                          // await controller.upProressToFirebase(timeTemp).then(
-                          //   (value) {
-                          //     if (value == 'Upload Image sucess') {
-                          //       controller.isLoading.value = false;
-                          //       Get.back(result: true);
-                          //     }
-                          //   },
-                          // );
                         } else {
                           Get.back(result: false);
                         }

@@ -22,6 +22,7 @@ import 'package:gold_health/apps/pages/dashboard/home_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/profile_screen.dart';
 import 'package:gold_health/apps/pages/mealPlanner/category_meal_screen.dart';
 import 'package:gold_health/apps/pages/mealPlanner/meal_detail_screen.dart';
+import 'package:gold_health/apps/pages/progress_tracker/compare_result_screen.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/add_alarm_screen.dart';
 import 'package:gold_health/apps/pages/sleep_tracker/sleep_schedule_screen.dart';
 import 'package:gold_health/apps/pages/workout_tracker_screen/workout_schedule_screen.dart';
@@ -29,6 +30,7 @@ import 'package:gold_health/apps/pages/workout_tracker_screen/workout_tracker_sc
 import 'package:gold_health/apps/routes/route_name.dart';
 import 'package:gold_health/apps/pages/dashboard/activity_tracker_screen.dart';
 import '../binding/basic_info_binding.dart';
+import '../binding/compare_result_binding.dart';
 import '../binding/meal_schedule_binding.dart';
 import '../binding/view_meal_binding.dart';
 import '../pages/dashboard/notification_screen.dart';
@@ -42,6 +44,7 @@ import '../pages/list_plan_screen/add_food_nutri_screen.dart';
 import '../pages/list_plan_screen/daili_nutri_screen.dart';
 import '../pages/mealPlanner/meal_schedule_screen.dart';
 import '../pages/mealPlanner/view_meal_screen.dart';
+import '../pages/progress_tracker/comparision_sreen.dart';
 import '../pages/progress_tracker/take_photo_screen.dart';
 import '../pages/sleep_tracker/select_time_sleep..dart';
 import '../pages/sleep_tracker/sleep_counting_screen.dart';
@@ -189,6 +192,15 @@ class AppPages {
     GetPage(
       name: RouteName.takePhotoScreen,
       page: () => TakePhotoScreen(fakeDta: []),
+    ),
+    GetPage(
+      name: RouteName.compareScreen,
+      page: () => const ComparisionScreen(),
+    ),
+    GetPage(
+      name: RouteName.compareResult,
+      page: () => const CompareResultScreen(),
+      binding: CompareResultB(),
     ),
   ];
 }
