@@ -17,6 +17,8 @@ class ProgressC extends GetxController {
 
   List<File?> get listImage => _listImage.value;
   List<Progres> get listProgress => _listProgress.value;
+  RxBool isLoading = false.obs;
+  Rx<DateTime> datePicker = DateTime.now().obs;
 
   List<Map<String, dynamic>> basicListImage = [
     {
@@ -141,11 +143,11 @@ class ProgressC extends GetxController {
     }
   }
 
+  void functionNull() {}
   void disposeAll() {
     _listImage.value = [null, null, null, null];
-    onFocus.value = 1;
-    update();
-    Get.back();
+    onFocus.value = 0;
+    datePicker.value = DateTime.now();
   }
 
   @override

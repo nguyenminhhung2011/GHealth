@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,7 +22,13 @@ class TakePhotoScreen extends StatefulWidget {
 
 class _TakePhotoScreenState extends State<TakePhotoScreen>
     with TickerProviderStateMixin {
-  final conroller = Get.find<ProgressC>();
+  final controller = Get.find<ProgressC>();
+  bool isLoading = false;
+  @override
+  // void dispose() {
+  //   controller.disposeAll();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -62,9 +69,7 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
+                                onTap: () => Get.back(),
                                 child: Container(
                                   padding: const EdgeInsets.all(5),
                                   decoration: BoxDecoration(
@@ -79,90 +84,29 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                               ),
                               InkWell(
                                 onTap: () async {
-                                  DateTime timeTemp = DateTime.now();
-                                  await showModalBottomSheet(
-                                    context: context,
-                                    transitionAnimationController:
-                                        AnimationController(
-                                      vsync: this,
-                                      duration: const Duration(
-                                        milliseconds: 400,
-                                      ),
-                                    ),
-                                    builder: (context) => Container(
-                                      height: 260,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.mainColor,
-                                        borderRadius: const BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            topRight: Radius.circular(10)),
-                                      ),
-                                      child: Column(
-                                        children: [
-                                          // ignore: avoid_unnecessary_containers
-                                          SizedBox(
-                                            height: 180,
-                                            child: CupertinoDatePicker(
-                                              mode:
-                                                  CupertinoDatePickerMode.date,
-                                              onDateTimeChanged: (value) {
-                                                timeTemp = value;
-                                              },
-                                              initialDateTime: DateTime.now(),
-                                            ),
-                                          ),
-                                          const SizedBox(height: 20),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 20),
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: InkWell(
-                                                    onTap: () {
-                                                      var count = controller
-                                                          .listImage
-                                                          .where((element) =>
-                                                              element == null)
-                                                          .toList()
-                                                          .length;
-                                                      (count > 0)
-                                                          ? controller
-                                                              .disposeAll()
-                                                          : controller
-                                                              .upProressToFirebase(
-                                                                  timeTemp);
-                                                      Get.back();
-                                                    },
-                                                    child: Container(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      height: 50,
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(15),
-                                                          color: AppColors
-                                                              .primaryColor1),
-                                                      child: const Text(
-                                                        'Save',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 18,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
+                                  final result =
+                                      await dialogCalender(context, controller);
+                                  if (result != null && result == true) {
+                                    // controller.disposeAll();
+                                    // Get.back();
+                                    Get.snackbar(
+                                      'Progress',
+                                      'Wait to upload Image ',
+                                      colorText: AppColors.primaryColor1,
+                                      backgroundColor: Colors.white,
+                                    );
+                                    controller.isLoading.value = true;
+                                    controller.update();
+                                    controller
+                                        .upProressToFirebase(
+                                            controller.datePicker.value)
+                                        .then((value) {
+                                      if (value == 'Upload Image sucess') {
+                                        controller.isLoading.value = false;
+                                        Get.back();
+                                      }
+                                    });
+                                  }
                                 },
                                 child: Container(
                                   padding: const EdgeInsets.all(5),
@@ -208,7 +152,7 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 IconButton(
-                                  onPressed: () => conroller.pickImageCamera(),
+                                  onPressed: () => controller.pickImageCamera(),
                                   icon: SvgPicture.asset(
                                       'assets/icons/Camera.svg'),
                                 ),
@@ -230,6 +174,24 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                         const SizedBox(height: 20),
                       ],
                     ),
+                    controller.isLoading.value
+                        ? SizedBox(
+                            width: double.infinity,
+                            height: double.infinity,
+                            child: BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    color: Colors.white.withOpacity(0.0)),
+                                child: const Center(
+                                  child: CircularProgressIndicator(
+                                      color: AppColors.primaryColor1),
+                                ),
+                              ),
+                            ),
+                          )
+                        : Container(),
                   ],
                 ),
               ),
@@ -298,6 +260,97 @@ class _TakePhotoScreenState extends State<TakePhotoScreen>
                         );
                       }).toList()),
                 ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<dynamic> dialogCalender(BuildContext context, ProgressC controller) {
+    DateTime timeTemp = DateTime.now();
+    return showModalBottomSheet(
+      context: context,
+      transitionAnimationController: AnimationController(
+        vsync: this,
+        duration: const Duration(
+          milliseconds: 400,
+        ),
+      ),
+      builder: (context) => Container(
+        height: 260,
+        decoration: BoxDecoration(
+          color: AppColors.mainColor,
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(10), topRight: Radius.circular(10)),
+        ),
+        child: Column(
+          children: [
+            // ignore: avoid_unnecessary_containers
+            SizedBox(
+              height: 180,
+              child: CupertinoDatePicker(
+                mode: CupertinoDatePickerMode.date,
+                onDateTimeChanged: (value) {
+                  timeTemp = value;
+                },
+                initialDateTime: DateTime.now(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: InkWell(
+                      onTap: () async {
+                        var count = controller.listImage
+                            .where((element) => element == null)
+                            .toList()
+                            .length;
+                        if (count == 0) {
+                          controller.datePicker.value = timeTemp;
+                          Get.back(result: true);
+                          // controller.isLoading.value = true;
+
+                          // await controller.upProressToFirebase(timeTemp).then(
+                          //   (value) {
+                          //     if (value == 'Upload Image sucess') {
+                          //       controller.isLoading.value = false;
+                          //       Get.back(result: true);
+                          //     }
+                          //   },
+                          // );
+                        } else {
+                          Get.back(result: false);
+                        }
+                      },
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            color: AppColors.primaryColor1),
+                        child: !controller.isLoading.value
+                            ? const Text(
+                                'Save',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              )
+                            : const Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.white,
+                                ),
+                              ),
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ],
