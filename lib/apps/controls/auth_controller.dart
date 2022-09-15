@@ -130,7 +130,7 @@ class AuthC extends GetxController {
             ],
           });
           DateTime now = DateTime.now();
-          DateTime cur = DateTime().add(const Duration(days: 7));
+          DateTime cur = DateTime.now().add(const Duration(days: 7));
           await _firStore
               .collection('users')
               .doc(cred.user!.uid)
