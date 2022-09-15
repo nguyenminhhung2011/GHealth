@@ -674,7 +674,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Row(
             children: [
               Text(
-                'Process',
+                'Today Schedule',
                 style: Theme.of(context).textTheme.headline4!.copyWith(
                       color: Colors.black,
                       fontWeight: FontWeight.w600,
