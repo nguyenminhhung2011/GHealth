@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:workmanager/workmanager.dart';
 
 class CountDownTimer extends StatefulWidget {
   const CountDownTimer({Key? key, required this.duration}) : super(key: key);
@@ -21,7 +22,11 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   var isPlay = false.obs;
   var isFinish = false.obs;
-  double progress = 0;
+  var progress = 0.00.obs;
+
+  void stopProgress() {
+    isPlay.value = !isPlay.value;
+  }
 
   String get countText {
     Duration count = _controller!.duration! * _controller!.value;
@@ -37,6 +42,7 @@ class _CountDownTimerState extends State<CountDownTimer>
   @override
   void initState() {
     super.initState();
+    Workmanager().registerOneOffTask('', '');
     _controllerOpacity = AnimationController(
       vsync: this,
       duration: const Duration(
@@ -48,9 +54,7 @@ class _CountDownTimerState extends State<CountDownTimer>
     _controller = AnimationController(vsync: this, duration: widget.duration);
 
     _controller!.addListener(() {
-      setState(() {
-        progress = _controller!.value;
-      });
+      progress.value = _controller!.value;
       if (_controller!.isCompleted) {
         _controller!.stop();
         isFinish.value = true;
@@ -62,8 +66,10 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   @override
   void dispose() {
+    _controllerOpacity.dispose();
+    _controller!.clearListeners();
+    _controller!.dispose();
     _controller = null;
-    _controller?.dispose();
     super.dispose();
   }
 
@@ -78,14 +84,23 @@ class _CountDownTimerState extends State<CountDownTimer>
               child: isFinish.value
                   ? FadeTransition(
                       opacity: _animationOpacity,
-                      child: congratulationCenter(),
+                      child: const CongratulationCenter(),
                     )
-                  : countDownCenter(),
+                  : Obx(
+                      () => CountDownCenter(
+                        controller: _controller,
+                        countText: countText,
+                        stopProgress: stopProgress,
+                        duration: widget.duration,
+                        progress: progress.value,
+                        isPlay: isPlay.value,
+                      ),
+                    ),
             ),
             circularStrokeCap: CircularStrokeCap.round,
             percent: fastingPlanController.isRemainMode.value
-                ? 1 - progress
-                : progress,
+                ? 1 - progress.value
+                : progress.value,
             reverse: fastingPlanController.isRemainMode.value,
             curve: Curves.linear,
             progressColor: Colors.lightBlue[300],
@@ -98,102 +113,13 @@ class _CountDownTimerState extends State<CountDownTimer>
       ],
     );
   }
+}
 
-  Widget countDownCenter() {
-    return Column(
-      children: [
-        InkWell(
-          radius: 40,
-          borderRadius: BorderRadius.circular(50),
-          onTap: () {
-            fastingPlanController.isRemainMode.value =
-                !fastingPlanController.isRemainMode.value;
-          },
-          child: Icon(
-            Icons.change_circle_rounded,
-            color: Colors.blue[300],
-            size: 35,
-          ),
-        ),
-        Text(
-          fastingPlanController.isRemainMode.value
-              ? 'Remaining'
-              : 'Fasting Time',
-          style: TextStyle(
-            color: Colors.blueGrey[600],
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        AnimatedBuilder(
-          animation: _controller!,
-          builder: (context, child) => Text(
-            countText,
-            style: const TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ),
-        InkWell(
-          borderRadius: BorderRadius.circular(50),
-          onTap: () {
-            if (isPlay.value) {
-              _controller!.stop();
-            } else {
-              _controller!.forward(from: _controller!.value);
-            }
-            isPlay.value = !isPlay.value;
-          },
-          radius: 60,
-          child: Obx(() => Icon(
-                isPlay.value
-                    ? Icons.pause_circle_filled_rounded
-                    : Icons.play_circle_fill_rounded,
-                color: Colors.blue[300],
-                size: 45,
-              )),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          'End Time',
-          style: TextStyle(
-            color: Colors.blueGrey[600],
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 5),
-        Obx(
-          () => Text(
-              DateFormat().add_jm().format(fastingPlanController
-                  .chooseDateTime.value
-                  .add(widget.duration)),
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              )),
-        ),
-        const SizedBox(
-          width: 100,
-          child: Divider(
-            thickness: 1,
-          ),
-        ),
-        Text(
-          '${(progress * 100).toInt()}%',
-          style: const TextStyle(
-            color: Colors.blueGrey,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-      ],
-    );
-  }
+class CongratulationCenter extends StatelessWidget {
+  const CongratulationCenter({super.key});
 
-  Widget congratulationCenter() {
+  @override
+  Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -228,6 +154,120 @@ class _CountDownTimerState extends State<CountDownTimer>
           ),
         ],
       ),
+    );
+  }
+}
+
+class CountDownCenter extends StatelessWidget {
+  CountDownCenter({
+    super.key,
+    required this.controller,
+    required this.countText,
+    required this.stopProgress,
+    required this.duration,
+    required this.progress,
+    required this.isPlay,
+  });
+  final fastingPlanController = Get.find<FastingPlanController>();
+  final AnimationController? controller;
+  final String countText;
+  final Function() stopProgress;
+  final Duration duration;
+  final double progress;
+  final bool isPlay;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        InkWell(
+          radius: 40,
+          borderRadius: BorderRadius.circular(50),
+          onTap: () {
+            fastingPlanController.isRemainMode.value =
+                !fastingPlanController.isRemainMode.value;
+          },
+          child: Icon(
+            Icons.change_circle_rounded,
+            color: Colors.blue[300],
+            size: 35,
+          ),
+        ),
+        Text(
+          fastingPlanController.isRemainMode.value
+              ? 'Remaining'
+              : 'Fasting Time',
+          style: TextStyle(
+            color: Colors.blueGrey[600],
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        AnimatedBuilder(
+          animation: controller!,
+          builder: (context, child) => Text(
+            countText,
+            style: const TextStyle(
+              fontSize: 40,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        InkWell(
+          borderRadius: BorderRadius.circular(50),
+          onTap: () {
+            if (isPlay) {
+              controller!.stop();
+            } else {
+              controller!.forward(from: controller!.value);
+            }
+            stopProgress();
+          },
+          radius: 60,
+          child: Icon(
+            isPlay
+                ? Icons.pause_circle_filled_rounded
+                : Icons.play_circle_fill_rounded,
+            color: Colors.blue[300],
+            size: 45,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          'End Time',
+          style: TextStyle(
+            color: Colors.blueGrey[600],
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Obx(
+          () => Text(
+            DateFormat().add_jm().format(
+                  fastingPlanController.chooseDateTime.value.add(duration),
+                ),
+            style: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        const SizedBox(
+          width: 100,
+          child: Divider(
+            thickness: 1,
+          ),
+        ),
+        Text(
+          '${(progress * 100).toInt()}%',
+          style: const TextStyle(
+            color: Colors.blueGrey,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ],
     );
   }
 }

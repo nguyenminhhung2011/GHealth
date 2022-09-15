@@ -171,7 +171,10 @@ class HomeScreenControl extends GetxController {
             .get();
         for (var doc in data.docs) {
           WorkoutHistory temp = WorkoutHistory.fromSnap(doc);
-          if (temp.time.difference(DateTime.now()).inDays == 0) {
+          if (temp.time.day == DateTime.now().day &&
+              temp.time.month == DateTime.now().month &&
+              temp.time.year == DateTime.now().year) {
+            print(temp.time);
             time += temp.duration.inMinutes;
           }
         }
