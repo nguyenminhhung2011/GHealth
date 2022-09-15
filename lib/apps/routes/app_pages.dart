@@ -1,4 +1,5 @@
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:gold_health/apps/binding/acti_history_binding.dart';
 import 'package:gold_health/apps/binding/category_meal_binding.dart';
 import 'package:gold_health/apps/binding/daily_nutrition_binding.dart';
 import 'package:gold_health/apps/binding/login_binding.dart';
@@ -135,7 +136,7 @@ class AppPages {
     GetPage(
       name: RouteName.notificationScreen,
       page: () => NotifiCationScreen(),
-      // binding: NotificationBiding(),
+      binding: ActiHistoryB(),
     ),
     GetPage(
       name: RouteName.workoutScheduleScreen,

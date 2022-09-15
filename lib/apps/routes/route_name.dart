@@ -32,4 +32,5 @@ abstract class RouteName {
   static const compareScreen = "/compare_screen";
   static const compareResult = "/compare_result";
   static const todaySchedule = "/today_schedule";
+  static const actiHistory = "/acti_history";
 }

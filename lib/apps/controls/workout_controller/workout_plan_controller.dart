@@ -315,6 +315,17 @@ class WorkoutPlanController extends GetxController with TrackerController {
         .doc(firebaseAuth.currentUser!.uid)
         .collection('workout_history')
         .add(data);
+    await firestore
+        .collection('users')
+        .doc(AuthService.instance.currentUser!.uid)
+        .collection('activity_history')
+        .add({
+      'consume': 0,
+      'date': DateTime.now(),
+      'kCalBurn': data['caloriesBurn'],
+      'kCalConsume': 0,
+      'type': 2,
+    });
   }
 
   Future<void> updateScheduleWorkout(
