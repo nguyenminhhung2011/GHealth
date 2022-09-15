@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:gold_health/apps/routes/app_pages.dart';
 import 'package:gold_health/services/start_services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'apps/routes/route_name.dart';
 import 'apps/template/misc/colors.dart';
