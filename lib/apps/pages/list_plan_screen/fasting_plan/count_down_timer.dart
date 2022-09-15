@@ -1,9 +1,15 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
+import 'package:gold_health/constrains.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
+import 'package:gold_health/main.dart' show sharedPreferencesOfApp;
+
+import '../../../../services/notification.dart';
 
 class CountDownTimer extends StatefulWidget {
   const CountDownTimer({Key? key, required this.duration}) : super(key: key);
@@ -15,7 +21,6 @@ class CountDownTimer extends StatefulWidget {
 class _CountDownTimerState extends State<CountDownTimer>
     with TickerProviderStateMixin {
   final fastingPlanController = Get.find<FastingPlanController>();
-
   late AnimationController _controllerOpacity;
   late Animation<double> _animationOpacity;
   late AnimationController? _controller;
@@ -42,7 +47,6 @@ class _CountDownTimerState extends State<CountDownTimer>
   @override
   void initState() {
     super.initState();
-    Workmanager().registerOneOffTask('', '');
     _controllerOpacity = AnimationController(
       vsync: this,
       duration: const Duration(
@@ -51,23 +55,69 @@ class _CountDownTimerState extends State<CountDownTimer>
     );
     _animationOpacity = Tween(begin: 0.0, end: 1.0).animate(
         CurvedAnimation(parent: _controllerOpacity, curve: Curves.easeIn));
-    _controller = AnimationController(vsync: this, duration: widget.duration);
+  }
 
-    _controller!.addListener(() {
-      progress.value = _controller!.value;
-      if (_controller!.isCompleted) {
-        _controller!.stop();
-        isFinish.value = true;
-        _controllerOpacity.forward();
-        isPlay.value = false;
+  Future<bool> prepareForData() async {
+    await Future(() {
+      double value =
+          (sharedPreferencesOfApp.getInt('controllerDuration')?.toDouble() ??
+                  0) /
+              (sharedPreferencesOfApp.getInt('endDuration')?.toDouble() ?? 1);
+      print('prepareForDataValue: $value');
+      _controller = AnimationController(vsync: this, duration: widget.duration);
+      _controller!.value = value;
+      _controller!.addListener(() {
+        progress.value = _controller!.value;
+        if (_controller!.isCompleted) {
+          _controller!.stop();
+          isFinish.value = true;
+          _controllerOpacity.forward();
+          isPlay.value = false;
+        }
+      });
+      isPlay.value = sharedPreferencesOfApp.getBool('isPlaying') ?? false;
+      if (isPlay.value) {
+        _controller!.forward();
       }
+      print('isPlay.value: ${isPlay.value}');
     });
+    return true;
   }
 
   @override
-  void dispose() {
+  void dispose() async {
+    sharedPreferencesOfApp.remove('isPlaying');
+    sharedPreferencesOfApp.remove('isFasting');
+    sharedPreferencesOfApp.remove('index');
+    sharedPreferencesOfApp.remove('endDuration');
+    sharedPreferencesOfApp.reload();
+    // Workmanager().registerOneOffTask(
+    //   'createFasting',
+    //   'save_value_count_down_controller',
+    //   inputData: {
+    //     'isPlaying': isPlay.value,
+    //     'indexOfListChoice': fastingPlanController.indexOfChoice,
+    //     'endDuration': widget.duration.inSeconds,
+    //     'controllerDuration':
+    //         (_controller!.value * _controller!.duration!.inSeconds).toInt()
+    //   },
+    // );
+
+    Map<String, dynamic> inputData = {
+      'isPlaying': isPlay.value,
+      'indexOfListChoice': fastingPlanController.indexOfChoice,
+      'endDuration': widget.duration.inSeconds,
+      'controllerDuration':
+          (_controller!.value * _controller!.duration!.inSeconds).toInt()
+    };
+
+    DateTime time = DateTime.now().add(widget.duration);
+    createFastingNotificationAuto(
+        NotificationCalendar.fromDate(
+          date: time,
+        ),
+        inputData);
     _controllerOpacity.dispose();
-    _controller!.clearListeners();
     _controller!.dispose();
     _controller = null;
     super.dispose();
@@ -75,43 +125,54 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Obx(
-          () => CircularPercentIndicator(
-            center: Padding(
-              padding: const EdgeInsets.only(top: 30),
-              child: isFinish.value
-                  ? FadeTransition(
-                      opacity: _animationOpacity,
-                      child: const CongratulationCenter(),
-                    )
-                  : Obx(
-                      () => CountDownCenter(
-                        controller: _controller,
-                        countText: countText,
-                        stopProgress: stopProgress,
-                        duration: widget.duration,
-                        progress: progress.value,
-                        isPlay: isPlay.value,
+    return FutureBuilder(
+        future: prepareForData(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasData) {
+              if (snapshot.data as bool) {
+                return Column(
+                  children: [
+                    Obx(
+                      () => CircularPercentIndicator(
+                        center: Padding(
+                          padding: const EdgeInsets.only(top: 30),
+                          child: isFinish.value
+                              ? FadeTransition(
+                                  opacity: _animationOpacity,
+                                  child: const CongratulationCenter(),
+                                )
+                              : Obx(
+                                  () => CountDownCenter(
+                                    controller: _controller,
+                                    countText: countText,
+                                    stopProgress: stopProgress,
+                                    duration: widget.duration,
+                                    progress: progress.value,
+                                    isPlay: isPlay.value,
+                                  ),
+                                ),
+                        ),
+                        circularStrokeCap: CircularStrokeCap.round,
+                        percent: fastingPlanController.isRemainMode.value
+                            ? 1 - progress.value
+                            : progress.value,
+                        reverse: fastingPlanController.isRemainMode.value,
+                        curve: Curves.linear,
+                        progressColor: Colors.lightBlue[300],
+                        backgroundColor: Colors.blueGrey[50]!,
+                        lineWidth: 27,
+                        radius: Get.mediaQuery.size.width * 0.4,
+                        backgroundWidth: 22,
                       ),
                     ),
-            ),
-            circularStrokeCap: CircularStrokeCap.round,
-            percent: fastingPlanController.isRemainMode.value
-                ? 1 - progress.value
-                : progress.value,
-            reverse: fastingPlanController.isRemainMode.value,
-            curve: Curves.linear,
-            progressColor: Colors.lightBlue[300],
-            backgroundColor: Colors.blueGrey[50]!,
-            lineWidth: 27,
-            radius: Get.mediaQuery.size.width * 0.4,
-            backgroundWidth: 22,
-          ),
-        ),
-      ],
-    );
+                  ],
+                );
+              }
+            }
+          }
+          return const Center(child: CircularProgressIndicator());
+        });
   }
 }
 

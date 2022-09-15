@@ -3,11 +3,15 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:timelines/timelines.dart';
+import 'package:gold_health/main.dart' show sharedPreferencesOfApp;
 
 class FastingPlanController extends GetxController with TrackerController {
+  bool? isCountDownLastTime;
   var isCountDown = false.obs;
   var chooseDateTime = DateTime.now().obs;
   var isRemainMode = false.obs;
+  int? indexOfChoice;
+
   // ignore: avoid_init_to_null
   dynamic fastingMode = null;
   List<Map<String, dynamic>> choices = [
@@ -68,6 +72,21 @@ class FastingPlanController extends GetxController with TrackerController {
       'opacityStarColor': Colors.green[200]!.withOpacity(0.4),
     },
   ];
+
+  @override
+  void onInit() async {
+    // TODO: implement onInit
+    super.onInit();
+    indexOfChoice = sharedPreferencesOfApp.getInt('index');
+    print(sharedPreferencesOfApp.getBool('isFasting'));
+    bool? isCountDownLastTime = sharedPreferencesOfApp.getBool('isFasting');
+    print('isCountDownLastTime: $isCountDownLastTime');
+    if (isCountDownLastTime != null) {
+      int index = sharedPreferencesOfApp.getInt('index') ?? 0;
+      fastingMode = choices[index];
+      isCountDown.value = true;
+    }
+  }
 
   Widget timeline() {
     return Timeline.tileBuilder(
@@ -199,4 +218,6 @@ class FastingPlanController extends GetxController with TrackerController {
       ),
     );
   }
+
+  void disposeController(AnimationController controller) {}
 }
