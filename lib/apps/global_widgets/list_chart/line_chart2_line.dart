@@ -57,7 +57,7 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
         lineBarsData: lineBarsData1,
         minX: 1,
         maxX: 7,
-        maxY: 1500,
+        maxY: 3000,
         minY: 0,
       );
 
@@ -88,8 +88,6 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
         lineChartBarData1_2,
       ];
 
-  List<LineChartBarData> get lineBarsData2 => [];
-
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       color: Colors.grey,
@@ -97,42 +95,17 @@ class _LineChartTwoLineState extends State<LineChartTwoLine> {
       fontSize: 14,
     );
     String text;
-    switch (value.toInt()) {
-      case 0:
-        text = '0';
-        break;
-      case 100:
-        text = '100';
-        break;
-      case 300:
-        text = '300';
-        break;
-      case 500:
-        text = '500';
-        break;
-      case 700:
-        text = '700';
-        break;
-      case 900:
-        text = '900';
-        break;
-      case 1100:
-        text = '1100';
-        break;
-      case 1200:
-        text = '1200';
-        break;
-      case 1300:
-        text = '1300';
-        break;
-      case 1400:
-        text = '1200';
-        break;
-      default:
-        return Container();
-    }
 
-    return Text(text, style: style, textAlign: TextAlign.center);
+    if (value == 0) {
+      text = '0';
+      return Text(text, style: style, textAlign: TextAlign.center);
+    } else {
+      if (value % 750 == 0) {
+        return Text(value.toString(),
+            style: style, textAlign: TextAlign.center);
+      }
+      return const SizedBox();
+    }
   }
 
   SideTitles leftTitles() => SideTitles(

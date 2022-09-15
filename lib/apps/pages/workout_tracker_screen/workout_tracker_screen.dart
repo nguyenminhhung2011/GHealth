@@ -175,7 +175,7 @@ class _WorkoutTrackerScreenState extends State<WorkoutTrackerScreen> {
                             const SizedBox(height: 20),
                             SizedBox(
                                 width: Get.mediaQuery.size.width,
-                                height: 400,
+                                height: 300,
                                 child: GetBuilder<WorkoutPlanController>(
                                     id: 'line_chart',
                                     assignId: true,
