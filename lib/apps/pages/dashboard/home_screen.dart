@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
+import 'package:gold_health/apps/pages/dashboard/today_schedule_screen.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/badge.dart';
 import 'package:gold_health/apps/pages/dashboard/widgets/load_height_weight.dart';
 import '../../controls/home_screen_controller.dart';
@@ -478,8 +479,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   animationDuration: 600,
                   radius: 400 / 2 - 160,
                   lineWidth: 15.0,
-                  percent: exerciseTime.value.toDouble() /
-                      exerciseTimeTarget.value.toDouble(),
+                  percent: (exerciseTime.value > exerciseTimeTarget.value)
+                      ? 1
+                      : exerciseTime.value.toDouble() /
+                          exerciseTimeTarget.value.toDouble(),
                   circularStrokeCap: CircularStrokeCap.round,
                   center: CircularPercentIndicator(
                     animation: true,
@@ -689,9 +692,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     Colors.blue[300]!,
                   ],
                 ),
-                onPressed: () {
-                  height_process_container.value =
-                      (height_process_container.value - 300).abs();
+                onPressed: () async {
+                  await Get.toNamed(RouteName.todaySchedule);
                 },
                 title: const Text(
                   'Check',
@@ -705,103 +707,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
           const SizedBox(height: 10),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 550),
-            curve: Curves.linear,
-            height: height_process_container.value,
-            width: double.infinity,
-            padding: const EdgeInsets.all(20),
-            decoration: BoxDecoration(
-              color: AppColors.mainColor,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Day 1',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 17,
-                        ),
-                      ),
-                      const Spacer(),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 10),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color: AppColors.primaryColor1),
-                          child: const Text(
-                            'Start Over',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 12,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    width: widthDevice,
-                    height: 190,
-                    child: MasonryGridView.count(
-                      crossAxisCount: 6,
-                      mainAxisSpacing: 4,
-                      crossAxisSpacing: 4,
-                      itemCount: _list.length,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          alignment: Alignment.center,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'assets/images/calendar.png',
-                                height: 30,
-                                width: 30,
-                              ),
-                              Text(
-                                '${_list[index]}',
-                                style: const TextStyle(
-                                  color: AppColors.primaryColor1,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LoadHeightWeight(
-                        widthDevice: widthDevice * 100 / 55 * 0.7,
-                        imgePath: 'assets/images/medal.png',
-                        fData: 60,
-                        sData: 100,
-                        color: AppColors.primaryColor1,
-                        press: () {},
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          )
         ],
       ),
     );

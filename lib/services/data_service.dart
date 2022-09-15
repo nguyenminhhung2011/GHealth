@@ -21,6 +21,8 @@ class DataService {
   static late Rx<List<Nutrition>> _nutritonList = Rx<List<Nutrition>>([]);
   static late Rx<List<DateTime>> _timeEatList = Rx<List<DateTime>>([]);
   static late Rx<List<Water>> _waterConsume = Rx<List<Water>>([]);
+  static late Rx<List<Map<String, dynamic>>> _listMealPlan =
+      Rx<List<Map<String, dynamic>>>([]);
   static late Rx<Map<String, dynamic>> _sleepBasicTime =
       Rx<Map<String, dynamic>>({});
   static late Rx<Map<String, dynamic>> _listIdNotificationSleep =
@@ -37,6 +39,7 @@ class DataService {
   final _mealProvider = MealProvider();
   final _nutritionProvider = NutritionProvider();
 
+  List<Map<String, dynamic>> get listMealPlan => _listMealPlan.value;
   Map<String, dynamic> get listIdNotificationSleep =>
       _listIdNotificationSleep.value;
   List<Meal> get mealList => _mealList.value;
@@ -52,7 +55,9 @@ class DataService {
   List<Map<String, dynamic>> get listSleepReport => _listSleepReport.value;
 
   loadMealList() async {
+    print('Pre loadMealList Funtion is called');
     if (_mealList.value.isNotEmpty) return;
+    print('Load Meal List function is called');
     _mealList.value = await _mealProvider.getAllMeal();
   }
 
@@ -80,6 +85,15 @@ class DataService {
   loadMealSnackList() async {
     if (_mealSnackList.value.isNotEmpty) return;
     _mealSnackList.value = await _mealProvider.getAllMealSnackk();
+  }
+
+  getAllMealPlan() async {
+    print('Get All Meal Plan is called');
+    if (_listMealPlan.value.isNotEmpty) return;
+    final listPlan = await firestore.collection('PlanMeal').get();
+    final list = listPlan.docs;
+    _listMealPlan.value = List<Map<String, dynamic>>.generate(
+        list.length, (index) => list[index].data());
   }
 
   loadNutritionList() async {
@@ -164,6 +178,8 @@ class DataService {
   }
 
   loadListSleepTime() async {
+    print('loadListSleepTime  function is called');
+    if (_listSleepTIme.value.isNotEmpty) return;
     _listSleepTIme.bindStream(firestore
         .collection('users')
         .doc(AuthService.instance.currentUser!.uid)
@@ -183,6 +199,7 @@ class DataService {
   }
 
   loadListSleepReport() async {
+    if (_listSleepReport.value.isNotEmpty) return;
     _listSleepReport.bindStream(firestore
         .collection('users')
         .doc(AuthService.instance.currentUser!.uid)

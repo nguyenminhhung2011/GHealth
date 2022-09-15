@@ -434,6 +434,7 @@ class DailySleepController extends GetxController with TrackerController {
   //------------------------------------Widget Item Builder--------------------------------
 
   int get onFocus => _onFocus.value;
+
   Widget itemBuilder(Sleep element, double widthDevice, BuildContext context) {
     DateTime timeBed = element.bedTime;
     DateTime timeAlarm = element.alarm;

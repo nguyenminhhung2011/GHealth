@@ -41,6 +41,7 @@ class DailyPlanController extends GetxController {
     await DataService.instance.loadSleepBasicTime();
     await DataService.instance.loadListSleepTime();
     await DataService.instance.loadListSleepReport();
+    await DataService.instance.getAllMealPlan();
   }
 
   void changeTab(int newTabIndex) {

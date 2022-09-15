@@ -32,6 +32,7 @@ import 'package:gold_health/apps/pages/dashboard/activity_tracker_screen.dart';
 import '../binding/basic_info_binding.dart';
 import '../binding/compare_result_binding.dart';
 import '../binding/meal_schedule_binding.dart';
+import '../binding/today_schedule_binding.dart';
 import '../binding/view_meal_binding.dart';
 import '../pages/dashboard/notification_screen.dart';
 
@@ -40,6 +41,7 @@ import '../pages/basic_info_screen/fill_profile.dart';
 import '../pages/basic_info_screen/get_height_screen.dart';
 import '../pages/basic_info_screen/get_old_screen.dart';
 import '../pages/basic_info_screen/select_gender_screen.dart';
+import '../pages/dashboard/today_schedule_screen.dart';
 import '../pages/list_plan_screen/add_food_nutri_screen.dart';
 import '../pages/list_plan_screen/daili_nutri_screen.dart';
 import '../pages/mealPlanner/meal_schedule_screen.dart';
@@ -201,6 +203,11 @@ class AppPages {
       name: RouteName.compareResult,
       page: () => const CompareResultScreen(),
       binding: CompareResultB(),
+    ),
+    GetPage(
+      name: RouteName.todaySchedule,
+      page: () => TodayScheduleScreen(),
+      binding: TodayScheduleB(),
     ),
   ];
 }
