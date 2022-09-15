@@ -1,5 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import '../apps/template/misc/untils.dart';
+import '../main.dart';
 
 Future<void> createMealNotification(String title) async {
   await AwesomeNotifications().createNotification(
@@ -116,6 +117,44 @@ Future<int> createWorkoutNotificationAuto(
         label: 'Mark Done',
       ),
     ],
+    schedule: NotificationCalendar(
+      day: notificationSchedule.day,
+      month: notificationSchedule.month,
+      year: notificationSchedule.year,
+      hour: notificationSchedule.hour,
+      minute: notificationSchedule.minute,
+      second: notificationSchedule.second,
+      repeats: true,
+    ),
+  );
+  return id;
+}
+
+Future<int> createFastingNotificationAuto(
+    NotificationCalendar notificationSchedule,
+    Map<String, dynamic> inputData) async {
+  final bool isPlaying = inputData['isPlaying'];
+  final int indexOfListChoice = inputData['indexOfListChoice'];
+  final int endDuration = inputData['endDuration'];
+  int controllerDuration = inputData['controllerDuration'];
+
+  await sharedPreferencesOfApp.reload();
+  await sharedPreferencesOfApp.setInt('controllerDuration', controllerDuration);
+  await sharedPreferencesOfApp.setBool('isPlaying', isPlaying);
+  await sharedPreferencesOfApp.setBool('isFasting', true);
+  await sharedPreferencesOfApp.setInt('index', indexOfListChoice);
+  await sharedPreferencesOfApp.setInt('endDuration', endDuration);
+
+  int id = createUniqueId();
+  await sharedPreferencesOfApp.setInt('idNotification', id);
+  await AwesomeNotifications().createNotification(
+    content: NotificationContent(
+        id: id,
+        channelKey: 'fasting_notification',
+        title:
+            '${Emojis.hand_vulcan_salute} Congratulation!!! You have finished fasting plan',
+        body: 'Make belly fat disappear.',
+        notificationLayout: NotificationLayout.Default),
     schedule: NotificationCalendar(
       day: notificationSchedule.day,
       month: notificationSchedule.month,

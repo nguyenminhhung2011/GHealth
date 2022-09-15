@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/fasting_plan/count_down_timer.dart';
+import 'package:gold_health/services/notification.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:timelines/timelines.dart';
 
 import '../../../global_widgets/dialog/yes_no_dialog.dart';
 import '../../../template/misc/colors.dart';
+import 'package:gold_health/main.dart' show sharedPreferencesOfApp;
 
 class FastingCountdownScreen extends StatefulWidget {
   const FastingCountdownScreen({Key? key, required this.timeline})
@@ -360,6 +362,8 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
                 YesNoDialog(
                   press: () {
                     fastingPlanController.fastingMode = null;
+                    int? id = sharedPreferencesOfApp.getInt('idNotification');
+                    cancelScheduleNotificationsWhere(id ?? 0);
                     Get.back();
                     fastingPlanController.isCountDown.value = false;
                   },

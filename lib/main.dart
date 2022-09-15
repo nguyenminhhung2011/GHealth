@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,48 +8,21 @@ import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:gold_health/apps/routes/app_pages.dart';
 import 'package:gold_health/services/start_services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'apps/routes/route_name.dart';
 import 'apps/template/misc/colors.dart';
 
 import 'package:workmanager/workmanager.dart';
-import 'constrains.dart';
-import 'services/alarm_notify.dart';
+
+late SharedPreferences sharedPreferencesOfApp;
+
+Future initSharePreference() async {
+  sharedPreferencesOfApp = await SharedPreferences.getInstance();
+}
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
-
-void callbackDispatcher() {
-  Workmanager().executeTask((taskName, inputData) async {
-    if (taskName == 'create_workout_alarm_notification') {
-      print('create_workout_alarm_notification');
-      try {
-        final timeData = DateTime.now().add(const Duration(
-            seconds: 10)); //DateTime.parse(inputData?['DateTime'] as String);
-        final idSharePreferences = inputData?['idSharePreferences'] as String;
-        await AlarmNotify.alarmNotification(idSharePreferences, timeData);
-      } catch (e) {
-        print('create_workout_alarm_notification: ${e.toString()}');
-        return Future.value(false);
-      }
-    } else if (taskName == 'delete_workout_alarm_notification') {
-      try {
-        debugPrint('delete_workout_alarm_notification');
-        final workoutScheduleId = inputData?['workoutScheduleId'] as String;
-        final sharedPreferencesInstance = await sharedPreferences;
-        int? isolateId = sharedPreferencesInstance.getInt(workoutScheduleId);
-        if (isolateId != null) {
-          AlarmNotify.cancelAlarmNotification(isolateId);
-          sharedPreferencesInstance.remove(workoutScheduleId);
-        }
-      } catch (e) {
-        print('delete_workout_alarm_notification: ${e.toString()}');
-        return Future.value(false);
-      }
-    }
-    return Future.value(true);
-  });
-}
 
 Future notificationInit() async {
   await AwesomeNotifications().initialize(
@@ -90,9 +64,43 @@ Future notificationInit() async {
         locked: true,
         channelDescription: 'Notifications',
       ),
+      NotificationChannel(
+        channelKey: 'fasting_notification',
+        channelName: 'Fasting Notification',
+        defaultColor: AppColors.primaryColor1,
+        importance: NotificationImportance.High,
+        channelShowBadge: true,
+        locked: true,
+        channelDescription: 'Notifications',
+      ),
     ],
   );
-
+  AwesomeNotifications().createdStream.listen((notification) {
+    if (notification.channelKey == 'fasting_notification') {
+      int? controllerDuration =
+          sharedPreferencesOfApp.getInt('controllerDuration');
+      int? endDuration = sharedPreferencesOfApp.getInt('endDuration');
+      Timer? timer;
+      try {
+        timer = Timer.periodic(const Duration(seconds: 1), (_) {
+          if (controllerDuration! >= endDuration!) {
+            controllerDuration = endDuration;
+            timer?.cancel();
+            timer = null;
+            print("finish fasting");
+          } else {
+            controllerDuration = controllerDuration! + 1;
+            print('controllerDuration: $controllerDuration');
+            sharedPreferencesOfApp.reload();
+            sharedPreferencesOfApp.setInt(
+                'controllerDuration', controllerDuration!);
+          }
+        });
+      } catch (e) {
+        rethrow;
+      }
+    }
+  });
   AwesomeNotifications().displayedStream.listen((notification) async {
     print('capture something: displayedStream');
     if (notification.channelKey == 'basic_alarm_channel') {
@@ -121,10 +129,53 @@ Future notificationInit() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await initSharePreference();
   StartService.instance.init();
-  // Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
+  Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
   notificationInit();
+
   runApp(const MyApp());
+}
+
+void callbackDispatcher() {
+  Workmanager().executeTask((taskName, inputData) async {
+    if (taskName == 'save_value_count_down_controller') {
+      final bool isPlaying = inputData?['isPlaying'];
+      final int indexOfListChoice = inputData?['indexOfListChoice'];
+      final int endDuration = inputData?['endDuration'];
+      int controllerDuration = inputData?['controllerDuration'];
+      print('done');
+      await sharedPreferencesOfApp.reload();
+      await sharedPreferencesOfApp.setBool('isPlaying', isPlaying);
+      await sharedPreferencesOfApp.setBool('isFasting', true);
+      await sharedPreferencesOfApp.setInt('index', indexOfListChoice);
+      await sharedPreferencesOfApp.setInt('endDuration', endDuration);
+      Timer? timer;
+
+      try {
+        timer = Timer.periodic(const Duration(seconds: 1), (_) {
+          if (controllerDuration >= endDuration) {
+            controllerDuration = endDuration;
+            timer?.cancel();
+            timer = null;
+            print("finish fasting");
+          } else {
+            ++controllerDuration;
+            print('controllerDuration: $controllerDuration');
+            sharedPreferencesOfApp.reload();
+            sharedPreferencesOfApp.setInt(
+                'controllerDuration', controllerDuration);
+          }
+        });
+        return Future.value(true);
+      } catch (e) {
+        return Future.value(false);
+      }
+    } else if (taskName == 'remove_value_count_down_controller') {
+      print('Delete fasting schedule');
+    }
+    return Future.value(true);
+  });
 }
 
 class MyApp extends StatelessWidget {

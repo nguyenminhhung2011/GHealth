@@ -18,7 +18,6 @@ class FastingPlanScreen extends StatefulWidget {
 
 class _FastingPlanScreenState extends State<FastingPlanScreen> {
   final controller = Get.put(FastingPlanController());
-
   late final choicesWidget = controller.choices
       .map(
         (e) => Padding(
@@ -34,6 +33,8 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(20),
                         onTap: () {
+                          controller.indexOfChoice =
+                              controller.choices.indexOf(e);
                           controller.fastingMode = e;
                           Get.to(() => GetReadyScreen(
                               fastingMode: controller.fastingMode));
@@ -264,7 +265,7 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        primary: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent),
                     child: const Text(
                       'Done',
