@@ -256,7 +256,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
     flSpotChart.bindStream(histories.stream.map((event) {
       Map<DateTime, double> result = {};
       event.forEach((key, value) {
-        print(value.time);
         if ((value.time.isAfter(range.start) ||
                 (value.time.day == range.start.day &&
                     value.time.month == range.start.month &&
@@ -265,8 +264,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
                 (value.time.day == range.end.day &&
                     value.time.month == range.end.month &&
                     value.time.year == range.end.year))) {
-          print('capture');
-
           result[DateTime(value.time.year, value.time.month, value.time.day)] =
               result[DateTime(
                       value.time.year, value.time.month, value.time.day)] ??
@@ -283,7 +280,6 @@ class WorkoutPlanController extends GetxController with TrackerController {
     await fetchScheduleList();
     await fetchHistoryList();
     await fetchWorkoutHistoryDataWithDateRange(dateTimeRange.value);
-    print('flSpotChart: ${flSpotChart.value}');
   }
 
   String getCaloriesBurnFromWorkout(List<String> listExercise) {

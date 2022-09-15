@@ -370,7 +370,7 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
               );
             },
             style: ElevatedButton.styleFrom(
-              primary: Colors.white,
+              backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                   side: const BorderSide(width: 2, color: Colors.deepOrange)),
