@@ -84,8 +84,8 @@ class NotifiCationScreen extends StatelessWidget {
                               : controller.listActi[index]['type'] == 1
                                   ? 'You have absorbed ${controller.listActi[index]['kCalConsume']} Calories'
                                   : 'You have burned ${controller.listActi[index]['kCalBurn']} Calories';
-                          if (title.length > 30) {
-                            title = '${title.substring(0, 29)}...';
+                          if (title.length > 27) {
+                            title = '${title.substring(0, 26)}...';
                           }
 
                           Duration time = DateTime.now().difference(key);

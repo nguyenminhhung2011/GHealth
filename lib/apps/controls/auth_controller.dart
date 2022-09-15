@@ -80,13 +80,69 @@ class AuthC extends GetxController {
         await _firStore
             .collection('users')
             .doc(cred.user!.uid)
-            .set(user.toJson());
+            .set(user.toJson())
+            .then((value) async {
+          await _firStore
+              .collection('users')
+              .doc(cred.user!.uid)
+              .collection('notification')
+              .doc('DlWF8upzR4gdo70OpjUO')
+              .set({
+            'fCheck': false,
+            'list_service': ['null']
+          });
+          await _firStore
+              .collection('users')
+              .doc(cred.user!.uid)
+              .collection('sleep_basic_time')
+              .doc('sleep')
+              .set({
+            'alarm': DateTime.now(),
+            'bedTime': DateTime.now(),
+            'isTurnOn': true,
+            'isTurnOn1': true,
+          });
+          await _firStore
+              .collection('users')
+              .doc(cred.user!.uid)
+              .collection('timeEat')
+              .doc('time')
+              .set({
+            'list': [
+              DateTime(2022, 10, 10, 6, 30, 0, 0),
+              DateTime(2022, 10, 10, 13, 0, 0, 0),
+              DateTime(2022, 10, 10, 17, 45, 0, 0),
+              DateTime(2022, 10, 10, 19, 30, 0, 0),
+            ]
+          });
+          await _firStore
+              .collection('users')
+              .doc(cred.user!.uid)
+              .collection('water')
+              .add({
+            'date': DateTime.now(),
+            'target': 400,
+            'waterConsume': [
+              {
+                'consume': 0,
+                'date': DateTime.now(),
+              }
+            ],
+          });
+          DateTime now = DateTime.now();
+          DateTime cur = DateTime().add(const Duration(days: 7));
+          await _firStore
+              .collection('users')
+              .doc(cred.user!.uid)
+              .collection('workout_plan')
+              .add({
+            'endTime': DateTime(now.year, now.month, now.day, 11, 02, 42, 0),
+            'isFinish': false,
+            'startTime': DateTime(cur.year, cur.month, cur.day, 11, 02, 42),
+            'workoutPlanID': 'YcWnDUmNSYjAQjcgLSf2',
+          });
+        });
         resultString = "Create account is success";
-        // Get.snackbar(
-        //   'Create Account',
-        //   'Success',
-        //   backgroundColor: AppColors.primaryColor1,
-        // );
 
         return resultString;
       } else {
