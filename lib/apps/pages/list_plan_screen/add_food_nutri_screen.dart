@@ -51,6 +51,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                         item['amount'],
                         item['dateTime'],
                       );
+                      controller.uploadMealActiToFirebase(
+                          item['id'], item['amount']);
                     }
                     controller.clearFoodTemp();
                     controller.update();

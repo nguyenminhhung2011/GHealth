@@ -127,6 +127,26 @@ class DailyNutritionController extends GetxController {
     getAllListFoodToday();
   }
 
+  uploadMealActiToFirebase(String id, int amount) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('activity_history')
+          .add(
+        {
+          'type': 1,
+          'consume': 0,
+          'date': DateTime.now(),
+          'kCalConsume': getMealFromId(id, allMeal).kCal * amount,
+          'kCalBurn': 0,
+        },
+      );
+    } catch (e) {
+      print('Failed to upload');
+    }
+  }
+
   getAllListFoodToday() async {
     _listFoodToday.bindStream(firestore
         .collection('users')

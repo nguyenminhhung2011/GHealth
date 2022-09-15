@@ -479,12 +479,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   animationDuration: 600,
                   radius: 400 / 2 - 160,
                   lineWidth: 15.0,
-<<<<<<< HEAD
                   percent: (exerciseTime.value > exerciseTimeTarget.value)
-=======
-                  percent: exerciseTime.value.toDouble() >=
-                          exerciseTimeTarget.value.toDouble()
->>>>>>> 2c85777779a750f7439838cd2388382e00ae536f
                       ? 1
                       : exerciseTime.value.toDouble() /
                           exerciseTimeTarget.value.toDouble(),
