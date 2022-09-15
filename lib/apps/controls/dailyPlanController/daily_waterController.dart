@@ -88,6 +88,7 @@ class DailyWaterController extends GetxController with TrackerController {
     List<Map<String, dynamic>> temp = _waterToday.value['waterConsume'];
     if (value2 != 0) {
       temp.add({'consume': value2, 'date': DateTime.now()});
+      uploadDrinkActiToFirebase(value2);
     }
 
     await firestore
@@ -103,6 +104,26 @@ class DailyWaterController extends GetxController with TrackerController {
       },
     );
     update();
+  }
+
+  uploadDrinkActiToFirebase(int value) async {
+    try {
+      await firestore
+          .collection('users')
+          .doc(AuthService.instance.currentUser!.uid)
+          .collection('activity_history')
+          .add(
+        {
+          'type': 0,
+          'consume': value,
+          'date': DateTime.now(),
+          'kCalConsume': 0,
+          'kCalBurn': 0,
+        },
+      );
+    } catch (e) {
+      print('Failed to upload');
+    }
   }
 
   bool isSameDate(DateTime date1, DateTime date2) {

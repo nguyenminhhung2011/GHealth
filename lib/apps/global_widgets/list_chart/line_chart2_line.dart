@@ -20,26 +20,6 @@ class LineChartTwoLine extends StatefulWidget {
 }
 
 class _LineChartTwoLineState extends State<LineChartTwoLine> {
-  List<FlSpot> list1FlSpot = [
-    const FlSpot(1, 0),
-    const FlSpot(2, 0),
-    const FlSpot(3, 0),
-    const FlSpot(4, 0),
-    const FlSpot(5, 0),
-    const FlSpot(6, 0),
-    const FlSpot(7, 0),
-  ].obs;
-
-  RxList<FlSpot> list2FlSpot = [
-    const FlSpot(1, 100),
-    const FlSpot(2, 100),
-    const FlSpot(3, 100),
-    const FlSpot(4, 100),
-    const FlSpot(5, 100),
-    const FlSpot(6, 100),
-    const FlSpot(7, 100),
-  ].obs;
-
   @override
   Widget build(BuildContext context) {
     return LineChart(

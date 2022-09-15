@@ -83,10 +83,10 @@ class MealPlannerScreen extends StatelessWidget {
                       InkWell(
                         onTap: () {
                           // controller.Ok();
-                          for (var item
-                              in controller.mealToday.value['break']) {
-                            print(item.name);
-                          }
+                          // for (var item
+                          //     in controller.mealToday.value['break']) {
+                          //   print(item.name);
+                          // }
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8),
