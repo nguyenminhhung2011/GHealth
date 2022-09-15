@@ -234,8 +234,8 @@ class GetReadyScreen extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40)),
+                backgroundColor: AppColors.primaryColor1,
                 fixedSize: Size(widthDevice * 0.8, 55),
-                primary: AppColors.primaryColor1,
               ),
               child: const Text(
                 'Start Fasting',
@@ -588,10 +588,10 @@ class CustomTimeLine extends StatelessWidget {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 fixedSize: const Size(300, 50),
+                backgroundColor: Colors.blue[200],
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
-                primary: Colors.blue[200],
               ),
               onPressed: () {
                 fastingPlanController.chooseDateTime.value = tempDateTime;
