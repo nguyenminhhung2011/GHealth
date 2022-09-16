@@ -37,9 +37,9 @@ class SignUpC extends GetxController {
     emailC = TextEditingController();
     passC = TextEditingController();
     repassC = TextEditingController();
-    emailC.text = 'h@gmail.com';
-    passC.text = '1234567';
-    repassC.text = '1234567';
+    // emailC.text = 'h@gmail.com';
+    // passC.text = '1234567';
+    // repassC.text = '1234567';
   }
 
   void continueBtnClick() {

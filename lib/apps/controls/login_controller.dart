@@ -11,8 +11,8 @@ class LogInC extends GetxController {
 
     emailC = TextEditingController();
     passC = TextEditingController();
-    emailC.text = 'h@gmail.com';
-    passC.text = '1234567';
+    // emailC.text = 'h@gmail.com';
+    // passC.text = '1234567';
   }
 
   @override
