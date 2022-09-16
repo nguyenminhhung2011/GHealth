@@ -131,22 +131,9 @@ Future<int> createWorkoutNotificationAuto(
 }
 
 Future<int> createFastingNotificationAuto(
-    NotificationCalendar notificationSchedule,
-    Map<String, dynamic> inputData) async {
-  final bool isPlaying = inputData['isPlaying'];
-  final int indexOfListChoice = inputData['indexOfListChoice'];
-  final int endDuration = inputData['endDuration'];
-  int controllerDuration = inputData['controllerDuration'];
-
-  await sharedPreferencesOfApp.reload();
-  await sharedPreferencesOfApp.setInt('controllerDuration', controllerDuration);
-  await sharedPreferencesOfApp.setBool('isPlaying', isPlaying);
-  await sharedPreferencesOfApp.setBool('isFasting', true);
-  await sharedPreferencesOfApp.setInt('index', indexOfListChoice);
-  await sharedPreferencesOfApp.setInt('endDuration', endDuration);
-
+  NotificationCalendar notificationSchedule,
+) async {
   int id = createUniqueId();
-  await sharedPreferencesOfApp.setInt('idNotification', id);
   await AwesomeNotifications().createNotification(
     content: NotificationContent(
         id: id,

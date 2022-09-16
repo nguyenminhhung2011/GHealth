@@ -1,16 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/tracker_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:gold_health/constrains.dart';
 import 'package:timelines/timelines.dart';
-import 'package:gold_health/main.dart' show sharedPreferencesOfApp;
+
+import '../../../services/auth_service.dart';
 
 class FastingPlanController extends GetxController with TrackerController {
-  bool? isCountDownLastTime;
   var isCountDown = false.obs;
   var chooseDateTime = DateTime.now().obs;
   var isRemainMode = false.obs;
-  int? indexOfChoice;
+  bool isEnding = false;
+  AnimationController? controllerCountDown;
+  late String idFasting;
+  late FastingHistory fasting;
+
+  Rx<Map<String, FastingHistory>> fastingHistories =
+      Rx<Map<String, FastingHistory>>({});
 
   // ignore: avoid_init_to_null
   dynamic fastingMode = null;
@@ -73,19 +81,98 @@ class FastingPlanController extends GetxController with TrackerController {
     },
   ];
 
-  @override
-  void onInit() async {
-    // TODO: implement onInit
-    super.onInit();
-    indexOfChoice = sharedPreferencesOfApp.getInt('index');
-    print(sharedPreferencesOfApp.getBool('isFasting'));
-    bool? isCountDownLastTime = sharedPreferencesOfApp.getBool('isFasting');
-    print('isCountDownLastTime: $isCountDownLastTime');
-    if (isCountDownLastTime != null) {
-      int index = sharedPreferencesOfApp.getInt('index') ?? 0;
-      fastingMode = choices[index];
-      isCountDown.value = true;
+  Future<String> addFastingHistory(FastingHistory newValue) async {
+    String userId = AuthService.instance.currentUser!.uid;
+    final response = await firestore
+        .collection('users')
+        .doc(userId)
+        .collection('fasting_history')
+        .add(
+      {
+        'timeRemaining': '0',
+        'startTime': Timestamp.fromDate(newValue.startTime),
+        'endTime': Timestamp.fromDate(newValue.endTime),
+        'saveTime': Timestamp.fromDate(newValue.saveTime),
+        'name': newValue.name,
+        'isFinish': newValue.isFinish,
+        'isPlaying': newValue.isPlaying,
+        'isSaving': newValue.isSaving,
+      },
+    );
+    return response.id;
+  }
+
+  Future<bool> fetchDataFastingHistory() async {
+    try {
+      String userId = AuthService.instance.currentUser!.uid;
+      final data = firestore
+          .collection('users')
+          .doc(userId)
+          .collection('fasting_history');
+      fastingHistories.bindStream(data.snapshots().map((event) {
+        Map<String, FastingHistory> result = {};
+        for (var doc in event.docs) {
+          result.addAll({doc.id: FastingHistory.fromSnap(doc)});
+        }
+        return result;
+      }));
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
     }
+  }
+
+  @override
+  void onInit() {
+    int count = 0;
+    fastingHistories.listen((value) {
+      value.forEach((key, value) {
+        if (value.isSaving && !value.isFinish) {
+          print('count: $count - $key');
+          isCountDown.value = true;
+          fasting = value;
+          idFasting = key;
+          if (value.name == '14-10') {
+            fastingMode = choices[0];
+          } else if (value.name == '16-8') {
+            fastingMode = choices[1];
+          } else if (value.name == '18-6') {
+            fastingMode = choices[2];
+          } else {
+            fastingMode = choices[3];
+          }
+        }
+      });
+    });
+
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
+    // TODO: implement onClose
+    super.onClose();
+    fastingHistories.close();
+  }
+
+  Future updateHistory(String id, FastingHistory newHistory) async {
+    String userId = AuthService.instance.currentUser!.uid;
+    await firestore
+        .collection('users')
+        .doc(userId)
+        .collection('fasting_history')
+        .doc(id)
+        .update({
+      'endTime': newHistory.endTime,
+      'startTime': newHistory.startTime,
+      'isFinish': newHistory.isFinish,
+      'isPlaying': newHistory.isPlaying,
+      'isSaving': newHistory.isSaving,
+      'name': newHistory.name,
+      'saveTime': newHistory.saveTime,
+      'timeRemaining': newHistory.timeRemaining.inSeconds.toString(),
+    });
   }
 
   Widget timeline() {
@@ -219,5 +306,42 @@ class FastingPlanController extends GetxController with TrackerController {
     );
   }
 
-  void disposeController(AnimationController controller) {}
+  void disposeController() {}
+}
+
+class FastingHistory {
+  const FastingHistory(
+      {Key? key,
+      required this.endTime,
+      required this.isFinish,
+      required this.name,
+      required this.startTime,
+      required this.isPlaying,
+      required this.isSaving,
+      required this.saveTime,
+      required this.timeRemaining});
+
+  final String name;
+  final DateTime startTime;
+  final DateTime endTime;
+  final bool isFinish;
+  final bool isPlaying;
+  final bool isSaving;
+  final DateTime saveTime;
+  final Duration timeRemaining;
+
+  factory FastingHistory.fromSnap(
+      QueryDocumentSnapshot<Map<String, dynamic>> data) {
+    final extractData = data.data();
+    return FastingHistory(
+      timeRemaining: Duration(seconds: int.parse(extractData['timeRemaining'])),
+      isSaving: extractData['isSaving'],
+      saveTime: (extractData['saveTime'] as Timestamp).toDate(),
+      isPlaying: extractData['isPlaying'],
+      endTime: (extractData['endTime'] as Timestamp).toDate(),
+      isFinish: extractData['isFinish'],
+      name: extractData['name'],
+      startTime: (extractData['startTime'] as Timestamp).toDate(),
+    );
+  }
 }

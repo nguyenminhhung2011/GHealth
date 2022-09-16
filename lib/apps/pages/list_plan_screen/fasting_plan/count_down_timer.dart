@@ -1,15 +1,8 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
-import 'package:gold_health/constrains.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:workmanager/workmanager.dart';
-import 'package:gold_health/main.dart' show sharedPreferencesOfApp;
-
-import '../../../../services/notification.dart';
 
 class CountDownTimer extends StatefulWidget {
   const CountDownTimer({Key? key, required this.duration}) : super(key: key);
@@ -23,7 +16,6 @@ class _CountDownTimerState extends State<CountDownTimer>
   final fastingPlanController = Get.find<FastingPlanController>();
   late AnimationController _controllerOpacity;
   late Animation<double> _animationOpacity;
-  late AnimationController? _controller;
 
   var isPlay = false.obs;
   var isFinish = false.obs;
@@ -34,7 +26,8 @@ class _CountDownTimerState extends State<CountDownTimer>
   }
 
   String get countText {
-    Duration count = _controller!.duration! * _controller!.value;
+    Duration count = fastingPlanController.controllerCountDown!.duration! *
+        fastingPlanController.controllerCountDown!.value;
     if (fastingPlanController.isRemainMode.value) {
       count = widget.duration - count;
     }
@@ -59,67 +52,72 @@ class _CountDownTimerState extends State<CountDownTimer>
 
   Future<bool> prepareForData() async {
     await Future(() {
-      double value =
-          (sharedPreferencesOfApp.getInt('controllerDuration')?.toDouble() ??
-                  0) /
-              (sharedPreferencesOfApp.getInt('endDuration')?.toDouble() ?? 1);
-      print('prepareForDataValue: $value');
-      _controller = AnimationController(vsync: this, duration: widget.duration);
-      _controller!.value = value;
-      _controller!.addListener(() {
-        progress.value = _controller!.value;
-        if (_controller!.isCompleted) {
-          _controller!.stop();
+      fastingPlanController.controllerCountDown =
+          AnimationController(vsync: this, duration: widget.duration);
+
+      if (fastingPlanController.fasting.isSaving) {
+        int? remainingTime;
+
+        if (fastingPlanController.fasting.isPlaying) {
+          remainingTime =
+              (fastingPlanController.fasting.timeRemaining.inSeconds +
+                  DateTime.now()
+                      .difference(fastingPlanController.fasting.saveTime)
+                      .inSeconds);
+        } else {
+          remainingTime = fastingPlanController.fasting.timeRemaining.inSeconds;
+        }
+        fastingPlanController.controllerCountDown!.value =
+            (fastingPlanController.fasting.timeRemaining.inSeconds +
+                    fastingPlanController.fasting.saveTime
+                        .difference(fastingPlanController.fasting.startTime)
+                        .inSeconds) /
+                widget.duration.inSeconds;
+
+        fastingPlanController.controllerCountDown!.value =
+            remainingTime / widget.duration.inSeconds;
+      }
+      fastingPlanController.controllerCountDown!.addListener(() {
+        progress.value = fastingPlanController.controllerCountDown!.value;
+        if (fastingPlanController.controllerCountDown!.isCompleted) {
+          fastingPlanController.controllerCountDown!.stop();
           isFinish.value = true;
           _controllerOpacity.forward();
           isPlay.value = false;
         }
       });
-      isPlay.value = sharedPreferencesOfApp.getBool('isPlaying') ?? false;
+      isPlay.value = fastingPlanController.fasting.isPlaying;
       if (isPlay.value) {
-        _controller!.forward();
+        fastingPlanController.controllerCountDown!.forward();
       }
-      print('isPlay.value: ${isPlay.value}');
     });
     return true;
   }
 
   @override
   void dispose() async {
-    sharedPreferencesOfApp.remove('isPlaying');
-    sharedPreferencesOfApp.remove('isFasting');
-    sharedPreferencesOfApp.remove('index');
-    sharedPreferencesOfApp.remove('endDuration');
-    sharedPreferencesOfApp.reload();
-    // Workmanager().registerOneOffTask(
-    //   'createFasting',
-    //   'save_value_count_down_controller',
-    //   inputData: {
-    //     'isPlaying': isPlay.value,
-    //     'indexOfListChoice': fastingPlanController.indexOfChoice,
-    //     'endDuration': widget.duration.inSeconds,
-    //     'controllerDuration':
-    //         (_controller!.value * _controller!.duration!.inSeconds).toInt()
-    //   },
-    // );
-
-    Map<String, dynamic> inputData = {
-      'isPlaying': isPlay.value,
-      'indexOfListChoice': fastingPlanController.indexOfChoice,
-      'endDuration': widget.duration.inSeconds,
-      'controllerDuration':
-          (_controller!.value * _controller!.duration!.inSeconds).toInt()
-    };
-
-    DateTime time = DateTime.now().add(widget.duration);
-    createFastingNotificationAuto(
-        NotificationCalendar.fromDate(
-          date: time,
-        ),
-        inputData);
+    if (!fastingPlanController.isEnding) {
+      // DateTime time = DateTime.now().add(widget.duration);
+      // createFastingNotificationAuto(NotificationCalendar.fromDate(
+      //   date: time,
+      // ));
+      FastingHistory newValue = FastingHistory(
+        endTime: fastingPlanController.fasting.endTime,
+        isFinish: false,
+        name: fastingPlanController.fasting.name,
+        startTime: fastingPlanController.fasting.startTime,
+        isPlaying: isPlay.value,
+        isSaving: true,
+        saveTime: DateTime.now(),
+        timeRemaining: fastingPlanController.controllerCountDown!.duration! *
+            fastingPlanController.controllerCountDown!.value,
+      );
+      fastingPlanController.updateHistory(
+          fastingPlanController.idFasting, newValue);
+    }
     _controllerOpacity.dispose();
-    _controller!.dispose();
-    _controller = null;
+    fastingPlanController.controllerCountDown!.dispose();
+    fastingPlanController.controllerCountDown = null;
     super.dispose();
   }
 
@@ -144,7 +142,8 @@ class _CountDownTimerState extends State<CountDownTimer>
                                 )
                               : Obx(
                                   () => CountDownCenter(
-                                    controller: _controller,
+                                    controller: fastingPlanController
+                                        .controllerCountDown,
                                     countText: countText,
                                     stopProgress: stopProgress,
                                     duration: widget.duration,
