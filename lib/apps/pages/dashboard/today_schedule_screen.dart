@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
 
 import '../../../services/data_service.dart';
 import '../../controls/today_schedule_controller.dart';
 import '../../template/misc/colors.dart';
-import '../mealPlanner/widgets/food_schedule_card.dart';
 
 class TodayScheduleScreen extends StatelessWidget {
   TodayScheduleScreen({super.key});
   final _controller = Get.find<TodayScheduleC>();
+
   GlobalKey<ScrollSnapListState> sslKey = GlobalKey();
 
   Widget _itemBuilder(BuildContext context, int index) {
@@ -472,28 +471,33 @@ class TodayScheduleScreen extends StatelessWidget {
     );
   }
 
-  Column activityField() {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: const [
-            Text(
-              'Activity',
-              style: TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 20,
-              ),
+  Obx activityField() {
+    return Obx(() => Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                Text(
+                  'Activity',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+                Icon(Icons.more_horiz, color: Colors.grey),
+              ],
             ),
-            Icon(Icons.more_horiz, color: Colors.grey),
+            const SizedBox(height: 10),
+            ..._controller.schedules.value.entries
+                .map((element) => ActiCard(
+                      workoutCategory: element.value.workoutCategory,
+                      dateTime: element.value.time,
+                      duration: element.value.duration,
+                    ))
+                .toList()
           ],
-        ),
-        const SizedBox(height: 10),
-        const ActiCard(),
-        const ActiCard(),
-      ],
-    );
+        ));
   }
 }
 
@@ -603,10 +607,25 @@ class SleepCard extends StatelessWidget {
   }
 }
 
+final Map<String, String> listImage = {
+  'Fullbody': 'assets/images/fullbody.png',
+  'Upperbody': 'assets/images/upperbody.png',
+  'Abs': 'assets/images/abs.png',
+  'Lowebody': 'assets/images/lowebody.png',
+  'Cardio': 'assets/images/cardio.png',
+  'Hitt': 'assets/images/hitt.png',
+};
+
 class ActiCard extends StatelessWidget {
   const ActiCard({
     Key? key,
+    required this.workoutCategory,
+    required this.dateTime,
+    required this.duration,
   }) : super(key: key);
+  final String workoutCategory;
+  final DateTime dateTime;
+  final int duration;
 
   @override
   Widget build(BuildContext context) {
@@ -625,7 +644,7 @@ class ActiCard extends StatelessWidget {
               color: AppColors.primaryColor1.withOpacity(0.2),
             ),
             child: Image.asset(
-              'assets/images/fullbody.png',
+              listImage[workoutCategory]!,
               height: 40,
               width: 40,
             ),
@@ -633,18 +652,18 @@ class ActiCard extends StatelessWidget {
           const SizedBox(width: 5),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
+            children: [
               Text(
-                'FullBody Workout',
-                style: TextStyle(
+                '$workoutCategory Workout',
+                style: const TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),
               Text(
-                '9:00 am - 120 min',
-                style: TextStyle(
+                '${DateFormat().add_jm().format(dateTime)} - $duration min',
+                style: const TextStyle(
                     color: Colors.grey,
                     fontWeight: FontWeight.w400,
                     fontSize: 14),
