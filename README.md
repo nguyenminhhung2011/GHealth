@@ -35,7 +35,8 @@ Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng v
 * Ở màn hình chính người dùng có thể theo dõi được các hoạt động của mình , lượng Calories, nước, thời gian tập thông qua các biểu đồ
 * Theo dõi kế hoạch trong ngày màn Today Target
 * Nhũng hoạt động mà mình đã làm ở màn Activity History
-### Plan
+
+### Kế hoạck
 ### Kế hoạch ăn
 * Ở giao diện chính
   * Biểu lượng Calories,Fats,Proteins,Carbs mà người dùng đã hấp thụ từng ngày trong tuần
@@ -70,6 +71,7 @@ Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng v
   * Thông báo khi tới giờ tập
   * <img width="200" src=".\UI\85.png"></a>
 * Ở phần tập luyện
+  * Xem danh sách các bài tập
   * Người dùng có thể chọn những bài tập, level tập, thời gian sao cho phù hợp
   * Xem được các bước tập có video hướng dẫn
   * Các bài tập sẽ được chia theo 1 danh sách
@@ -138,6 +140,16 @@ Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng v
 * Hiển thị các thông tin cá nhân
 * Tùy chỉnh cân nặng , chiều cao hiện tại
 * Chọn theme và ngôn ngữ cho giao diện (chưa làm được)
+
+
+## Công nghệ 
+* Ngôn ngữ: Dart
+* Framework: Flutter
+* Database: Firebase
+
+## Người thực hiện
+* Nguyễn Minh Hưng: 20120491
+* Trương Huỳnh Đức Hoàng: 20120483
 
 ## GIao diện
 
