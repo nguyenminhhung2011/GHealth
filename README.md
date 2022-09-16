@@ -15,7 +15,7 @@
 <br/>
 </p>
 
-## Giới thiệu
+## 📄 Giới thiệu
 GHealth là một ứng dụng hỗ trợ các bài tập, chế độ ăn uống, chế độ ngủ, cho người dùng giúp người dũng dễ dàng quản lý sức khỏe và tập luyện.
 
 Có sẵn các bài tập cho người dùng chọn và tập luyện theo.
@@ -24,7 +24,7 @@ Có các kế hoạch ăn uống, ngủ hoặc người dùng có thể tự t�
 
 Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng và chiều cao của mình thông qua các biểu đồ 
 
-## Tất cả Chức năng
+## 📲 Tất cả Chức năng
 
 ### Tài khoản 
 * Người dùng có thể tạo tài khoản thông qua username và password tự tạo, hoặc có thể đăng nhập bằng facebook và Gmail
@@ -142,16 +142,16 @@ Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng v
 * Chọn theme và ngôn ngữ cho giao diện (chưa làm được)
 
 
-## Công nghệ 
+## 💻 Công nghệ 
 * Ngôn ngữ: Dart
 * Framework: Flutter
 * Database: Firebase
 
-## Người thực hiện
+## 👨‍💻 Người thực hiện
 * Nguyễn Minh Hưng: 20120491
 * Trương Huỳnh Đức Hoàng: 20120483
 
-## GIao diện
+## 📱 GIao diện
 
 ### Splash and Intro UI
 <img width="200" src=".\UI\1.png"></a>
