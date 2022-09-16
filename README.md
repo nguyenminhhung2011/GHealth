@@ -283,7 +283,6 @@ Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng v
 <img width="200" src=".\UI\72.png"></a>
 
 
-<img width="200" src=".\UI\85.png"></a>
-<img width="200" src=".\UI\86.png"></a>
+
 
 
