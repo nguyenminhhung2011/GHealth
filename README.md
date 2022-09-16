@@ -11,7 +11,7 @@
  <img src="./assets/images/res_notification_app_icon.png" alt="ViPT Logo" height = "400"></a>
 </p>
 <p align="center">
-<b>Golde Health App</b>
+<b>Gold Health App</b>
 <br/>
 </p>
 
