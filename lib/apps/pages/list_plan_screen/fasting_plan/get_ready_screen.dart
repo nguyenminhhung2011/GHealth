@@ -128,8 +128,8 @@ class GetReadyScreen extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     elevation: 0,
+                    backgroundColor: Colors.blueGrey[50],
                     shape: const CircleBorder(),
-                    primary: Colors.blueGrey[50],
                   ),
                   child: Obx(
                     () => isTapExpandDetail.value
@@ -227,7 +227,19 @@ class GetReadyScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
+                fastingPlanController.fasting = FastingHistory(
+                    timeRemaining: const Duration(seconds: 0),
+                    endTime: DateTime.now(),
+                    isFinish: false,
+                    name:
+                        '${fastingMode['fastingTime']}-${fastingMode['eatingTime']}',
+                    startTime: DateTime.now(),
+                    isPlaying: false,
+                    isSaving: false,
+                    saveTime: DateTime.now());
+                fastingPlanController.idFasting = await fastingPlanController
+                    .addFastingHistory(fastingPlanController.fasting);
                 fastingPlanController.isCountDown.value = true;
                 Get.back();
               },

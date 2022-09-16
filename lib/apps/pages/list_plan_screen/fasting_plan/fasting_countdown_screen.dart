@@ -3,13 +3,11 @@ import 'package:get/get.dart';
 import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
 import 'package:gold_health/apps/global_widgets/screen_template.dart';
 import 'package:gold_health/apps/pages/list_plan_screen/fasting_plan/count_down_timer.dart';
-import 'package:gold_health/services/notification.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:timelines/timelines.dart';
 
 import '../../../global_widgets/dialog/yes_no_dialog.dart';
 import '../../../template/misc/colors.dart';
-import 'package:gold_health/main.dart' show sharedPreferencesOfApp;
 
 class FastingCountdownScreen extends StatefulWidget {
   const FastingCountdownScreen({Key? key, required this.timeline})
@@ -21,6 +19,7 @@ class FastingCountdownScreen extends StatefulWidget {
 
 class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
   final fastingPlanController = Get.find<FastingPlanController>();
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -360,10 +359,23 @@ class _FastingCountdownScreenState extends State<FastingCountdownScreen> {
             onPressed: () {
               Get.dialog(
                 YesNoDialog(
-                  press: () {
+                  press: () async {
+                    fastingPlanController.isEnding = true;
+                    FastingHistory temp = fastingPlanController.fasting;
+                    await fastingPlanController.updateHistory(
+                      fastingPlanController.idFasting,
+                      FastingHistory(
+                        timeRemaining: temp.timeRemaining,
+                        endTime: DateTime.now(),
+                        isFinish: true,
+                        name: temp.name,
+                        startTime: temp.startTime,
+                        isPlaying: false,
+                        isSaving: false,
+                        saveTime: DateTime.now(),
+                      ),
+                    );
                     fastingPlanController.fastingMode = null;
-                    int? id = sharedPreferencesOfApp.getInt('idNotification');
-                    cancelScheduleNotificationsWhere(id ?? 0);
                     Get.back();
                     fastingPlanController.isCountDown.value = false;
                   },

@@ -33,8 +33,6 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(20),
                         onTap: () {
-                          controller.indexOfChoice =
-                              controller.choices.indexOf(e);
                           controller.fastingMode = e;
                           Get.to(() => GetReadyScreen(
                               fastingMode: controller.fastingMode));
@@ -106,6 +104,16 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
       )
       .toList();
 
+  Future<bool> _fetchData() async {
+    try {
+      await controller.fetchDataFastingHistory();
+
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> tabs = [
@@ -118,82 +126,94 @@ class _FastingPlanScreenState extends State<FastingPlanScreen> {
     ];
     return Scaffold(
       backgroundColor: AppColors.mainColor,
-      body: ScreenTemplate(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Row(
-                children: [
-                  InkWell(
-                    onTap: () async {
-                      int? newIndex;
-                      await _showDialogMethod(
-                        context: context,
-                        tabs: tabs,
-                        onSelectedTabs: (value) {
-                          newIndex = value;
-                        },
-                        done: () {
-                          if (newIndex != null) {
-                            controller.changeTab(newIndex ?? 0);
-                          } else {
-                            controller.changeTab(0);
-                          }
-                          Navigator.pop(context);
-                        },
-                      );
-                    },
-                    child: Row(
-                      children: const [
-                        Text(
-                          'Fasting',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+      body: FutureBuilder(
+          future: _fetchData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasData) {
+                if (snapshot.data as bool) {
+                  return ScreenTemplate(
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            children: [
+                              InkWell(
+                                onTap: () async {
+                                  int? newIndex;
+                                  await _showDialogMethod(
+                                    context: context,
+                                    tabs: tabs,
+                                    onSelectedTabs: (value) {
+                                      newIndex = value;
+                                    },
+                                    done: () {
+                                      if (newIndex != null) {
+                                        controller.changeTab(newIndex ?? 0);
+                                      } else {
+                                        controller.changeTab(0);
+                                      }
+                                      Navigator.pop(context);
+                                    },
+                                  );
+                                },
+                                child: Row(
+                                  children: const [
+                                    Text(
+                                      'Fasting',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    Icon(
+                                      Icons.keyboard_arrow_down_outlined,
+                                      color: Colors.black,
+                                      size: 24,
+                                    )
+                                  ],
+                                ),
+                              ),
+                              const Spacer(),
+                              InkWell(
+                                onTap: () {
+                                  Get.to(() => const FastingSaveScreen());
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: AppColors.primaryColor1
+                                        .withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: const Icon(
+                                    Icons.more_horiz,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
-                        Icon(
-                          Icons.keyboard_arrow_down_outlined,
-                          color: Colors.black,
-                          size: 24,
-                        )
+                        ...choicesWidget,
+                        Obx(
+                          () => controller.isCountDown.value
+                              ? FastingCountdownScreen(
+                                  timeline: CustomTimeLine(
+                                      fastingMode: controller.fastingMode),
+                                )
+                              : const SizedBox(),
+                        ),
                       ],
                     ),
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    onTap: () {
-                      Get.to(() => const FastingSaveScreen());
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryColor1.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: const Icon(
-                        Icons.more_horiz,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            ...choicesWidget,
-            Obx(
-              () => controller.isCountDown.value
-                  ? FastingCountdownScreen(
-                      timeline:
-                          CustomTimeLine(fastingMode: controller.fastingMode),
-                    )
-                  : const SizedBox(),
-            ),
-          ],
-        ),
-      ),
+                  );
+                }
+              }
+            }
+            return const Center(child: CircularProgressIndicator());
+          }),
     );
   }
 

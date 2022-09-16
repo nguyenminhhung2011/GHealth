@@ -6,6 +6,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
+import 'package:gold_health/apps/controls/dailyPlanController/fasting_plan_controller.dart';
 import 'package:gold_health/apps/routes/app_pages.dart';
 import 'package:gold_health/services/start_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -77,25 +78,22 @@ Future notificationInit() async {
   );
   AwesomeNotifications().createdStream.listen((notification) {
     if (notification.channelKey == 'fasting_notification') {
-      int? controllerDuration =
-          sharedPreferencesOfApp.getInt('controllerDuration');
-      int? endDuration = sharedPreferencesOfApp.getInt('endDuration');
       Timer? timer;
       try {
-        timer = Timer.periodic(const Duration(seconds: 1), (_) {
-          if (controllerDuration! >= endDuration!) {
-            controllerDuration = endDuration;
-            timer?.cancel();
-            timer = null;
-            print("finish fasting");
-          } else {
-            controllerDuration = controllerDuration! + 1;
-            print('controllerDuration: $controllerDuration');
-            sharedPreferencesOfApp.reload();
-            sharedPreferencesOfApp.setInt(
-                'controllerDuration', controllerDuration!);
-          }
-        });
+        // timer = Timer.periodic(const Duration(seconds: 1), (_) {
+        //   if (controllerDuration! >= endDuration!) {
+        //     controllerDuration = endDuration;
+        //     timer?.cancel();
+        //     timer = null;
+        //     print("finish fasting");
+        //   } else {
+        //     controllerDuration = controllerDuration! + 1;
+        //     print('controllerDuration: $controllerDuration');
+        //     sharedPreferencesOfApp.reload();
+        //     sharedPreferencesOfApp.setInt(
+        //         'controllerDuration', controllerDuration!);
+        //   }
+        // });
       } catch (e) {
         rethrow;
       }
@@ -133,47 +131,11 @@ void main() async {
   StartService.instance.init();
   Workmanager().initialize(isInDebugMode: true, callbackDispatcher);
   notificationInit();
-
   runApp(const MyApp());
 }
 
 void callbackDispatcher() {
   Workmanager().executeTask((taskName, inputData) async {
-    if (taskName == 'save_value_count_down_controller') {
-      final bool isPlaying = inputData?['isPlaying'];
-      final int indexOfListChoice = inputData?['indexOfListChoice'];
-      final int endDuration = inputData?['endDuration'];
-      int controllerDuration = inputData?['controllerDuration'];
-      print('done');
-      await sharedPreferencesOfApp.reload();
-      await sharedPreferencesOfApp.setBool('isPlaying', isPlaying);
-      await sharedPreferencesOfApp.setBool('isFasting', true);
-      await sharedPreferencesOfApp.setInt('index', indexOfListChoice);
-      await sharedPreferencesOfApp.setInt('endDuration', endDuration);
-      Timer? timer;
-
-      try {
-        timer = Timer.periodic(const Duration(seconds: 1), (_) {
-          if (controllerDuration >= endDuration) {
-            controllerDuration = endDuration;
-            timer?.cancel();
-            timer = null;
-            print("finish fasting");
-          } else {
-            ++controllerDuration;
-            print('controllerDuration: $controllerDuration');
-            sharedPreferencesOfApp.reload();
-            sharedPreferencesOfApp.setInt(
-                'controllerDuration', controllerDuration);
-          }
-        });
-        return Future.value(true);
-      } catch (e) {
-        return Future.value(false);
-      }
-    } else if (taskName == 'remove_value_count_down_controller') {
-      print('Delete fasting schedule');
-    }
     return Future.value(true);
   });
 }
