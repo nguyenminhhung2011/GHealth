@@ -36,10 +36,10 @@ Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng v
 * Theo dõi kế hoạch trong ngày màn Today Target
 * Nhũng hoạt động mà mình đã làm ở màn Activity History
 
-### Kế hoạck
+### Kế hoạch
 ### Kế hoạch ăn
 * Ở giao diện chính
-  * Biểu lượng Calories,Fats,Proteins,Carbs mà người dùng đã hấp thụ từng ngày trong tuần
+  * Hiển thị lượng Calories,Fats,Proteins,Carbs mà người dùng đã hấp thụ từng ngày trong tuần
   * Kế hoạch ăn trong ngày
 * Ở màn Meal Schedule
   * Người dũng có thể xem được kế hoạch ăn từng ngày 
@@ -150,6 +150,9 @@ Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng v
 ## 👨‍💻 Người thực hiện
 * Nguyễn Minh Hưng: 20120491
 * Trương Huỳnh Đức Hoàng: 20120483
+
+## 🔧 Cài đặt
+Tải bản demo của ứng dụng [tại](https://drive.google.com/file/d/1Q6uHuzpmWjfTnLM8-9dGC-BUri70H-Wr/view?usp=sharing)
 
 ## 📱 GIao diện
 
