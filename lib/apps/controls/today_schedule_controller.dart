@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:gold_health/apps/data/models/workout_model.dart';
 import 'package:gold_health/services/data_service.dart';
 import 'package:syncfusion_flutter_calendar/calendar.dart';
 
@@ -21,6 +23,8 @@ class TodayScheduleC extends GetxController {
     for (int i = 0; i <= 30; i++) DateTime.now().add(Duration(days: i))
   ];
   List<Map<String, dynamic>> listMealPlan = DataService.instance.listMealPlan;
+  Rx<Map<String, WorkoutSchedule>> schedules =
+      Rx<Map<String, WorkoutSchedule>>({});
 
   setFocus(int index, DateTime time) {
     _onFocus.value = index;
@@ -50,13 +54,28 @@ class TodayScheduleC extends GetxController {
   }
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     DataService.instance.loadMealList();
     DataService.instance.loadDataNutriPlan();
     DataService.instance.loadTimeEatList();
     DataService.instance.loadListSleepTime();
     getMealDate(DateTime.now());
+    await getScheduleWorkout();
+  }
+
+  Future<void> getScheduleWorkout() async {
+    String userId = FirebaseAuth.instance.currentUser!.uid;
+    final response = await firestore
+        .collection('users')
+        .doc(userId)
+        .collection('workout_schedule')
+        .get();
+    for (var doc in response.docs) {
+      print(doc.id);
+      schedules.value.addAll({doc.id: WorkoutSchedule.fromSnap(doc)});
+    }
+    update();
   }
 
   getMealDate(DateTime date) async {
