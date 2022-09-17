@@ -85,7 +85,7 @@ Người dùng có thể dễ dàng theo dõi các hoạt động ,cân nặng v
   * Theo dõi bước chân đã đi được theo từng ngày thông qua biểu đồ
   * Có bộ đếm bước chân
 
-### Kế hoạc uống nước
+### Kế hoạch uống nước
 * Ở giao diện chính
   * Theo dõi lượng nước đã uống và lượng nước mục tiêu thông qua biểu đồ 2 cột
   * Hiển thị % lượng nước đã uống trong ngyày
